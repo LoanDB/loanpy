@@ -9,7 +9,7 @@ What is what?
 -"Protoforms.xlsx": generated hypothetical Uralic protoforms of Hungarian words of unknown origin appearing in texts before 1600 (Etimológiai szótár, Zaicz Gábor, 2006)   
 -"noderivIN.xlsx": Same as Protoform.xlsx but input is automatically stripped from potential derivational suffixes  
 -"Substitutions.csv": Potential sound subsitution of Gothic phonemes into Proto-Uralic  
--"Match.xlsx": Identical words between hypothetical Proto-Uralic words and substituted Gothic words (https://koeblergerhard.de/wikiling/?f=got), both of structure CVCV 
+-"Match.xlsx": Identical words between hypothetical Proto-Uralic words and Sound-substituted Gothic words (https://koeblergerhard.de/wikiling/?f=got), both of structure CVCV 
   
 Transcriptions are based on IPA (https://www.internationalphoneticassociation.org/) and Uralisches Etymologisches Wörterbuch (UEW) (cf. http://uralonet.nytud.hu/help.cgi?locale=hu_HU)  
   
