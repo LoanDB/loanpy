@@ -1,0 +1,36 @@
+#get JUST phonotactic shapes of Hungarian words
+#import modules
+import pandas as pd
+import os
+import collections
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder')
+#define function
+def listToString(s):  
+    str1 = ""   
+    return (str1.join(s))
+#define input
+csv = pd.read_csv("root_withderiv_oneperline.csv", encoding='utf-8')
+csv['struc']=''
+upa= pd.read_csv("upaunfug.csv", encoding='utf-8')
+#wordlist=csv['o_IPA']
+
+#get list of Vs and Cs
+Vs=[]
+Cs=[]
+for index,row in upa.iterrows():
+    if row['cons']=='-':
+        Vs.append(row['Sound'])
+    if row['cons']=='+':
+        Cs.append(row['Sound'])
+
+#generate CVCV and append to row
+for index,row in csv.iterrows():
+    pw=''
+    for i in list(row['rootuew']):
+        if i in Vs:
+            pw+='V'
+        if i in Cs:
+            pw+='C'
+    csv.at[index,'struc']=pw
+csv.to_csv("proto_withderiv_oneperline_struc.csv", encoding="utf-8", index=False)

@@ -1,0 +1,107 @@
+#Newest version (12.05.)
+#Substitute Gothic Sounds
+import os
+import pandas as pd
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder\Gotischer Datensatz')
+g = pd.read_csv("G_struc.csv", encoding='utf-8')
+g=g[g.struc=='CVCV']
+substi=[]
+orig=[]
+Lemma=[]
+Wortart=[]
+de=[]
+en=[]
+link=[]
+ipa=[]
+subst1_kw_hw_iw=[]
+struc=[]
+substi2=[]
+orig2=[]
+Lemma2=[]
+Wortart2=[]
+de2=[]
+en2=[]
+link2=[]
+ipa2=[]
+subst1_kw_hw_iw2=[]
+struc2=[]
+df1=pd.DataFrame()
+def l2s(s):  
+    str1 = ""   
+    return (str1.join(s))
+#Substitutionsregeln aus csv reinlesen
+sbsin = pd.read_csv("Substitutions.csv", encoding='utf-8')
+for index,row in g.iterrows():
+    args=[]
+    for i in row['ipa']:
+            args.append([x for x in sbsin[i] if str(x) != 'nan'])            
+    Wort=row['ipa']
+    liste=list(Wort)
+    wortset=list(set(liste))[::-1]
+    #get unique indexes e.g. for 'ipipo' res=[0,1,0,1,2]
+    res = []
+    conversion = {}
+    i = 0
+    for x in Wort:
+        if x not in conversion:
+            value = conversion[x] = i
+            i += 1
+        else:
+            value = conversion[x]
+        res.append(value)
+
+#do all the combinations
+    for index, subst in enumerate(itertools.product(*args)):
+        Spiegel=[]
+        #reconstruct the word from the combinations and unique indexes
+        for i in res:
+            Spiegel+=subst[i]
+        substi.append(Spiegel)
+        Lemma.append(row['Lemma'])
+        Wortart.append(row['Wortart'])
+        de.append(row['Deutsche Bedeutung'])
+        en.append(row['Englische Bedeutung'])
+        link.append(row['link'])
+        ipa.append(row['ipa'])
+        subst1_kw_hw_iw.append(row['subst1_kw_hw_iw'])
+        struc.append(row['struc'])
+
+#combine substi so that Vowels are replaced with ¨ ȣ ɜ
+#define dictionary
+repl={'a':['a','¨','ɜ'],'e':['e','¨','ɜ'],'i':['i','¨','ɜ'],'o':['o','ȣ','ɜ'],'u':['u','ȣ','ɜ'],'y':['y','¨','ɜ'],'æ':['æ','¨','ɜ']}
+V='aeiouyɔɪɛ'
+for index,j in enumerate(substi):
+    args=[]
+    for i in j:     
+        if i in V:
+            args.append(repl[i])
+        else:
+            args.append(i)
+    #print(*args)
+    for k in itertools.product(*args):
+        substi2.append(k)
+        Lemma2.append(Lemma[index])
+        Wortart2.append(Wortart[index])
+        de2.append(de[index])
+        en2.append(en[index])
+        link2.append(link[index])
+        ipa2.append(ipa[index])
+        subst1_kw_hw_iw2.append(subst1_kw_hw_iw[index])
+        struc2.append(struc[index])
+
+#turn lists to strings:
+substi3=[]
+for i in substi2:
+    substi3.append(l2s(i))
+#insert into new df
+df1['Lemma']=Lemma2
+df1['Wortart']=Wortart2
+df1['Deutsche Bedeutung']=de2
+df1['Englische Bedeutung']=en2
+df1['link']=link2
+df1['ipa']=ipa2
+df1['subst1_kw_hw_iw']=subst1_kw_hw_iw2
+df1['struc']=struc2
+df1['Substitution']=substi3
+
+df1.to_csv("G_allSubstitutionsCVCV.csv", encoding="utf-8", index=False)

@@ -1,0 +1,64 @@
+#get phonotactic shapes of Gothic words
+#import modules
+import pandas as pd
+import os
+import collections
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder')
+#define function
+def listToString(s):  
+    str1 = ""   
+    return (str1.join(s))
+#define input
+csv = pd.read_csv("G_raw.csv", encoding='utf-8')
+csv['struc']=''
+upa= pd.read_csv("gCV.csv", encoding='utf-8')
+wordlist=csv['Lemma']
+
+#get list of Vs and Cs
+Vs=[]
+Cs=[]
+for index,row in upa.iterrows():
+    if row['cons']=='-':
+        Vs.append(row['Sound'])
+    if row['cons']=='+':
+        Cs.append(row['Sound'])
+
+#generate CVCV and append to row
+for index,row in csv.iterrows():
+    pw=''
+    for i in list(row['Lemma']):
+        if i in Vs:
+            pw+='V'
+        if i in Cs:
+            pw+='C'
+        csv.at[index,'struc']=pw
+
+#Count Structures and append to dfCVCV
+dfCVCV=pd.DataFrame()
+Struc=[]
+Count=[]
+for key in collections.Counter(csv['struc'].tolist()):
+    Struc.append(key)
+    Count.append(collections.Counter(csv['struc'].tolist())[key])
+dfCVCV['Struc']=Struc
+dfCVCV['Count']=Count
+
+#Add Examples, Hungarian, Language
+dfCVCV['Lemma']=''
+dfCVCV['de']=''
+dfCVCV['en']=''
+for number,i in enumerate(dfCVCV['Struc'].tolist()):
+    for index,row in csv.iterrows():
+        if row['struc']==i:
+            dfCVCV.at[number,'Lemma']+=row['Lemma']+', '
+            dfCVCV.at[number,'en']+=str(row['Deutsche Bedeutung'])+', '
+            dfCVCV.at[number,'de']+=str(row['Englische Bedeutung'])+', '
+dfCVCV['Lemma']= dfCVCV['Lemma'].str.slice(0,-1,1)
+dfCVCV['en']= dfCVCV['en'].str.slice(0,-1,1)
+dfCVCV['de']= dfCVCV['de'].str.slice(0,-1,1)
+dfCVCV
+
+#write csv
+#dfCVCV.to_csv("Structure.csv", encoding="utf-8", index=False)
+#csv.to_csv("g_struc.csv", encoding="utf-8", index=False)

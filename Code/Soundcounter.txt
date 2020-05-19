@@ -1,0 +1,32 @@
+#Soundcounter for Hungarian and Proto-Hungarian, IPA-based
+#import modules
+import pandas as pd
+import os
+import collections
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\gitoffline\Output')
+csv = pd.read_csv("Hun_old_IPA4.csv", encoding='utf-8')
+ipa = pd.read_csv("ipa.csv", encoding='utf-8')
+wordlist = csv['0+H+∅'].tolist()
+soundlist=[]
+for i in wordlist:
+    for j in i:
+        soundlist.append(j)
+
+Vowels=[]
+Cons=[]
+allipa=ipa['ipa'].tolist()
+for i in list(set(soundlist)):
+    try:
+        if ipa.loc[int(allipa.index(i)),'cons']=='-':
+            Vowels.append(i)
+    except:
+        pass
+for i in list(set(soundlist)):
+    try:
+        if ipa.loc[int(allipa.index(i)),'cons']=='+':
+            Cons.append(i)
+    except:
+        pass
+print(Vowels)
+print(Cons)

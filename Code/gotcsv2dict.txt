@@ -1,0 +1,22 @@
+#convert a csv to a dictionary
+#import modules
+import pandas as pd
+import os
+import csv
+import codecs
+#define all the things
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder\Gotischer Datensatz')
+table = pd.read_csv("G_allSubstitutionsCVCV.csv", encoding='utf-8')
+
+#convert csv to dictionary
+with open("G_allSubstitutionsCVCV.csv", 'rt',encoding='utf8') as f:
+    reader = csv.DictReader(f)
+    result = {'Substitution':'Lemma, Wortart, Deutsche Bedeutung, Englische Bedeutung, link , ipa, subst1_kw_hw_iw, struc'}
+    for row in reader:
+        key = row['Substitution']
+        result[key] = row['Lemma']+', '+row['Wortart']+', '+row['Deutsche Bedeutung']+', '+row['Englische Bedeutung']+', '+row['link']+' , '+row['ipa']+', '+row['subst1_kw_hw_iw']+', '+row['struc']
+
+#write dictionary to textfile
+file = codecs.open("Gotdict", "w", "utf-8")
+file.write(str(result))
+file.close()

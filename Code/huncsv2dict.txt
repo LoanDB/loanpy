@@ -1,0 +1,20 @@
+#convert a csv to a dictionary
+#import modules
+import pandas as pd
+import os
+#define all the things
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder')
+table = pd.read_csv("hun_final.csv", encoding='utf-8')
+
+with open("hun_final.csv", 'rt',encoding='utf8') as f:
+    reader = csv.DictReader(f)
+    result = {'rootipa':'rootuew, struc, level_0, index, type, type.1, NSE, en, de, reflex'}
+    for row in reader:
+        key = row['rootipa']
+        result[key] = row['rootuew']+', '+row['struc']+', '+row['level_0']+', '+row['index']+', '+row['type']+', '+row['type.1']+', '+row['NSE']+', '+row['en']+', '+row['de']+', '+row['reflex']
+
+##write dictionary to txt:
+file = codecs.open("Hundict.py", "w", "utf-8")
+dictionary='Hundict='+str(result)
+file.write(dictionary)
+file.close()

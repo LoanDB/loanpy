@@ -1,0 +1,133 @@
+#import modules
+import os
+import pandas as pd
+import numpy as np
+import decimal
+
+#define decimal precision
+decimal.getcontext().prec = 5
+
+#define path
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Protoformgenerator')
+
+#Define Timelayers
+timelayers=['U','FU','Ug']
+timelayerssum=['∑', timelayers]
+timelayerssum = [val for sublist in timelayerssum for val in sublist]
+for layer in timelayerssum:
+
+    #read csvs
+    csv = pd.read_csv("AllChanges.csv", encoding='utf-8')
+    csv2 = pd.read_csv("Quantify_"+layer+"_Vowels.csv", encoding='utf-8')
+    csv3 = pd.read_csv("Quantify_"+layer+"_Consonants.csv", encoding='utf-8')
+
+    #get the right timelayer
+    if layer in timelayers:
+        csv=csv[csv.Lan == layer]
+        csv=csv.reset_index()
+        csv=csv.drop(['index'], axis=1)
+
+    #define variables
+    list11=[]
+    list2=[]
+    list4=[]
+    Clen=[]
+    Vlen=[]
+    df3=pd.DataFrame()
+
+    #make same length so column is splitable
+    for index,row in csv.iterrows():
+        Clen.append(len((row['Cchanges']).split()))
+
+    for index,row in csv.iterrows():
+        while len((row['Cchanges']).split()) < max(Clen):
+            row['Cchanges']+=' -'
+
+    for index,row in csv.iterrows():
+        Vlen.append(len((row['Vchanges']).split()))
+
+    for index,row in csv.iterrows():
+        while len((row['Vchanges']).split()) < max(Vlen):
+            row['Vchanges']+=' -'
+
+    #create new dfs by splitting columns
+    df1=csv.Cchanges.str.split(expand=True) 
+    df2=csv.Vchanges.str.split(expand=True)
+
+    #define nr of columns
+    nrofcolumns=max(Clen)+max(Vlen)
+
+    #insert sound changes in correct order into new df
+    df3=pd.DataFrame(columns=np.arange(nrofcolumns))
+    i=0
+    n=0
+    while i<len(df1.columns):
+        df3[n]=df1[i]
+        i+=1
+        n+=2
+    i=0
+    n=0
+    while i <len(df2.columns):
+        df3[n+1]=df2[i]
+        i+=1
+        n+=2
+
+    #insert two empty columns after every sound change, for count and examples
+    mylist0=list(range(len(df3.columns)))
+    mylist=list(range(len(df3.columns)*3))
+    mylist2=[x for x in mylist if x%3 != 0]
+    for i,n in enumerate(mylist2):
+        if (n-1)%3 == 0:
+            df3.insert(n,'cnt'+str(int((i)/2)),'')
+        else:
+            df3.insert(n, 'ex'+str(int((i-1)/2)),'')
+
+    #insert count and examples from csv3 (Consonants)
+    mylist3 = [x for x in list(range(0,nrofcolumns)) if x%2 ==0]
+    for i in mylist3:
+        for index, row in df3.iterrows():
+            if row[i]!='-':
+                df3.at[index,'cnt'+str(i)] = csv3.iloc[(csv3[csv3['C_cng'] == row[i]].index[0]),3]
+                df3.at[index,'ex'+str(i)] = csv3.iloc[(csv3[csv3['C_cng'] == row[i]].index[0]),4]
+
+    #insert count and examples from csv2 (Vowels)          
+    mylist3 = [x for x in list(range(0,nrofcolumns)) if x%2 !=0]
+    for i in mylist4:
+        for index, row in df3.iterrows():
+            if row[i]!='-':
+                df3.at[index,'cnt'+str(i)] = csv2.iloc[(csv2[csv2['V_cng'] == row[i]].index[0]),3]
+                df3.at[index,'ex'+str(i)] = csv2.iloc[(csv2[csv2['V_cng'] == row[i]].index[0]),4]
+
+    #insert sum of examples to new column
+    df3['cnt∑']=0
+    df3=df3.replace('',0)
+    i=0
+    while i < nrofcolumns:
+        for index,row in df3.iterrows():
+            df3.at[index,'cnt∑'] = int(df3.loc[index,'cnt∑']) + int(row['cnt'+str(i)])
+        i+=1
+
+    #insert all examples into one new column
+    df3['ex∑']=''
+    i=0
+    while i < nrofcolumns:
+        for index,row in df3.iterrows():
+            df3.at[index,'ex∑'] = str(df3.loc[index,'ex∑']) + ' ' + str(row['ex'+str(i)])
+        i+=1
+
+
+    #insert Clen, Vlen
+    df3['Clen']=Clen
+    df3['Vlen']=Vlen
+
+    #insert Soundlen and NSE
+    df3['Soundlen']=0
+    df3['NSE']=0
+    df3['Soundlen'] = df3.loc[:,['Clen','Vlen']].sum(axis=1)
+    df3['NSE'] = np.where(df3['Soundlen'] < 1, df3['Soundlen'], df3['cnt∑']/df3['Soundlen'])
+    
+    #concatenate csv and df3 
+    df4 = pd.concat([csv, df3], axis=1)
+    
+    #write csv
+    df4.to_csv("NSE_"+layer+"1", encoding="utf-8", index=False)

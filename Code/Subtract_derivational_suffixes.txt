@@ -1,0 +1,75 @@
+##newest version
+### In: wordlist.csv (e.g.unknown.csv), sound change rules (e.g. SCin.csv)
+### Out: New csv = wordlist.csv + extra clumn with all possible protoforms
+import os
+import pandas as pd
+import epitran
+
+#def directory, csvs, vars, functions
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Protoformgenerator')
+SCin = pd.read_csv("SCin_uew.csv", encoding='utf-8')
+dk = pd.read_csv("dk_uew.csv", encoding='utf-8')
+dfproto=pd.DataFrame()
+noderiv=[]
+orth=[]
+en=[]
+de=[]
+type1=[]
+type2=[]
+epi = epitran.Epitran('hun-Latn')
+
+#remove last element if it could be from Uralic *0 or *∅ (=if it could be a derivational suffix)
+for index,row in dk.iterrows():
+    Wort = row['split']
+    orig= row['Orth']
+    ipa= row['IPA']
+    #if the last element is ∅² remove the last element
+    if Wort[-2:] == '∅²':
+        Wort=Wort[:-2]
+    #if last element can be from proto uralic, run while loop
+    if Wort[-2:] in list(SCin.columns):
+        x=SCin[Wort[-2:]]
+        #while the last element could be a deriv. suff. remove it and append shortened word to list
+        #append other parameters to other lists
+        while '*0' in list(x) or '*∅' in list(x):
+            Wort=Wort[:-2]
+            #delete correct number of symbols from end of word in orthography
+            if orig[-3:]=='dzs':
+                orig=orig[:-3]
+            if orig[-2:] in ('cs','dz','gy','ly','ny','sz','ty','zs'):
+                orig=orig[:-2]
+            else:
+                orig=orig[:-1]
+            noderiv.append(orig)
+            orth.append(row['Orth'])
+            en.append(row['en'])
+            de.append(row['de'])
+            type1.append(row['type'])
+            type2.append(row['type.1'])
+            #if the new last element can't be from Uralic (=KeyError) break the loop
+            try:
+                x=SCin[Wort[-2:]] 
+            except KeyError:
+                break
+                
+#calculate ipa of noderiv
+
+#append first lists to dfs b/c idk how to directly insert them into the df from the loop
+dfproto['Orth']=noderiv
+dfproto['en']=en
+dfproto['de']=de
+dfproto['type']=type1
+dfproto['type.1']=type2
+
+#get the ipa transcription of noderiv
+dfproto['IPA']=''
+for index,row in dfproto.iterrows():
+    row['IPA']=epi.transliterate(row['Orth'])
+
+#write df to csv so it can be used as input for the protoformgenerator
+dfproto.to_csv("noderivIN.csv", encoding="utf-8", index=False)
+
+#write the original forms to separate df and concatenate later with protoforms with "Concat 2 dfs"
+dforiginal=pd.DataFrame()
+dforiginal['original']=orth
+dforiginal.to_csv("withderiv.csv", encoding="utf-8", index=False)

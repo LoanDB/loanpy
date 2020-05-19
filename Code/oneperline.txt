@@ -1,0 +1,52 @@
+###In: protoform table with one word of unknown origin per line
+###Out: protoform table with one protoform per line
+
+#import modules
+import pandas as pd
+import os
+import re
+
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Protoformgenerator')
+
+#import csvs
+csv1 = pd.read_csv("withderiv_proto_ipauew.csv", encoding='utf-8')
+csv2 = pd.read_csv("Protoforms_noderiv.csv", encoding='utf-8')
+
+dfmatch=pd.DataFrame()
+protouewlist=[]
+protoipalist=[]
+origi=[]
+en=[]
+de=[]
+type1=[]
+type2=[]
+for index, row in csv1.iterrows():
+    protouew=row['protouew']
+    if "can't be from" not in protouew:
+        protoipa=row['proto'] 
+        protoipa=re.sub(r'\([^)]*\)', '', protoipa)
+        protouew=protouew.replace(" ","")
+        protoipa=protoipa.replace(" ","")
+        protouewlist.append(protouew.split(';'))
+        protoipalist.append(protoipa.split(';'))
+        
+        origi.append([row['Orth']]*len(protouew.split(';')))
+        en.append([row['en']]*len(protouew.split(';')))
+        de.append([row['de']]*len(protouew.split(';')))
+        type1.append([row['type']]*len(protouew.split(';')))
+        type2.append([row['type.1']]*len(protouew.split(';')))
+dfmatch['reflex']=[item for sublist in origi for item in sublist]
+dfmatch['rootipa']=[item for sublist in protoipalist for item in sublist]
+dfmatch['rootuew']=[item for sublist in protouewlist for item in sublist]
+dfmatch[['rootuew','NSE']]=dfmatch.rootuew.str.split("(",expand=True)
+dfmatch['NSE'] = dfmatch['NSE'].str.rstrip(')')
+dfmatch['en']=[item for sublist in en for item in sublist]
+dfmatch['de']=[item for sublist in de for item in sublist]
+dfmatch['type']=[item for sublist in type1 for item in sublist]
+dfmatch['type.1']=[item for sublist in type2 for item in sublist]
+dfmatch['struc']=''
+#rearrange cols
+cols=['rootuew','type','type.1','struc','NSE','en','de','reflex','rootipa']
+dfmatch=dfmatch[cols]
+dfmatch.to_csv("root_withderiv_oneperline.csv", encoding="utf-8", index=False)

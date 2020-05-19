@@ -1,0 +1,53 @@
+#uralonet-webscraper2 to get Hungarian words of U/PFU/Ug origin from http://www.uralonet.nytud.hu/
+#If access is denied in the middle of scraping with uralonetparser1 with this code you can continue
+#read in the incomplete csv from uralonetparser1 and webscrape only the missing pages
+
+
+#import stuff
+import requests
+from bs4 import BeautifulSoup
+from time import sleep
+import random
+from random import randint
+import pandas as pd
+import numpy as np
+#import os
+
+#define directory
+#os.chdir(r'C:\Users')
+
+#define variables
+start=1801
+stop=1877
+
+csv = pd.read_csv("uralonet.csv", encoding='utf-8')
+randrange=[]
+for index, row in csv.iterrows():
+    if row['Hun'] == '0':
+        randrange.append(start+index)
+random.shuffle(randrange)
+
+a = [0]*(stop-start)
+b= [0]*(stop-start)
+c = [0]*(stop-start)
+
+#crawl pages
+for i in randrange:
+    sleep(randint(10,110))
+    page = "http://www.uralonet.nytud.hu/eintrag.cgi?id_eintrag=" + str(i)
+    this = requests.get(page).text
+    soupie = BeautifulSoup(this, "lxml")
+    one = soupie.find("table", attrs={"class": "vergleich"})
+    for x in one.find_all("tr"):
+        new = x.td.text
+        if new == "magyar":
+            a[i-start] = soupie.strong.text
+            b[i-start] = soupie.i.text
+            c[i-start] = x.i.text
+
+#write data to csv
+df_ = pd.DataFrame(index=np.arange(1, len(a) + 1))
+df_['Hun'] = c
+df_['Lan'] = b
+df_['Old'] = a
+df_.to_csv("uralonet"+start+"-"+stop+".2.csv", encoding="utf-8", index=False)

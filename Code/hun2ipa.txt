@@ -1,0 +1,31 @@
+#IPA Generator
+#In: Hungarian word list - out: IPA Strings
+
+#import modules
+import pandas as pd
+#import os
+import epitran
+
+#define directory
+#os.chdir(r'C:\Users')
+
+#import csv
+csv = pd.read_csv("uralonet_webscraped_editedinexcel.csv", encoding='utf-8')
+
+#define variables
+IPA = []
+
+#define functions
+epi = epitran.Epitran('hun-Latn')
+def listToString(s):  
+    str1 = " "   
+    return (str1.join(s))
+
+#calculate and fill column IPA
+for index, row in csv.iterrows():
+    IPA.append(epi.transliterate(row['Hun']))
+    
+csv['H_IPA']=IPA
+
+#write csv
+csv.to_csv("Hun_old_IPA4", encoding="utf-8", index=False)

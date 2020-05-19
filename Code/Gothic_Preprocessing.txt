@@ -1,0 +1,66 @@
+#clean gothic words
+#import modules
+import pandas as pd
+import os
+import re
+import numpy as np
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder\Gotischer Datensatz')
+csv = pd.read_csv("G_raw_links.csv", encoding='utf-8')
+csv=csv.drop(['#', 'Sprachen'], axis=1)
+snd = pd.read_csv("snd.csv", encoding='utf-8')
+#struc = pd.read_csv("gStructure.csv", encoding='utf-8')
+
+#define functions
+def got2ipa(x):
+    x = x.replace("au", "ɔ")
+    x = x.replace("ai", "ɛ") #particularly important that it's chr(603) and NOT chr(949). They look the same.
+    x = x.replace("i", "ɪ")
+    x = x.replace("eɪ", "i")           
+    x = x.replace("q", "kʷ")
+    x = x.replace("ƕ", "hʷ")
+    x = x.replace("þ", "θ")
+    x = x.replace("g", "ɡ") #particularly important that it's chr(609) not chr(103)!
+    return x
+
+#remove everything after ( and , and ' '
+for i, n in enumerate(csv['Lemma'].tolist()):
+    n = n.lower()
+    n = re.sub("\(.*$", "", n)
+    n = re.sub(",.*$", "", n)
+    n = re.sub(" .*$", "", n)
+    csv.at[i,'Lemma']=n
+
+#define which signs to keep
+bad_chars=[]
+for index, row in snd.iterrows():
+    if row['Delete?']=='y':
+        bad_chars.append(row['Sound'])
+        
+#remove those parts of string that are in bad_chars and convert string to lowercase
+for index,row in csv.iterrows():
+    for i in bad_chars : 
+        csv.at[index,'Lemma'] = row['Lemma'].replace(i, '')
+        csv.at[index,'Lemma'] = row['Lemma'].lower()
+
+#remove diacritics
+for index,row in csv.iterrows():
+    csv.at[index,'Lemma']=row['Lemma'].replace("ō", "o").replace("ē", "e").replace("ú", "u").replace("í", "i").replace("ū", "u").replace("ā", "a").replace("á", "a").replace("ī", "i").replace("ì", "i").replace("à", "a")
+
+#insert ipa transcription
+csv['ipa']=''
+for index,row in csv.iterrows():
+    csv.at[index,'ipa']=got2ipa(row['Lemma'])
+
+#csv.to_csv("gclean3.csv", encoding="utf-8", index=False)
+#drop empty cells in col 'Lemma'
+csv['Lemma'].replace('', np.nan, inplace=True)
+csv=csv.dropna(subset=['Lemma'])
+
+#insert first substituion to new column 
+#this substitution has to be done before extracting the structure
+csv['subst1_kw_hw_iw']=''
+for index,row in csv.iterrows():
+    csv.at[index,'subst1_kw_hw_iw']=row['ipa'].replace('kʷ','kw').replace('hʷ','hw').replace('ɪu','ɪw')
+    
+csv.to_csv("G_clean+ipa+subst1.csv", encoding="utf-8", index=False)

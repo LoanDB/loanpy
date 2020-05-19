@@ -1,0 +1,21 @@
+#In: csv with gothic webscraped words
+#Out: csv1: Count of Vowel changes according to initial medial or final position, incl. all examples
+
+#import modules
+import pandas as pd
+import os
+from lingpy import *
+import collections
+
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder\Gotischer Datensatz')
+
+#import csvs
+csv = pd.read_csv("Gothic_Wikiling_scraped.csv", encoding='utf-8')
+linkliste=[]
+for i in range(1,281):
+    linkliste.append(20*['https://koeblergerhard.de/wikiling/?f=got&page='+str(i)])
+linkliste=[item for sublist in linkliste for item in sublist]
+linkliste=linkliste[:5582]
+csv['link']=linkliste
+csv.to_csv("G_raw_links.csv", encoding="utf-8", index=False)

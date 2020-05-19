@@ -1,0 +1,46 @@
+#uralonet-webscraper to get Hungarian words of U/PFU/Ug origin from http://www.uralonet.nytud.hu/
+#Define between which pages you want to webscrape by typing in the page numbers at start and stop at #define variables
+
+#import stuff
+import requests
+from bs4 import BeautifulSoup
+from time import sleep
+import random
+from random import randint
+import pandas as pd
+import numpy as np
+#import os
+
+#define variables OVER HERE
+start=1801
+stop=1877
+randrange=list(range(start,stop))
+random.shuffle(randrange)
+
+a = [0]*(stop-start)
+b= [0]*(stop-start)
+c = [0]*(stop-start)
+
+#define directory
+#os.chdir(r'C:\Users')
+
+#crawl pages
+for i in randrange:
+    sleep(randint(10,110))
+    page = "http://www.uralonet.nytud.hu/eintrag.cgi?id_eintrag=" + str(i)
+    this = requests.get(page).text
+    soupie = BeautifulSoup(this, "lxml")
+    one = soupie.find("table", attrs={"class": "vergleich"})
+    for x in one.find_all("tr"):
+        new = x.td.text
+        if new == "magyar":
+            a[i-start] = soupie.strong.text
+            b[i-start] = soupie.i.text
+            c[i-start] = x.i.text
+
+#write data to csv
+df_ = pd.DataFrame(index=np.arange(1, len(a) + 1))
+df_['Hun'] = c
+df_['Lan'] = b
+df_['Old'] = a
+df_.to_csv("uralonet"+start+"-",+stop+".csv", encoding="utf-8", index=False)

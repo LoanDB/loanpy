@@ -1,0 +1,1057 @@
+##Code for R-studio
+#Creating a dataframe from the Annex of Etimológiai szótár by Zaicz Gábor, 2006
+#The book itself is available here: https://regi.tankonyvtar.hu/hu/tartalom/tinta/TAMOP-4_2_5-09_Etimologiai_szotar/adatok.html
+#dataframe will have two columns: Word, year of first appearance in a text
+
+library(stringr)
+library(stringi)
+
+
+# Function to convert text to a data frame
+create_df = function ( text   )  {
+  a0 = gsub("\\[.+?\\]", "", text)
+  a1 = gsub( "\n" , " ",  a0   )
+  a2 = gsub( ":", ","  ,  a1)
+  a3 =  unlist ( strsplit(a2,",") )
+  a4 = a3[-1] 
+  a4 = str_trim(a4)
+  
+  output = data.frame( word = a4,
+                      time = deparse(substitute(text)),
+                      stringsAsFactors =F )  
+   }
+
+#############################################################
+
+
+#### text input
+before_1000 = "[870 k.]: magyar [930 k.]: kende [942 tn. (?), 950 k.]: horka [950 k. (?), 1199]: vajda [950 k. (?), 1416 u.]: csorog
+[950 k. tn. (?), 13. sz. eleje]: tesz [950 k. tn. (?), 1372 u.]: búcsú, íz1 [950 k. tn. (?), 1395 k.]: fal1 [950 k. tn. (?),
+1405 k.]: keszeg [950 k. tn. (?), 1526]: tarka [950 k. tn., 12. sz. vége]: köz, lesz [950 k. tn., 1329]: árpa [950 k., tn.
+(?), 1405 k.]: kürt [950 k.]: gyula, -ó/-o1 [950]: -d1 [960 k.]: huj"
+
+
+from_1001_1050 = "[1001 tn., 1109]: bálvány [1001 tn., 1251]: fuz2 [1002 e. tn., 1372 u.]: szánt [1009 tn. (?), 1372 u.]: fül [1009 tn.,
+1055]: fej2 [1009 tn., 1183]: híd [1009 tn., 12. sz. vége]: úr [1009 tn., 1225]: alma [1009 tn., 1372 u.]: kapu [1009 tn.,
+1434]: ügy1 [1015 tn., 1395 k.]: széru [1015 tn., 1490]: nedv [1018 k. tn.(?), 1372 u.]: meleg [1018 k. tn., 1395 k.]:
+sarló [1018 k. tn., 1405 k.]: szombat [1018 k.]: király, -g2 [1018-1038 tn., 1395 k.]: vaj [1024]: -nok/-nök"
+
+from_1051_1100 = "[1055 (?), 12. sz. vége]: eleve [1055 (?), 1224]: aj1 [1055 (?), 1226 tn.]: ásvány [1055 (?),1372 u.]: elo [1055 tn. (?),
+12. sz. vége]: torok [1055 tn. (?), 1252]: nyír2 [1055 tn. (?), 13. sz. közepe]: bél, hull [1055 tn. (?), 1332]: sár2 [1055
+tn. (?), 1372 u.]: sár1 [1055 tn. (?), 1395 k.]: kert [1055 tn. (?), 1476 k.]: török [1055 tn. (?), 1516 u.]: báb [1055
+tn.(?), 1395 k.]: apa [1055 tn., 1193]: vár2 [1055 tn., 1265]: vejsze [1055 tn., 1269]: lyuk [1055 tn., 1291]: som
+[1055 tn., 1372 u.]: fehér, to [1055 tn., 1395 k.]: disznó, orr [1055 tn., 1406]: kenéz [1055 tn., 1416 u.]: vég
+[1055 tn., 1585 k.]: szád [1055]: -a/-e1, -a/-e ~ -ja/-je, -ár/-ér, árok, -ász/-ész, aszó, -at/-et1, berkenye, bokor, -csa/-cse,
+ér3, fa, fekete, ferto, fok1, föveny, had, halom, három, hegy, hely, homok, iszik, kerek, koris, kút, -l ~ -ly, ló, -m1,
+megy, megye, mezo, mogyoró, nagy, ó1, ölyv, rá, ravasz, -s1, sír2, -sz1, -szág/-szég, szakad, széna, sziget, szik, szil, -
+t1, -t ~ -tt1, út, -vány/-vény, vásár, leány [1057 tn. (?), 1291]: két [1057 tn. (?), 1372 u.]: kor [1057 tn. (?), 1395 k.]:
+sereg [1057 tn. (?), 1405 k.]: kedd [1057 tn. (?), 1535]: káva [1057 tn. (?), 1536]: sürög [1057 tn., 13. sz. eleje]:
+bizony [1057 tn., 1372 u.]: hit [1057 tn., 1395 k.]: hazug [1061 tn. (?), 1395 k.]: kos [1061 tn. (?), 1401]: pest
+[1061 tn., 1135]: patak [1061 tn., 1405 k.]: süvölt [1067 k. tn. (?), 1372 u.]: öcs [1067 k. tn. (?), 1217]: száz [1067 k.
+tn. (?), 1372 u.]: öt [1067 k. tn. (?), 1405 k.]: hét2 [1067 k. tn. (?), 1604]: gubacs [1067 k. tn., 12. sz. vége]: szem
+[1067 k. tn., 1234]: éger [1067 k. tn., 1372 u.]: levél, szekér [1067 k. tn., 1395 k.]: nyu2, sarok [1067 k. tn., 1456 k.]:
+szín1 [1067 tn. (?), 1200 k.]: hét1 [1067 tn.]: szeg2 [1075 tn. (?), 13. sz. eleje]: fény [1075 tn. (?), 1405 k.]: cseh [1075
+tn. (?), 1416 u.]: szurok [1075 tn. (?), 1430 k.]: tolmács [1075 tn. (?), 1528]: doboz [1075 tn. (?), 1584]: hany [1075
+tn. (?), 1666]: malom [1075 tn., 1217]: udvarnok [1075 tn., 1372 u.]: mély, szolo, udvar [1075 tn., 1380 k.]: kengyel
+[1075 tn., 1395 k.]: bors [1075 tn., 1405 k.]: hatvan [1075 tn., 1416 u.]: keskeny [1075/1217 tn., 1248]: kereszt
+[1075/1217 tn., 1337]: kis [1075/1217 tn., 1395 k.]: horog [1075]: arany [1079 (?), 12. sz. vége]: jó1 [1079 tn. (?),
+1395 k.]: sün [1079]: szed [1086 tn. (?), 12. sz. vége]: köt [1086 tn. (?), 1269]: les [1086 tn. (?), 1290 k.]: bátor [1086
+tn. (?), 13. sz. eleje]: vesz [1086 tn. (?), 13. sz. második fele]: örök [1086 tn. (?), 1372 u.]: béke, dög, ero, kígyó,
+szám, szar, szemét, vért [1086 tn. (?), 1380 k.]: részeg, szoros [1086 tn. (?), 1395 k.]: acél, bor, köröm, tapló [1086
+tn. (?), 1416 u.]: hang [1086 tn. (?), 1519 k.]: lop [1086 tn. (?), 1555]: vemhes [1086 tn. (?), 1590 k.]: duda [1086 tn.
+(?), 1792]: kese [1086 tn., 1193]: akol, bükk [1086 tn., 1220 k.]: hárs [1086 tn., 13 sz. eleje]: föld [1086 tn., 13. sz.
+eleje]: mag [1086 tn., 1372 u.]: bal, farkas, magas, német [1086 tn., 1380 k.]: vo [1086 tn., 1395 k.]: dinnye, nyúl1,
+pásztor, szalma, zászló [1086 tn., 1405 k.]: orosz, szakáll [1086 tn., 1478]: komló [1086 tn., 1526]: pogány [1086 tn.,
+1532]: pányva [1086]: barázda, határ, hosszú, lak, telek, láda, lengyel [1090 k. tn. (?), 17. sz. második fele]: bodor
+[1091 tn. (?), 1358]: álom [1092]: -a/-e5 [1093-1095 tn. (?), 1296]: hím2 [1093-1095 tn. (?), 1372 u.]: vén [1093-
+1095 tn. (?), 1395 k.]: hím1 [1095]: iker"
+
+from_1101_1150 = "[1109 tn. (?), 1500 k.]: süly [1109 tn. (?), 1588]: gerencsér [1109 tn., 1351]: hát1 [1109]: tanya [1111 tn. (?),
+1395 k.]: bába [1111]: káliz [1113 tn. (?), 1372 u.]: madár, négy [1113 tn., 1237]: nyár1 [1113 tn., 1256]: morotva
+[1113 tn., 1395 k.]: csík1 [1113 tn., 1493 k.]: család [1113 tn., 1551]: üreg [1113]: -ás/-és, forrás, láp [1121 tn. (?),
+1416 u.]: bér [1121 tn. (?), 1661]: páka [1121 tn., 1206]: liget [1121 tn., 1372 u.]: fon, gyönyöru [1121 tn., 1395 k.]:
+nád, vályú [1121 tn., 1399]: or [1121 tn., 1405 k.]: tót [1121 tn., 1416 u.]: vörös [1127-1131 tn. (?), 13. sz. közepe]:
+szép [1127-1131]: jobbágy [1130-1141 tn. (?), 13. sz. eleje]: húgy2 [1131 tn (?), 1372 u.]: bot [1131 tn. (?), 1372 u.]:
+orvos [1131 tn. (?), 1405 k.]: kas [1131 tn.(?), 1372 u.]: orv [1131 tn., 1395 k.]: székely [1131-1141 tn. (?), 1195 k.]:
+szegény [1131-1141 tn. (?), 12. sz. vége]: él1 [1131-1141 tn. (?), 13. sz. eleje]: ág [1131-1141 tn. (?), 1372 u.]: húg
+[1131-1141 tn. (?), 1510]: apad [1131-1141 tn. (?), 1538]: húgy1 [1131-1141 tn., 12. sz. vége]: vet [1131-1141 tn.,
+1200 k.]: szerelem [1131-1141 tn., 1395 k.]: borz [1132 tn. (?), 1405 k.]: burok [1135 tn. (?), 1416 u.]: büdös [1135
+tn. (?), 1553-1561]: csömör [1135]: -lt [1137 tn. (?), 1395 k.]: rozs [1137 tn. (?), 1456 k.]: rossz [1138]: -ék1 [1138
+(?), 1416 u.]: fo2 [1138 tn, 13. sz. közepe]: szeg3 [1138 tn. (?), 1146]: bán1 [1138 tn. (?), 12. sz. vége]: eszik, fél2, kín,
+ország, os [1138 tn. (?), 1230 k.]: agy, gomb [1138 tn. (?), 1245]: szél1 [1138 tn. (?), 1256]: gát [1138 tn. (?), 1260-
+1270]: seb [1138 tn. (?), 1270]: szög1 [1138 tn. (?), 13. sz. eleje]: csoda, egyéb, kér, szül, tud [1138 tn. (?), 13. sz.
+közepe]: bú1, édes, fél1, ígér, szégyen, tor1, vér [1138 tn. (?), 13. sz. második fele]: bo, éh, háború [1138 tn. (?),
+13.század eleje]: hitvány [1138 tn. (?), 1329]: bak, tok1 [1138 tn. (?), 1348]: él2 [1138 tn. (?), 1355]: sulyok [1138 tn.
+(?), 1365 k.]: baj [1138 tn. (?), 1368]: hat2 [1138 tn. (?), 1372 k.]: esik [1138 tn. (?), 1372 u.]: bánt, beszéd, bízik,
+bújik, egyes, galamb, halad, hó1, hos, kém, ken, kés, késik, ok, remény, sok, társ, tó, tolvaj, tor2, úszik, vált, vét [1138
+tn. (?), 1380 k.]: irigy [1138 tn. (?), 1390 k.]: szél2 [1138 tn. (?), 1395 k.]: bika, búza, csat, csóka, gém, gomba,
+hörcsög, ideg, kápa, kasza, kenyér, méh1, mén, nyom, osz1, oz, patkány, rés, süllo, szel, üllo, varjú [1138 tn. (?),
+1405 k.]: dob1, kan, szakács, szirony1, tok2 [1138 tn. (?), 1416 u.]: áru, csont, nyu1, özön, szeg1 [1138 tn. (?), 1430 k.]:
+csepu [1138 tn. (?), 1450 k.]: karácsony [1138 tn. (?), 1456 k.]: csuma, fattyú, köteles [1138 tn. (?), 1470]: kánya
+[1138 tn. (?), 1500 k.]: káka [1138 tn. (?), 1510 e.]: búb [1138 tn. (?), 1510 k.]: kása [1138 tn. (?), 1513]: táska [1138
+tn. (?), 1522]: bog [1138 tn. (?), 1527]: kun [1138 tn. (?), 1529 e.]: sima [1138 tn. (?), 1533]: kova, szügy [1138 tn.
+(?), 1542]: busa [1138 tn. (?), 1552]: tor1 [1138 tn. (?), 1561]: gulya [1138 tn. (?), 1565]: kacs [1138 tn. (?), 1570]:
+vagyon [1138 tn. (?), 1591]: baba [1138 tn. (?), 1628]: csen [1138 tn. (?), 1651]: lap [1138 tn. (?), 1663]: csenevész
+[1138 tn. (?), 1708]: toka [1138 tn. (?), a 13. sz. második fele]: kép [1138 tn.(?), 1245]: legény [1138 tn.(?), 1395 k.]:
+makk [1138 tn.(?), 1519]: nyáj [1138 tn., 1055]: ko [1138 tn., 12. sz. vége]: -ad/-ed, hal1, keseru, malaszt, munka,
+nem2, van [1138 tn., 1230 u.]: hal2 [1138 tn., 1236]: hód [1138 tn., 1298]: vad [1138 tn., 13. sz. eleje]: szolga, fiú,
+hu1, marad, tart [1138 tn., 13. sz. közepe]: fog1, méz, öröm, vas, ver [1138 tn., 1300 k.]: szamár [1138 tn., 1336]: vak
+[1138 tn., 1368]: só [1138 tn., 1372 u.]: ajándék, eb, erdo, fog2, ganéj, hideg, ma, mar1, okos, olasz, önt, péntek, ül1,
+vendég, víg [1138 tn., 1387]: szerecsen [1138 tn., 1395 k.]: bogár, fürj, horvát, kakas, köles, medve, nyomorék,
+sólyom [1138 tn., 1405 k.]: ököl, ötven, tök [1138 tn., 1416 u.]: kever [1138 tn., 1500 k.]: pünkösd [1138 tn., 1527]:
+bolgár [1138 tn., 1538]: kicsi, korpa [1138 tn., 1577 k.]: töm [1138 tn., 1585]: lök [1138 tn., 1620]: gödény [1138 tn.,
+1808]: besenyo [1138 tn., 1888]: varég [1138]: -ék1, légy [1139 tn., 1405 k.]: síp [1146 tn. (?), 1264]: vám [1146 tn.
+(?),12. sz. vége]: szín2 [1150 k.]: -más/-més, -s2 [1150 tn., 12. sz. vége]: asszony"
+
+from_1151_1200 = "[1152 tn. (?), 1372 u.]: hó2 [1152 tn. (?), 1395 k.]: csuka, túr2, túró [1152 tn. (?), 1416 u.]: folt [1152 tn., 13. sz.
+eleje]: tenger [1152 tn., 1372 u.]: árva, féreg [1156 tn. (?), 13. sz. eleje]: jegy [1156 tn. (?), 1372 u.]: jelen [1156 tn.
+(?), 1395 k.]: görög2, kemence [1156 tn. (?), 1405 k.]: jég [1156 tn. (?), 1490 k.]: fos [1156 tn., 12. sz. vége]: barát,
+szent [1156 tn., 1372 u.]: nevel, palást, szék [1156 tn., 1395 k.]: mál [1163-1173 tn. (?), 1528]: tar [1164 tn. (?)]:
+kérd [1164 tn., 1372 u.]: gyöngy [1165 k. tn. (?), 1395 k.]: izsóp, kölyök [1165 k. tn. (?), 1559]: csüd [1165 k. tn.,
+1405 k.]: vödör [1165 tn., 1372 u.]: csal [1165 tn., 1519 k.]: mordály [1166 tn., 1416 u.]: smaragd [1171 tn. (?),
+1372 u.]: tál, zúg [1171 tn. (?), 1834]: mulya [1171]: -g1 (-og/-eg-/ög) [1177 k. tn. (?), 1395 k.]: polc [1177 k. tn. (?),
+1416 u.]: ellik [1177 tn. (?), 1372 u.]: gazda [1177 tn., 12. sz. vége]: harag [1177 tn., 1222]: akna [1177 tn., 13. sz.
+második fele]: nép [1177 tn., 1334]: szilva [1177 tn., 1372 u.]: ösztövér, püspök, szerda, új [1177 tn., 1395 k.]: eper
+[1180 tn., 1416 u.]: apát [1181 tn. (?), 13. sz. eleje]: atya, mu [1181 tn. (?), 13. sz. közepe]: anya [1181 tn. (?), 1327]:
+bojt [1181 tn. (?), 1372 u.]: böjt, fúr, széles [1181 tn. (?), 1380 k.]: szucs [1181 tn. (?), 1395 k.]: csap2, hajó, rózsa
+[1181 tn. (?), 1416 u.]: forr [1181 tn. (?), 1505]: tatár [1181 tn. (?), 1519]: konc [1181 tn. (?), 1549]: szoke [1181 tn.,
+1193]: rekettye [1181 tn., 12. sz. vége]: segéd [1181 tn., 1372 u.]: mester, ökör, sebes, tyúk [1181 tn., 1395 k.]: bíbor
+[1181]: tölgy, len [1184 tn. (?), 1372 u.]: vár1 [1184 tn. (?), 1577]: kökény [1186 tn. (?), 12. sz. vége]: kebel [1192 tn.
+(?), 1297]: ól [1192 tn. (?), 1395 k.]: kender [1192 tn., 1265]: rév [1192 tn., 1337]: bodza [1192 tn., 1372 u.]: közép,
+lassú [1192 tn., 1560 k.]: csosz [1193 (?), 1372 u.]: haszon [1193 tn (?), 1565]: liba [1193 tn. (?), 12. sz. vége]:
+boldog, int [1193 tn. (?), 1395 k.]: harcsa, rigó [1193 tn. (?), 1405 k.]: boka, tüdo [1193 tn. (?), 1416 u.]: zsold [1193
+tn. (?), 1538]: csíz [1193 tn. (?), 1578]: domború [1193 tn. (?), 1620]: koboz2 [1193 tn., 12. sz. vége]: ház [1193 tn.,
+1233]: magyal [1193 tn., 1237-1240]: tímár [1193 tn., 1267]: szurdok [1193 tn., 13. sz. eleje]: város [1193 tn.,
+1372 u.]: áld, egyház, kel1, sárkány [1193 tn., 1380 k.]: kovács [1193 tn., 1395 k.]: agár, berek, bivaly, köböl, szeder,
+üno [1193 tn., 1405 k.]: görög1, konkoly [1193 tn., 1536]: csörög [1193 tn., 1556]: homorú [1193]: -atag/-eteg, cser, -
+i1, kútfo, -ra/-re [1194]: -só/-so [1198 tn. (?), 1372 u.]: juh [1198 tn. (?), 1395 k.]: güzü [1198 tn. (?), 1405 k.]: játék,
+szökik [1198 tn. (?), 1604]: fitos [1198 tn. (?), 1673]: bök [1198 tn. (?), 1745 k.]: kuka1 [1198 tn., 13. sz. eleje]:
+hamar [1198 tn., 1372 u.]: kamara, süket [1198 tn., 1395 k.]: emlo, szömörcsög [1198 tn., a 13. sz. eleje]: lakik1
+[1198]: -l1 [1199 tn. (?), 1395 k.]: kárász [1199 tn. (?), 1474]: príma [1199 tn. (?), 1577]: buta [1199 tn. (?), 1794 k.]:
+pina [1199 tn., 1395 k.]: rák [1199 tn., 1435 k.]: sügér [12 sz. vége]: -aszt/-eszt, mi1 [12. sz. tn. (?), 12. sz. vége]: ad
+[12. sz. tn. (?), 13. sz. eleje]: gyökér [12. sz. tn. (?), 1405 k.]: orom [12. sz. tn., 1264]: zsilip [12. sz. vége 13. sz.
+eleje]: -ja/-i [12. sz. vége, 1372 u.]: -ba/-be, -játok/-itek [12. sz. vége]: lélek, -a/-e2, -a/-e3, -a/-e4, -á/-é1, -á/-é2,-al/-el ~
+-ál/-él1, -alom/-elem, -and/-end, arkangyal, -at/-et2, az, -ban/-ben, bele, belül, bírság, bocsát, -ból/-bol, bun, -d2, de1,
+egy, elott, ember, enged, -ért, érte, és, ez1, faj, felol, gyümölcs, -h, hall1, hamis, hamu, -hat/-het, hatalom, heon,
+hogy1, hogy2, -hoz/-hez/-höz, -i2, iktat, imád, is, isa, isten, -ít ~ -ajt/-ejt, -j, jár, -juk/-jük1, jut, -k1, -k2, -k3, -k4, -k5,
+kegyelem, ki1, kiált, -l2, -m2, maga, meg1, ment, menny, mennyi, mi2, mind, mond, múlik, -n2, -na/-ne, -ná/-né, -nak/-
+nek1, -nak/-nek2, nap, neki, nem1, -ni, -nyi, nyugalom, old, oly, o, ördög, paradicsom1, pokol, por, rész, -ság/-ség, -sz2,
+szabad, -t2, -t3, -t ~ -tt2, -t ~-tt3, temet, terem1, test, ti, tilt, -tok/-tek/-tök1, -tok/-tek/-tök2, -tok/-tek/-tök3, -tól/-tol,
+tömlöc, -uk/-ük1, -uk/-ük2 ~ -juk/jük, -ul/-ül1, -unk/-ünk1, -unk/-ünk2, -va/-ve, -val/-vel, verem, vezet, világ, víz, -
+z(ik), lát [1200 k. tn. (?), 1750]: pata [1200 k. tn., 1264]: dió [1200 k. tn., 1365]: jó2 [1200 k. tn., 1372 u.]: bolond,
+ho, mész, sátor, teto [1200 k. tn., 1380 k.]: ostor [1200 k. tn., 1395 k.]: bolha, teker [1200 k. tn., 1405 k.]: kóró,
+poroszló [1200 k. tn., 1512 k.]: gaz [1200 k. tn., 1805 e.]: kazár [1200 k.]: áldomás, oláh"
+
+from_1201_1250 = "[13. sz. eleje, 1372 u.]: fizet, -nál/-nél [13. sz. eleje]: áll1, ámen, barom, -dalom/-delem, ég2, el, fel, fogad, fogva,
+füröszt, gyermek, ha, hanem, hol, hozzá, ihol, illet, ismer, jelenik, kar1, -képp(en), kezd, kíván, korona, méh2, mert,
+mint, oltár, öl2, össze, posztó, rajta, -ról/-rol, róla, sír1, származik, szentlélek, szeplo, szuz, támad, -tat/-tet, te, tehát,
+tekint, teljes, tiszt, tiszta, titok, tole, tör, úgy, -unk/-ünk3, üdvözít, vele, visel, -zat/-zet, lel [1201 tn. (?), 1405 k.]:
+herceg [1202-1203 k. tn, 1372 u.]: farok [1202-1203 k. tn., 1372 u.]: tompa [1202-1203 tn. (?), 1559]: tata [1202-
+1203 tn., 1372 u.]: tagad [1205-1235 tn., 1395 k.]: agyag [1206 tn. (?), 1395 k.]: örvény [1206 tn. 1395 k.]: konyha
+[1206 tn., 1294]: mezsgye [1206 tn., 1372 u.]: bárány [1206 tn., 1405 k.]: csütörtök [1206 tn., 1519 k.]: villám [1208
+tn. (?), 1264]: csonka [1208 tn. (?), 1372 u.]: meddo [1208 tn. (?), 1456 k.]: csíp [1208 tn., 1372 u.]: drága, vitéz
+[1208 tn., 1416 u.]: topáz [1208 u.]: -ika/-ike [1209 tn. (?), 1500 k.]: páfrány [1209 tn. (?), 1651]: kerecsen [1209 tn.,
+1283]: unoka [1209 tn., 1416]: pecér [1209]: szelemen [1210 tn., 1225]: rét1 [1211 tn (?), 1372 u.]: fekszik [1211 tn
+(?), 1416 u.]: bolt [1211 tn (?), 1532]: csipa [1211 tn (?), 1550 k.]: csípo [1211 tn. (?), 1229]: pénz [1211 tn. (?),
+1230 k.]: gúzs [1211 tn. (?), 1251]: szállás [1211 tn. (?), 1264]: zab [1211 tn. (?), 13. sz. eleje]: bölcs, hír, követ2, név
+[1211 tn. (?), 13. sz. közepe]: érez, könny [1211 tn. (?), 13. sz. második fele]: függ [1211 tn. (?), 1350 k.]: ín [1211
+tn. (?), 1356]: varsa [1211 tn. (?), 1372 k.]: ég1 [1211 tn. (?), 1372 u.]: ár4, hagy, hála, hold1, hon, kemény, kéreg,
+könnyu, nyavalya, nyer, öv, zsák [1211 tn. (?), 1380 k.]: pór, saru [1211 tn. (?), 1384]: tíz [1211 tn. (?), 1395 k.]:
+bagoly, bölény, far, haj1, hant, kerék, küllo1, pele, penész, szatyor, ük, vés [1211 tn. (?), 1405 k.]: cipó, háj, húsz,
+küllo2, réz, szál, tetem [1211 tn. (?), 1416 u.]: csemete, hízik, kalász, nyír1, osz2, szák [1211 tn. (?), 1430 k.]: rojt
+[1211 tn. (?), 1456 k.]: alacsony, furész, szálka [1211 tn. (?), 1470]: huvös [1211 tn. (?), 1490 k.]: huny [1211 tn. (?),
+1495 e.]: csomó [1211 tn. (?), 1495 k.]: örv1 [1211 tn. (?), 1506]: nyúz [1211 tn. (?), 1527]: vágyik [1211 tn. (?),
+1532]: mécs [1211 tn. (?), 1549]: csigolya [1211 tn. (?), 1556]: dal [1211 tn. (?), 1565]: kavics, tapasz [1211 tn. (?),
+1577 k.]: rost1 [1211 tn. (?), 1585]: top [1211 tn. (?), 1604]: bukik [1211 tn. (?), 1613]: gida, lompos [1211 tn. (?),
+1616]: tönk [1211 tn. (?), 1621]: dob2 [1211 tn. (?), 1750 k.]: kacsó [1211 tn. (?),1372 u.]: elso [1211 tn.(?), 1372 u.]:
+méltó [1211 tn.(?), 1395 k.]: réce [1211 tn., 1231]: fenyo [1211 tn., 1251]: szomorú [1211 tn., 13. sz. eleje]: sötét,
+takar [1211 tn., 1338]: völgy [1211 tn., 1346]: regös [1211 tn., 1372 u.]: arat, fed, fegyver, gonosz, hivatal, hús,
+húsvét, oriz, pap, üt [1211 tn., 1395 k.]: borjú, csemege, hagyma, harang, lúd, talp [1211 tn., 1405 k.]: bab, korom
+[1211 tn., 1416 u.]: lo, metsz, ocsú, szopik, táltos [1211 tn., 1481 e.]: szab [1211 tn., 15. század]: ró [1211 tn.,
+1519 k.]: szennyes [1211 tn., 1527]: helyes [1211]: -cs, -talan/-telen ~ -tlan/-tlen [1212 tn. (?), 1225]: gyepu [1212
+tn. (?), 1231]: nyest [1212 tn. (?), 1257]: gyep [1212 tn. (?), 1372 u.]: mulat [1212 tn. (?), 1395 k.]: üröm [1212 tn.,
+13. sz. eleje]: utál [1212 tn., 1395 k.]: tarló [1212 tn., 1795 k.]: kopáncs [1213 tn. (?), 13. sz. eleje]: ékes, szó, ügy2
+[1213 tn. (?), 1372 u.]: galád [1213 tn. (?), 1422 k.]: baszik [1213 tn. (?), 1456 k.]: rúg [1213 tn. (?), 1500 k.]: gyanta
+[1213 tn. (?), 1508]: ék [1213 tn. (?), 1509]: lomb [1213 tn. (?), 1520]: koma [1213 tn. (?), 1525 k.]: csikó [1213 tn.
+(?), 1536]: boly [1213 tn. (?), 1538]: bajor [1213 tn. (?), 1560 k.]: kelepce [1213 tn., (?), 1495 e.]: gyúr [1213 tn.,
+1372 u.]: csap1, tanács [1213 tn., 1395 k.]: per1 [1213 tn., 1405 k.]: tömény [1213 tn., 1525 k.]: sas [1213 tn., 1864]:
+fegyvernök [1213]: hadnagy [1214 tn. (?), 1372 u.]: görbe [1214 tn. (?), 1395 k.]: szén [1214 tn. (?), 1416 u.]: panasz
+[1214 tn. (?), 1456 k.]: doh [1214 tn. (?), 1561]: bödön [1214 tn. (?),1372 u.]: hiú [1214 tn., 13. sz. eleje]: mos
+[1214 tn., 1327]: hévíz [1214 tn., 1372 u.]: falu, hál, személy [1214 tn., 1395 k.]: csalán, sajtár [1214 tn., 1416 u.]:
+mászik [1214]: bárd1 [1215 tn. (?), 1230 k.]: nyoszolya [1215 tn. (?), 13. sz. eleje]: tükör [1215 tn. (?), 1380 k.]: fék
+[1215 tn. (?), 1395 k.]: zöld [1215 tn. (?), 1416 u.]: ál [1215 tn. (?), 1546]: guta [1215 tn., 1395 k.]: bajnok, mart
+[1216 tn. (?), 1527]: mankó1 [1216]: kék [1216-1240 tn. (?), 1372 u.]: külso [1217 tn. (?), 1372 u.]: apostol, fu [1217
+tn. (?), 1395 k.]: hölgy [1217 tn. (?), 1416 u.]: járom [1217 tn., 1247]: ártány [1217 tn., 1282 k.]: turul [1217 tn.,
+1332]: bánya [1217 tn., 1357]: csónak [1217 tn., 1370]: lanka [1217 tn., 1395 k.]: szarka [1217 tn., 1416 u.]: aszú
+[1219 tn. (?), 13. sz. eleje]: bezzeg [1219 tn. (?), 1372 u.]: gyékény, kedv, sövény, szo [1219 tn. (?), 1395 k.]: torzsa
+[1219 tn. (?), 1395]: cseber [1219 tn. (?), 1405 k.]: lusta [1219 tn. (?), 1456 k.]: gogös [1219 tn. (?), 1508]: tinta
+[1219 tn., 1372 u.]: al, monostor [1219 tn., 1395 k.]: törpe [1219 tn., 1395]: föl [1219 tn., 1519]: zúz [1219 tn.,
+1528]: tinó [1219]: -kó/-ko, -p2 [1220 k. tn. (?), 1395 k.]: kulcs [1220 k. tn., 1225]: haraszt [1220 k. tn., 1230 k.]: sás
+[1220 k. tn., 1372 u.]: vész [1220 tn. (?), 1372 u.]: kéz, néma [1220 tn. (?), 1380 k.]: serény [1220 tn. (?), 1395 k.]:
+holló [1220 tn. (?), 1784]: szilánk [1220 tn., 1372 u.]: hisz [1220 tn., 1395 k.]: meggy [1221 tn. (?), 13. sz. közepe]:
+jonh [1221 tn. (?), 1300]: szoba [1221 tn. (?), 1604]: csúnya [1221 tn., (?), 1395 k.]: hab [1221 tn., 1395 k.]: görény,
+nyíl [1221 tn., 1405 k.]: hétfo [1221 tn., 1604]: tomp [1221 tn.,1365 k.]: bársony [1222 tn. (?), 1395 k.]: ács, gyopár
+[1222 tn. (?), 1574]: fondor [1222 tn. (?), 1577]: komor [1222 tn., 1319]: ösvény [1222 tn., 1372 u.]: zarándok
+[1222 tn., 1395 k.]: karvaly [1222]: -ó/-o2 [1223 (?), 1238]: parlag [1223 tn. (?), 1383]: tábor [1223 tn. (?), 1550 k.]:
+fen [1223 tn., 1372 u.]: rejt [1224 tn. (?), 1340]: kalló [1224 tn. (?), 1405 k.]: csecs [1224 tn. (?), 1456 k.]: tuba1
+[1224 tn. (?), 1666]: tuba2 [1225 tn. (?), 1380 k.]: varr [1225 tn. (?), 1395 k.]: terem2 [1225 tn. (?), 1416 u.]: zsír
+[1225 tn., 1372 u.]: belso [1225]: -bb, gyertyán [1226 k. (?), 1470]: enyv [1226 tn. (?), 1416 u.]: öreg [1226. k]: akó
+[1227 (?), 1395 k.]: skarlát [1227 tn., 1372 u.]: part [1227 tn., 1380 k.]: nyereg [1227 tn., 1416 u.]: száraz [1227 tn.,
+1518 k.]: csorba [1228 tn. (?), 1372 u.]: ajak [1228 tn. (?), 1527]: golyva [1228 tn., 1372 u.]: óv [1228 tn., 1707]:
+csiperke [1228]: lapos [1229 tn (?), 1395 k.]: borsó [1229 tn. (?), 1395 k.]: kupa, süldo [1229 tn. (?), 1565]: bakó
+[1229 tn., 1350]: ordas [1229 tn., 1372 u.]: perem, polgár [1229 tn., 1395 k.]: nyuszt [1229 tn., 1456 k.]: serkent
+[1229 tn., 1508]: mátka [1230 k. tn. (?), 1395 k.]: menyét [1230 k. tn. (?), 1520 k.]: dong [1230 k.]: citera, sája [1230
+tn. (?), 1372 u.]: nemes [1230 tn.(?), 1395 k.]: muhar [1230 tn., 1395 k.]: szúnyog [1230 tn., 1405 k.]: tekno
+[1230 tn., 1510 k.]: reng [1230]: viza [1231 (?), 1476 k.]: túl [1231 tn. (?), 1372 u.]: hajlék [1231 tn., 1267]: láb
+[1231 tn., 1320]: mocsár [1231 tn., 1395 k.]: kövér [1231 tn., 1510]: ázik [1232 tn. (?), 1533]: görcs [1232 tn.,
+1372 u.]: gyuru [1232]: juhar [1233 tn. (?), 1268]: buz [1233 tn. (?), 1372 u.]: gyanú [1233 tn. (?), 1550 k.]: mocsok
+[1233 tn. 1405 k.]: császár [1233 tn., 1372 u.]: keselyu [1233 tn., 1395 k.]: barlang [1233]: donga [1234 tn. (?),
+1395 k.]: torontál [1234 tn. (?), 1405 k.]: dér, tárkony [1234 tn. (?), 1430 k.]: ránt1 [1234 tn. (?), 1456 k.]: ránt2 [1234
+tn. (?), 1579]: zsúp [1234]: zsolozsma [1235 tn. (?), 1577 k.]: sömör [1235-1270 tn., 1395 k.]: szarv [1236 tn. (?),
+1372 u.]: fene [1236 tn., 1395 k.]: szarvas [1237 e. tn. (?), 1416 u.]: vissza [1237 tn. (?), 1395 k.]: tegez2 [1237 tn.
+(?), 1513]: kap [1237 tn. (?), 1558]: kendo [1237 tn. (?), 1625 k.]: zug [1237 tn., 13. sz. közepe]: virág [1237 tn.,
+1405 k.]: piros [1237-1240 tn. (?), 13. sz. közepe]: egyed [1237-1240 tn. (?), 1395 k.]: kamasz, marok, zsálya
+[1237-1240 tn. (?), 1405 k.]: dél, szita [1237-1240 tn., 1395 k.]: bojtorján [1237-1240 tn., 1405 k.]: remete [1237-
+1240 tn., 1416 u.]: diák [1239 tn., 1405 k.]: szász [1239]: jegenye, szavatos [1240 tn. (?), 1395 k.]: zeng [1240 tn.
+(?), 1613]: rege [1240 tn., 1460 k.]: zavar [1240]: füst [1241]: gálya [1243]: rof [1244 tn., 13. sz. közepe]: zsidó
+[1244 tn., 1364]: gesztenye [1244 tn., 1395 k.]: kovász [1244 tn., 1405 k.]: ér4, igric, pad [1244 tn., 1527]: alföld
+[1244 tn., 1708]: döngöl [1245 tn. (?), 1500 k.]: perje [1246 tn. (?), 1395 k.]: könyök [1246 tn. (?), 1533]: serke
+[1246 tn., 1395 k.]: böszörmény [1246 tn., 1405 k.]: fodor [1246 tn., 1518 k.]: fuz1 [1246]: csipkebokor [1247 k. tn
+(?), 1521]: csodör [1247 tn., 1300-1320]: fut [1247 tn., 1372 u.]: álnok, oszt [1248 tn. (?), 1456 k.]: rend [1248 tn.
+(?), 1500 k.]: bogáncs [1248 tn., 1372 u.]: cserép [1249 k. tn. (?), 1284]: tövis [1249 tn. (?), 1516]: szalonna
+[1249 tn., 1379]: homlok [1249-1260 tn., 1395 k.]: macska [1250 k.]: fátyol [1250 tn. (?), 1405 k.]: volegény
+[1250 tn., 1395 k.]: oszlop [1250]: tiszafa"
+
+from_1251_1300 = "[13. sz. közepe (?), 1372 u.]: ez2, hul [13. sz. közepe]: seped, alél, -an/-en1, aszik, -ász(ik)/-ész(ik), -atik/-etik ~ -
+tatik/-tetik, avagy, -d3, -d4, -d5, én, eped, ér1, fárad, -g3, húz, igaz, így, -ik1, -int, -ki2, kívül, -l3, -m3, -m4, néha, nyújt,
+ó2, öklel, öl1, -r1, soha, törvény, -ul/-ül2, választ, válik [1251 tn. (?), 1405 k.]: düh [1251 tn. (?), 1508]: falka [1251 tn.
+(?), 1528]: koboz1 [1251 tn.(?), 1474]: bog [1251 tn., 1254]: gödör [1251 tn., 1372 u.]: negyven [1251 tn., 1808]:
+vadvíz [1251]: bárka [1252 tn. (?), 1405 k.]: gyomor [1252 tn. (?), 1525 k.]: pipacs [1252 tn., 1456 k.]: akad
+[1252 tn.,1372 u.]: liliom [1252]: -ály/-ély [1254 tn. (?), 1372 u.]: kar2 [1254 tn., 1517]: káplán [1254]: dulo, zátony
+[1255 tn, 1570]: kádár1 [1255 tn. (?), 1349]: barna [1255 tn. (?), 1456 k.]: csere [1255 tn., 1336]: pince [1255]:
+lucfenyo, mázsa [1256 tn. (?), 1372 u.]: balzsam [1256 tn. (?), 1395 k.]: tej [1256 tn., 1372 u.]: apáca [1256 tn.,
+1389]: fürdik [1256 tn., 1416 u.]: felso [1256 tn., 1538]: sonkoly [1256 tn., 1771]: ereget [1256]: cseresznye, -gat/-
+get [1257 tn. (?), 1493 k.]: csepp [1257 tn. (?), 1575]: kabar [1257 tn., 1513]: dörög [1258 tn., 1356]: seregély
+[1258 tn., 1506]: rekesz [1258 tn., 1533]: sertés [1258 tn., 1565]: fing [1258]: által [1259 tn., 1372 u.]: kietlen [1260
+tn. (?), 1553]: tunik [1260 tn., 1405 k.]: alsó [1261 tn. (?), 1347]: csatorna [1261 tn. (?), 1395 k.]: pók [1261 tn.,
+1395 k.]: pisztráng [1261 tn., 1416 u.]: dézsma [1261]: börtön [1262 e. tn.(?), 1572]: lom1 [1262 e. tn.(?), 1767]: lom2
+[1262 e.]: bérc [1262 tn. (?), 1395 k.]: bölcso, törek [1262 tn. (?), 1544]: cso [1263 tn. (?) 1436]: bélyeg [1263 tn. (?),
+1372 u.]: keresztény [1263 tn., 1395 k.]: szán2 [1263 tn., 1416 u.]: kastély [1263]: vápa [1264 tn., 1357]: kaptár
+[1264 tn., 1395 k.]: vidra [1265 (?), 1370]: zsellér [1265 tn. (?), 1372 u.]: alszik [1265 tn., 1395 k.]: ás, veréb [1265]:
+-n ~ -ny [1266 tn (?), 1372 u.]: igen [1266 tn. (?), 1395 k.]: ár1 [1266 tn., 1291]: istálló [1266 tn., 1372 u.]: eleség,
+romlik [1266 tn., 1405 k.]: takács [1267]: háló [1268 tn. (?), 1416 u.]: kalitka [1268 tn. (?), 1780]: pagony [1268 tn.,
+1281]: apró [1268 tn.]: told [1269 tn. (?), 1372 u.]: lepel [1269 tn. (?), 1527]: avat [1269 tn. (?),1339]: fenék [1269
+tn.(?), 1557]: lék [1269 tn., 1282 k.]: ispán [1269]: plébánia, tél [1270 tn. (?), 1533]: kellemes [1270 tn., 1372 u.]:
+kápolna, meztelen [1270 tn., 1395 k.]: darab, torma [1270]: pej, szíj, váj, zordon [1271 tn. (?), 1416 u.]: bátya
+[1271 tn., 1372 u.]: pirít [1271]: irt [1272 tn. (?), 1395 k.]: csiga [1272 tn. (?), 1519]: dékán [1273 k. tn., 1372 u.]:
+gond [1273 k. tn., 1436]: katona [1273 k. tn., 1460 k.]: szürke [1273 tn. (?), 1395 k.]: kelevéz, kémény [1273 tn.,
+1518 k.]: csintalan [1274 tn. (?), 1395 k.]: mák [1274 tn. (?), 1544]: jós [1274 tn., 1512 k.]: tép [1274]: korong [1275
+tn. (?), 1372 u.]: rövid [1275 tn. (?), 1538]: szöcske [1275 tn., 1327]: ornagy [1275 tn., 1372 u.]: jámbor, méreg
+[1275 tn., 1395 k.]: árnyék, óriás [1275 tn., 1530]: molnár [1275 tn., 1833]: horhos [1276 tn. (?), 1372 u.]: ágy [1276
+tn. (?), 1587]: foglár [1276 tn., 1395 k.]: viola [1276 tn., 1416 u.]: hozsanna [1276]: lator [1277 tn. (?), 1372 u.]: ruha
+[1277 tn., 1372 u.]: ének [1278 tn. (?), 1372 u.]: hirtelen [1278 tn., 1395 k.]: kecske [1278 tn., 1405 k.]: olt1
+[1278 tn., 1416 u.]: hasad [1279 tn., 1405 k.]: csuklik [1279]: liszt, palota [1280 tn., 1395 k.]: fajd [1282 k. tn.,
+1372 k.]: könyv [1282 tn. (?), 1291]: csorda [1282 tn., 1372 u.]: gyenge [1282 tn., 1395 k.]: borostyán1, hattyú
+[1282]: szömörce [1283 tn. (?), 1519]: bagzik [1283 tn., 1372 u.]: kisded [1283 tn., 1395 k.]: daru [1283 tn.,
+1405 k.]: zsenge [1283]: -dad/-ded [1284 tn. (?), 1372 u.]: közel [1284 tn., 1493]: lugas [1285 tn., 1529]: csille
+[1285]: -ka/-ke [1287 tn., 1405 k.]: koponya [1288 tn. (?), 1506]: csáklya [1288 tn. (?), 1585]: ondó [1288 tn.,
+1372 u.]: no2 [1288 tn., 1470 k.]: cimpa [1289 tn., 1372 u.]: oroszlán [1289 tn., 1395 k.]: örmény [1289 tn.,1649]:
+ripacs [1290 k.]: kongat, korhol [1290 tn., 1372 u.]: morog [1290 tn., 1395 k.]: édesvíz [1290]: suba [1291 tn. (?),
+1560 k.]: csel [1291 tn. (?), 1561]: boglya [1291 tn. (?), 1594]: csákó [1291 tn. (?), 1645]: gyér [1291 tn., 1372 u.]:
+paraszt [1291]: torony [1291-1294 tn. (?), 1519]: dorong [1291-1294 tn., 1395 k.]: tulok [1291-1294 tn., 1565]:
+báró [1291-1296 tn. (?), 1400]: derék [1292 tn., 1430 k.]: kopasz [1292-1297 tn. (?), 1560 k.]: béget [1292-1297 tn.,
+1416 u.]: lét [1293 tn. (?), 1772 k.]: bitó [1293 tn., 1395 k.]: asztal [1293 tn., 1430]: hanga [1293]: toke [1294 tn. (?),
+1405 k.]: gereben [1294 tn., 1538]: sváb [1295 k. tn., 1372 u.]: akar [1295 tn. (?), 1506]: cseng [1295 tn., 1372 u.]:
+folyik, idegen [1295 tn., 1395 k.]: béka [1295]: párkány, túsz [1296 tn. (?), 1405 k.]: ón [1296 tn. (?), 1535 k.]:
+strázsa [1296 tn. (?), 1577]: gombóc [1296 tn. (?), 1860]: csér [1296 tn., 1395 k.]: fazék [1296 tn., 1405 k.]: tehén
+[1296-1313]: huta [1297 tn., 1405 k.]: prépost [1297]: porkoláb [1298]: fészek [1299 tn. (?), 1372 u.]: tur1 [1299 tn.,
+1416 u.]: szomszéd [1299]: ugar [13. sz. második fele (?), 1372 u.]: elég [13. sz. második fele]: árt1, egész, ige, kór,
+nemz, száj, szid, szuk, tanít, tanú, vádol [13. sz. vége]: angyal [1300 k. tn., 1372 u.]: hord [1300 k. tn., 1470]: súg
+[1300 k.]: fogoly1, hernyó, pitvar, ragya, -szeru [1300 tn., 1395 k.]: zafír [1300 tn., 1416 u.]: apród [1300 tn., 1533]:
+cinege"
+
+from_1301_1350 = "[1301 tn., 1372 u.]: kincs [1302 tn., 1372 u.]: özvegy [1302 tn., 1405 k.]: szirt [1302]: fiatal [1303]: pázsit [1304 tn.,
+1372 u.]: nyak [1304]: kalmár [1305 k. tn. (?), 1511]: kutya [1305 tn., 1536]: csúcs [1305 tn., 1836]: tat1 [1306 tn.,
+1372 u.]: bíró [1306 tn., 1416 u.]: puszta [1307 tn. (?), 1395 k.]: süveg [1307 tn., 1329]: domb [1307 tn., 1416 u.]:
+szor [1308 tn. (?), 1395 k.]: retesz [1309 tn., 1372 u.]: omlik [1309 tn., 1395 k.]: olaj [1310 tn., 1395 k.]: répa [1312
+tn. (?), 1550 k.]: nyakas [1312 tn., 1577 k.]: verofény [1312]: középút [1313 tn. (?), 1791]: ferde [1313]: hangya
+[1314 tn. (?), 1527]: kántor [1315 tn. (?), 1372 u.]: agg [1315 tn., 1372 u.]: ajtó [1315 tn., 1416 u.]: nyaláb [1316 (?),
+1372 u.]: láng [1316 tn. (?), 1372 u.]: köszön [1316 tn. (?), 1395 k.]: toll [1317 tn., 1416 u.]: ködmön [1318 tn. (?),
+1525 k.]: begy [1318]: -asz/-esz, jász1 [1319 tn. (?), 1395 k.]: gereblye [1319 tn. (?), 1405 k.]: egyenlo [1319 tn. (?),
+1490 k.]: lép4 [1319 tn.(?), 1544]: mento [1319 tn., 1405 k.]: kard [1319]: lép2, lép3 [1320 tn. (?), 1372 u.]: ifjú
+[1320 tn., 1372 u.]: vág [1320 tn., 1395 k.]: gerenda [1320 tn., 1435]: gyalogút [1320 tn., 1525 k.]: tengelic [1321 tn.
+(?), 1387]: guba1 [1321 tn. (?), 1395 k.]: ír2 [1321 tn., 1570]: csupor [1322 tn (?), 1568]: csirke [1322 tn. (?),
+1405 k.]: cékla [1322 tn., 1395 k.]: szárcsa [1322 tn., 1506]: gyárt [1322 tn., 1561]: girhes [1322]: kény [1323 tn. (?),
+1372 u.]: mód [1323 tn. (?), 1395 k.]: koszorú [1323 tn. (?), 1560 k.]: harkály [1323 tn., 1372 u.]: hág [1323 tn.,
+1405 k.]: kormány [1324 tn. (?), 1395 k.]: korlát [1324 tn. (?), 1536]: fakó [1325 tn. (?), 1613]: fortyan [1325 tn.,
+1363]: vesszo [1325 tn., 1395 k.]: lencse [1325-1326 tn., 1763]: válaszút [1326 tn. (?), 1533]: pinty [1326 tn. (?),
+1607]: pákász [1326 tn., 1372 u.]: jog [1326 tn., 1897]: szentjobb [1326]: címer, here, lóhere [1327 tn. (?), 1525 k.]:
+garda [1327 tn. (?), 1598]: morzsa [1327 tn. (?), 1651]: durrog [1327 tn., 1372 u.]: buzog, rúd [1327 tn., 1416 u.]:
+inog [1327]: galagonya [1328 tn. (?), 1754]: pukkan [1328 tn., 1395 k.]: mandula [1329 tn. (?), 1405 k.]: kapor
+[1329 tn., 1405 k.]: mellék [1329 tn., 1504]: vármegye [1329]: bádog, érik [1330 tn. (?), 1395 k.]: párta [1330 tn. (?),
+1463]: kazal [1330 tn. (?), 1490]: hurka [1330 tn. (?), 1800]: küsz [1330 tn., 1332]: major [1330 tn., 1416 u.]: dönt
+[1330 tn., 1519]: odú [1330 tn., 1604]: zuhan [1331 tn., 1395 k.]: eke, köszöru [1331]: cserge [1332 tn. (?), 1553]:
+murva [1332 tn. (?), 1577]: kajla [1332 tn., 1416 u.]: kerül [1332 tn., 1380 k.]: köszvény [1332 tn., 1416 u.]: borotva
+[1332]: lejt [1332-1337 tn. (?), 1395 k.]: göröngy [1332-1337 tn., 1393]: tégla [1332-1337 tn., 1395 k.]: gyapjú
+[1333 tn. (?), 1395 k.]: malac [1333 tn. (?), 1548]: kacsa [1333 tn. (?), 1585]: gólya [1333 tn., 1372 u.]: fecske, mese
+[1333-1335 tn., 1395 k.]: ötvös [1334 e. tn. (?), 1395 k.]: kacér [1334 tn. (?), 1395 k.]: majom [1334 tn. (?), 1530]:
+gatya [1334 tn. (?), 1560 k.]: kondér [1334 tn., 1395 k.]: nerc [1335 tn., 1395 k.]: kakukk [1335]: mártír [1336 tn.,
+1395 k.]: káposzta [1336 tn., 1456 k.]: potroh [1336 tn., 1470]: forgács [1337 tn. (?), 1476 k.]: bont [1337 tn.,
+1405 k.]: nyál [1337]: utca [1338 tn. (?), 1405 k.]: alak [1338 tn. (?), 1416 u.]: selyem [1338 tn. (?), 1704]: kontra
+[1338 tn., 1525 k.]: pacsirta [1338]: ritka [1339 tn., 1510 k.]: korcsolya [1340 tn. (?), 1723]: kobak [1340 tn.,
+1416 u.]: mer1 [1340 tn., 1578]: ibolya [1341 tn. (?), 1372 u.]: jeles [1341 tn. (?), 1770]: göndör [1341 tn., 1508]:
+mero [1342 tn. (?), 1372 u.]: fúl1 [1342 tn. (?), 1395 k.]: patkó [1342 tn. (?), 1416 u.]: fúl2 [1342 tn. (?), 1525 k.]:
+guba2 [1342 tn. (?), 1527]: vadon [1342 tn., 1372 u.]: mell [1342 tn., 1613]: cinkos [1342]: enyészik [1343 tn. (?),
+1405 k.]: szösz [1343 tn. (?), 1552]: bolyong [1343 tn.(?), 1416 u.]: foszlik [1343 tn., 1416 u.]: süt [1343 tn., 1590]:
+fahíd [1343]: -ók/-ok [1344 tn. (?), 1395 k.]: korsó [1344 tn., 1520]: saját [1344]: nehéz [1345 tn. (?), 1372 u.]: fogy
+[1345 tn. (?), 1395 k.]: pogácsa [1345 tn. (?), 1405 k.]: faggyú [1345 tn., 1372 u.]: sajtó [1345 tn., 1416 u.]: sáfár
+[1345 tn., 1787]: cinke [1346 tn. (?), 1395 k.]: szalag [1346 tn. (?), 14. század]: cövek [1346 tn. (?), 1405 k.]:
+guzsaly, koszmó [1346 tn. (?), 1416 u.]: zálog [1346 tn. (?), 1460 k.]: pehely [1346 tn., 1372 u.]: pohár [1346 tn.,
+1789]: siklik [1347 tn. (?), 1405 k.]: kappan [1347 tn. (?), 1531]: borosta [1347 tn., 1372 u.]: oldal [1347 tn.,
+1416 u.]: tánc [1347]: birka, labda, laboda [1348 tn. (?), 1372 u.]: szokik [1348 tn. (?), 1647]: cudar [1348 tn.,
+1416 u.]: teher [1348 tn., 1430 k.]: fullánk [1348 tn., 1668]: mókus [1348]: rokolya [1349 tn. (?), 1519]: gödölye
+[1349 tn., 1416 u.]: tarsoly [1349]: daróc, vív [1350 k.]: -szeru, -ú/-u ~ -jú/-ju [1350 tn. (?), 1456 k.]: un [1350 tn.,
+1395 k.]: túzok, vizsla [1350]: rot"
+
+from_1351_1400 = "[1351 tn. (?), 1479]: gömböc [1351 tn. (?), 1527]: gót [1351 tn. (?), 1725-1764]: kerge [1351 tn., 1456 k.]: sík
+[1351]: -c [1352 tn. (?), 1405 k.]: kolbász [1353 tn. (?), 1519]: róka [1354 tn. (?), 1372 u.]: meny [1354 tn., 1372 u.]:
+páncél, veszteg [1355 tn. (?), 1405 k.]: harmat [1355 tn. (?), 1613]: pacal [1355 tn., 1372 u.]: gyulik, kevély
+[1355 tn., 1372]: sért [1355 tn., 1380 k.]: tömérdek [1355 tn., 1405 k.]: borda [1355]: bála, sajka [1356 tn. (?),
+1372 u.]: gyilkos [1356 tn. (?), 1566]: finnyás [1356 tn. (?), 1649]: sikátor [1357 tn. (?), 1405 k.]: bürök [1357 tn.,
+1405 k.]: segg [1357 tn., 1416 u.]: karika [1357 tn.,1416 u.]: farag [1358 tn. (?), 1393]: gróf [1358 tn. (?), 1560 k.]:
+korcs [1358 tn., 1372 u.]: marha [1358 tn., 1789]: cserje [1358-1359 tn. (?), 1570]: ficsúr [1358-1359 tn., 1372 u.]:
+tölt [1358-1359]: dúl, nyit [1359 tn. (?), 1380 k.]: dajka [1359 tn., 1416 u.]: adó [1359]: fölül, üveg [1360 tn. (?),
+1508]: csúszik [1360 tn., 1536]: sárga [1360]: -i3 [1361 tn. (?), 1585]: kancsó [1361 tn., 1395 k.]: kulcsár [1362 tn.,
+1416 u.]: ijeszt [1363 tn. (?), 1416 u.]: szappan [1363 tn. (?), 1560]: dac [1363 tn., 1495]: farsang [1363 tn., 1525]:
+pint [1363 tn., 1550]: pajta [1364 tn. (?), 1372 u.]: hajt1 [1364 tn. (?), 1416 u.]: hajt2 [1364 tn. (?), 1509]: locs [1364
+tn. (?), 1533]: sarjú [1364 tn. (?), 1552]: goz [1364 tn., 1372 u.]: éjjel [1365 k. (?), 1565]: báj [1365 tn. (?), 1372 u.]:
+tér3 [1365 tn. (?), 1395 k.]: sáska [1366 tn., 1405 k.]: környék [1366 tn., 1667]: málna [1366]: hám [1367 tn. (?),
+1671]: koca [1367 tn., 1372 u.]: nyelv, sánta [1367 tn., 1372]: alatt [1367 tn., 1560 k.]: hínár [1367]: fertály, hold2
+[1368 tn., 1372 u.]: sajt [1368]: sing [1369 tn. (?), 1792]: sarang [1370 tn. (?), 1372 u.]: kár [1370 tn. (?), 1395 k.]:
+kalács [1370 tn. (?), 1476]: cigány [1370 tn. (?), 1553]: talián [1370]: raj [1370-1380 k. tn., 1405 k.]: fasz [1370-
+1380 k. tn.,1380 k.]: lágy [1371 tn. (?), 1405 k.]: zsindely [1371 tn., 1416 u.]: gyalog [1371 tn., 1512]: galóca1
+[1372 k.]: nála [1372 tn. (?), 1395 k.]: gyertya [1372 tn. (?), 1527]: súly [1372 tn. (?), 1554]: toboz [1372 tn.,
+1405 k.]: ingovány [1372 u. (?), 1520]: széjjel [1372 u.]: lép1 [1372 u.]: á, ablak, abrosz, -adal/-edel, ajánl, ájtatos,
+akár, aki, alamizsna, aláz, áldoz, alig, alkalom, állat, -andó/-endo, -ant/-ent, annyi, ápol, arc, ásít, áspiskígyó, átkoz,
+atyafi, azaz, azután, balgatag, bán2, baziliszkusz, be1, -beli, béna, benn, beteg, bír, bocsánat, bosszú, bor, cella,
+cinterem, csak, cselekedik, csinál, -cska/-cske, csókol, dicsér, diribdarab, dísz, -dít, doktor, dolog, drágalátos, dug, -
+dul/-dül, e, -e, -é, ebéd, ébren, edény, egyaránt, egyenes, egyetemben, egyetlen, egymás, együgyu, éj, éjfél, elébe,
+eledel, eleven, ellen, elme, elöl, emel, emlékezik, enyém, ennyi, épít, érc, érdem, erkölcs, ért, esd, esküszik, est, ész,
+eszmél, esztendo, év, evangélium, ezer, ezüst, fal2, fedd, fegyelem, fejedelem, fejt, -féle, felel, felette, félre, felség,
+fenn, fenyeget, férfi, fest, feszül, foglal, fohászkodik, fordít, fösvény, fráter, fúj, fundál, gazdag, gerjed, gerlice,
+glossza, gondol, gyakorol, gyaláz, gyapot, gyógyul, gyolcs, gyónik, gyors, gyötör, gyoz, gyújt, gyujt, gyulöl,
+háborgat, hadd, hajít, hajnal, hallgat, has, hat1, haza1, hever, hint, hív1, hív2, -hodik/-hedik/-hödik, holott, homály,
+hónap, honn, honnét, hova, hoz, ide, ido, -ig, igyekezik, íj, -ik2, illat, illik, ily, immár, íme, incselkedik, indít, ing,
+ingyen, inkább, innét, ír1, iránt, irgalom, ismét, ispotály, iszonyodik, ítél, itt, izgat, jelent, jobb, jóllehet, jószág, jön, -
+k5, káptalan, kardinális1, kárhozik, káromol, kéj, kell, -ként, képest, keres, kérodzik, kész, kétell, kétség, kéve, kevés,
+kezes, kísért, klastrom, -kodik/-kedik/-ködik, -kódik/-kodik, koldul, konvent, koporsó, -kor, korda, -kozik/-kezik/-
+közik, költ1, köntös, könyörül, körül, követ1, közben, köznép, közönség, közös, között, község, kulcsol, küld, külön,
+különb, -lag/-leg, -lak/-lek, -lal/-lel, -lkodik/-lkedik/-lködik, -m5, magasztal, magyaráz, manna, -mány/-mény, már,
+más, még, mégis, mellett, mely, mer2, mér, mérföld, mérték, messze, miatt, micsoda, míg, mindenható, minemu,
+miniszter, mise, morzsol, mögött, mutat, nélkül, nemcsak, nemde, netalántán, nevet, néz, nincs, no1, nyájas,
+nyamvadt, nyel, nyilván, nyög, nyugszik, nyúl2, oda, oltalom, olvas, olvaszt, óra, orca, orgona1, óta, ott, ölel, öltözik,
+ön2, önmaga, ötlik, övé, pajzs, palánta, pápa, parancsol, parázna, páternoszter, pátriárka, példa, pelyva, penitencia,
+piac, pillant, prédikáció, prior, privilégium, rág, ragad, rágalom, reggel, regula, repül, reszket, retten, révül, rokon, se,
+segít, sem, semmi, senki, seper, siet, sincs, -skodik/-skedik/-sködik, sot, -st, -stul/-stül, -sz3, szag, szalad, száll, szán1,
+szapora, szár, szárny, szegodik, szelíd, szemérem, szentel, szenved, szepeg, szer, szerencse, szerez, szerint, szerszám,
+szerte, szerzet, szív2, szoknya, -szol/-szöl, szorgalom, szörnyu, szunik, tag, tartomány, tartozik, távol, távozik, tele,
+telik, tér1, térd, terít, terjed, természet, tétova, tetszik, tévelyeg, tied, tisztel, tizenketto, tova, több, tökél, történik,
+tulajdon, tuz2, ugat, ujj1, -uk/-ük2, unszol, után, utolsó, ünnep, üvölt, uz, üzen, vagy, vakar, vakmero, valaki, vall, váll,
+-ván/-vén, vánkos, végig, vers, veszt, vetélkedik, vetkozik, vezér, viasz, vidék, vidul, vigasztal, vigília, vigyáz,
+virrad, visz, von, zördül, zsoltár, látogat, le, legenda [1372 u]: -amlik/-emlik, -szor/-szer/-ször [1372]: leg- [1373 tn.
+(?), 1575]: gerinc [1373 tn., 1416 u.]: csillag [1373]: ketrec [1374 tn. (?), 1404]: tömlo [1374 tn., 1372 u.]: suru
+[1375 tn., 1456 k.]: eretnek [1375 tn., 1519]: garázda [1376 tn., 1416 u.]: uzsora [1376]: -né [1377]: délceg [1378 tn.,
+1405 k.]: kilenc [1378]: ánizs, huszár [1379 (?), 1533]: lajt [1380 k.]: ángy, cafrang, erszény, hüvely, ipa, kapca,
+menyegzo, nadrág, nyél, rest, sarkantyú, számszeríj, szándék, székfu, vékony [1380 tn., 1538]: kalauz [1380]: atlasz1
+[1380 k.]: -ány/-ény2 [1381 tn. (?), 1402]: serleg [1381 tn. (?), 1604]: csutka [1381 tn., 1456 k.]: tunya [1382 tn (?),
+1536]: csoport [1382 tn., 1405 k.]: asztalnok [1384]: lándzsa [1386 tn., 1456 k.]: legel [1386 tn., 1619]: zsombék
+[1387]: bakacsin [1388 tn. (?), 1456 k.]: képes [1388 tn., 1584]: bodnár [1388 tn., 1586]: gúnya [1389 tn. (?),
+1395 k.]: darázs [1389 tn. (?), 1500 k.]: varga [1389 tn. (?), 1522]: kosz [1389 tn., 1405 k.]: érsek, házsártos
+[1389 tn., 1495 e.]: bulla [1389 tn., 1527]: kocsmáros [1389 tn., 1693]: bosnyák [1390 tn., 1395 k.]: üszög [1390 tn.,
+1519]: elöljáró [1391 tn. (?), 1516 k.]: gálicko [1391 tn., 1585]: macskaszem [1391]: hordó, tafota [1392 tn. (?),
+1801]: kúszik [1392 tn. (?),1780]: tömpe [1392 tn., 1395 k.]: sör [1392 tn., 1716]: bognár [1392 tn., 1739]: javas
+[1393 tn. (?), 1395 k.]: zabla [1393 tn. (?), 1479]: szablya [1393 tn. (?), 1551]: pózna [1393 tn., 1480]: borbély [1394
+tn. (?), 1565]: cakó [1394 tn., 1405 k.]: hegedu [1394 tn., 1525]: kontár [1395 k. (?), 1405 k.]: irha [1395 k. (?),
+1416 u.]: férj, küzd [1395 k. (?), 1450 k.]: kapocs [1395 k. (?), 1506]: lélegzik [1395 k. (?), 1577]: tetemes [1395 k.
+(?), 1405 k.]: sül, var [1395 k.]: -ál/-él2, ár2, árvíz, asztag, bajvívás, barack, béklyó, béles, bélés, berill, birsalma,
+bocskor, cédrus, cet, csákány, cséphadaró, csésze, csoroszlya, denevér, egér, egres, elefánt, eszköz, evez, ezerjófu,
+fácán, fagyal, fahéj, fedél, fej1, fejsze, fogoly2, fok2, fokhagyma, frigy, früstök, füge, fülemüle, gallér, gerely, gerezd,
+gerezna, giliszta, griff, gyeplo, gyík, gyömbér, hadar, hágcsó, haris, héj, héja, heveder, hiúz, hunyor, icce, iga, író,
+iszap, jászol, kád, kakukkfu, kámzsa, kanál, karó, kárpit, katáng, kecsege, keszkeno, kesztyu, konty, kopoltyú, kosár,
+kökörcsin, költ2, komuves, kürto, küszöb, lé, lórom, maláta, mályva, matrac, medence, menta, mérce, metél, moly,
+mostoha, muslica, must, naspolya, nász, násznagy, nemez, néni, nyárs, olló, öszvér, palack, paplan, paraj, párna,
+páva, pecsenye, pelikán, perec, petrezselyem, piskóta, pohárnok, rác, remek, retek, ruta, sáfrány, savó, sepro,
+serpenyo, serte, sín, skorpió, szegfu, székhely, szikra, szonyeg, szú, tajték, taliga, tányér, teknosbéka, tengely, tetu,
+teve, töpörtyu, tu, uzsonna, üget, ürü, üst, üszo, vacsora, vakondok, varádics, vasmacska, véka, vércse, villa1, vitorla,
+vofély, zabál, zanót, zár, zsámoly, zsemle, lepedo, legyez, lemez [1395 tn. (?), 1416 u.]: nyers [1395 tn., 1416 u.]:
+mészáros [1395 tn., 1533]: nyes [1395 tn.,1405 k.]: rosta [1395]: szelindek, lepény [1396 tn. (?), 1517]: ludas [1396
+tn. (?), 1518 k.]: kotor [1396 tn., 1416 u.]: vincellér [1397 tn., 1533]: szigony [1397]: -r2 [1398 tn. (?), 1416 u.]: nyár2
+[1398 tn. (?), 1585]: bendo [1398 tn., 1416 u.]: pusztít [1398 tn., 1566]: szívós [1398]: pászma [1399 tn., 1495 e.]:
+negédes [1399]: zsákmány, léc [1400 tn (?), 1577 k.]: csíra [1400 tn. (?), 1527]: fésu [1400 tn. (?), 1777]: bamba
+[1400 tn. (?), 1790]: vacog [1400 tn., 1416 u.]: otromba [1400 tn., 1519]: csaplár [1400 tn., 1527]: portéka, tombol
+[1400 tn., 1533]: csángó [1400]: derékalj, ledér"
+
+from_1401_1500 = "[1401 tn., 1416 u.]: józan [1402 tn. (?), 1631]: toklász [1402 tn. (?), 1662]: barkács [1402 tn., 1416 u.]: fok3 [1403 tn.
+(?), 1456 k.]: csúf [1403 tn., 1481 e.]: forint [1403 tn., 1493]: ráma [1403 tn., 1508]: ponty [1404 e. tn. (?), 1456 k.]:
+kopik [1404]: szolgabíró [1405 k. (?), 1416 u.]: fogan [1405 k.]: áll2, ámpolna, -an/-en2, arasz, bordély, böllér, csörlo,
+dalmát, dolmány, emészt, esperes, észak, fagy, feleség, félhold, Fiastyúk, forgószél, gabona, gombolyag, harminc,
+hetven, hinta, hortyog, húr, hüvelyk, ikra1, íny, iszák, kanonok, kelés, kikerics, kilincs, kiskirály, kocsma, köd,
+köldök, kömény, köpül, kurva, lagymatag, lakat, lidérc, madzag, máj, málha, matring, menyasszony, motolla,
+mozsár, nyolc, orsó, ösztön, palánk, párduc, patika, pecek, pép, picsa, pilis, porcog, poszog, próféta, rothad, sakk,
+szak, szelence, szemfedél, szemölcs, szemöldök, szít, szór, tábla, takony, tenyér, térdkalács, tölcsér, uborka, üstök,
+varázs, vasárnap, velo, vese, vetélo, viszket, zápfog, lant, lánc, lapocka [1405]: -had/-hed, sisak [1406 tn. (?),
+1416 u.]: rég [1406 tn. (?), 1510]: pintér [1406 tn. (?), 1554]: póráz [1407 tn., 1519]: sikál [1407 tn., 1538]: comb
+[1408 tn., 1456 k.]: púp [1408 tn., 1666]: horpasz [1408]: hopmester [1409 tn. (?), 1578]: lóg [1409 tn. (?), 1745]:
+pipitér [1409 tn., 1416 u.]: csépel [1410 k.]: midon, templom [1410 tn., 1527]: rebeg [1410 tn., 16. sz. közepe]: tüske
+[1410]: -si [1411]: koszál [1412 tn., 1456 k.]: nagypéntek [1412]: erkély [1413 tn., 1519]: cérna [1413]: francia,
+kalapács [1414]: puttony, stukatúr [1415 tn., 1518 k.]: száguld [1415 tn., 1525 k.]: sikér [1415]: keresztfiú, -kol/-köl
+[1416 e.]: becsül [1416 k.]: aroma, hámoz, jaj [1416 tn.(?), 1416 u.]: mozog [1416 tn., 1508]: mosolyog [1416 u.]: -
+dék ~ -adék/-edék [1416 u.]: a, áhít, alabástrom, alávaló, alkot, alleluja, áloé, amaz, -amodik/-emedik, amott, április,
+asszír, átall, augusztus, azonban, bágyad, barbár, bélpoklos, betu, bosszant, buja, bujt1, buvöl, ceremónia, cimbalom,
+csikorog, csupa, csüggeszt, csüng, csur, dagad, dagály, -dal/-del, december, diakónus, -dik, -dokol/-dekel/-dököl, -
+dos/-des/-dös, ecet, egyedül, eh, éjszaka, ejt, -ékony/-ékeny, elegyít, ellenben, epe, episztola, ér2, eso, fakad, fáklya,
+fanyalog, fáraó, február, fejezet, fér, figura, figyelem, fityma, fojt, font, forraszt, fo1, förgeteg, fováros, fürt, fut,
+gádor, -gál/-gél ~ -igál, göngyölít, grádics, gyalu, gyász, hány1, hány2, haza2, házas, héber, hengerít, hervad, hiába,
+hiedelem, himnusz, história, hivalkodik, holnap, horgad, huszonöt, ildomos, íz2, izraelita, jácint, január, jel, jotta,
+július, június, kehely, kén, kényszerít, kereskedik, keresztel, keresztség, kerub, kinn, kintorna, kóstol, kölcsön, köp,
+közepett, közöl, kristály, lám, lehel, létra, mágus, május, mammon, március, márt, második, másol, méltán,
+mennyezet, merész, messiás, mienk, most, mustár, mutál, némber, -nként, november, nostény, nyal, nyílik, nyolcvan,
+ócsárol, óhajt, okádik, október, olt2, onnan, ordít, oroz, ostya, otthon, oröl, pálma, pára, parittya, pecsét, példabeszéd,
+pénzváltó, pernye, pozdorja, prológus, rabbi, rak, ráz, reked, remél, rémül, rí, rózsaszínu, rozsda, röhög, sármenta,
+sátán, sólya, stóla, strucc, süllyed, szállít, szaru, szekrény, szeptember, szivárvány, szunnyad, szur1, tanakodik,
+tapasztal, tapsol, tartalom, tartóztat, tát, tavasz, tegnap, tékozol, termet, testamentum, tettet, topog, tömjén, törekedik,
+töröl, trombita, tündér, undok, utal, utó, utol, üdvözöl, üldöz, -vá/-vé, valag, váz, vecsernye, visszaél, vízkereszt, zaj1,
+zsinagóga [1416 u]: mirha [1416]: légió [1417 tn., 1528]: márvány [1418 tn., 1495 k.]: prókátor [1418 tn., 1585]:
+kopár [1418]: elohegy [1419 tn. (?), 1565]: pár [1420 k.]: hé [1421]: kátyú [1422 tn. (?), 1632]: kopó [1422 tn.,
+1432]: sódar [1422 tn., 1659]: sivatag [1423 k.]: habozik [1423 tn., 1585]: szakasz [1424 tn. (?), 1460 k.]: pálya
+[1424 tn. (?), 1536]: rab [1424 tn., 1575]: furcsa [1424]: buzogány [1425]: fillér [1426 tn., 1493 k.]: hóhér [1426 tn.,
+1511]: osztály [1427 tn., 1498]: tönköly [1427]: harap1 [1428 tn., 1503]: hágó [1429 tn., 1456 k.]: haj2 [1429 tn.,
+1514]: hajadon [1429 tn., 1519]: perzsel [1429 tn., 1572]: balta [1429 tn., 1582]: csalfa [1429]: dukát, ponyva
+[1430 k.]: bíbic, hályog, idétlen, kapta, no, puska, savanyú, sóska, tészta, timsó, vásik [1430 tn., 1519 k.]: dobog
+[1430 tn., 1531]: rezeg [1431 tn. (?), 1458]: pendely [1432 tn., 1508]: dol [1434 tn., 1582]: borissza [1435 k.]: hónalj
+[1435 tn. (?), 1495 e.]: párt [1435 tn. (?), 1508]: kanca [1435 tn. (?), 1560]: tavaly [1435 tn. (?), 1639]: szajha
+[1435 tn., 1476 k.]: táj [1435 tn., 1507]: másfél [1435 tn., 1527]: szúr [1435 tn., 1538]: favágó [1436]: meredek
+[1437]: friss [1438 tn., 1560 k.]: puha [1438 tn., 1590 k.]: hej [1439 tn. (?), 1584]: piktor [1439]: darabont [1440 tn.
+(?), 1501]: franc [1441 tn., 1456 k.]: rút [1441]: lat [1445 tn. (?), 1533]: jérce [1447 tn. (?), 1563]: vallon [1448]:
+janicsár [1449 tn., 1577]: halk1 [1450 (?), 1635]: prém [1450 tn., 16. sz. második fele]: sógor [1450 tn., 1604]: szobor
+[1450]: gyalogfenyo [1451 tn. (?), 1496]: kalyiba [1451 tn., 1456 k.]: vastag [1452 tn. (?), 1493 k.]: pálca [1452 tn.,
+1577]: sodor [1452 tn., 1645]: nyirkos [1453 tn., 1611]: érdekel [1453 tn., 1635]: portugál [1454 tn. (?), 1519 k.]:
+komondor [1454 tn. (?), 1751]: topán [1456 k., 1372 u.]: -ják/-ik [1456 k.]: agyar, ágyú, ámul, bimbó, bitang, borít,
+bömböl, cél, csacsog, csattan, csavar, csökken, eszeveszett, fekély, feljebbvaló, fonnyad, goromba, gyámolít, gyarló,
+gyom, hézag, hízelkedik, hólyag, igéz, ingerel, ínség, istenkáromló, kapál, karattyol, -lál/-lél, lankad, -lék, lep, lohad,
+marcona, megvált, ólálkodik, örv2, pirongat, reszel, riaszt, rög, sarkall, serdül, számkivet, szembe, szintén, szív1,
+szószóló, tág, takarodik, táplál, tapogat, taszít, telepedik, tol, töpörödik, tréfál, ül2, vajúdik, vél, zenebona, zokog
+[1457 tn. (?), 1525 k.]: szajkó [1458 u.]: kapitány [1458]: dunyha, kaláris, karmazsin, lobog, lebeg [1460 k.]: garas
+[1461 tn., 1575]: henyél [1461]: komp [1462 (?), 1604]: ám [1462 k.]: keresztvíz, véd [1462 tn., 1585]: napfény
+[1462]: selejt [1464 tn., 1507]: vászon [1464 tn., 1527]: sí1 [1464]: kopja, ostrom [1465 tn., 1536]: sújt [1465]: cirok
+[1466]: céh [1467 tn. (?), 1673]: lepke [1467 tn., 1499]: abroncs [1468 tn. (?), 1548]: rusnya [1468 tn., 1508]:
+csuklya [1468 tn., 1558]: pereg [1468 tn., 1585]: szilaj [1468 tn., 1655]: suta [1469 tn. (?), 1525 k.]: ürge [1469 tn.
+(?), 1531]: sapka [1469 tn. (?), 1650]: presbiter [1469 tn., 1498]: deszka [1469 tn., 1528]: kócsag, szekerce [1469 tn.,
+1784]: pocak [1469]: félszeg, szabados [1470 k.]: gezemice, himlo [1470]: advent, anyaszentegyház, árboc, bánik,
+cégér, fok4, foldoz, foangyal, harisnya, hódol, kóborol, métely, pánt, peng, térít [1471]: szüret, lednek [1472 tn. (?),
+17. sz. vége]: tuskó [1472]: felemás [1473 tn., 1527]: sovány [1474]: alkuszik, azonnal, diszciplína, hacuka, hát2,
+hideglelés, idei, ihlet, intéz, kalendárium, kísér, konfirmál, kotyog, különben, meg2, paskol, provinciális, szentencia,
+szitkozódik, talán, tietek, villong, lecke [1475 tn. (?), 1527]: cibere [1475]: bástya, -dogál/-degél/-dögél, ladik
+[1476 k.]: bég, harcol, kímél, nógat, ofelsége [1476 tn. (?), 1565]: bubáj [1476 tn. (?), 1571]: gömb [1476 tn., 1517]:
+csiszol [1478 tn. (?), 1720]: kandalló [1478 tn., 1512 k.]: palló [1478 tn., 1516]: rubin [1479 tn. (?), 1753]: pupák
+[1479 tn., 1541]: sugár [1479 tn., 1711]: cipszer [1479]: ara, cirkál, he, naszád, venyige, verseng [1480 tn. (?), 1533]:
+ecset [1480]: ászok [1481 e.]: bögyöro [1481 tn., 1510]: lakik2 [1481]: borona, fullajtár, narancs [1482 tn. (?), 1510]:
+fáj [1482 tn., 1533]: pöcs [1483 tn (?), 1767]: pálha [1484 tn., 1494]: pribék [1484 tn., 1552]: galiba [1485 tn.,
+1518 k.]: halvány [1485 tn., 1596]: avar1 [1486 tn., 1529]: bojár [1487 tn. (?), 1515]: máglya [1487]: lófo [1488]:
+kurafi [1489 k.]: ereklye, kelevény [1489 tn., 1544]: csavarog [1489]: köpönyeg, torokgyík [1490 k.]: ép, félszemu,
+gyere, nadragulya, ólom, pólya, purgatórium, szikla, talál, tárház [1490]: ágyék, basa, fecskendo, flaska, máz, pléh,
+poéta, pofa, rost2, salétrom, tarack1, tornác, zománc [1492]: csizma, kaloda [1493]: -rétu [1493 k. (?),1584]: bódít
+[1493 k.]: döghalál, felleg, gége, gyémánt, hitel, -lódik/-lodik, nádméz, próbál, szemlél, vajon [1493 tn. (?), 1636]:
+gangos [1493 tn., 1517]: gázol [1493]: folyosó, golyóbis, hanyatt, istráng, menedék, pallér, rizs, szarufa [1494 (?),
+1500 k.]: hintó [1494]: kocsi, martalóc, pohánka, pokróc [1494-1495]: abrak, csuha, krajcár, trágár [1495 e.]:
+álmélkodik, dorgál, egyszersmind, együtt, facsar, farizeus, fázik, förtelem, iskola, komornyik, majd, másutt, mord,
+perpatvar, préda, szinte, szittyó, szövetség, ujj2, vipera [1495 k. tn., 1514]: furkó [1495 k. tn., 1565]: gáncs [1495 k.]:
+felebarát, kártya, messzely, mindnyájan [1495]: hajdina, komposzt, tárgy [1496-1499]: körte [1497 (?), 1522]: sávos
+[1497 tn. (?), 1754]: redves [1497]: kengyelfutó [1498 e.]: sivalkodik [1498 tn. (?), 1549]: kályha [1498]: kancsal,
+pedig [1499-16. sz. eleje]: itthon [15. század]: lúg [1500 k.]: fánk, foköto, helyett, iglice, iszalag, kanna, porcsin,
+saláta, spenót, tisztesfu [1500]: lepényhal [1500-1510 tn., 1514]: hajdú [1500-1550]: rokkan [15. sz. vége]: -ék2"
+
+from_1501_1550 = "[1501 tn. (?), 1707]: pengo [1504 k.]: oklevél [1504 tn. (?), 1613]: botor [1504 tn. (?), 1693]: tarkó [1504]: ballag,
+pézsma [1505 k.]: boglár [1505 tn. (?), 1525]: bogyó [1505 u.]: orbánc [1505]: himpellér [1506 k.]: kapzsi, pártütés
+[1506]: botránkozik, évad, fenevad, gondviselo, ingó-bingó, irtózik, képez, lakodalom, megint, rohan, verejték,
+virágvasárnap, viszont [1507]: bestia, híján [1508]: árnyékszék, botlik, ciprus, didereg, duzzad, faggat, fetreng,
+filozófia, gyehenna, harsan, hörpint, kilencven, kocog, menik, mered, ocsúdik, öböl, papiros, pepecsel, reped, rostély,
+senyved, szuszék, tébolyog, tódul, törköly, tuz1, vérhas, vigyorog, zacskó, leng [1509 tn. (?), 1542-1549]: dudva
+[1509 tn. (?), 1560 k.]: köpcös [1509 tn., 1585]: döng [1509 tn., 1784]: szöszke [1509]: cimbora [1510 k.]: ámbitus,
+kárál, nyerít, nyug, süpped, tarisznya, túr1, tüszo, zsöllye [1510]: ábécé, díj, híg, ilyenféle, kínál, mandátum, moslék,
+palléroz, pergamen, sekrestye, szertartás, zsugorodik [1511]: földesúr, kuvasz, lektor [1512 k.]: ajtófél, árt2,
+csecsemo, csóvál, fantázia, kába, mészárszék, padló, passió, pompa, rabol, tudniillik, lelkiismeret [1512 u.]: sors
+[1512]: posta [1512-1526]: idéz [1513 tn. (?), 1539]: tepsi [1513 tn. (?), 1662]: csecse [1513]: ábrázol, állapot,
+biblia, bokezu, csillog, hártya, hiányos, hoköl, karbunkulus, körös-körül, litánia, mirigy, pont, sanyarú, takarít,
+tündöklik [1514]: batka, lore [1515 k.]: ahol, kicsoda [1515]: dupla, költözik, patyolat, szuka [1516 k.]: angyélika,
+borzad [1516 tn., 1602]: szerb [1516 u.]: farkasfog, meténg, murok, turbolya [1516]: ametiszt, felejt, lajstrom,
+majoránna [1516-1518]: tályog [1517 tn., 1519]: karaj1 [1517]: almárium, cédula, disputál, felperes, hahota, katedra,
+készpénz, krónika, logika, -p1, padlás, prücsök, legátus [1518 k.]: cifra, drágako, gyarapodik, mihelyt, noha, sárarany,
+sejdít, szatír, szimbólum, szur2, tenor [1518]: hering, kullog [1519 (?), 1588]: garád [1519 k.]: dús, eltökél, felekezet,
+hírnév, hurut, kancellár, kántál, pattan, penna, szárazföld, szemügy, tarkabarka, torol, trécsel, villog, zsinat [1519 tn.,
+1595]: pék [1519]: ah, alattomban, alfa, állandó, át, bakancs, baromfi, bérmál, dúl-fúl, eroszak, fogház, forma, gumi,
+gyanánt, hétköznap, hiszen, homlít, iafia, jáspis, kárókatona, -kózik/-kozik, megannyi, mindenféle, moccan, nóta,
+pellengér, pocok, poshad, rongál, rüh, sehol, spongya, summa, szontyolodik, tenyészik, tompor, vándorol, vöcsök
+[1520 k.]: dölyfös, encián, kapaszkodik, kapotnyak [1520]: gránát1, kapucni, ösztökél, prelátus, ránc [1521 (?),
+1577 k.]: parázs [1521]: émelyeg, fintorog, katlan [1522 tn. (?), 1532]: deli [1522 tn. (?), 1545]: dara [1522 tn. (?),
+1578]: kósza [1522 tn. (?), 1583]: borbolya [1522 tn. (?), 1750]: bicska [1522 tn. (?), 1767]: kontó [1522 tn., 1556]:
+salak [1522 tn., 1577]: szatócs [1522 tn., 1602]: fiók [1522]: ág-bog, bajusz, fukar, hornyol, kérkedik, mázol [1523]:
+kufár [1524]: inas, kondíció, roráté [1525 k.]: angolna, gúnár, gyurgyalag, ménku, ökörszem, pille, pöfeteg, pulya,
+puszpáng, rokka, spárga1, taraj [1525]: kétszínu, koszt, közre, sor, számára, tur2, türkiz, voks [1526 tn., 1604]: titán
+[1526]: hurok, lakol, perzsa [1527]: lábad, -ánk/-énk, csatol, csiripel, -dácsol/-décsel, diadém, -doz(ik)/-dez(ik)/-
+döz(ik), eleinte, grácia, gyakran, gyertyaszentelo, hajdan, handzsár, hasáb, hírmondó, -kál/-kél, kalapál, képmutató,
+kerekedik, kijjebb, líra1, martalék, merevedik, orja, pityereg, porosz, porta, prüszköl, regisztrál, sejt1, susog, szélvész,
+szenderedik, szikkad, takarékos, tántorog, tigris, ugyanott, veszekedik, virul [1528]: cikkely, egyezik, elvégre,
+gyuszu, kacag, kanóc, négykézláb, olcsó, paripa, rét2 [1529 e.]: csoszog, ellát, gömbölyu, keresztül, mezítláb, -ós/-os,
+vakablak [1529]: dátum, markolat, trágya [1529-1541]: obulus, zsizsik [1530]: hagymáz, koplal, kozák, porond,
+saroglya [1530-1540]: muzulmán [1530-1586]: lombik, tégely [1531 k.]: bár1, kofa, menten, mindjárt, sétál [1531]:
+alom, bütyök, csetepaté, daganat, edz, glóbusz, hebehurgya, hömpölyödik, istenadta, legyint, lüke, ritmus, rizsma,
+sínylik, szesz, titulus, veszteget, viszálykodik, vizsgál [1532]: bazsalikom, bazsarózsa, bujt2, csata, drót, pereputty,
+sajtol, szarkaláb, szédül, szerkezet, szpáhi, tyúkszem1 [1533 (?), 1565]: sekély [1533]: babona, bonyolít, búvár,
+damaszt, dámvad, delfin, grammatika, holland, kehes, konzul, korall, koriander, levendula, márka1, mazsola,
+mezováros, mirtusz, muhely, nátha, nyilallik, próza, rozmaring, sokféle, szépanya, szittya, szulák, tobzódik,
+tusakodik, uncia, leopárd [1535 k. tn., 1555]: sah [1535 k.]: kompromisszum, proponál, protestál, szandzsák, szultán,
+tataroz [1535]: csipke, júdás, meddig, veszodik [1536 (?), 1594]: zsibong [1536 (?), 1621]: csipog [1536 tn. (?),
+1585]: pöce [1536]: aggastyán, aha, bakkecske, csigabiga, fabula, jóformán, kakál, kerget, persely, pihen, piszkál,
+pöröly, szabódik, tojik, vágóhíd [1537]: pedagógus [1538 (?), 1618]: vacok [1538 e.]: csízió, kotta [1538 k.]: kétes
+[1538 tn. (?), 1559]: muszka [1538]: agyafúrt, bálna, citrom, helytartó, ívik, kenderike, miatyánk, rubrika, silling,
+talicska, zsinór [1539]: ernyo, impérium, kelet1, spanyol [1540]: ámbár, csábít, garat, generális1, hópénz, kótyavetye,
+muskotály, sehonnai [1540¦1550]: kánikula [1541]: dénár, eresz, ihog-vihog, margaréta, nagyanya, nyargal, pfu,
+pulpitus, restancia, talentum, virágének [1541-1547]: váltig [1542 tn., 1558]: locsol [1542]: beglerbég, csúz, gyaur,
+sánc, sarcol [1543]: mente, sorompó [1544 (?), 1604]: heged [1544]: aga, cikória, dandár, higgad, húshagyókedd,
+kocka, kocsonya, marcipán, monarchia, okulár, parmezán, rénes, skatulya, szattyán, tallér, zsázsa, lazac [1544-
+1546]: maszlag [1545 k. (?), 1685]: sudár [1545]: dalia, karima, -kora, sörény [1546]: áfium, bízvást, brindza, cukor,
+kondás, torta, vitat [1547]: gigász, haramia, matéria, pislog, szemfényvesztés [1548 tn., 1565]: hentes [1548]: cseléd,
+cséve, dekrétum, exkuzál, fortély, guggol, kápri, kortyant, negligál, ni, pasa, pillangó, rántotta, referál, regiment,
+rikolt, terminus, tonna, ugrik [1549 (?), 1700 k.]: kagyló [1549]: bükköny, cselleng, dervis, idén, instrukció, jász2,
+muzsika, pemete, rács, rétes, rivall, zseb [1550 e.]: habar, kúrál [1550 k.]: alabárd, bögöly, cserebogár, hagyján,
+karcol, kurkuma, nyakra-fore, pemzli, terpentin [1550]: alj, aréna, dérrel-dúrral, hun, kisüt, mácsik, redos, tikkad
+[1550-1570]: szirup [1550-1575]: purgál"
+
+from_1551_1600 = "[16. sz. közepe]: kréta [1551 (?), 1793]: konferál [1551]: agyon, ében, éden, fogas, hanyatlik, javall, locspocs,
+napszám, pozsgás, pörköl, szalamandra, traktál, zsendül [1552 (?), 1644]: csalit [1552]: ajz, babér, bagaria,
+boszorkány, búg, cirkalmaz, dialógus, dozsöl, hahaha, hárít, hopp, kefe, kólika, köhög, közakarat, madonna,
+monstrum, múlva, pajtás, pottyan, puffad, reformál, sámli, sziszeg, zurzavar, la [1553 e.]: ügyefogyott [1553 u.]:
+toboroz [1553]: dárda, katekizmus, keresztül-kasul, rece, ládafia [1553-1559]: mustra [1554]: bong, fuszer, kán,
+lohol, pestis, pirula, togy [1555]: cár, direktor, tér2, tiló [1556 e.]: perjel [1556]: fióka, információ, ótvar, szuköl
+[1557]: diéta1, glória, mintegy, pikszis, prés, simfel, szakóca, szalmiák [1558 k.]: kámfor [1558]: bilincs, co, dézsa,
+hó3, illa, kádi, karát, maskara, muníció, packázik, pisil, tacskó, tragédia [1559]: ájul, akadémia, alán, albán, amazon,
+apellál, avar2, bibliotéka, dán, degradál, dialektika, diktátor, dirigál, eklézsia, folytat, fríz1, gall, jezsuita, kannibál,
+kánon, karmelita, katalógus, kikelet, kódex, kollégium, komédia, komikus, kornyikál, kúria, matematikus, minuta,
+normann, ókumlál, papucs, produkál, sejt2, sróf, szakramentum, szenátor, taksa, talmud, traktus, tuja, vandál, zápor
+[1560 (?), 1581]: csapszék [1560 k. (?), 1781 e.]: tülök [1560 k.]: alkotmány, buborék, de2, fobenjáró, galacsin,
+hajféle, hárfa, hiba, izzad, klérus, kornyadozik, kórus, koslat, köpöly, mézga, ocsmány, öblít, ölt, pállik, zeke,
+zsibvásár, lapít [1560 u.]: gányol, juss [1560]: alperes, lakáj, nyakló, országgyulés, pulzus, tosgyökeres, zaj2 [1561
+tn. (?), 1770-1780 k.]: pohos [1561]: abál, bolyh, jelenlét, koppant, lóhalálában, marsall, mellesleg, nézve, oszinte
+[1562 (?), 1622]: opál [1562 u.]: statuál [1562]: árenda, csélcsap, délibáb, dörzsöl, -ista, laikus, lézeng, lutheránus,
+spiritusz [1563]: biztos, típus, végett [1563-1571]: aspirál, differencia [1564 k.]: páciens [1564]: bicsaklik, fuser,
+kulimász, pondró, porció, ráspoly [1565 (?), 1573]: avik1 [1565 (?), 1652]: avik2 [1565 tn. (?), 1615]: kullancs
+[1565]: ájer, billeg, bugyog, cikornya, csöröge, dúdol, furfang, góré1, hevenyében, ikra2, karszék, kunyhó, nyalka,
+suhog, züllik [1566 tn. (?), 1626-1627]: céda [1566]: ágaskodik, berzenkedik, bibi, döf, dülled, faktum, fuj, gebe,
+hímez-hámoz, huppan, kapar, kelepel, nesze, pópa, spékel, teke [1567 tn., 1617]: oszmán [1567 tn., 1660]: zagyva
+[1567]: dedikál, fokos, kanyaró [1567-1568]: szekta [1568]: ágál, dorbézol, generális2, kurjongat, levente,
+nyoszolyólány, protokoll, purdé, uszít [1568-1573]: tutaj [1569]: argumentum, ellenvetés, eloadás, expediál,
+kompozíció, piciny, rebellis, zsivány [1570 k.]: csahol, desztillál, kérész, liga, párol, silabizál [1570 tn. (?), 1591]:
+csokor [1570 tn. (?), 1708]: felcser [1570]: akceptál, domonkos, faktor, firtat, formula, hárpia, inkvizíció, katolikus,
+kazetta, kolera, magisztrátus, margó, mór, poronty, prímás1, rektor, rekviem, zubbony [1570-1580 k.]: mar2 [1571]:
+adminisztrál, arab, família, franciskánus, kaftán, kantár, osztriga, sebbel-lobbal [1572 (?), 1638]: satu [1572]:
+aprehendál, csicseriborsó, csitít, édesanya, fehérorosz, kolléga, meditál, pálinka, publikál, státus, viszontagság
+[1573]: abesszin, alkonyodik, benneteket, deklarál, dogma, éppen, ind, katalán, passzus, zúzmara [1574 k.]: roppan,
+spicc1 [1574]: bukfenc, hörög, karcsú, pászka, vetemedik [1575 e.]: akármi [1575]: bohó, bugyborék, csúfondáros,
+diktál, fennhéjáz, flastrom, frank1, geometria, gügyög, hodzsa, hugenotta, kászálódik, kolónia, konzekvencia, kudarc,
+morva, opponál, pallos, platán, ráncigál, roppant, rutén, sitt1, szapul, targonca [1576]: rekvirál [1577 (?), 1744]: cipo
+[1577 (?), 1808]: hetvenkedik [1577 k.]: akkora, ámbra, békalencse, böfög, bögre, csikland, dermed, döcög,
+édesgyökér, firkál, fityeg, fizikus, flegma, fodormenta, galanga, gargarizál, humor, íz3, kordul, kóvályog, leves,
+mágnes, melankólia, múmia, nárcisz, ópium, pezsdül, rebarbara, repce, rotyog, tamariszkusz, turha, zsarátnok [1577
+tn. (?), 1748]: piszok [1577]: aszfalt, cáfol, csizmadia, demonstráció, doromb, egyre, egyszeregy, fecseg, frakció,
+fülbemászó1, gémberedik, gomolya, hasonlít, hurcol, importál, karakter, kázus, -kod/-ked/-köd, mínusz, operáció,
+ostoba, palacsinta, plusz, ráció, sóhajt, suttog, szárnyék, takaros, törökbúza, lebeny [1577-1580]: zsémbel [1577-
+1598]: ambíció, dívány, fabrikál, imitál, kollokvium, praktikus [1578 e.]: krokodil, labirintus [1578]: aggódik,
+behemót, bibe, búzavirág, helvét, herbárium, hovatovább, istennyila, kaméleon, korhely, korrigál, kurzus, lonc,
+macskagyökér, magán, massza, mecset, piha, porcika, ricinus, skrupulus, szenna, üdül, verbéna, zsába [1579]:
+abszolút, rámol, rop, szeráj, tucat [1580]: avas, citál, csekély, cserebere, etimológia, izmaelita [1581]: -csol/-csöl ~ -
+zsol/-zsöl, horizont, kanavász, konzultál, ócska, rideg, vihog [1582 (?), 1666]: kohó [1582]: honorárium, instancia,
+izzik, ragyog [1583 tn., 1704]: dragonyos [1583 u. (?), 1607]: kvártély [1583]: derogál, elkövet, interpellál, közfal,
+motívum, reverzális, temperamentum, úrvacsora [1584 k.]: vargánya [1584 tn. (?), 1757]: pore [1584]: dominál,
+domínium, hébe-hóba, holmi, hurrog, irány, kacsint, kukucskál, lotyó, medál, reprezentál, szalutál, virtus, lazúr
+[1585 (?), 1611]: lomha [1585 k.]: lámpa, fuvar [1585]: -aj/-ej, akárcsak, articsóka, árvalányhaj, bámul,
+barázdabillegeto, bokréta, bunkó, csarnok, császármadár, cseveg, csillámlik, csínján, csucsujgat, dada, dadog, derít,
+diéta2, elemózsia, evickél, fáma, ficamodik, finom, föveg, fúria, gágog, gúnyol, gyömöszöl, ibrik, idea, imént, inda,
+iszamodik, kalóz, károg, kerevet, korbács, kosbor, középszeru, kukorékol, kurrog, külföld, lábos, mártás, mekkora,
+mérsékel, mínium, motoz, múzsa, nemto, notórius, nyikorog, orgazda, pápaszem, páter, pocsolya, porhanyít,
+poroszkál, reklamál, rikít, rogyik, stílus, szürcsöl, tat2, terpeszkedik, tozeg, tromf, tyúkszem2, ugye, zászpa,
+lábadozik, lanyha [1586]: cenzúra, emitt, funkció, gyur, sopánkodik [1587]: affektál, egyre-másra, metropolis,
+ordináré, repetál, szecska, tulipán [1588 tn. (?), 1784]: tilinkó [1588]: áporodik, cammog, definiál, destruál, durva,
+felsál, fogamzik, frázis, grasszál, háncs, kóc, konvenció, kriminális, medikus, professzor, teológus, vakol [1588-
+1589]: echó [1589]: agitál, akció, antipátia, cívis, felesel, hitves, konspirál, korrumpál, kunyerál, meghitt,
+paszomány, pólus, somolyog, tángál [1589-1591]: pulyka [1590]: cölöp, dáridó, fagyöngy, harap2, jerke, kotlik,
+márna, pimpó, portya, poszáta, püffed, skót, szipoly, tarack2, tüsszent, záp [1591]: dédelget, memória, móres, óceán
+[1592]: celebrál, ciklus, csappan, fickándozik, index, kelengye, kör, moderál, pittyed, revízió, skandalum, visít,
+zaklat [1593]: cincog, fakultás, fanyar, konfekció, luxus, prémium, robot1, spárga2, szóda [1594 e. (?), 1713]: mohó
+[1594 e.]: büszke, csíny, kálvinista [1594]: bugyor, despota, gézengúz, korántsem, molesztál, országút [1595]:
+egyszeru, esztergál, gally, -ikó, korhad, merre, pajkos, papír, pióca, sajnál, tücsök [1596]: kamat [1597 (?), 1780]:
+aszat [1597]: dokumentum, infámis, kakasülo, kompánia, kreál [1598 k.]: kalap [1598]: apró-csepro, -csál/-csél,
+csalafinta, hejehuja, hess, hórihorgas, huss, hu2, lakmározik, önként, orül, pazarol, percen, perszóna, pite, szuszog,
+turpisság [1599]: gratulál, kuruzsol, restaurál, stájer, tüntet [16. sz. vége]: fércel [16. század]: mama, rozsomák
+[1600 k.]: curukk, irdal, málé, paszternák, rajzol, robog, sorol, sorvad, súrol, szardella, szopornyica, tarhonya [1600]:
+apparátus, dettó, ebihal, fájin, felvég, gyalogposta, respektus, riska"
+
+from_1601_1650 = "[1601 tn. (?), 1787]: sonka [1601]: összevissza, pástétom [1602 tn (?), 1650]: csóró [1602 tn. (?), 1792]: gote [1602]:
+belga, csur-csavar, dominikánus, enyeleg, hidra, kapucinus, kurátor, marcangol, novér, óda, pandúr, pettyeget, polip,
+töméntelen [1603]: mappa, mindegy, probléma, tipor, vállal [1604 (?), 1617]: lapály [1604]: lépcso, achát, ádáz,
+alattvaló, basszus, bazilika, cinikus, csinos, dore, ejnye, elégia, epikus, érint, félteke, filagória, findzsa, fontol, fu-fa,
+gajdol, gátor, gebed, gipsz, gránátalma, hiéna, izé, kajszibarack, kentaur, készakarva, kolomp, kopács, korisbogár,
+kuckó, lajhár, lóca, marasztal, mauzóleum, mecénás, nimfa, pegazus, petróleum, pingál, pozíció, pun, rongy, selypít,
+-sít, stádium, szamóca, szfinx, szirén, szurtos, tokehal, törvényszék, törzs, tragikus, zsibbad, latin [1605]: démon,
+imponál, passzol1, petárda, tradíció [1606]: csárda, dekorál, kártol, muskéta, ortodox, paktum [1607 (?), 1649]:
+kartács [1607 (?), 1780]: laza [1607]: dzsida, kártékony, kópia [1608 tn. (?), 1766]: suszter [1608]: anyós, após,
+csillapít, -haszt/-heszt, hombár, kálmos, kohol, kontinens, melódia, nesz, sallang [1608-1621]: pamut [1609]:
+ákombákom, armada [1610]: be2, galeta, iksz, ipszilon, médium, ohó, protekció, tubák [1611]: amnesztia,
+cserbenhagy, divat, füllent, gazember, iparkodik, iramlik, palatinus, punktum, tárogató, vánszorog [1612 (?), 1736]:
+karton1 [1612]: áristom, demokrácia, gondola, pántlika, parlament, porcelán, puritán [1613]: akta, almanach,
+csocselék, horda, irónia, kazamata, kótyagos, mameluk, parókia, protestáns, rendkívül, rezidencia, suttyomban,
+szélhámos, szemenszedett, vakáció, zsineg [1614 tn., 1773]: móc [1614 tn., 1792]: sió [1614]: ármális, cech,
+diploma, gyanúper, parabola, pátens, provokál, szafaládé, lamentál [1615]: cibál, fajta, intelligencia, iszlám, járvány,
+kapituláció, kazán, mogorva, noszogat, posvány [1616]: ágens, bökkeno, fontos, gimnázium, hírharang, paragrafus,
+pisztoly, szuggerál, tamás, vicsorít [1617]: csapong, csetlik-botlik, góbé, padisah [1618]: aktus, baksis, diskurál,
+disztingvál, fátum, siller, sörbet, tumultus, zökken [1619]: dromedár, géniusz, gubó, harmónia, hebeg, ja, kabala,
+konzílium, korifeus, macedón, szeminárium, szimulál, szuperál, technikus, vacillál, zóna [1620]: album, arzenál,
+borravaló, csülök, disszertáció, filológus, gesztus, hasmánt, huszita, ímmel-ámmal, inspektor, karám, klasszis,
+kommentár, konfliktus, minorita, morális, mufti, pótol, propagál, realitás, renovál, reparál, stáció, vézna [1621 tn. (?),
+1633]: fickó [1621]: bojtár, cinóber, csermely, fütyül, garaboncia, garmada, hibban, impresszió, kaján, -károz(ik)/-
+kérez(ik), makulátlan, matróna, momentum, nyafog, parányi, pipere, pöccint, prolongál, rombol, terror, tukmál,
+ürügy, virgonc, zivatar [1622 k.]: konzervál [1622]: gubancos, kushad, libéria [1623]: asszisztál, etika, furmint, kelta,
+mereng, teátrum, tróger [1624 tn. (?), 1664]: zeller [1624]: lárva [1625]: huhog [1626 u.]: rinocérosz [1626]:
+alkörmös, baldachin, lexikon, tambura [1626-1627]: ogyeleg, undorodik [1627]: dereglye, energia, fejtörés, galand,
+hazárd, karabély, periódus, tripla [1628 tn., 1793]: konok [1628]: babusgat, dögönyöz, fater, fülbevaló, gavallér,
+kávé, kurtizán, mendemonda, sóvárog, torzsalkodik, üzekedik [1629]: csodül, golyó, harapódzik, herreg, kókler,
+tortúra [1630 (?), 1737]: zakatol [1630 k.]: csapodár [1630]: fantasztikus, fatális, kaláka, kelet2, piszmog [1631 (?),
+1792]: dúc1 [1631]: epilógus, kommandó, ronda, lárma [1632 tn., 1788]: alamuszi [1632]: kecskebéka, kódorog,
+kupec, novella, svéd [1633]: kalkulál, kiskapu [1633-1634]: durcás, fülbemászó2 [1634]: csatlós, hunyászkodik,
+múzeum, nyüzsög, pirospozsgás, rondella, vinnyog [1635]: ezermester, furmányos, kotnyeles, pikkely, sublót,
+vircsaft [1636]: atléta, barka, biggyeszt, ebadta, fellebbez, fonák, fuzfapoéta, istenigazában, izgága, kálmánkörte,
+kanyarít, kráter, mikrokozmosz, politika, roncsol [1637]: kurd [1638 tn., 1728]: bakter [1638]: hazafi, unitárius
+[1639]: cica, diszkréció, enyhe, kombináció, máriás1 [1640]: fecsérel, sörét [1641]: csámcsog, dorombol, embléma,
+kukta, placc, televény [1641-1718]: potentát [1642 u.]: lótusz [1642]: árvácska, bandita, kocsány, szószátyár [1642-
+1660]: huncut [1643]: bölömbika, furulya, gránát2, kampó, kugli, öklendezik, pajzán, reflektál, rikácsol, sarkalatos,
+tapsifüles, tár1, vihar, zuhé [1644]: cin, élelem, elokelo, jurátus, konzervatórium, rakéta, régió, retirál, speciális,
+suskus, szeparál, teória, turbán [1644-1671]: kunszt [1645]: burkus, csámpás, dörömböl, éljen, évodik, feltétel,
+firhang, gunnyaszt, hetyke, izmos, jáger, kandidátus, képzel, kifogás, klasszikus, kucorog, liberális, nagylelku,
+nyámmog, önkény, petyhüdt, sikamlós, tézis, toporzékol, tüstént [1645-1646]: acsarkodik, komisz [1646]: fórum,
+oratórium, pucér, vinkó [1647 (?), 1673]: csiriz [1647]: atom, bóbita, csukló, dohány, gacsos, hepehupás, kredenc,
+maca, obsit, pártfogó, penderedik, rabszolga, somfordál, szortyog, velence, viskó [1648 tn. (?), 1845]: kucséber
+[1648]: bódorog, egyveleg, kongresszus, pászta [1649]: bankett, fülke, ipse, kuruttyol, majszol, pisszent [1650 k.]:
+cihelodik, cipello, dúskál [1650]: balítélet, fészkelodik, kóricál, meglehetos, siker, testvér, tubus"
+
+from_1651_1700 = "[1651 (?), 1787]: zubog [1651]: adjutáns, bál, hentereg, levego, masni, sakk-matt, szütyo, tálca [1652]: ácsorog,
+cuppant, hajhász [1653]: ambrózia, aula, centrum, enciklopédia, ív, kalpag, méta [1654]: majális [1655]: admirális,
+azbeszt, borvíz, kuporodik, pedellus, [1656]: disszidens, kálvária, palóc, rítus [1657]: kirándul, teringette, vajákol
+[1657-1658]: agresszió, illúzió, intrikál, invitál [1658]: márki, pórus, tár2, vodka [1659]: baktat, degenerált, harácsol,
+imposztor, kötet, nahát, pikét, strófa, szósz [1660 k.]: dínomdánom, roskad, vásárfia [1660]: illeget, kandikál [1660-
+1661]: naturalista [1661 e.]: sinkófál [1661]: feketeleves, kátrány, lista, mángorol, pákosztos, paróka, toklyó
+[1662 u.]: privát [1662]: abajgat, civakodik, dáma, egyívású, kapacitás, píp [1662-1664]: eminencia, prospektus
+[1663]: csobban, habzsol, lubickol, nyápic, petrence, ponton, szalvéta [1663-1711]: galoppíroz, gárda, kurázsi [1664
+(?), 1665]: káplár [1664 (?), 1739]: garaboly [1664 e.]: miskulancia [1664]: botanikus, hadonászik, írisz, jázmin,
+karalábé, karfiol, madártej, randevú, tea, vackor, vazallus [1665]: irkál-firkál, kanális, tejút [1666]: bugyelláris,
+kabinet, káprázik, oktondi, pityizál, szegrol-végrol, uborkafa [1667]: incifinci, kivált, magvaváló, ökörnyál [1668 (?),
+1750]: hajt3 [1668]: fúr-farag, kalandozik, okvetlen, patronál, pfuj, rékli, szottyan, útonálló [1669]: agyabugyál,
+birkózik, butykos, csihol, dosztig, ej, hupikék, kavar, liheg, parádé, piheg, székrekedés, utoljára, víziló [1670]:
+javasol, kuruc [1671]: delegátus, plajbász, szaft [1672 k.]: gyujtoványfu [1672]: labanc, általveto, krákog, pipa
+[1673]: fölösleg, kattog, kötény, makog, nyivákol [1675 k.]: pudli [1675]: lapp, boncol, csínja-bínja, szakrament,
+ványad [1676]: skorbut, vegyít [1676-1678]: mars [1677]: tippan, zsarol [1678 (?), 1807]: mamut [1678]: gácsér,
+mokány, reváns, tapos [1678-1679]: dévaj [1679 (?), 1777]: manó [1680]: citadella, habog [1681]: blokád, suhanc
+[1682]: kifog, kucsma, okker [1683]: észrevesz, fiola, galuska, illusztrál, kaskavál, konferencia, passzol2 [1684]:
+anglikán, kancsuka, kegyed, kvóta, lót-fut, redukál, rügy [1685 e.]: ténfereg [1685 k.]: bomba [1685]: ampulla,
+dédanya, filigrán, garnizon, masíroz, sármány, sujtás [1688]: archívum, brokát, regruta, tárcsa, lacikonyha [1689]:
+körülbelül, tengodik [1690]: amulett, elfogódik, lüktet, pácol, léha [1691]: kukorica, nagykövet [1692]: atlasz2, dák,
+eunuch, illír, imám, kripta, litván [1693]: láz, bábu, biliárd, dóm, dotál, fürge, garral, habitus, hárem, inal, izegmozog,
+kakadu, kókad, kultusz, magazin, másállapot, nulla, opera, prizma, spekulál, töpreng, urna, vályog, vivát
+[1694]: egérút, gyalogszerrel, jacht, katakomba, lancetta, lebzsel, pilóta [1694-1709]: formális [1695]: asztma,
+ciráda, esdekel, módi [1696 u.]: pruszlik [1697]: barhent, duzzog, korán2, likvidál, staféta [1697-1698]: flanell
+[1698]: bíbelodik, cirka, favorizál, frank2, korrekt, lötyög, perfekt [1699]: adjunktus, csokoládé, gála, inkognitó,
+ministrál [17. sz. (?), 1791]: retyerutya [17. sz. vége]: mentes, puliszka, surgyé [17. század]: kozma, mámoros, peták
+[1700 k. (?), 1706]: cikázik [1700 tn., 1703-1704]: csutora [1700]: fehérnép, konkurál, kultúra, slafrok"
+
+from_1701_1750 = "[1701 (talán nem magyar), 1704]: herbatea [1702]: banka, fóka, pocsékol, poloska, szét, törleszkedik [1703 k.]:
+bogrács [1703]: bagatell, csapat, flotta, mundér, rostokol, selma, söntés, tabella [1704 e.]: teketória [1704]:
+bunyevác, cókmók, dákó, expressz, flór, inzultus, kaszárnya, kassza, kussol, mandzsetta, maródi, marsruta, páholy,
+panzió, pardon, piarista, rang, virgács, zsivaj [1705]: lélekszakadva, bajonett, brigadéros, bumfordi, -íroz ~ -éroz,
+lotyog, mágnás, markotányos, migrén, papi, pletyka, román1, verbuvál [1706]: apropó, cirkulál, garancia,
+imperialista, joghurt, melloz, nekidurál, ordré, lavíroz [1707 k.]: eszencia [1707]: brigád, faun, gázsi, konduktor,
+spion, szimpla, laboratórium [1708 (?), 1790]: csimpaszkodik [1708]: áfonya, csempe, csiribiri, delikvens, dúc2,
+dunnyog, elpatkol, fitogtat, gardedám, gogicsél, hempereg, idus, indigó, kardinális2, karmantyú, koolaj, lestyán,
+medúza, millió, norma, óbégat, ószeres, patália, pötyög, ráta, riszál, rökönyödik, százszorszép, szemfog, szirony2,
+tónus [1708-1710]: aktív, aktuális, algebra, anarchia, remeg [1709 tn., 1764]: hóka [1709]: lángos, kávéház, macerál,
+makaróni, ómega, pesztonka [1710 k.]: fanatikus [1710]: diadal, ejha [1711]: agresszor, galéria, kaliber, tarifa, ukáz
+[1712 e.]: tunodik [1712]: halánték, papa, stúdium [1713]: csip-csup, gyatra, kotkodácsol, kukac, kúp, púder, ripszropsz,
+sanda, tütü [1714]: ovális [1715]: sut, zsandár [1716]: menza [1717 e.]: bóra, pala [1717]: adjusztál, etyepetye,
+evidens, kritérium, lucskos [1718 e.]: hérosz [1718]: kliens, konstrukció, madám, prostitúció [1719]: bárányhimlo,
+dirr-durr, gusztus [1720 k.]: csuk [1720 tn. (?), 1888]: vagány [1720]: emigráció, fürkész, kritikus, limonádé,
+pernahajder, ribizli, tipeg [1721]: periféria [1722 (?), 1859]: cécó [1722]: alarm, cetli, extra, poszt, raport,
+szépszerével, trucc, zerge [1723]: álomszuszék, banya, bunda, csacska, formalitás, idióta, kategória, recseg,
+szemfüles, majomszeretet, léhuto [1724]: fehérnemu, gyászruha, kurrentál, szanaszét, szigorú, tengeri, torzonborz,
+tökkelütött [1725]: akkumulál, gagyog, gyáva, rubel, tunika [1725-1764]: dödölle, flóta, hókuszpókusz, hoppsza, hú,
+huss, juj, kupica, tönkretesz [1727]: kóser [1728]: csimbók, egzecíroz, kémia [1729]: literatúra, sarzsi [1730]:
+jubileum, kurkász [1730-1781]: korc [1731 k.]: bozót [1732]: cúg, gyalogszán, kadét [1733 e.]: nyaggat [1734]:
+egyelore, trónus, zötyköl [1735 u.]: huzavona [1735]: borvirág, dózis, flóra, hektika, kulacs [1736]: derelye, döbben,
+gomolyag, kanapé, lajbi, menüett [1737]: persze [1738-1743]: barakk [1739]: épkézláb, földhözragadt, vagyis
+[1740]: klíma, trancsíroz [1741]: áskálódik, drusza, kecsegtet, krízis, statisztika [1742 (?), 1821]: ír3 [1742 u.]: perc
+[1742]: aranyér, eloszoba, fásli, forszíroz, kötekedik, nyávog, szalonka, teper [1743]: deres, gléda, kvadrát [1744]:
+betyár, hárslevelu, impertinens, képviselo, transzport [1745 k.]: cic, kandúr [1745]: elegáns, kobalt, utasít, vanília
+[1746]: front, vaskos [1747]: pamacs, toportyánféreg [1748]: ágynemu, barométer, biléta, csend, dezertál, fricska,
+hegyibe, himbál, illan, istenhozzád, madrigál, milyen, paprika, pomádé, rakoncátlan, reláció, románc, szatíra, toalett
+[1749]: dialektus, helyre, karmol, muszlin, pikk, poggyász, spinét, tubarózsa [1750 k.]: hasztalan, tivornyázik
+[1750 tn., 1785]: fogdmeg [1750]: aj2, arány, burját, darvadozik, ellenfél, garnitúra, göthös, játékszín, kortes, köcsög,
+makacs, masszív, mongol, osztják, rom, rukkol, sikkad, szamojéd, szukmarkú, tengerszem, terel [18. sz. elso fele]:
+kacagány, park"
+
+from_1751_1800 = "[1751 u.]: kabát [1751]: gümo, halló [1752 (?), 1763]: vörheny [1752]: allé, antikvárius, ateizmus, ciha, embrió,
+objektum, piramis, verbunkos [1753]: delikát, dollár, finánc, koncert, szabadlábra, uniformis, lagzi [1754]: bajtárs,
+libeg, sajdít, sarha, szemközt, terebélyes [1755]: befolyás, gabalyít, hahó, kujon, nyihog, szippant, vonatkozik
+[1756]: batiszt, csikar, csörtet, kacska, nyöszörög [1757 (?), 1788]: kusza [1757]: ananász, atmoszféra, bitumen,
+bizmut, bórax, centrális, cseppko, cseremisz, csibe, elementáris, éter, foszfor, garníroz, hermelin, hidegvéru,
+hottentotta, japán, kakaó, kalifa, koffer, kókusz, kolosszus, kordon, mandarin1, misszionárius, mohamedán, norvég,
+pisze, tropikus, véna [1758]: akkurátus, kandíroz, páhol, portré, szutyongat, zokszó [1759 (?), 1770]: lurkó [1759 tn.,
+1792]: maszat [1759]: altiszt, böngészik, briliáns, monda, pajor, pödör, pumi, rengeteg, rézsút, tempó, tóga, tokány,
+láger [1759-1762]: kisze [1759-1787]: komorna [1760]: etióp, finn, gúla, mondvacsinált, sündörög, szabadkomuves,
+tömkeleg, vágtat, vonz [1761]: abszurd, direktórium, kutyatej, mopszli, pusmog, ringyó, szépíró, szuzföld, trabális
+[1762]: cicoma, jóféle, kaptat, karikacsapás, kutyul, melenget, rigolyás [1762-1787]: szófa, trilla [1763]: alkóv,
+andalog, bigámia, cincál, coboly, cserkész, csík2, dörmög, genny, göcsörtös, matróz, papagáj, ring1, silány, szentigaz,
+tipli [1764 e.]: csiricsáré [1764 k.]: maszk [1764]: hullám, róna [1765]: gríz, pakli, patron, puli, reverenda [1766]:
+bigott, cirógat, sistereg [1767]: csürhe, gang, haddelhadd, kuncog, puhatol, ribanc, sajog, sámfa, sváda, szeleburdi,
+színültig, szótár, tincs, zömök [1768]: aranka, cirmos, drapp, krumpli, per2, pufók, rajkó, spájz, szekatúra [1769]:
+cirkusz, copf, gáláns, husáng, juhászodik, miféle, ormótlan, paszuly, rozse, szerviz1, testor, viszontszeretet [1770]:
+cisztercita, erény, hodály, kaszabol, kel2, kiküszöböl, makrancos, mez, program, pudvás, röffen, stráf, szimpátia,
+szipirtyó, tejfog [1771 tn. (?), 1227]: kurta [1771 tn., 12. sz. vége]: való [1771]: brácsa, ceruza, civilizál, csicsás,
+kokett, masina, nektár, pörsen, surrog, szálló, vonul [1772]: csatangol, cseng-bong, cserfel, élelmes, elvont, fenség,
+hajciho, hajcsár, hápog, kísérel, kíváncsi, mindig, minta, mormol, segély, sikít, sokác, turbékol, vedel, viszonoz
+[1773]: csapzott, csicsóka, dübörög, eszkábál, görnyed, morc, óperencia, papsajt, szandál, tömör, törtet [1774 (?),
+1848]: puszi [1774]: alap, csitri, égisz, fennkölt, kecmereg, klapec, komód, kupak, márga, meglett, nyurga, sérv,
+siheder, stelázsi, totyog, unokabátya, zefír1 [1775]: büdöske, cafka, eloítélet, ördögszekér, vargabetu [1776]:
+anyanyelv, biceg, klarinét, plüss, retúr, tarokk [1776-1821]: példakép [1777 u.]: melléknév [1777]: ácsi, csikló,
+dünnyög, frizura, langyos, magánhangzó, pagoda, pittypalatty, részére, szilvórium, szimatol, szörny, uccu,
+utófájdalom, vágány, visszhang [1777-1783]: cink, platina [1778 (?), 1833]: merev [1778]: ária, bókol, cement,
+cikcakk, felvonás, karaván, máma, pete, rákfene, sápítozik, szentjánoskenyér, szög2 [1779 e.]: bozontos [1779 u.]:
+kajtat, rosseb [1779]: hecc, keletkezik, mállik, pocskol, pöfög, profán, zúza [1780 k.]: cím, fitymál, közlekedik,
+mássalhangzó, vonat [1780 u.]: gyök [1780]: boksz1, eszkimó, felszín, fiáker, frankó, gyöngytyúk, kadarka,
+körülmény, melák, mukkan, néger, permetez, piszlicsáré, pösze, sintér [1781 e.]: pelenka [1781]: cseperedik, írmag,
+jé, pimasz, sirokkó, sóder [1782]: balek, burgundi, császármetszés, csücsök, dehonesztál, dobhártya, kádencia,
+kaffog, kulcscsont, renyhe, szikár, szitaköto, szonda, szökokút, szuzhártya, tus1, tuzfal, vizit [1782-1783]: sakter
+[1783 (?), 1837]: felettes [1783]: akác, bazalt, bólogat, boroszlán, borsóka, buksza, csatakos, csecsebecse, csuvas,
+észt, galóca2, glazúr, hüledezik, invalidus, jelszó, kankalin, kaviár, kvarc, lakk, lóbál, mihaszna, mordvin, névszó,
+orangután, pannon, pantomim, piszke, politúr, puncs, putri, renegát, sütnivaló, szedett-vedett, szláv, lekvár [1783-
+1791]: bige [1784 k.]: herkópáter [1784]: állomány, babrál, boszít, csalogány, délkör, dilemma, dór, födém, hergel,
+hérics, idomtalan, kármin, kolostor, konyul, kotyvaszt, központ, kutat, lokni, lodörög, mácsonya, matat, moha, nádor,
+nyiszál, orgánum, pilla, pitymallik, potom, püspökfalat, rendszer, repkény, rimánkodik, rittyent, rohad, rozzant,
+szemerkél, szundít, terep, tus2, vedlik [1785 k.]: halmaz [1785]: adoptál, angin, bankó, bronz, degesz, dohog, dózse,
+dudorodik, felsül, halina, kifli, kötözködik, névnap, piké, plezúr, rebben, sápad, szarvashiba, szatén, vendégoldal
+[1786]: árgus, átló, barangol, belföld, bonc, borönd, bútor, csupasz, duci, dundi, ex-, fajansz, farkasordító, felület,
+fészer, galopp, hemzseg, hüppög, iá, iszákos, kacskaringós, kujtorog, lárifári, láva, lile, motyog, necc, nyakleves,
+nyekereg, nyelvjárás, -onc/-enc/-önc, optika, piff-puff, pilács, pincér, poszméh, rigli, satrafa, semmiházi, smirgli,
+szín3, színarany, torlódik, vámpír, vulkán, zsalugáter [1787]: bácsi, banda, beduin, berreg, bravó, csuszka, -da/-de,
+éhenkórász, esernyo, esztétika, fuvola, hamupipoke, hányaveti, idojárás, jajveszékel, kaktusz, káró, katasztrális,
+kendermagos, kokárda, korán1, kor, körmönfont, közömbös, közület, kunkorodik, kürtoskalács, lottó, lutri,
+madárijeszto, mágia, malter, mámi, máriás2, matador, matuzsálem, méla, mimóza, mórikál, motyó, muvész,
+napraforgó, osapa, oshaza, ötöl-hatol, pacsmagol, pakol, pamlag, paraplé, parolázik, passzíroz, patrióta, pauza,
+pikáns, pocskondiáz, recept, régimódi, riport, satíroz, -sdi, slendrián, szakma, szempont, szerep, színész, szóló,
+taktus, talaj, torz, treff, tuszkol, zéró, zongora [1788 k.]: fellengzo [1788 u.]: bárd2, epizód [1788]: bagázs, balkon,
+bibircsók, boregér, burleszk, csálé, deviza, éghajlat, elvétve, érdemrend, facér, fagylalt, fuszekli, idill, illuminál,
+jómadár, kádár2, komócsin, kulináris, lakmusz, líceum, licitál, lóden, loval, mahagóni, majolika, manipuláció, meder,
+orgona2, pasztell, patetikus, pécéz, pirók, pongyola, priccs, rizikó, rum, sipít, stafírung, sztaniol, szutykos, taktika,
+tára, tótágas, varangy, vernyog [1788-1789]: abrakadabra, komoly [1789 (?), 1835-1858]: handabanda [1789]:
+alkohol, anekdota, artista, azúr, dilettáns, dráma, epigramma, etikett, fancsali, fidibusz, frakk, gáz, generáció,
+holtrészeg, horkant, kajüt, kamásli, karnis, kolibri, kontraszt, kopíroz, korrepetitor, kosztüm, kozmopolita, lopó,
+mechanika, mérkozik, mitológia, modell, neglizsé, nyugat, parti, passzió, polemikus, preparál, pucc, pult, rapszódia,
+serceg, skicc, slepp, szemüveg, szenzáció, szimfónia, szkepticizmus, szonett, vadonatúj, vityilló, zseni [1789-1790]:
+anyag [1790 k.]: noszirom, nyüstöl, ribiszke, szirom, ziliz, zsombor [1790]: alany, alpári, angyalbor, anyarozs,
+apátia, bizarr, bravúr, brutális, cafra, cingár, drapéria, egyhangú, ezerjó, finesz, fonév, gardíroz, Göncölszekér,
+hadilábon, herold, hetet-havat, klub, komisszár, lény, likor, manover, mentor, monopólium, naiv, nefelejcs,
+önismeret, papírmasé, pedáns, ragu, sarlatán, szalámi, szalmaözvegy, talizmán, téma, tessék, tetemrehívás, tiráda
+[1791]: angol, arisztokrata, balett, baskír, boróka, brosúra, bugyolál, csacsi, csápol, demagóg, diplomácia, egoizmus,
+egzisztencia, feudális, gránit, ihaj, impozáns, influenza, kabóca, kanári, káosz, kaszinó, kuncsorog, kupac, kutyafajta,
+lágyék, lóbab, májfolt, mangalica, mánia, maszatol, mottó, mozaik, ojjé, pá, pacsi, pagát, pát, piknik, reszkíroz,
+rivális, séma, serbli, sirály, sívó, skandál, szankció, utópia, votják, lent [1792 (?), 1798]: különc [1792 (?), 1810]:
+szerény [1792 tn., 1835]: oson [1792]: állítmány, aszkéta, bandzsa, bárgyú, batyu, bizsereg, bóbiskol, bocs, bódé,
+cefre, cilinder, cipekedik, ciszterna, csajka, csalinkázik, csótány, csücsül, debella, dekoráció, dinasztia, drákói, égtáj,
+észlel, filkó, fütykös, góc, gurít, gurigázik, gyagya, gyürke, hancúrozik, hétalvó, horzsol, humanitás, hüllo, hülye,
+hüm, jakobinus, kallantyú, kallódik, kikosaraz, kolonc, kópé, korzó, kötvény, követel, -lat/-let, metropolita,
+mézesmázos, misztikus, nyimnyám, oldalog, onánia, orgia, pang, panyóka, parfüm, pedz, pirinyó, pszt, republikánus,
+réteg, rücsök, sakál, satnya, sello, sicc, spicli1, süsü, szekció, szike, szipka, sziporkázik, szurkol, támolyog, tente,
+terefere, toprongyos, tökfilkó, ultimátum, uzsgyi, zilál, latyak, leffeg [1793]: láma2, ágrólszakadt, alászolgája, antik,
+apanázs, arabeszk, ballon, börze, brit, buksi, cirbolya, dramaturgia, érdes, farmer, fényuzés, fityfene, flamand,
+gardrób, gébics, girland, gleccser, guvad, indián, ízzé-porrá, joviális, karikatúra, kenyértörés, kontúr, kormorán,
+kulissza, kuvik, líra2, lord, luftballon, lüszter, makrapipa, malíciózus, manzárd, mormota, nos, oslakos, papramorgó,
+pavilon, piszi, piszkafa, portó, profil, rassz, regatta, rezeda, rigmus, rusztikus, sertepertél, skart, skíz, sóhivatal,
+sompolyog, statiszta, suviksz, szégyenszemre, szérum, szimmetria, valcer, ventilátor, vétó, vonal, zebra, lagúna
+[1794]: ábrándozik, atka, bambusz, borovicska, brr, cápa, csusza, delta, fatalista, fázis, firma, gadóc, gazella, hajszol,
+hímpor, imbolyog, kapitalista, kapric, képmás, kétkedik, kínafa, kirgiz, kontroll, köbgyök, külvilág, lián, nábob,
+orkán, pupilla, sunyi, szentjánosbogár, tabló, tagbaszakadt, tonhal, trapp, vegetál, zihál [1794-1795]: kiváltság
+[1795 k.]: barátfüle, bucka, bukta, frivol, guvat, suttyó, svábbogár [1795 tn., 1808]: rianás [1795]: banán, billió, boci,
+desszert, elkámpicsorodik, fantom, fejfa, gyarmat, herseg, kankó, lila, limlom, lucerna, milliárd, mulatt, paroli,
+pátria, plebejus, pódium, povedál, pozitívum, promenád, rája, reakció, sipirc, tegez1, tohonya, trafikál, zseníroz, zsuri
+[1795-1799]: smarni [1796 (?), 1807]: hangszer [1796 k.]: agilis, inspirál [1796]: bázis, blokk, büdzsé, cibetmacska,
+cucli, csörömpöl, deportál, dresszíroz, export, gurgulázik, kampány, krónikus, makulatúra, militarizál, miniatúra,
+mokka, móló, mumus, optimista, pamflet, pantalló, snapsz, szerenád, szonáta, szuverenitás, zamat [1797]: adresszál,
+deficit, erjedezik, grimasz, pasztilla, pukedli, sav, veterán, zsalu, zsong [1798]: erély, gótika, hidrogén, iramszarvas,
+jövo, kuncsaft, mandzsu, mentsvár, minaret, parafa, pempo, pertu, pitypang, rozmár, seriff, szomjas, talár, turista,
+zsiráf, zsörtölodik [1799]: lappantyú, adu, baka, bonviván, csáp, csapda, csibor, duett, elektromos, fagott, fránya,
+hajkurász, jaguár, kajak, karnevál, ketyeg, maki, mazurka, modern, nettó, nünüke, paksaméta, pesztra, pipogya,
+racka, rajcsúroz, sámán, sligovica, snidling, tagló, totyakos, vicc, vitriol [18. század]: alássan [1800 (?), 1808]:
+karton2 [1800 k.]: karakán [1800]: alkat, cickány, futrinka, germán, jávorszarvas, nyák, pávián, pityke, puding,
+rögtön, sál, sápog, sete, táv, váza"
+
+from_1801_1850 = "[1801]: balkezes, betlehem, eldorádó, elod, flamingó, fomérnök, halk2, harákol, kalikó, kandiscukor, kelme, kenguru,
+kreol, lett, libabor, monszun, moszkitó, nomád, pária, pingvin, tapéta, trotty [1802]: akkord, alt, cézár, ellipszis,
+gallicizmus, króm, kupola, markíroz, mesztic, nacionalista, nüánsz, paródia, penge, prím, rátarti, tápászkodik, tribün,
+vogul [1803]: állítólag, badar, borostyán2, burgonya, csicsereg, dokumentál, ernyed, erotikus, felhang, földrajz,
+förmed, frappáns, fruska, gitár, gyepmester, henceg, hóbortos, hospitál, kapszli, kukker, kuksol, mamlasz, mócsing,
+módszer, monológ, odöng, ormester, poén, suvaszt, ténsúr, turcsi, virsli, zsurló [1804]: amputál, ármány, ász, fakír,
+fém, fríg, galvanizál, hírforrás, komótos, krém, krokodilkönnyek, kuporgat, letargia, magány, naplopó, prud, rima,
+vesszofutás, zsúfol [1805]: brokkoli, édeleg, egyetem, emberfajta, eseng, kupaktanács, mítosz, muszáj, ormány,
+plafon, szegül, vesszoparipa, vinyetta, viszony, zsargon [1806]: anyakönyv, bombaszt, csücsörít, egzotikus, egyke,
+eksztázis, fixíroz, fókusz, formátum, frász, irka, jótékony, kaszt, kelet3, kompromittál, kórház, korvett, krizantém,
+meteorológia, monoton, muszó, nyanya, ön1, párbaj, proletár, radíroz, szarkofág, szaval, szentimentális, terasz, torna,
+túlpart, vijjog, villa2, zsarnok [1807 e.]: gép [1807]: látcso, asztrakán, császkál, defekt, égöv, gitt, gumó, hasonmás,
+homéro, hurrá, intendáns, javadalom, kartell, keshedt, királydinnye, kismama, közöny, közvetve, leffentyu, libatop,
+moholy, müge, napló, nimbusz, növény, óvatos, papundekli, pirkad, roletta, rovat, szerel, szexuális, tinóru, válfaj,
+zuzmó [1808 tn.,1838]: lebuj [1808]: -am/-em, bajadér, baptista, batár, brillíroz, csócsál, csökönyös, egyensúly,
+elem, fegyház, fekhely, fuccs, hanyag, hetéra, hubelebalázs, ikon, kobra, kordé, lángész, lucaszéke, maláj, mellso,
+milliomos, mimika, nívó, nyekken, nyúlszáj, osztrák, paríroz, pér, perkál, porc, pöttöm, rag, részvét, révén, rím,
+rókázik, sodó, szellem, takarék, tanti, tonzúra, tor2, úttöro, vend, vízszintes, zur [1809]: álarc, állkapocs, diszkosz,
+furnéroz, komplikál, kutyaszorító, matyó, prototípus, reuma, sósav, takonypóc, vászoncseléd, lavór [1810 k.]:
+totojázik, zimankó [1810/1896]: hallucinál [1810]: azonos, büfé, depó, dinsztel, harmonika, kackiás, kasmír, kecses,
+parketta, pesszimista, ravatal, replikáz, spicc2, tantusz, vehemens [1811 e.]: lápisz [1811]: angyalcsináló, hisztéria,
+milliméter, mímel, skála, tény, latrina [1811-1820]: egzaltált [1812]: eszmény, jellem, nemezis, párhuzamos,
+passzív, transzformál, vájdling, váltó, zsabó, lavina [1813]: lég, álláspont, étvágy, fivér, grund, ideológia, kamilla,
+kaszni, könnyelmu, pertli, pillanat, ráf, skalp, torpedó, valuta, viksz [1813-1815]: kényelem [1814]: duruzsol, haránt,
+hattyúdal, komplett, okirat, telis-tele, tesped, trón, ultimó, ügyvéd [1815 k.]: mellény, vonít [1815 u.]: modor [1815]:
+alumínium, ballada, biológia, bór, brekeg, csivitel, dominó, drazsé, egyén, elv, forradalom, groteszk, hajbókol,
+impregnál, katasztrófa, képlet, konfetti, konyak, közhely, -ma/-me, náspángol, nikkel, remíz, szervusz, szeszély,
+uszkár, vibrál, zizeg, zöm [1815-1817]: huhó [1816 (talán nem magyar), 1865]: hektár [1816 e.]: szilárd [1816]:
+albínó, átalány, bébi, bizsu, civil, csuszpájz, érv, gazsulíroz, igény, kamatyol, karthauzi, kazah, kenu, majdnem,
+négus, nyegle, oszét, pancsol, pucol, semleges, talány, tülekedik, üzelem [1817]: fúga, hercehurca, iktelen,
+kalamajka, másodperc, negatív, retikül, stimmel, tabu, távcso, üzbég [1818]: bifsztek, földrész, gyí, kioszk, krepp,
+kretén, létige, mokasszin, moszat, nebáncsvirág, paszta, pásztoróra, profit, ripakodik, rulett, sasszeg, tífusz, tulipiros,
+vatta [1819]: bárca, csuromvíz, folyóirat, szlovén, tenisz, zsoké [1820]: áramlik, bakcsó, bricska, ciripel, elévül,
+famulus, kézen-közön, körömszakadtáig, máriaüveg, marmelád, méltányol, sajna, statárium, ugrifüles [1821]: csor,
+élv, honvéd, lakonikus, operett, sebaj, slingel, unka [1822]: lélekveszto, automata, elképed, fénykép, gobelin, meteor,
+panoráma, póni, raktár, romantika, szélrózsa, tréning, uhu, uszály, zsákutca [1823]: datolya, fröcsög, mérleg,
+mosómedve, orgyilkos, paff, pénzügy, precíz, rendor, számuz, szavaz, szende, vitustánc, lépten-nyomon [1824]:
+gnóm, gubbaszt, kétely, kuplé, szolid, trubadúr, tutyimutyi, viszolyog [1825]: ajnároz, bazár, boa, járgány,
+madárcseresznye, pikula, pilled, szöszmötöl, zsiger [1826]: autonómia, bürokrata, fétis, holdkóros, kaucsuk, regény,
+szintézis [1827]: földszint, köbtartalom, mértan, radikalizmus, reformer, refrén, szoroz, trapéz, üdvözlégy, valószínu
+[1828]: éra, fogalom, gesztikulál, gyógyszer, higany, kvitt, mellkas, merinó, sípcsont, spicli2, szamorodni, szemcse,
+szivacs, szlovák, tömeg, utód, vasút [1829]: állomás, buvész, egykedvu, elfogulatlan, goj, horgony, kacat, káli,
+kedély, klór, langaléta, lob, pojáca, pótszer, rokonszenv, szabály, terv, vacak [1829-1834]: rovar [1829-1836]: keret
+[1830 k.]: hangulat, környezet [1830]: csuhé, gyár, ideiglenes, maximum, mozzanat, szabatos, színház, szórakozik,
+szortíroz, szubjektív, telivér, tendencia [1831 (?), 1837]: cafat [1831 e.]: csillár, tetszhalál [1831]: árverés, bitorol,
+burjánzik, butik, centrifuga, coca, csettint, drasztikus, dzsentri, elnök, esszé, fakszimile, hatály, hatóság, hotel, indok,
+jenki, komfort, kupé, löncs, menhely, rakett, sarabol, torlaszt, tömb, tüll, vetélytárs, vezekel, villany, légyott [1832]:
+árfolyam, artézi, barikád, célszeru, csekk, demoralizál, gerilla, hajrá, hatvány, hubér, irodalom, kandeláber, kapatos,
+loszer, morfondíroz, patent, percent, pipi, plató, pléd, poca, ruccan, seft, sodrony, sumák, terpesz, zene, lényeg [1833
+(?), 1834]: merénylet [1833]: ácsingózik, amator, atilla, birizgál, bróm, bú2, bugris, colstok, csendor, ejtozik, ékszer,
+filc, generátor, gönc, herdál, hétszilvafás, hitbizomány, hobörög, kéknyelu, lóköto, matt1, mezogazdaság, mut,
+oxigén, oserdo, ösztöndíj, parazita, rizling, roham, szélhudés, szörp, térkép, törleszt, varkocs, vegytan, világfi, vinkli
+[1834 (?), 1840]: lebbencs [1834]: lábatlankodik, bár2, bruttó, cserreg, csibész, fonök, kabin, karamell, korridor,
+közeg, laktanya, mérnök, meroleges, muci, névérték, rajong, szociális, tárca, tarja, tévút, trikó, üteg, vezényel [1835
+(?), 1842]: lokál [1835 (?), 1845]: lojális [1835 k.]: digó [1835]: absztrakt, affér, alagút, baklövés, befott, burzsoá,
+didaktika, dimenzió, dinamika, fegyenc, fejdísz, -fikál, fikció, garzon, gordonka, hangsúly, hortenzia, humusz, intim,
+jármu, kobold, kuglóf, legális, lump, maccs, miákol, mizéria, oázis, ódon, passzátszél, pedál, pelerin, pityókos,
+pótkötet, primadonna, primitív, püföl, revü, ringló, ripok, saccol, sárgyóka, simléder, slájm, slicc, smakkol, spórol,
+stabil, szalon, számtan, szangvinikus, szarházi, szelep, szoprán, szökoév, szöveg, tószt, útszéli, leltár [1835-1858]:
+horoszkóp [1836]: állam, ár3, aszpik, bagó, delej, delírium, egyenruha, fess, foncsor, górcso, gyászvitéz, halva, huri,
+inga, kóló, kunhalom, madeira, mohikán, tirpák, torpan, urmérték [1837 tn., 1838]: ósdi [1837]: állag, antilop, csod,
+elvtárs, esetleg, ivar, jogar, kamélia, kékharisnya, konkrétum, közvetít, mancs, mandolin, méter, pökhendi, sejk,
+székfoglaló, szivar, zselatin [1837-1843]: nyárspolgár, ujjong [1838]: lefetyel, légcso, bariton, boleró, cici, dukál,
+egyöntetu, estély, ferences, hékás, icipici, kakastej, kalimpál, karhatalom, köpönyegforgató, libikóka, mackó,
+mamusz, nekiveselkedik, nyiszlett, nyüszít, paci, pincsi, pindurka, pipiskedik, póréhagyma, prímás2, román2,
+színvonal, tik-tak, tört, tus3, újfent, verkli, zokon [1838-1845]: kólint, mutyi [1839]: blúz, csempész, élelmiszer,
+kübli, macskazene, omnibusz, pecázik, rokokó, röpirat, talapzat, vakkant, vény [1840]: akrobata, artikulál, baloldal,
+bulvár, csendélet, dokk, gyufa, hall2, helyrajz, iszkol, kebelbarát, kilogramm, kommunista, köntörfalaz, könyvmoly,
+krinolin1, makadám, mangán, móka, muter, szezon, tömzsi, tundra, üzér [1840-1849]: mozdony [1841]: bankár,
+egylet, geci, internacionális, liliputi, menekül, pasziánsz, pláne, puplin, razzia, rezsi, spirál, szakember, üzlet, vagon,
+vezércikk, zürjén [1842]: attrakció, ázsió, barokk, berber, csapadék, epilepszia, filiszter, flott, hederít, ismérv,
+kamaraénekesno, kékvéru, krampusz, mersz, pacsuli, paprikajancsi, pelargónia, polka, potya, reflektor, rolád,
+skandináv, szégyenfolt, szenvtelen, támpont, veranda [1843]: alibi, alvad, azsúr, bikfic, bubi, cigányútra,
+cseppfolyós, csirkefogó, direkt, fabatka, falanszter, gettó, hulla, jelleg, kétkulacsos, kollektív, konzervatív, magol,
+matt2, minimum, ors, rovancs, rögeszme, sápkór, settenkedik, sivár, sport, szemernyi, szervíroz, szint, támla, tartály,
+tozsde, tüzetes, ütem, villamos, zsupsz [1844 (?), 1877]: cakk [1844 (?), 1846]: csomag [1844]: akvarell,
+anakronizmus, árgyélus, cselló, dália, elektromotor, fiaskó, fotográfia, gikszer, guanó, ínyenc, kamarilla, kékszakáll,
+kóstál, kroki, mérv, osztag, pályaudvar, préri, rébusz, ribillió, rutin, suska, szekunda, szerv, szilváni, sztyeppe, tahó,
+viadukt, zuglap [1845]: ádámcsutka, agancs, akusztika, ballaszt, bonbon, cincér, cirill, csilingel, eszmefuttatás,
+handlé, hasé, jód, karambol, kartárs, kiebrudal, kompót, mandarin2, nyugta, óvoda, perverzitás, puccs, ringlispíl,
+rivalda, szálloda, szalonképes, totem, lámpaláz [1846]: bim-bam, biztonság, bornírt, emberölto, fitying, jelmez,
+kánkán, karácsonyfa, kelekótya, konvoj, küllem, lornyon, nemrég, sáp, sparhelt, teremburáját [1847]: élc, érem,
+fikarcnyi, gusztál, hasis, hecsedli, matiné, monogram, motoszkál, nebuló, partizán, premontrei, sziszifuszi, tiszavirág,
+tojástánc, tökrészeg, trillió, válság, majonéz [1848]: brancs, bross, buldog, caplat, docens, dzsinn, elpasszol, folytán,
+fotel, gurtni, kampec, krikszkraksz, loboncos, lúdtalp, omlett, plakát, pörkölt, reneszánsz, ripsz, stempli, stuccol,
+szörtyög, tárna, téblábol, tocsog, trappista, vádli, vaskalapos [1849]: istápol, smucig [1850]: bandukol, krúgat,
+szorme, zönge"
+
+from_1851_1900 = "[1851]: adoma, átlag, bikavér, csitt-csatt, doktrína, etnográfia, fizimiska, foghegyrol, hindu, kacabajka, kertel,
+kumisz, muff, paletta, rosszmájú, torzó, trafik, trampli [1852]: aligátor, bencés, humbug, internál, kuli, pech, puma,
+tearózsa [1853]: álca, árkád, cég, finálé, fölény, gong, grenadin, lezser, nemulass, szendvics [1854 (talán nem
+magyar), 1895]: herpesz [1854]: balalajka, bodega, bólé, burnusz, csihi-puhi, dekadencia, diverzió, drogéria, elit,
+fazon, grandiózus, hajcsi, hepciás, inka, kaolin, karrier, klikk, kóma, kozmetika, márka2, melasz, minyon, morfium,
+muzsik, nemzetközi, operator, pápua, parcella, partner, pracli, rabiátus, reflex, reglama, reszort, riposzt, robosztus,
+rúzs, sampinyon, sansz, sanzon, sezlon, steril, szelektív, szemafor, talon, turnus, velúr, verszt, zselé [1855 k.]: sémi
+[1855]: arzén, gümokór, herkentyu, kvaterkázik, monokli, nikotin, ódzkodik, primula, puff, svindler, szardínia,
+zabigyerek [1856]: buddhizmus, cigaretta, dúvad, évfolyam, fúzió, hamm, háztuznézo, idény, mikulás, paradicsom2,
+szamovár [1857]: leander, árja, banális, csalamádé, csepurágó, csimpánz, egyfajta, -fajta, fifikus, flörtöl, freskó,
+fukszia, kalucsni, motor, pepita, talkedli, telefon, trotli, vicinális, viszontlátásra, lepra, lasszó [1858]: alga,
+cakompakk, értékpapír, kantin, macskaasztal, makáma, mankó2, molekula, muskátli, nyakatekert, picula, propeller,
+revolver, szufla, ugrabugrál [1859]: busz, hercig, müezzin, zsakett [1860]: alpakka, blanketta, csinnadratta, dürög,
+epigon, gímszarvas, grafit, hendikep, holtverseny, kenter, lincsel, mátyásmadár, mezony, mitugrász, monumentális,
+reklám, rózsafüzér, stanicli, svung, távköz [1861]: feszt, fikusz, irdatlan, katicabogár, pityipalkó, sztrájk, lépfene
+[1861-1862]: hóra [1862]: balhé, dirmeg-dörmög, fasíroz, filé, haver, kajál, krapek, link1, muri, nyúlgát, piál, sablon,
+sóher, szamárköhögés, üzem, zsuga, latifundium [1863]: bunbak, durák, egyedem-begyedem, hajadonfott, hoci,
+lesipuskás, murci, pánik, partvis, puszedli, sajdul2, zümmög, zsonglor [1864 k.]: hokedli [1864]: finnugor, ugor
+[1865 (?), 1877]: glicerin [1865 (?), 1887]: lineáris [1865]: szeparatista [1865, 1927]: biankó [1865]: agronómus,
+amoba, beton, bója, bon, briganti, cián, dolomit, dune, fanfár, fauna, felszarvaz, fonetika, foszfát, furunkulus, grafika,
+gramm, hibrid, injekció, isiász, juszt, klinika, klozett, koksz, kozmosz, lignit, margarin, matrica, menstruáció,
+nitrogén, plénum, protézis, püré, raccsol, rezsim, roló, sokk, spaletta, szenilis, tombola [1865-1866]: diftéria [1866]:
+nyuszi, oroszlánrész, pillér [1867]: balerina, dutyi, kábel, konstatál, mindenszentek, sifon, snassz, szifon, trehány
+[1868]: ankét, benzin, donzsuán, pumpol [1869]: abcúg, bakfis, dinamit, dolina, duhaj, futball, kapcabetyár,
+kapucíner, krach, kubikol, monitor [1870]: abszint, deltoid, durmol, kispolgár, piláf, sólet, szikvíz, zsaru [1871]:
+fakszni, képlékeny, kommün, krigli, lösz, sikk, stikli, strici, traccs, tufa, vekni, lampion [1872]: funkcionál, hapták,
+harakiri, hebrencs, kokott, ózon, paca, sej, sild, siló, spiritiszta, tájfun [1873]: bazsalyog, bennfentes, bugyi, gürcöl,
+habókos, keksz, kézenfekvo, lófrál, mafla, notesz, rondó, satyak, soviniszta [1874]: cefet, dádá, faramuci,
+koronatanú, nokedli, pakura, svihák [1874-1876]: szerpentin [1875]: bili, csámborog, filoxéra, finis, kulipintyó,
+macesz, menü, mismásol, platni, rafinált, salabakter, spóra, srég, start, talmi [1875-1878]: gejzír [1876]: asszó,
+békaúszás, blamál, centi, csúzli, deci, jugoszláv, keménykötésu, keszon, lift, malária, patina, peron, presztízs, rönk,
+siserehad, tragacs [1877]: akvárium, bóklászik, ciklámen, dedós, detektív, drukkol, eltussol, garniszálloda, gilinggalang,
+koktél, meló, nirvána, orchidea, panama1, pianínó, premier, prézli, ramaty, ring2, spontán, stúdió, süvölvény,
+szanatórium, virtigli [1878]: ászka, budi, bugylibicska, c, golf, macher, rizibizi, rizottó, sláger, stand, tus4 [1879]:
+ajóka, allur, analfabéta, asszociál, baszk, bauxit, benzol, bumeráng, díva, dunszt, eszcájg, gól, guberál, juta, liter, luft,
+meccs, nutria, póz, rögbi, sétafikál [1880]: diagnózis, dressz, ekcéma, etruszk, fakultatív, folklór, hangár, interjú,
+kaverna, klumpa, sasszé [1880-1889]: sí2 'síléc' [1881]: barátkeselyu, gorilla, hoppla, parizer, sattyog, zakó
+[1882 k.]: irredenta [1882]: antiszemita, franciakulcs, harmónium, jonatán, kacifántos, kokain, kolorádóbogár,
+krakéler, linóleum, mázli, miszlikbe, rénszarvas, rétoromán, stoppol1, szaletli, tasli, lej [1883]: azték, bacilus,
+baktérium, cellulóz, dinamó, dioptria, fonográf, géz, holtsúly, kerékpár, maharadzsa, masszázs, metán, mumpsz,
+mungó, naftalin, nugát, pálos, panoptikum, pasztörizál, peronoszpóra, petúnia, pikó [1884]: fityula, kapli, karszt,
+kondorkeselyu, molett, pajesz, pliszé, plomba, póló, prosztata, purparlé, ringli, sznob, szója, tornádó, trojka,
+trombózis, túra, vazelin, vigéc, zsúr [1885]: bifláz, bliccel, bohém, bordó, cizellál, fesztáv, hapci, káder, kibic, lakli,
+zöldfülu [1886]: ádámkosztüm, csurdöngölo, frufru, gulyás, pikoló, rekord, stréber, tartár, tetovál [1887]: cintányér,
+kocavadász, pacsni, pumpa, rafia, ricsaj, stangli, védjegy, volt [1888]: becsiccsent, bumli, hirig, katedrális, markáns,
+mitesszer, pali, pinka, piti, punci, srác, szajré, tipp, tropa [1889]: krampács, resztelt [1890]: csór, ripityára [1890-
+1906]: hetyeg [1891]: avanzsál, bicikli, brikett, cvekedli, dekagramm, dudli, exhumál, garantál, keramit, klisé,
+korvina, nótafa, szuterén, turbina, turné, vírus [1892]: elliptikus, fuga, galvánelem, géppuska, gigerli, kisöreg, sercli
+[1893]: afrik, akt, antenna, archaikus, batik, bután, centenárium, ciklon, csembaló, csincsilla, dublé, duma1, dzsungel,
+ekrazit, hacacáré, háklis, internátus, ion, samott, saszla, sevró, snájdig, stramm, sziréna, szormók, uborkaszezon,
+zupál [1894]: dilinós, film, formalin, fríz2, gramofon, nudli, opportunista, stadion, szadizmus, szállóige, szmoking,
+szotyola [1895]: bojkott, infláció, jóga, kalória, karbid, kefir, kerámia, kokilla, krematórium, lombfurész, maffia,
+panama2, stampedli, strapál, lanolin [1896]: boksz2, buzeráns, csim-bum, dobostorta, kiadós, kupleráj, spriccel,
+székelygulyás, széria, sztár, tinglitangli, tupíroz, viceházmester, vurstli, zefír2 [1897]: cerkófmajom, duma2,
+eszperantó, kvargli, martinkemence, marxista, mentol, olyanfajta, pasas, primer, pullmankocsi, rabicfal, rapli, rezsó,
+rumli, samesz, smink, stoppol2, szacharin, szaltó, szanál, szaxofon, transz, tröszt, xilofon [1898]: angyalbögyöro,
+buci, denaturált, ex, flanc, póker, rámpa, randalíroz(ik), színtiszta [1899]: aszpirin, bejgli, búr, gésa, istenfáját,
+kismiska, szilveszter, tükörtojás, zsuppol [19. sz]: szépfiú, allergia [19. sz.]: iglu, jódli, arbitrázs, atavizmus, epilál
+[1900 k.]: botfülu [1900]: autogram, brummog, csaj, dosszié, enzim, galeri, gépkocsi, grúz, hoki, hórukk, jassz,
+kapiskál, konflis, libasorban, lichthof, lóvé, manusz, mufurc, neon, pitizik, popó, radír, ramazúri, röntgen, stopli,
+struccpolitika, suli, tus5, vekker, zacc, zrí"
+
+from_1901_1950 = "[1901]: parfé, pingpong, slamasztika, slussz, stég [1902]: bridzs, klappol [1903]: slampos [1904]: argó, bricsesz,
+demizson, filter, frocliz, grillázs, manikur, ondolál, paníroz, pedikur, pikkel, primor, procc, rádium, raglán, sofor,
+strand, trükk, tuti, vermut, vitrázs [1905 k.]: csikk [1905]: ipiapacs, jiddis, pálfordulás, ücsörög [1906 (?), 1921]:
+boksz3 [1906]: autóbusz, flangál, futballista, halihó, kikupálódik, slisszol, zaci, zokni [1907]: bolsevik, cumi, mozi,
+spagetti [1908]: cidri, elefántcsonttorony, frigid, kégli, keki, klassz, krepdesin, makkegészséges, nyikhaj, plömplöm,
+recece [1909]: apacs, autó, garázs, giccs, kabaré, natúrszelet, puceráj [1910]: dopping, eternit, futurizmus, grabanc,
+kimonó, pacni, ródlizik [1911]: lazsál, angóranyúl, antant, aranyeso, gajdesz, happol, hormon, radioaktív, spiné
+[1912]: bunker, demarkációs, dizoz, elektron, fémjelez, karaj2, klott, koton, törökülés, ukmukfukk [1913]:
+felhokarcoló, halandzsa, hektó, smonca, teszt [1914]: dzsem, hekus, huligán, tangó [1915]: keljfeljancsi, kord [1916]:
+lórum, pogrom, ukrán, zabrál [1917]: bunyó, hantál, kartoték, kurbli, naná, ruszki, selyemfiú, slukk, smaci, szovjet,
+tank, traktor [1918]: éhkoppon, foxi, karbantart, matek, tabletta, textil [1920]: bóvli, fregoli, góré2, szvetter [1921]:
+blöff, briós, feketelista, foxtrott, pizsama, profi, robot2, szabotál, vízum, ziccer, zsilett [1922]: barkochba, fasizmus,
+plakett, vitamin [1923]: helikopter, szinkrón [1924]: bringa, fecni, filosz, grimbusz, hapsi, izotóp, mucsai, plecsni,
+rádió, resti, stikában, sufni [1925]: ámokfutó, smafu, szalicil [1926]: dzsessz, flekken, kulák, liliomtipró, olimpia,
+tébécé, vitrin, volán [1927]: jéger, metró, micisapka, muki, stósz [1928]: bakelit, celofán, gengszter, jampec,
+kombiné, komplé, mixer, pulóver, römi, snapszli, tarhál, víkend [1929]: dömping, karosszéria, menedzser, overall,
+praliné, sitt2, taxi, televízió, termosz [1930 k.]: blabla [1930]: bigyó, cipzár, frászkarika, kóceráj, lópikula, pancser,
+tajga, tapenol [1931]: düftin [1932]: frottír, konnektor, roller, sprod, szervál, landol [1933]: békaperspektíva,
+csencsel, jogcím [1934]: dauerol, kolhoz, kombájn, vécé [1935-1945]: bekrepál [1936]: bisztró, náci, rekamié, sort,
+tükörszó [1937]: blod, csicskás, pucer, ruszli, sampon, trolibusz, vatelin [1938]: farkasvakság, fridzsider, roma, slag
+[1939]: gén, kombinát, kuplung, pendlizik [1940]: lecsó, csörte, eszpresszó, nejlon [1941]: légó, anorák, morze,
+stencil [1942 e.]: buli [1942]: körözött [1943]: pacák, stewardess [1944]: rósejbni [1945 e.]: linzer [1945]: feketepiac
+[1946]: hobbi, hóhányó, hozöng [1947]: diagram, grill, pánamerikai, penicillin, radar [1948]: fesztivál, furgon,
+gemkapocs, padlizsán, röplabda, stopper, szerviz2, tropikál [1949]: reaktív, trafó [1950 u.]: lézer [1950]: konténer,
+smárol, totó [1950-1952]: fólia"
+
+after_1951 = "[1951]: diszpécser, fityisz, makett [1952]: diverzáns, röpgyulés [1953]: furikázik, indonéz, kardigán, krinolin2,
+mütyürke, panel [1955]: maszek, mirelit [1956]: cucc, meó, rezervátum [1957]: homokos, kemping, kibernetika,
+kölni, magnetofon, nukleáris, pufajka [1958]: jatt, kombi, kuka2, motel, szauna, videó, laticel [1959]: gebin, kamion,
+tizenéves [1960]: horror [1960 k.]: hungarocell, shake, tacepao [1961]: strichel [1962 tn., 1994]: nescafé [1962]:
+bikini, tip-top [1965]: ciki, galaktika [1966]: buldózer [1967]: mini [1968]: komputer [1969]: heroin [1970 k.]:
+anorexia, avokádó [1971]: hardver [1972]: kóla, ufó, xerox [1973]: jogging [1974]: lemezlovas, legyeskedik, show,
+szupermarket [1975]: logisztika [1979]: szleng [1980 k.]: epidurális, fitt, szcientológia, sztracsatella, walkman,
+[1981]: installáció [1982.]: design, szörfözik, transzvesztita [1985]: diszkó, hamburger, szoftver, talk-show [1987]:
+fájl [1988]: lobbizik [1989]: glasznoszty, nyugdíjpénztár, second hand [1990 k.]: allergén, bankomat, fitness, graffiti,
+internet, shopping, shoppingcenter, spam, szkinhed, sznóbord, tékvandó, topless, trendi [1991]: ombudsman
+[1992 tn., 1963]: pizza [1992]: globalizáció, lízing, szintetizátor [1994]: karaoke [1995]: klikkelés [1996]: ketchup
+[1997]: klónoz, konzumidióta, link2, mobil, multiplex, narkó, nassol, parázik, plázázik, rali, rozé [1998]: klezmer
+[20. sz.]: isler, sztrók, transzplantáció [2001]: netkávézó, [2005]: cunami"
+
+
+
+
+
+
+
+
+
+
+### create data frames
+df_0 = create_df( before_1000 )
+df_1 = create_df( from_1001_1050 )
+df_2 = create_df(from_1051_1100  )
+df_3 = create_df(from_1101_1150  )
+df_4 = create_df(from_1151_1200  )
+df_5 = create_df(from_1201_1250  )
+df_6 = create_df(from_1251_1300  )
+df_7 = create_df(from_1301_1350  )
+df_8 = create_df(from_1351_1400  )
+df_9 = create_df(from_1401_1500)
+df_10 = create_df(from_1501_1550)
+df_11 = create_df(from_1551_1600)
+df_12 = create_df(from_1601_1650)
+df_13 = create_df(from_1651_1700)
+df_14 = create_df(from_1701_1750)
+df_15 = create_df(from_1751_1800)
+df_16 = create_df(from_1801_1850)
+df_17 = create_df(from_1851_1900)
+df_18 = create_df(from_1901_1950)
+df_19 = create_df(after_1951)
+
+# merge all 
+# df_total = rbind ( ff,  ff2)
+
+df_total = do.call("rbind", list(df_0, df_1, df_2, df_3, df_4, df_5,
+                                 df_6, df_7, df_8, df_9, df_10, df_11,
+                                 df_12, df_13, df_14, df_15, df_16,
+                                 df_17, df_18, df_19))
+
+
+
+
+table(df_total$time)
+
+write.csv(df_total, "created_year.csv", row.names = F)
+
+
+
+
+
+
+
+
+
+#### 
+# create d2 from d_year
+
+n0 = gsub("[\\(\\)]", "", regmatches(a1000, gregexpr("\\[.*?\\]", a1000))[[1]])
+
+####
+w0 =  unlist ( strsplit(a1000, "["  ,  fixed =T ) )
+w1 = unlist ( strsplit(w0, "]"  ,  fixed =T )  )
+w2 = data.frame(matrix(unlist(w1), nrow=16, byrow=T), stringsAsFactors = F )
+
+w2$X3 = str_count(w2$X2, ",")

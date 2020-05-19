@@ -1,0 +1,37 @@
+#Program to check if there are identical words in two lists of words
+
+#import modules
+import os
+import pandas as pd
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder')
+#import dictionaries
+from Gotdict import Gotdict
+from Hundict import Hundict
+#define variables
+gotwords=[]
+hunwords=[]
+Protohungarian=[]
+Gothic=[]
+details_hungarian=[]
+details_gothic=[]
+dfmatch=pd.DataFrame()
+#extract words (keys) from dictionaries
+for key in Gotdict.keys():
+    gotwords.append(key)
+for key in Hundict.keys():
+    hunwords.append(key)
+
+for h in hunwords:
+    for g in gotwords:
+        if h==g:
+            Protohungarian.append(h)
+            Gothic.append(g)
+            details_hungarian.append(Hundict[h])
+            details_gothic.append(Gotdict[g])
+
+dfmatch['info_hun']=details_hungarian
+dfmatch['Protohungarian']=Protohungarian
+dfmatch['Gothic']=Gothic
+dfmatch['info_got']=details_gothic
+
+dfmatch.to_csv("result.csv", encoding="utf-8", index=False)

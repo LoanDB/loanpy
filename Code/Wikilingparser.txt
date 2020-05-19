@@ -1,0 +1,17 @@
+import pandas as pd 
+from bs4 import BeautifulSoup
+
+df_new = pd.read_html("http://www.koeblergerhard.de/wikiling/?f=got&page=1",
+                     flavor='bs4', encoding='utf-8')
+df_new = df_new[0]
+
+for i in range(2,281):
+    i = str(i)
+    page = "http://www.koeblergerhard.de/wikiling/?f=got&page=" + i
+    df = pd.read_html(page, flavor='bs4', encoding='utf-8')
+    df_1 = df[0]
+    df_2 = pd.DataFrame(df_1)
+    df_new = pd.concat([df_new, df_2])
+    time.sleep(1)
+df_final = pd.DataFrame(df_new)
+df_final.to_csv("Gothic_Wikiling", encoding="utf-8", index=False)

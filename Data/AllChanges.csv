@@ -1,0 +1,474 @@
+Hun,Old,Lan,H_xtra,o_extra,o_extra2,H_IPA,o_IPA,H+∅,0+H+∅,0+old,Vchanges,Cchanges
+mese,*aća,FP,,,,mɛʃɛ,*at͡ʃʲa,mɛʃɛ,mɛʃɛ,*0at͡ʃʲa,*a>ɛ³ *a>ɛ²,*0>m¹ *t͡ʃʲ>ʃ³
+ágy,*aδ'ɜ,FU,,*oδ'ɜ,,aɟ,*aðʲɜ,aɟ∅,0aɟ∅,*0aðʲɜ,*a>a¹ *ɜ>∅²,*0>0¹ *ðʲ>ɟ³
+al,*ala,U,,,,ɒl,*ala,ɒl∅,0ɒl∅,*0ala,*a>ɒ¹ *a>∅²,*0>0¹ *l>l³
+áld,*alɜ,FU,,,,ald,*alɜ,ald∅,0ald∅,*0alɜ,*a>a¹ *ɜ>∅²,*0>0¹ *l>ld³
+ad,*amta,FU,,,,ɒd,*amta,ɒd∅,0ɒd∅,*0amta,*a>ɒ¹ *a>∅²,*0>0¹ *mt>d³
+old,*aŋa,FU,,,,old,*aŋa,old∅,0old∅,*0aŋa,*a>o¹ *a>∅²,*0>0¹ *ŋ>ld³
+aj,*aŋe,U,,,,ɒj,*aŋe,ɒj∅,0ɒj∅,*0aŋe,*a>ɒ¹ *e>∅²,*0>0¹ *ŋ>j³
+apa,*appe,FU,,,,ɒpɒ,*appe,ɒpɒ,0ɒpɒ,*0appe,*a>ɒ¹ *e>ɒ²,*0>0¹ *pp>p³
+ár,*arwa,FU,,*arγa,,ar,*arβa,ar∅,0ar∅,*0arβa,*a>a¹ *a>∅²,*0>0¹ *rβ>r³
+árt,*arɜ,FU,,,,art,*arɜ,art∅,0art∅,*0arɜ,*a>a¹ *ɜ>∅²,*0>0¹ *r>rt³
+ének,*äne,FU,,,,enɛk,*æne,enɛk∅,0enɛk∅,*0æne0∅,*æ>e¹ *e>ɛ³,*0>0¹ *n>n³ *0>k³
+ég,*äŋɜ,FU,,,,eɡ,*æŋɜ,eɡ∅,0eɡ∅,*0æŋɜ,*æ>e¹ *ɜ>∅²,*0>0¹ *ŋ>ɡ³
+szalad,*ćaδa,FU,,*śaδa,,sɒlɒd,*t͡ʃʲaða,sɒlɒd∅,sɒlɒd∅,*t͡ʃʲaða0∅,*a>ɒ³ *a>ɒ³,*t͡ʃʲ>s¹ *ð>l³ *0>d³
+zaj,*ćaka,FU,,,,zɒj,*t͡ʃʲaka,zɒj∅,zɒj∅,*t͡ʃʲaka,*a>ɒ³ *a>∅²,*t͡ʃʲ>z¹ *k>j³
+szeg,*ćäŋkɜ,FU,,*śäŋkɜ,,sɛɡ,*t͡ʃʲæŋkɜ,sɛɡ∅,sɛɡ∅,*t͡ʃʲæŋkɜ,*æ>ɛ³ *ɜ>∅²,*t͡ʃʲ>s¹ *ŋk>ɡ³
+sért,*ćärke,FU,,,,ʃert,*t͡ʃʲærke,ʃert∅,ʃert∅,*t͡ʃʲærke,*æ>e³ *e>∅²,*t͡ʃʲ>ʃ¹ *rk>rt³
+szűr,*ćerɜ,FU,,,,syr,*t͡ʃʲerɜ,syr∅,syr∅,*t͡ʃʲerɜ,*e>y³ *ɜ>∅²,*t͡ʃʲ>s¹ *r>r³
+süh,*ćiklä,U,,"*ćüklä, ćikĺä ćükĺä",,ʃyh,*t͡ʃʲiklæ,ʃyh∅,ʃyh∅,*t͡ʃʲiklæ,*i>y³ *æ>∅²,*t͡ʃʲ>ʃ¹ *kl>h³
+seg,*ćiŋkä,FU, Balagseg,*ćüŋkä,,ʃɛɡ,*t͡ʃʲiŋkæ,ʃɛɡ∅,ʃɛɡ∅,*t͡ʃʲiŋkæ,*i>ɛ³ *æ>∅²,*t͡ʃʲ>ʃ¹ *ŋk>ɡ³
+csomó,*ćolme,FU,,,,t͡ʃomo,*t͡ʃʲolme,t͡ʃomo,t͡ʃomo,*t͡ʃʲolme,*o>o³ *e>o²,*t͡ʃʲ>t͡ʃ³ *lm>m³
+csorog,*ćorɜ,U,,,,t͡ʃoroɡ,*t͡ʃʲorɜ,t͡ʃoroɡ∅,t͡ʃoroɡ∅,*t͡ʃʲorɜ0∅,*o>o³ *ɜ>o³,*t͡ʃʲ>t͡ʃ³ *r>r³ *0>ɡ³
+szú,*ćuγɜ,FU,,"*ćukɜ, śuγɜ śukɜ",,su,*t͡ʃʲuɣɜ,su,su0∅,*t͡ʃʲuɣɜ,*u>u³ *ɜ>∅³,*t͡ʃʲ>s¹ *ɣ>0³
+csupor,*ćuppɜ,FU,,,,t͡ʃupor,*t͡ʃʲuppɜ,t͡ʃupor∅,t͡ʃupor∅,*t͡ʃʲuppɜ0∅,*u>u³ *ɜ>o³,*t͡ʃʲ>t͡ʃ³ *pp>p³ *0>r³
+csillog,*ćȣlkɜ,FU,,*ć¨lkɜ,,t͡ʃilloɡ,*t͡ʃʲȣlkɜ,t͡ʃilloɡ∅,t͡ʃilloɡ∅,*t͡ʃʲȣlkɜ0∅,*ȣ>i³ *ɜ>o³,*t͡ʃʲ>t͡ʃ³ *lk>ll³ *0>ɡ³
+csün,*ć¨nɜ,U,,,,t͡ʃyn,*t͡ʃʲ¨nɜ,t͡ʃyn∅,t͡ʃyn∅,*t͡ʃʲ¨nɜ,*¨>y³ *ɜ>∅²,*t͡ʃʲ>t͡ʃ³ *n>n³
+sápad,*čappɜ,FU,,,,ʃapɒd,*t͡ʃappɜ,ʃapɒd∅,ʃapɒd∅,*t͡ʃappɜ0∅,*a>a³ *ɜ>ɒ³,*t͡ʃ>ʃ¹ *pp>p³ *0>d³
+savanyú,*čawɜ,Ug,,*čapa,,ʃɒvɒɲu,*t͡ʃaβɜ,ʃɒvɒɲu,ʃɒvɒɲu,*t͡ʃaβɜ0∅,*a>ɒ³ *ɜ>ɒ³ *∅>u²,*t͡ʃ>ʃ¹ *β>v³ *0>ɲ³
+csegely,*čeŋkɜ,FU,,,,t͡ʃɛɡɛj,*t͡ʃeŋkɜ,t͡ʃɛɡɛj∅,t͡ʃɛɡɛj∅,*t͡ʃeŋkɜ0∅,*e>ɛ³ *ɜ>ɛ³,*t͡ʃ>t͡ʃ³ *ŋk>ɡ³ *0>j³
+siet,*čijɜ,FU,,"*čikɜ, čiŋɜ, čejɜ, čekɜ, čeŋɜ",,ʃiɛt,*t͡ʃijɜ,ʃiɛt∅,ʃiɛt∅,*t͡ʃijɜ0∅,*i>∅³ *ɜ>∅²,*t͡ʃ>ʃ¹ *j>0³ *0>t³
+sok,*čukkɜ,FU,,*čokkɜ,,ʃok,*t͡ʃukkɜ,ʃok∅,ʃok∅,*t͡ʃukkɜ,*u>o³ *ɜ>∅²,*t͡ʃ>ʃ¹ *kk>k³
+sovány,*čupa,FU,,,,ʃovaɲ,*t͡ʃupa,ʃovaɲ∅,ʃovaɲ∅,*t͡ʃupa0∅,*u>o³ *a>a³,*t͡ʃ>ʃ¹ *p>v³ *0>ɲ³
+ez,*e,U,,,,ɛz,*e,ɛz∅,0ɛz∅,*0e0∅,*e>ɛ¹,*0>0¹ *0>z³
+öcs,*ećɜ,FU,,,,øt͡ʃ,*et͡ʃʲɜ,øt͡ʃ∅,0øt͡ʃ∅,*0et͡ʃʲɜ,*e>ø¹ *ɜ>∅²,*0>0¹ *t͡ʃʲ>t͡ʃ³
+es,*ećɜ,U,,,,ɛʃ,*et͡ʃʲɜ,ɛʃ∅,0ɛʃ∅,*0et͡ʃʲɜ,*e>ɛ¹ *ɜ>∅²,*0>0¹ *t͡ʃʲ>ʃ³
+elő,*eδe,FU,eleje,,,ɛlø,*eðe,ɛlø,0ɛlø,*0eðe,*e>ɛ¹ *e>ø²,*0>0¹ *ð>l³
+éj,*eje,FU,,*üje,,ej,*eje,ej∅,0ej∅,*0eje,*e>e¹ *e>∅²,*0>0¹ *j>j³
+él,*elä,U,,,,el,*elæ,el∅,0el∅,*0elæ,*e>e¹ *æ>∅²,*0>0¹ *l>l³
+em,*emä,U, embër,,,ɛm,*emæ,ɛm∅,0ɛm∅,*0emæ,*e>ɛ¹ *æ>∅²,*0>0¹ *m>m³
+ük,*ewkkɜ,FU, ükanya,,,yk,*eβkkɜ,yk∅,0yk∅,*0eβkkɜ,*e>y¹ *ɜ>∅²,*0>0¹ *βkk>k³
+ős,*ićä,U,,,,øʃ,*it͡ʃʲæ,øʃ∅,0øʃ∅,*0it͡ʃʲæ,*i>ø¹ *æ>∅²,*0>0¹ *t͡ʃʲ>ʃ³
+íny,*ike,FU,,"*ikeńe, ikene",,iɲ,*ike,iɲ∅,0iɲ∅,*0ike,*i>i¹ *e>∅²,*0>0¹ *k>ɲ³
+emlő,*ime,U,,,,ɛmlø,*ime,ɛmlø,0ɛmlø,*0ime,*i>ɛ¹ *e>ø²,*0>0¹ *m>ml³
+íz,*ipɜ,U,,"*ipɜsɜ, ipɜśɜ",,iz,*ipɜ,iz∅,0iz∅,*0ipɜ,*i>i¹ *ɜ>∅²,*0>0¹ *p>z³
+ër,*irkä,FU,,*ürkä,,er,*irkæ,er∅,0er∅,*0irkæ,*i>e¹ *æ>∅²,*0>0¹ *rk>r³
+iktat,*jakka,FU,,,,iktɒt,*jakka,iktɒt∅,0iktɒt∅,*jakka0∅,*a>i¹ *a>ɒ³,*j>0¹ *kk>kt³ *0>t³
+gyalog,*jalka,FU,,,,ɟɒloɡ,*jalka,ɟɒloɡ∅,ɟɒloɡ∅,*jalka0∅,*a>ɒ³ *a>o³,*j>ɟ¹ *lk>l³ *0>ɡ³
+jel,*jälke,FU,,,,jɛl,*jælke,jɛl∅,jɛl∅,*jælke,*æ>ɛ³ *e>∅²,*j>j¹ *lk>l³
+ideg,*jänte,U,,,,idɛɡ,*jænte,idɛɡ∅,0idɛɡ∅,*jænte0∅,*æ>i¹ *e>ɛ³,*j>0¹ *nt>d³ *0>ɡ³
+jég,*jäŋe,FU,,,,jeɡ,*jæŋe,jeɡ∅,jeɡ∅,*jæŋe,*æ>e³ *e>∅²,*j>j¹ *ŋ>ɡ³
+év,*jikä,FU,,*ikä,,ev,*jikæ,ev∅,0ev∅,*jikæ,*i>e¹ *æ>∅²,*j>0¹ *k>v³
+jó,*joke,U,,,,jo,*joke,jo,jo0∅,*joke,*o>o³ *e>∅³,*j>j¹ *k>0³
+íj,*joŋsɜ,U,,*joŋksɜ,,ij,*joŋsɜ,ij∅,0ij∅,*joŋsɜ,*o>i¹ *ɜ>∅²,*j>0¹ *ŋs>j³
+gyakori,*jowkkɜ,FU,,,,ɟɒkori,*joβkkɜ,ɟɒkori,ɟɒkori,*joβkkɜ0∅,*o>ɒ³ *ɜ>o³ *∅>i²,*j>ɟ¹ *βkk>k³ *0>r³
+iv,*juγe,FU,i,*juke,,iv,*juɣe,iv∅,0iv∅,*juɣe,*u>i¹ *e>∅²,*j>0¹ *ɣ>v³
+jöv,*j¨ŋɜ,Ug,,*j¨γɜ j¨kɜ,,jøv,*j¨ŋɜ,jøv∅,jøv∅,*j¨ŋɜ,*¨>ø³ *ɜ>∅²,*j>j¹ *ŋ>v³
+hős,*kaća,U,,,,høʃ,*kat͡ʃʲa,høʃ∅,høʃ∅,*kat͡ʃʲa,*a>ø³ *a>∅²,*k>h¹ *t͡ʃʲ>ʃ³
+hagy,*kaδ'a,U,,,,hɒɟ,*kaðʲa,hɒɟ∅,hɒɟ∅,*kaðʲa,*a>ɒ³ *a>∅²,*k>h¹ *ðʲ>ɟ³
+hölgy,*kaδ'wa,FU,,*kaδ'wɜ,,hølɟ,*kaðʲβa,hølɟ∅,hølɟ∅,*kaðʲβa,*a>ø³ *a>∅²,*k>h¹ *ðʲβ>lɟ³
+hajít,*kaja,FU,,,,hɒjit,*kaja,hɒjit∅,hɒjit∅,*kaja0∅,*a>ɒ³ *a>i³,*k>h¹ *j>j³ *0>t³
+két,*kakta,FU,,*käktä,,ket,*kakta,ket∅,ket∅,*kakta,*a>e³ *a>∅²,*k>k¹ *kt>t³
+hal,*kala,U,,,,hɒl,*kala,hɒl∅,hɒl∅,*kala,*a>ɒ³ *a>∅²,*k>h¹ *l>l³
+háló,*kalɜ,U,,,,halo,*kalɜ,halo,halo,*kalɜ,*a>a³ *ɜ>o²,*k>h¹ *l>l³
+hál,*kalɜ,FU,,,,hal,*kalɜ,hal∅,hal∅,*kalɜ,*a>a³ *ɜ>∅²,*k>h¹ *l>l³
+hályog,*kaĺwɜ,FU,,,,hajoɡ,*kaʎβɜ,hajoɡ∅,hajoɡ∅,*kalʲβɜ0∅,*a>a³ *ɜ>o³,*k>h¹ *lʲβ>j³ *0>ɡ³
+háml,*kama,U,,,,haml,*kama,haml∅,haml∅,*kama,*a>a³ *a>∅²,*k>h¹ *m>ml³
+hány,*kanɜ,FU,,,,haɲ,*kanɜ,haɲ∅,haɲ∅,*kanɜ,*a>a³ *ɜ>∅²,*k>h¹ *n>ɲ³
+hág,*kaŋɜ,Ug,,*kaŋkɜ,,haɡ,*kaŋɜ,haɡ∅,haɡ∅,*kaŋɜ,*a>a³ *ɜ>∅²,*k>h¹ *ŋ>ɡ³
+hat,*kattɜ,U,,,,hɒt,*kattɜ,hɒt∅,hɒt∅,*kattɜ,*a>ɒ³ *ɜ>∅²,*k>h¹ *tt>t³
+kel,*kälä,FU,,,,kɛl,*kælæ,kɛl∅,kɛl∅,*kælæ,*æ>ɛ³ *æ>∅²,*k>k¹ *l>l³
+kemény,*kämä,FU,,,,kɛmeɲ,*kæmæ,kɛmeɲ∅,kɛmeɲ∅,*kæmæ0∅,*æ>ɛ³ *æ>e³,*k>k¹ *m>m³ *0>ɲ³
+kéz,*käte,FU,,,,kez,*kæte,kez∅,kez∅,*kæte,*æ>e³ *e>∅²,*k>k¹ *t>z³
+ki,*ke,FU,,*ki,,ki,*ke,ki,ki,*ke,*e>i²,*k>k¹
+keszeg,*kećä,FU,,,,kɛsɛɡ,*ket͡ʃʲæ,kɛsɛɡ∅,kɛsɛɡ∅,*ket͡ʃʲæ0∅,*e>ɛ³ *æ>ɛ³,*k>k¹ *t͡ʃʲ>s³ *0>ɡ³
+kengyel,*kećɜ,FU,,,,kɛnɟɛl,*ket͡ʃʲɜ,kɛnɟɛl∅,kɛnɟɛl∅,*ket͡ʃʲɜ0∅,*e>ɛ³ *ɜ>ɛ³,*k>k¹ *t͡ʃʲ>nɟ³ *0>l³
+kécs,*kečä,FU, isten kecskéje,,,ket͡ʃ,*ket͡ʃæ,ket͡ʃ∅,ket͡ʃ∅,*ket͡ʃæ,*e>e³ *æ>∅²,*k>k¹ *t͡ʃ>t͡ʃ³
+kés,*kečɜ,FU,,,,keʃ,*ket͡ʃɜ,keʃ∅,keʃ∅,*ket͡ʃɜ,*e>e³ *ɜ>∅²,*k>k¹ *t͡ʃ>ʃ³
+kéj,*keje,FU,,*k¨jγɜ,,kej,*keje,kej∅,kej∅,*keje,*e>e³ *e>∅²,*k>k¹ *j>j³
+köved,*keje,FU,,,,køvɛd,*keje,køvɛd∅,køvɛd∅,*keje0∅,*e>ø³ *e>ɛ³,*k>k¹ *j>v³ *0>d³
+këll,*kelke,FU,,,,kell,*kelke,kell∅,kell∅,*kelke,*e>e³ *e>∅²,*k>k¹ *lk>ll³
+kevés,*kepä,FU,,,,kɛveʃ,*kepæ,kɛveʃ∅,kɛveʃ∅,*kepæ0∅,*e>ɛ³ *æ>e³,*k>k¹ *p>v³ *0>ʃ³
+kerek,*kerä,FU,,,,kɛrɛk,*keræ,kɛrɛk∅,kɛrɛk∅,*keræ0∅,*e>ɛ³ *æ>ɛ³,*k>k¹ *r>r³ *0>k³
+kér,*kerä,FU,,,,ker,*keræ,ker∅,ker∅,*keræ,*e>e³ *æ>∅²,*k>k¹ *r>r³
+köré,*kere,FU,,,,køre,*kere,køre,køre,*kere,*e>ø³ *e>e²,*k>k¹ *r>r³
+kérëg,*kere,FU,,,,kereɡ,*kere,kereɡ∅,kereɡ∅,*kere0∅,*e>e³ *e>e³,*k>k¹ *r>r³ *0>ɡ³
+kígyó,*kije,U,,*küje,,kiɟo,*kije,kiɟo,kiɟo,*kije,*i>i³ *e>o²,*k>k¹ *j>ɟ³
+követ,*kijɜ,FU,,*küjɜ,,køvɛt,*kijɜ,køvɛt∅,køvɛt∅,*kijɜ0∅,*i>ø³ *ɜ>ɛ³,*k>k¹ *j>v³ *0>t³
+köd,*kintɜ,U,,*küntɜ,,kød,*kintɜ,kød∅,kød∅,*kintɜ,*i>ø³ *ɜ>∅²,*k>k¹ *nt>d³
+könyök,*kińä,FU,,"*küńä, kinä, künä",,køɲøk,*kiɲæ,køɲøk∅,køɲøk∅,*kinʲæ0∅,*i>ø³ *æ>ø³,*k>k¹ *nʲ>ɲ³ *0>k³
+könny,*kińe,U,,"*kińelɜ, küńe, küńelɜ",,kønɲ,*kiɲe,kønɲ∅,kønɲ∅,*kinʲe,*i>ø³ *e>∅²,*k>k¹ *nʲ>nɲ³
+köt,*kitke,FU,,*kütke,,køt,*kitke,køt∅,køt∅,*kitke,*i>ø³ *e>∅²,*k>k¹ *tk>t³
+köz,*kitɜ,FU,,*kütɜ,,køz,*kitɜ,køz∅,køz∅,*kitɜ,*i>ø³ *ɜ>∅²,*k>k¹ *t>z³
+kő,*kiwe,FU,,,,kø,*kiβe,kø,kø0∅,*kiβe,*i>ø³ *e>∅³,*k>k¹ *β>0³
+hagyma,*koćmɜ,FU,,*kaćmɜ,,hɒɟmɒ,*kot͡ʃʲmɜ,hɒɟmɒ,hɒɟmɒ,*kot͡ʃʲmɜ,*o>ɒ³ *ɜ>ɒ²,*k>h¹ *t͡ʃʲm>ɟm³
+héj,*koja,FU,,,,hej,*koja,hej∅,hej∅,*koja,*o>e³ *a>∅²,*k>h¹ *j>j³
+hajnal,*koje,FU,,,,hɒjnɒl,*koje,hɒjnɒl∅,hɒjnɒl∅,*koje0∅,*o>ɒ³ *e>ɒ³,*k>h¹ *j>jn³ *0>l³
+hím,*kojmɜ,U,,*kojemɜ,,him,*kojmɜ,him∅,him∅,*kojmɜ,*o>i³ *ɜ>∅²,*k>h¹ *jm>m³
+here,*kojra,U,,*kojera,,hɛrɛ,*kojra,hɛrɛ,hɛrɛ,*kojra,*o>ɛ³ *a>ɛ²,*k>h¹ *jr>r³
+hal,*kola,U,,,,hɒl,*kola,hɒl∅,hɒl∅,*kola,*o>ɒ³ *a>∅²,*k>h¹ *l>l³
+három,*kolme,FU,,*kulme,,harom,*kolme,harom∅,harom∅,*kolme0∅,*o>a³ *e>o³,*k>h¹ *lm>r³ *0>m³
+halok,*kolɜ,FU,,,,hɒlok,*kolɜ,hɒlok∅,hɒlok∅,*kolɜ0∅,*o>ɒ³ *ɜ>o³,*k>h¹ *l>l³ *0>k³
+hón,*konɜ,FU,,"*kana, konɜ + ala, kana + ala",,hon,*konɜ,hon∅,hon∅,*konɜ,*o>o³ *ɜ>∅²,*k>h¹ *n>n³
+hanyatt,*konɜCx,FU,,,,hɒɲɒtt,*konɜ,hɒɲɒtt∅,hɒɲɒtt∅,*konɜ0∅,*o>ɒ³ *ɜ>ɒ³,*k>h¹ *n>ɲ³ *0>tt³
+hárs,*końćkɜ,FU,,*koćkɜ,,harʃ,*koɲt͡ʃʲkɜ,harʃ∅,harʃ∅,*konʲt͡ʃʲkɜ,*o>a³ *ɜ>∅²,*k>h¹ *nʲt͡ʃʲk>rʃ³
+hosszú,*końćɜ,U,,*koćɜ,,hoʃsu,*koɲt͡ʃʲɜ,hoʃsu,hoʃsu,*konʲt͡ʃʲɜ,*o>o³ *ɜ>u²,*k>h¹ *nʲt͡ʃʲ>ʃs³
+hërvad,*korpe,FW,,,,hervɒd,*korpe,hervɒd∅,hervɒd∅,*korpe0∅,*o>e³ *e>ɒ³,*k>h¹ *rp>rv³ *0>d³
+horol,*korɜ,FU,,*korwɜ,,horol,*korɜ,horol∅,horol∅,*korɜ0∅,*o>o³ *ɜ>o³,*k>h¹ *r>r³ *0>l³
+ház,*kota,FU,,,,haz,*kota,haz∅,haz∅,*kota,*o>a³ *a>∅²,*k>h¹ *t>z³
+ho,*ku,U,,*ko,,ho,*ku,ho,ho,*ku,*u>o²,*k>h¹
+holnap,*kuδɜ,U,,,,holnɒp,*kuðɜ,holnɒp∅,holnɒp∅,*kuðɜ0∅,*u>o³ *ɜ>ɒ³,*k>h¹ *ð>ln³ *0>p³
+hamu,*kuδ'mɜ,Ug,,,,hɒmu,*kuðʲmɜ,hɒmu,hɒmu,*kuðʲmɜ,*u>ɒ³ *ɜ>u²,*k>h¹ *ðʲm>m³
+háj,*kuje,FU,,,,haj,*kuje,haj∅,haj∅,*kuje,*u>a³ *e>∅²,*k>h¹ *j>j³
+hall,*kule,FU,,,,hɒll,*kule,hɒll∅,hɒll∅,*kule,*u>ɒ³ *e>∅²,*k>h¹ *l>ll³
+halad,*kulke,U,,,,hɒlɒd,*kulke,hɒlɒd∅,hɒlɒd∅,*kulke0∅,*u>ɒ³ *e>ɒ³,*k>h¹ *lk>l³ *0>d³
+holló,*kulɜ,U,,*kulɜkɜ,,hollo,*kulɜ,hollo,hollo,*kulɜ,*u>o³ *ɜ>o²,*k>h¹ *l>ll³
+homlok,*kuma,U,,,,homlok,*kuma,homlok∅,homlok∅,*kuma0∅,*u>o³ *a>o³,*k>h¹ *m>ml³ *0>k³
+hab,*kumpa,U,,,,hɒb,*kumpa,hɒb∅,hɒb∅,*kumpa,*u>ɒ³ *a>∅²,*k>h¹ *mp>b³
+hó,*kumɜ,U,,,,ho,*kumɜ,ho,ho0∅,*kumɜ,*u>o³ *ɜ>∅³,*k>h¹ *m>0³
+homály,*kumɜ,FU,,,,homaj,*kumɜ,homaj∅,homaj∅,*kumɜ0∅,*u>o³ *ɜ>a³,*k>h¹ *m>m³ *0>j³
+had,*kunta,FU,,,,hɒd,*kunta,hɒd∅,hɒd∅,*kunta,*u>ɒ³ *a>∅²,*k>h¹ *nt>d³
+hall,*kuntalɜ,Ug,,,,hɒll,*kuntalɜ,hɒll∅,hɒll∅0∅,*kuntalɜ,*u>ɒ³ *a>∅³ *ɜ>∅²,*k>h¹ *nt>ll³ *l>0³
+joh,*kunɜ,FU,,,,joh,*kunɜ,joh∅,joh∅,*kunɜ,*u>o³ *ɜ>∅²,*k>j¹ *n>h³
+huny,*kuńa,U,,,,huɲ,*kuɲa,huɲ∅,huɲ∅,*kunʲa,*u>u³ *a>∅²,*k>h¹ *nʲ>ɲ³
+hangya,*kuńće,FU,,*kuće,,hɒnɟɒ,*kuɲt͡ʃʲe,hɒnɟɒ,hɒnɟɒ,*kunʲt͡ʃʲe,*u>ɒ³ *e>ɒ²,*k>h¹ *nʲt͡ʃʲ>nɟ³
+húgy,*kuńće,U,,*kuće,,huɟ,*kuɲt͡ʃʲe,huɟ∅,huɟ∅,*kunʲt͡ʃʲe,*u>u³ *e>∅²,*k>h¹ *nʲt͡ʃʲ>ɟ³
+húgy,*kuńćɜ,U,,*kućɜ,,huɟ,*kuɲt͡ʃʲɜ,huɟ∅,huɟ∅,*kunʲt͡ʃʲɜ,*u>u³ *ɜ>∅²,*k>h¹ *nʲt͡ʃʲ>ɟ³
+hó,*kuŋe,U,,,,ho,*kuŋe,ho,ho0∅,*kuŋe,*u>o³ *e>∅³,*k>h¹ *ŋ>0³
+harmat,*kura,U,,,,hɒrmɒt,*kura,hɒrmɒt∅,hɒrmɒt∅,*kura0∅,*u>ɒ³ *a>ɒ³,*k>h¹ *r>rm³ *0>t³
+hornyol,*kurńa,FU,,,,horɲol,*kurɲa,horɲol∅,horɲol∅,*kurnʲa0∅,*u>o³ *a>o³,*k>h¹ *rnʲ>rɲ³ *0>l³
+horó,*kurɜ,FU,,,,horo,*kurɜ,horo,horo,*kurɜ,*u>o³ *ɜ>o²,*k>h¹ *r>r³
+harántos,*kurɜ,U,,,,hɒrantoʃ,*kurɜ,hɒrantoʃ∅,hɒrantoʃ∅,*kurɜ0∅0∅,*u>ɒ³ *ɜ>a³ *∅>o³,*k>h¹ *r>r³ *0>nt³ *0>ʃ³
+harag,*kurɜ,FU,,,,hɒrɒɡ,*kurɜ,hɒrɒɡ∅,hɒrɒɡ∅,*kurɜ0∅,*u>ɒ³ *ɜ>ɒ³,*k>h¹ *r>r³ *0>ɡ³
+húsz,*kuśɜ,FU,,*kojećɜ,,hus,*kuʃʲɜ,hus∅,hus∅,*kuʃʲɜ,*u>u³ *ɜ>∅²,*k>h¹ *ʃʲ>s³
+hat,*kutte,FU,,,,hɒt,*kutte,hɒt∅,hɒt∅,*kutte,*u>ɒ³ *e>∅²,*k>h¹ *tt>t³
+hát,*kuttɜ,U,,,,hat,*kuttɜ,hat∅,hat∅,*kuttɜ,*u>a³ *ɜ>∅²,*k>h¹ *tt>t³
+küzd,*k¨śɜ,Ug,,,,kyzd,*k¨ʃʲɜ,kyzd∅,kyzd∅,*k¨ʃʲɜ,*¨>y³ *ɜ>∅²,*k>k¹ *ʃʲ>zd³
+lapos,*lappɜ,U,,,,lɒpoʃ,*lappɜ,lɒpoʃ∅,lɒpoʃ∅,*lappɜ0∅,*a>ɒ³ *ɜ>o³,*l>l¹ *pp>p³ *0>ʃ³
+lép,*läppɜ,FU,,"*δäppɜ, leppɜ δeppɜ",,lep,*læppɜ,lep∅,lep∅,*læppɜ,*æ>e³ *ɜ>∅²,*l>l¹ *pp>p³
+lë,*le,FU,,,,le,*le,le,le,*le,*e>e²,*l>l¹
+lé,*leme,FU,,*lēme,,le,*leme,le,le0∅,*leme,*e>e³ *e>∅³,*l>l¹ *m>0³
+lep,*leppɜ,FU,,,,lɛp,*leppɜ,lɛp∅,lɛp∅,*leppɜ,*e>ɛ³ *ɜ>∅²,*l>l¹ *pp>p³
+lő,*lewe,FU,,,,lø,*leβe,lø,lø0∅,*leβe,*e>ø³ *e>∅³,*l>l¹ *β>0³
+lélëk,*lewlɜ,FU,,,,lelek,*leβlɜ,lelek∅,lelek∅,*leβlɜ0∅,*e>e³ *ɜ>e³,*l>l¹ *βl>l³ *0>k³
+lök,*likkä,FU,,*lükkä,,løk,*likkæ,løk∅,løk∅,*likkæ,*i>ø³ *æ>∅²,*l>l¹ *kk>k³
+láng,*lomɜ,FU,,*lamɜ,,lanɡ,*lomɜ,lanɡ∅,lanɡ∅,*lomɜ,*o>a³ *ɜ>∅²,*l>l¹ *m>nɡ³
+lágy,*lońća,FU,,,,laɟ,*loɲt͡ʃʲa,laɟ∅,laɟ∅,*lonʲt͡ʃʲa,*o>a³ *a>∅²,*l>l¹ *nʲt͡ʃʲ>ɟ³
+lóg,*loŋe,FU,,,,loɡ,*loŋe,loɡ∅,loɡ∅,*loŋe,*o>o³ *e>∅²,*l>l¹ *ŋ>ɡ³
+lúd,*lunta,FU,,,,lud,*lunta,lud∅,lud∅,*lunta,*u>u³ *a>∅²,*l>l¹ *nt>d³
+légy,*lȣńćɜ,FU,,,,leɟ,*lȣɲt͡ʃʲɜ,leɟ∅,leɟ∅,*lȣnʲt͡ʃʲɜ,*ȣ>e³ *ɜ>∅²,*l>l¹ *nʲt͡ʃʲ>ɟ³
+láp,*lȣppɜ,FU,,,,lap,*lȣppɜ,lap∅,lap∅,*lȣppɜ,*ȣ>a³ *ɜ>∅²,*l>l¹ *pp>p³
+lepke,*l¨ppɜ,U,,,,lɛpkɛ,*l¨ppɜ,lɛpkɛ,lɛpkɛ,*l¨ppɜ,*¨>ɛ³ *ɜ>ɛ²,*l>l¹ *pp>pk³
+levél,*l¨pɜ,Ug,,*lepɜ,,lɛvel,*l¨pɜ,lɛvel∅,lɛvel∅,*l¨pɜ0∅,*¨>ɛ³ *ɜ>e³,*l>l¹ *p>v³ *0>l³
+máj,*maksa,U,,,,maj,*maksa,maj∅,maj∅,*maksa,*a>a³ *a>∅²,*m>m¹ *ks>j³
+ment,*mänɜ,FU,,,,mɛnt,*mænɜ,mɛnt∅,mɛnt∅,*mænɜ,*æ>ɛ³ *ɜ>∅²,*m>m¹ *n>nt³
+messze,*mećä,FU,,,,mɛʃsɛ,*met͡ʃʲæ,mɛʃsɛ,mɛʃsɛ,*met͡ʃʲæ,*e>ɛ³ *æ>ɛ²,*m>m¹ *t͡ʃʲ>ʃs³
+méh,*mekše,FU,,,,meh,*mekʃe,meh∅,meh∅,*mekʃe,*e>e³ *e>∅²,*m>m¹ *kʃ>h³
+mën,*mene,U,,,,men,*mene,men∅,men∅,*mene,*e>e³ *e>∅²,*m>m¹ *n>n³
+méz,*mete,FU,,,,mez,*mete,mez∅,mez∅,*mete,*e>e³ *e>∅²,*m>m¹ *t>z³
+mëny,*mińä,U,,,,meɲ,*miɲæ,meɲ∅,meɲ∅,*minʲæ,*i>e³ *æ>∅²,*m>m¹ *nʲ>ɲ³
+mënny,*mińɜ,FU,,,,menɲ,*miɲɜ,menɲ∅,menɲ∅,*minʲɜ,*i>e³ *ɜ>∅²,*m>m¹ *nʲ>nɲ³
+mëg,*miŋä,FU,,*müŋä,,meɡ,*miŋæ,meɡ∅,meɡ∅,*miŋæ,*i>e³ *æ>∅²,*m>m¹ *ŋ>ɡ³
+mëggy,*moĺɜ,FU,,*moδ'ɜ,,meɡɟ,*moʎɜ,meɡɟ∅,meɡɟ∅,*molʲɜ,*o>e³ *ɜ>∅²,*m>m¹ *lʲ>ɡɟ³
+más,*mu,FU,,,,maʃ,*mu,maʃ∅,maʃ∅,*mu0∅,*u>a³,*m>m¹ *0>ʃ³
+múl,*mulɜ,FU,,,,mul,*mulɜ,mul∅,mul∅,*mulɜ,*u>u³ *ɜ>∅²,*m>m¹ *l>l³
+mogyoró,*muna,U,,,,moɟoro,*muna,moɟoro,moɟoro,*muna0∅,*u>o³ *a>o³ *∅>o²,*m>m¹ *n>ɟ³ *0>r³
+mag,*muŋkɜ,FU,,,,mɒɡ,*muŋkɜ,mɒɡ∅,mɒɡ∅,*muŋkɜ,*u>ɒ³ *ɜ>∅²,*m>m¹ *ŋk>ɡ³
+mar,*mura,U,,*murɜ,,mɒr,*mura,mɒr∅,mɒr∅,*mura,*u>ɒ³ *a>∅²,*m>m¹ *r>r³
+mos,*muśke,U,,*mośke,,moʃ,*muʃʲke,moʃ∅,moʃ∅,*muʃʲke,*u>o³ *e>∅²,*m>m¹ *ʃʲk>ʃ³
+mál,*mȣlɜ,FU,,"*mȣljɜ, mȣlkɜ",,mal,*mȣlɜ,mal∅,mal∅,*mȣlɜ,*ȣ>a³ *ɜ>∅²,*m>m¹ *l>l³
+mar,*mȣrɜ,U,,,,mɒr,*mȣrɜ,mɒr∅,mɒr∅,*mȣrɜ,*ȣ>ɒ³ *ɜ>∅²,*m>m¹ *r>r³
+én,*m¨,U,,,,en,*m¨,en∅,0en∅,*m¨0∅,*¨>e¹,*m>0¹ *0>n³
+mi,*m¨,U,,,,mi,*m¨,mi,mi,*m¨,*¨>i²,*m>m¹
+mi,*mɜ,U,,,,mi,*mɜ,mi,mi,*mɜ,*ɜ>i²,*m>m¹
+néz,*näke,FU,,,,nez,*næke,nez∅,nez∅,*næke,*æ>e³ *e>∅²,*n>n¹ *k>z³
+nyél,*niδe,U,,*nüδe,,ɲel,*niðe,ɲel∅,ɲel∅,*niðe,*i>e³ *e>∅²,*n>ɲ¹ *ð>l³
+név,*nime,U,,,,nev,*nime,nev∅,nev∅,*nime,*i>e³ *e>∅²,*n>n¹ *m>v³
+nő,*niŋä,U,,,,nø,*niŋæ,nø,nø0∅,*niŋæ,*i>ø³ *æ>∅³,*n>n¹ *ŋ>0³
+nyújt,*nȣjɜ,FU,,*ńȣjɜ,,ɲujt,*nȣjɜ,ɲujt∅,ɲujt∅,*nȣjɜ,*ȣ>u³ *ɜ>∅²,*n>ɲ¹ *j>jt³
+nyelv,*ńälmä,FU,,,,ɲɛlv,*ɲælmæ,ɲɛlv∅,ɲɛlv∅,*nʲælmæ,*æ>ɛ³ *æ>∅²,*nʲ>ɲ¹ *lm>lv³
+nyel,*ńele,U,,*ńēle,,ɲɛl,*ɲele,ɲɛl∅,ɲɛl∅,*nʲele,*e>ɛ³ *e>∅²,*nʲ>ɲ¹ *l>l³
+négy,*ńeljä,FU,,*neljä,,neɟ,*ɲeljæ,neɟ∅,neɟ∅,*nʲelhæ,*e>e³ *æ>∅²,*nʲ>n¹ *lh>ɟ³
+nyíl,*ńɤle,U,,*ńōle,,ɲil,*ɲɤle,ɲil∅,ɲil∅,*nʲɤle,*ɤ>i³ *e>∅²,*nʲ>ɲ¹ *l>l³
+nyű,*ńikɜ,U,,*ńükɜ,,ɲy,*ɲikɜ,ɲy,ɲy0∅,*nʲikɜ,*i>y³ *ɜ>∅³,*nʲ>ɲ¹ *k>0³
+nyal,*ńole,U,,*ńōle,,ɲɒl,*ɲole,ɲɒl∅,ɲɒl∅,*nʲole,*o>ɒ³ *e>∅²,*nʲ>ɲ¹ *l>l³
+nyúl,*ńoma,U,,*ńomalɜ,,ɲul,*ɲoma,ɲul∅,ɲul∅,*nʲoma,*o>u³ *a>∅²,*nʲ>ɲ¹ *m>l³
+nyirok,*ńorɜ,U,,,,ɲirok,*ɲorɜ,ɲirok∅,ɲirok∅,*nʲorɜ0∅,*o>i³ *ɜ>o³,*nʲ>ɲ¹ *r>r³ *0>k³
+nyuszt,*ńukśe,FU,,*ńukɜśɜ,,ɲust,*ɲukʃʲe,ɲust∅,ɲust∅,*nʲukʃʲe,*u>u³ *e>∅²,*nʲ>ɲ¹ *kʃʲ>st³
+nyug,*ńuŋɜ,FU,,,,ɲuɡ,*ɲuŋɜ,ɲuɡ∅,ɲuɡ∅,*nʲuŋɜ,*u>u³ *ɜ>∅²,*nʲ>ɲ¹ *ŋ>ɡ³
+nyír,*ń¨rɜ,Ug,,"*ńȣrɜ, ńȣrkɜ",,ɲir,*ɲ¨rɜ,ɲir∅,ɲir∅,*nʲ¨rɜ,*¨>i³ *ɜ>∅²,*nʲ>ɲ¹ *r>r³
+az,*o,U,,*u,,ɒz,*o,ɒz∅,0ɒz∅,*0o0∅,*o>ɒ¹,*0>0¹ *0>z³
+ostor,*oćtɜrɜ,Ug,,,,oʃtor,*ot͡ʃʲtɜrɜ,oʃtor∅,0oʃtor∅,*0ot͡ʃʲtɜrɜ,*o>o¹ *ɜ>o³ *ɜ>∅²,*0>0¹ *t͡ʃʲt>ʃt³ *r>r³
+al,*oδa,FU,,,,ɒl,*oða,ɒl∅,0ɒl∅,*0oða,*o>ɒ¹ *a>∅²,*0>0¹ *ð>l³
+álom,*oδamɜ,FU,,,,alom,*oðamɜ,alom∅,0alom∅,*0oðamɜ,*o>a¹ *a>o³ *ɜ>∅²,*0>0¹ *ð>l³ *m>m³
+áll,*olɜ,FW,,,,all,*olɜ,all∅,0all∅,*0olɜ,*o>a¹ *ɜ>∅²,*0>0¹ *l>ll³
+agyar,*ońćarɜ,FU,,,,ɒɟɒr,*oɲt͡ʃʲarɜ,ɒɟɒr∅,0ɒɟɒr∅,*0onʲt͡ʃʲarɜ,*o>ɒ¹ *a>ɒ³ *ɜ>∅²,*0>0¹ *nʲt͡ʃʲ>ɟ³ *r>r³
+ár,*ora,FU,,,,ar,*ora,ar∅,0ar∅,*0ora,*o>a¹ *a>∅²,*0>0¹ *r>r³
+árva,*orpa,FU,,"*orpasɜ, orwa orwasɜ",,arvɒ,*orpa,arvɒ,0arvɒ,*0orpa,*o>a¹ *a>ɒ²,*0>0¹ *rp>rv³
+fal,*paδɜ,FU,,,,fɒl,*paðɜ,fɒl∅,fɒl∅,*paðɜ,*a>ɒ³ *ɜ>∅²,*p>f¹ *ð>l³
+fajd,*paδ'tɜ,FU,,,,fɒjd,*paðʲtɜ,fɒjd∅,fɒjd∅,*paðʲtɜ,*a>ɒ³ *ɜ>∅²,*p>f¹ *ðʲt>jd³
+fagyal,*pajɜ,U,,,,fɒɟɒl,*pajɜ,fɒɟɒl∅,fɒɟɒl∅,*pajɜ0∅,*a>ɒ³ *ɜ>ɒ³,*p>f¹ *j>ɟ³ *0>l³
+fakad,*pakka,FU,,,,fɒkɒd,*pakka,fɒkɒd∅,fɒkɒd∅,*pakka0∅,*a>ɒ³ *a>ɒ³,*p>f¹ *kk>k³ *0>d³
+fal,*pala,U,,,,fɒl,*pala,fɒl∅,fɒl∅,*pala,*a>ɒ³ *a>∅²,*p>f¹ *l>l³
+falu,*palγɜ,Ug,,,,fɒlu,*palɣɜ,fɒlu,fɒlu,*palɣɜ,*a>ɒ³ *ɜ>u²,*p>f¹ *lɣ>l³
+fagy,*paĺa,FU,,,,fɒɟ,*paʎa,fɒɟ∅,fɒɟ∅,*palʲa,*a>ɒ³ *a>∅²,*p>f¹ *lʲ>ɟ³
+farag,*parɜ,U,,,,fɒrɒɡ,*parɜ,fɒrɒɡ∅,fɒrɒɡ∅,*parɜ0∅,*a>ɒ³ *ɜ>ɒ³,*p>f¹ *r>r³ *0>ɡ³
+fazék,*pata,FU,,,,fɒzek,*pata,fɒzek∅,fɒzek∅,*pata0∅,*a>ɒ³ *a>e³,*p>f¹ *t>z³ *0>k³
+fëcske,*päćkɜ,FU,,,,fet͡ʃkɛ,*pæt͡ʃʲkɜ,fet͡ʃkɛ,fet͡ʃkɛ,*pæt͡ʃʲkɜ,*æ>e³ *ɜ>ɛ²,*p>f¹ *t͡ʃʲk>t͡ʃk³
+fesl,*päčɜ,Ug,,,,fɛʃl,*pæt͡ʃɜ,fɛʃl∅,fɛʃl∅,*pæt͡ʃɜ,*æ>ɛ³ *ɜ>∅²,*p>f¹ *t͡ʃ>ʃl³
+fél,*pälä,U,,,,fel,*pælæ,fel∅,fel∅,*pælæ,*æ>e³ *æ>∅²,*p>f¹ *l>l³
+fen,*pänɜ,FU,,,,fɛn,*pænɜ,fɛn∅,fɛn∅,*pænɜ,*æ>ɛ³ *ɜ>∅²,*p>f¹ *n>n³
+fej,*päŋe,U,,,,fɛj,*pæŋe,fɛj∅,fɛj∅,*pæŋe,*æ>ɛ³ *e>∅²,*p>f¹ *ŋ>j³
+fűz,*pećɜ,FU,,,,fyz,*pet͡ʃʲɜ,fyz∅,fyz∅,*pet͡ʃʲɜ,*e>y³ *ɜ>∅²,*p>f¹ *t͡ʃʲ>z³
+fő,*peje,U,,,,fø,*peje,fø,fø0∅,*peje,*e>ø³ *e>∅³,*p>f¹ *j>0³
+fél,*pele ,FU,: ajtófélfa,*(pēle),,fel,*pele,fel∅,fel∅,*pele,*e>e³ *e>∅²,*p>f¹ *l>l³
+fél,*pele,U,,,,fel,*pele,fel∅,fel∅,*pele,*e>e³ *e>∅²,*p>f¹ *l>l³
+figyel,*peljä,FU,,,,fiɟɛl,*peljæ,fiɟɛl∅,fiɟɛl∅,*pelhæ0∅,*e>i³ *æ>ɛ³,*p>f¹ *lh>ɟ³ *0>l³
+fëd,*pentɜ,FU,,,,fed,*pentɜ,fed∅,fed∅,*pentɜ,*e>e³ *ɜ>∅²,*p>f¹ *nt>d³
+férëg,*perkɜ ,FU,,*(perkkɜ),,fereɡ,*perkɜ,fereɡ∅,fereɡ∅,*perkɜ0∅,*e>e³ *ɜ>e³,*p>f¹ *rk>r³ *0>ɡ³
+bőr,*perɜ,U,,,,bør,*perɜ,bør∅,bør∅,*perɜ,*e>ø³ *ɜ>∅²,*p>b¹ *r>r³
+fészëk,*pesä,U,,,,fesek,*pesæ,fesek∅,fesek∅,*pesæ0∅,*e>e³ *æ>e³,*p>f¹ *s>s³ *0>k³
+fëlëtt,*piδe ,U,,*(piδe-kä),,felett,*piðe,felett∅,felett∅,*piðe0∅,*i>e³ *e>e³,*p>f¹ *ð>l³ *0>tt³
+fëlhő,*pilwe ,FU,,*(pilŋe),,felhø,*pilβe,felhø,felhø,*pilβe,*i>e³ *e>ø²,*p>f¹ *lβ>lh³
+fog,*piŋe,FU,,,,foɡ,*piŋe,foɡ∅,foɡ∅,*piŋe,*i>o³ *e>∅²,*p>f¹ *ŋ>ɡ³
+fogoly,*piŋe ,U,,*(püŋe),,foɡoj,*piŋe,foɡoj∅,foɡoj∅,*piŋe0∅,*i>o³ *e>o³,*p>f¹ *ŋ>ɡ³ *0>j³
+fiú,*pojka,FU,,,,fiu,*pojka,fiu,fiu,*pojka,*o>∅³ *a>∅³,*p>f¹ *jk>0³
+bogyó,*pola,FU,,,,boɟo,*pola,boɟo,boɟo,*pola,*o>o³ *a>o²,*p>b¹ *l>ɟ³
+fos,*pućka ,FU,,*(paćka),,foʃ,*put͡ʃʲka,foʃ∅,foʃ∅,*put͡ʃʲka,*u>o³ *a>∅²,*p>f¹ *t͡ʃʲk>ʃ³
+facsar,*pućɜrɜ,FU,,,,fɒt͡ʃɒr,*put͡ʃʲɜrɜ,fɒt͡ʃɒr∅,fɒt͡ʃɒr∅,*put͡ʃʲɜrɜ,*u>ɒ³ *ɜ>ɒ³ *ɜ>∅²,*p>f¹ *t͡ʃʲ>t͡ʃ³ *r>r³
+fogy,*pučɜ,FU,,,,foɟ,*put͡ʃɜ,foɟ∅,foɟ∅,*put͡ʃɜ,*u>o³ *ɜ>∅²,*p>f¹ *t͡ʃ>ɟ³
+fut,*pukta,U,,,,fut,*pukta,fut∅,fut∅,*pukta,*u>u³ *a>∅²,*p>f¹ *kt>t³
+fan,*puna,FU,,,,fɒn,*puna,fɒn∅,fɒn∅,*puna,*u>ɒ³ *a>∅²,*p>f¹ *n>n³
+fon,*puna,U,,,,fon,*puna,fon∅,fon∅,*puna,*u>o³ *a>∅²,*p>f¹ *n>n³
+bonyolód,*puńa,FU,,,,boɲolod,*puɲa,boɲolod∅,boɲolod∅,*punʲa0∅0∅,*u>o³ *a>o³ *∅>o³,*p>b¹ *nʲ>ɲ³ *0>l³ *0>d³
+fúr,*pura,U,,,,fur,*pura,fur∅,fur∅,*pura,*u>u³ *a>∅²,*p>f¹ *r>r³
+far,*purɜ,Ug,,,,fɒr,*purɜ,fɒr∅,fɒr∅,*purɜ,*u>ɒ³ *ɜ>∅²,*p>f¹ *r>r³
+foszl,*puśɜ,Ug,,,,fosl,*puʃʲɜ,fosl∅,fosl∅,*puʃʲɜ,*u>o³ *ɜ>∅²,*p>f¹ *ʃʲ>sl³
+fa,*puwɜ,U,,,,fɒ,*puβɜ,fɒ,fɒ0∅,*puβɜ,*u>ɒ³ *ɜ>∅³,*p>f¹ *β>0³
+fúj,*puwɜ ,U,,*(puγɜ-),,fuj,*puβɜ,fuj∅,fuj∅,*puβɜ,*u>u³ *ɜ>∅²,*p>f¹ *β>j³
+fúl,*puwɜ ,FU,,*(puŋɜ-),,ful,*puβɜ,ful∅,ful∅,*puβɜ,*u>u³ *ɜ>∅²,*p>f¹ *β>l³
+fágy,*pȣčɜ,FU,,,,faɟ,*pȣt͡ʃɜ,faɟ∅,faɟ∅,*pȣt͡ʃɜ,*ȣ>a³ *ɜ>∅²,*p>f¹ *t͡ʃ>ɟ³
+fú,*pȣjɜ,U,,,,fu,*pȣjɜ,fu,fu0∅,*pȣjɜ,*ȣ>u³ *ɜ>∅³,*p>f¹ *j>0³
+fing,*pȣnɜ,U,,,,finɡ,*pȣnɜ,finɡ∅,finɡ∅,*pȣnɜ,*ȣ>i³ *ɜ>∅²,*p>f¹ *n>nɡ³
+forog,*pȣrkɜ ,FU,,*(pȣrγɜ-),,foroɡ,*pȣrkɜ,foroɡ∅,foroɡ∅,*pȣrkɜ0∅,*ȣ>o³ *ɜ>o³,*p>f¹ *rk>r³ *0>ɡ³
+fáz,*pȣtɜ,Ug,,,,faz,*pȣtɜ,faz∅,faz∅,*pȣtɜ,*ȣ>a³ *ɜ>∅²,*p>f¹ *t>z³
+fejsze,*p¨jćɜ,U,,,,fɛjsɛ,*p¨jt͡ʃʲɜ,fɛjsɛ,fɛjsɛ,*p¨jt͡ʃʲɜ,*¨>ɛ³ *ɜ>ɛ²,*p>f¹ *jt͡ʃʲ>js³
+fenyő,*p¨nɜ,FU,,,,fɛɲø,*p¨nɜ,fɛɲø,fɛɲø,*p¨nɜ,*¨>ɛ³ *ɜ>ø²,*p>f¹ *n>ɲ³
+rés,*raćɜ,FU,,,,reʃ,*rat͡ʃʲɜ,reʃ∅,reʃ∅,*rat͡ʃʲɜ,*a>e³ *ɜ>∅²,*r>r¹ *t͡ʃʲ>ʃ³
+rokon,*rakka,FU,,,,rokon,*rakka,rokon∅,rokon∅,*rakka0∅,*a>o³ *a>o³,*r>r¹ *kk>k³ *0>n³
+rész,*räćɜ,FU,,,,res,*ræt͡ʃʲɜ,res∅,res∅,*ræt͡ʃʲɜ,*æ>e³ *ɜ>∅²,*r>r¹ *t͡ʃʲ>s³
+rejt,*reŋɜ ,Ug,,*(rekɜ),,rɛjt,*reŋɜ,rɛjt∅,rɛjt∅,*reŋɜ,*e>ɛ³ *ɜ>∅²,*r>r¹ *ŋ>jt³
+ravasz,*repä ,FU,,*(repä-ćɜ),,rɒvɒs,*repæ,rɒvɒs∅,rɒvɒs∅,*repæ0∅,*e>ɒ³ *æ>ɒ³,*r>r¹ *p>v³ *0>s³
+ró,*rokɜ ,FU,,"*(roγɜ-, rowɜ-)",", rowɜ-)",ro,*rokɜ,ro,ro0∅,*rokɜ,*o>o³ *ɜ>∅³,*r>r¹ *k>0³
+áll,*salkɜ,FU,,,,all,*salkɜ,all∅,0all∅,*salkɜ,*a>a¹ *ɜ>∅²,*s>0¹ *lk>ll³
+év,*säje,U,,,,ev,*sæje,ev∅,0ev∅,*sæje,*æ>e¹ *e>∅²,*s>0¹ *j>v³
+ell,*säle ,U,,*(sälke-),,ɛll,*sæle,ɛll∅,0ɛll∅,*sæle,*æ>ɛ¹ *e>∅²,*s>0¹ *l>ll³
+ég,*säŋe,FU,,,,eɡ,*sæŋe,eɡ∅,0eɡ∅,*sæŋe,*æ>e¹ *e>∅²,*s>0¹ *ŋ>ɡ³
+epe,*säppä,FU,,,,ɛpɛ,*sæppæ,ɛpɛ,0ɛpɛ,*sæppæ,*æ>ɛ¹ *æ>ɛ²,*s>0¹ *pp>p³
+ér,*särɜ,FU,,,,er,*særɜ,er∅,0er∅,*særɜ,*æ>e¹ *ɜ>∅²,*s>0¹ *r>r³
+őn,*säwnä,FU,,,,øn,*sæβnæ,øn∅,0øn∅,*sæβnæ,*æ>ø¹ *æ>∅²,*s>0¹ *βn>n³
+ëv,*sewe ,FU,,*(seγe-),,ev,*seβe,ev∅,0ev∅,*seβe,*e>e¹ *e>∅²,*s>0¹ *β>v³
+ín,*sɤne ,U,,*(sōne),,in,*sɤne,in∅,0in∅,*sɤne,*ɤ>i¹ *e>∅²,*s>0¹ *n>n³
+ősz,*sikśe ,FU,,*(sükśe),,øs,*sikʃʲe,øs∅,0øs∅,*sikʃʲe,*i>ø¹ *e>∅²,*s>0¹ *kʃʲ>s³
+öl,*sile ,FU,,*(süle),,øl,*sile,øl∅,0øl∅,*sile,*i>ø¹ *e>∅²,*s>0¹ *l>l³
+ujj,*soja,U,,,,ujj,*soja,ujj∅,0ujj∅,*soja,*o>u¹ *a>∅²,*s>0¹ *j>jj³
+avat,*soŋe,U,,,,ɒvɒt,*soŋe,ɒvɒt∅,0ɒvɒt∅,*soŋe0∅,*o>ɒ¹ *e>ɒ³,*s>0¹ *ŋ>v³ *0>t³
+agg,*soŋkɜ ,FU,,*(soŋɜ),,ɒɡɡ,*soŋkɜ,ɒɡɡ∅,0ɒɡɡ∅,*soŋkɜ,*o>ɒ¹ *ɜ>∅²,*s>0¹ *ŋk>ɡɡ³
+arasz,*sorɜ,FU,,,", sorɜ-śɜ",ɒrɒs,*sorɜ,ɒrɒs∅,0ɒrɒs∅,*sorɜ0∅,*o>ɒ¹ *ɜ>ɒ³,*s>0¹ *r>r³ *0>s³
+ujj,*suδ'ɜ,U,,,,ujj,*suðʲɜ,ujj∅,0ujj∅,*suðʲɜ,*u>u¹ *ɜ>∅²,*s>0¹ *ðʲ>jj³
+olvad,*sula,FU,,,,olvɒd,*sula,olvɒd∅,0olvɒd∅,*sula0∅,*u>o¹ *a>ɒ³,*s>0¹ *l>lv³ *0>d³
+ő,*s¨,FU,,,,ø,*s¨,ø,0ø,*s¨,*¨>ø¹,*s>0¹
+szaka,*śakkɜ ,Ug,éjszaka,*(śukkɜ),,ejsɒkɒ,*ʃʲakkɜ,ejsɒkɒ,0ejsɒkɒ,*ʃʲakkɜ0∅,*a>e¹ *ɜ>ɒ³ *∅>ɒ²,*ʃʲ>0¹ *kk>js³ *0>k³
+szil,*śala,FU,,,,sil,*ʃʲala,sil∅,sil∅,*ʃʲala,*a>i³ *a>∅²,*ʃʲ>s¹ *l>l³
+szilánk,*śale,FU,,,,silank,*ʃʲale,silank∅,silank∅,*ʃʲale0∅,*a>i³ *e>a³,*ʃʲ>s¹ *l>l³ *0>nk³
+szál,*śalkɜ,FU,,,,sal,*ʃʲalkɜ,sal∅,sal∅,*ʃʲalkɜ,*a>a³ *ɜ>∅²,*ʃʲ>s¹ *lk>l³
+szalag,*śalɜ ,U,,"*(śaδa), salɜ",", salɜ",sɒlɒɡ,*ʃʲalɜ,sɒlɒɡ∅,sɒlɒɡ∅,*ʃʲalɜ0∅,*a>ɒ³ *ɜ>ɒ³,*ʃʲ>s¹ *l>l³ *0>ɡ³
+száldok,*śaĺɜ,Ug,,,,saldok,*ʃʲaʎɜ,saldok∅,saldok∅,*ʃʲalʲɜ0∅,*a>a³ *ɜ>o³,*ʃʲ>s¹ *lʲ>ld³ *0>k³
+szürügy,*śarɜ,U,,,,syryɟ,*ʃʲarɜ,syryɟ∅,syryɟ∅,*ʃʲarɜ0∅,*a>y³ *ɜ>y³,*ʃʲ>s¹ *r>r³ *0>ɟ³
+szar,*śarɜ ,FU,,*(ćarɜ),,sɒr,*ʃʲarɜ,sɒr∅,sɒr∅,*ʃʲarɜ,*a>ɒ³ *ɜ>∅²,*ʃʲ>s¹ *r>r³
+szárad,*śarɜ,FU,,,,sarɒd,*ʃʲarɜ,sarɒd∅,sarɒd∅,*ʃʲarɜ0∅,*a>a³ *ɜ>ɒ³,*ʃʲ>s¹ *r>r³ *0>d³
+száz,*śata,FU,,,,saz,*ʃʲata,saz∅,saz∅,*ʃʲata,*a>a³ *a>∅²,*ʃʲ>s¹ *t>z³
+szel,*śälä ,FU,,*(ćälä-),,sɛl,*ʃʲælæ,sɛl∅,sɛl∅,*ʃʲælæ,*æ>ɛ³ *æ>∅²,*ʃʲ>s¹ *l>l³
+sző,*śäŋe,FU, ~ szöv,,,sø,*ʃʲæŋe,sø,sø0∅,*ʃʲæŋe,*æ>ø³ *e>∅³,*ʃʲ>s¹ *ŋ>0³
+segg,*śäŋkɜ,FU,,,,ʃɛɡɡ,*ʃʲæŋkɜ,ʃɛɡɡ∅,ʃɛɡɡ∅,*ʃʲæŋkɜ,*æ>ɛ³ *ɜ>∅²,*ʃʲ>ʃ¹ *ŋk>ɡɡ³
+szër,*śerɜ,U,,,,ser,*ʃʲerɜ,ser∅,ser∅,*ʃʲerɜ,*e>e³ *ɜ>∅²,*ʃʲ>s¹ *r>r³
+szív,*śiδä ,U,,"*(śiδä-mɜ), śüδä, śüδä-mɜ",", śüδä, śüδä-mɜ",siv,*ʃʲiðæ,siv∅,siv∅,*ʃʲiðæ,*i>i³ *æ>∅²,*ʃʲ>s¹ *ð>v³
+sün,*śijele,FU,,,,ʃyn,*ʃʲijele,ʃyn∅,ʃyn∅0∅,*ʃʲijele,*i>y³ *e>∅³ *e>∅²,*ʃʲ>ʃ¹ *j>n³ *l>0³
+szëm,*śilmä,U,,,,sem,*ʃʲilmæ,sem∅,sem∅,*ʃʲilmæ,*i>e³ *æ>∅²,*ʃʲ>s¹ *lm>m³
+zaj,*śoje,FU,,,,zɒj,*ʃʲoje,zɒj∅,zɒj∅,*ʃʲoje,*o>ɒ³ *e>∅²,*ʃʲ>z¹ *j>j³
+szomjú,*śomɜ,FU,,,,somju,*ʃʲomɜ,somju,somju,*ʃʲomɜ,*o>o³ *ɜ>u²,*ʃʲ>s¹ *m>mj³
+szarv,*śorwa,FU,,,,sɒrv,*ʃʲorβa,sɒrv∅,sɒrv∅,*ʃʲorβa,*o>ɒ³ *a>∅²,*ʃʲ>s¹ *rβ>rv³
+szorul,*śorɜ,FU,,,,sorul,*ʃʲorɜ,sorul∅,sorul∅,*ʃʲorɜ0∅,*o>o³ *ɜ>u³,*ʃʲ>s¹ *r>r³ *0>l³
+szúr,*śurwa,FU,,,,sur,*ʃʲurβa,sur∅,sur∅,*ʃʲurβa,*u>u³ *a>∅²,*ʃʲ>s¹ *rβ>r³
+szurok,*śurɜ,FU,,,,surok,*ʃʲurɜ,surok∅,surok∅,*ʃʲurɜ0∅,*u>u³ *ɜ>o³,*ʃʲ>s¹ *r>r³ *0>k³
+száj,*śuwe,U,,,,saj,*ʃʲuβe,saj∅,saj∅,*ʃʲuβe,*u>a³ *e>∅²,*ʃʲ>s¹ *β>j³
+ér,*šärɜ,FU,,,,er,*ʃærɜ,er∅,0er∅,*ʃærɜ,*æ>e¹ *ɜ>∅²,*ʃ>0¹ *r>r³
+ér,*šerɜ ,FU,,*(šärɜ),,er,*ʃerɜ,er∅,0er∅,*ʃerɜ,*e>e¹ *ɜ>∅²,*ʃ>0¹ *r>r³
+egér,*šiŋere,FU,,,,ɛɡer,*ʃiŋere,ɛɡer∅,0ɛɡer∅,*ʃiŋere,*i>ɛ¹ *e>e³ *e>∅²,*ʃ>0¹ *ŋ>ɡ³ *r>r³
+apad,*šoppɜ ,FU,,*(šappɜ-),,ɒpɒd,*ʃoppɜ,ɒpɒd∅,0ɒpɒd∅,*ʃoppɜ0∅,*o>ɒ¹ *ɜ>ɒ³,*ʃ>0¹ *pp>p³ *0>d³
+irt,*šurɜ,U,,,,irt,*ʃurɜ,irt∅,0irt∅,*ʃurɜ,*u>i¹ *ɜ>∅²,*ʃ>0¹ *r>rt³
+tapod,*tappa,U,,,,tɒpod,*tappa,tɒpod∅,tɒpod∅,*tappa0∅,*a>ɒ³ *a>o³,*t>t¹ *pp>p³ *0>d³
+daru,*tarɜkɜ ,FU,,*(tarkɜ),,dɒru,*tarɜkɜ,dɒru,dɒru0∅,*tarɜkɜ,*a>ɒ³ *ɜ>u³ *ɜ>∅³,*t>d¹ *r>r³ *k>0³
+té,*tä,U,: tétova,,", te, ti",te,*tæ,te,te,*tæ,*æ>e²,*t>t¹
+tetű,*täje,FU,,,,tɛty,*tæje,tɛty,tɛty,*tæje,*æ>ɛ³ *e>y²,*t>t¹ *j>t³
+tél,*tälwä,FU,,,,tel,*tælβæ,tel∅,tel∅,*tælβæ,*æ>e³ *æ>∅²,*t>t¹ *lβ>l³
+tele,*täwδe ,FU,,*(tälkɜ),,tɛlɛ,*tæβðe,tɛlɛ,tɛlɛ,*tæβðe,*æ>ɛ³ *e>ɛ²,*t>t¹ *βð>l³
+tüdő,*täwe,U,,,,tydø,*tæβe,tydø,tydø,*tæβe,*æ>y³ *e>ø²,*t>t¹ *β>d³
+tëv,*teke,FU," (të, tësz)",,,tev,*teke,tev∅,tev∅,*teke,*e>e³ *e>∅²,*t>t¹ *k>v³
+tűz,*tekɜ,FU,,,,tyz,*tekɜ,tyz∅,tyz∅,*tekɜ,*e>y³ *ɜ>∅²,*t>t¹ *k>z³
+töm,*temɜ,FU,,,,tøm,*temɜ,tøm∅,tøm∅,*temɜ,*e>ø³ *ɜ>∅²,*t>t¹ *m>m³
+több,*teppɜ,FU,,,,tøbb,*teppɜ,tøbb∅,tøbb∅,*teppɜ,*e>ø³ *ɜ>∅²,*t>t¹ *pp>bb³
+tőr,*terä,FU,,,,tør,*teræ,tør∅,tør∅,*teræ,*e>ø³ *æ>∅²,*t>t¹ *r>r³
+tér,*terɜ,FU,,,,ter,*terɜ,ter∅,ter∅,*terɜ,*e>e³ *ɜ>∅²,*t>t¹ *r>r³
+tő,*tiŋe ,FU,,*(tüŋe),,tø,*tiŋe,tø,tø0∅,*tiŋe,*i>ø³ *e>∅³,*t>t¹ *ŋ>0³
+tova,*to,U,,,,tovɒ,*to,tovɒ,tovɒ,*to0∅,*o>o³ *∅>ɒ²,*t>t¹ *0>v³
+tat,*totke,U, : tathal,,,tɒt,*totke,tɒt∅,tɒt∅,*totke,*o>ɒ³ *e>∅²,*t>t¹ *tk>t³
+tavasz,*towkɜ,FU,,,,tɒvɒs,*toβkɜ,tɒvɒs∅,tɒvɒs∅,*toβkɜ0∅,*o>ɒ³ *ɜ>ɒ³,*t>t¹ *βk>v³ *0>s³
+tó,*towɜ,U,,,,to,*toβɜ,to,to0∅,*toβɜ,*o>o³ *ɜ>∅³,*t>t¹ *β>0³
+tőgy,*tuδ'ka,FU,,,", tuδ'ka-mɜ",tøɟ,*tuðʲka,tøɟ∅,tøɟ∅,*tuðʲka,*u>ø³ *a>∅²,*t>t¹ *ðʲk>ɟ³
+tat,*tuktɜ,U,,,,tɒt,*tuktɜ,tɒt∅,tɒt∅,*tuktɜ,*u>ɒ³ *ɜ>∅²,*t>t¹ *kt>t³
+toll,*tulka,U,,,,toll,*tulka,toll∅,toll∅,*tulka,*u>o³ *a>∅²,*t>t¹ *lk>ll³
+tud,*tumte,U,,,,tud,*tumte,tud∅,tud∅,*tumte,*u>u³ *e>∅²,*t>t¹ *mt>d³
+dug,*tuŋke,FU,,,,duɡ,*tuŋke,duɡ∅,duɡ∅,*tuŋke,*u>u³ *e>∅²,*t>d¹ *ŋk>ɡ³
+tarja,*turja,FU,,,,tɒrjɒ,*turja,tɒrjɒ,tɒrjɒ,*turja,*u>ɒ³ *a>ɒ²,*t>t¹ *rj>rj³
+të,*t¨,U,,,,te,*t¨,te,te,*t¨,*¨>e²,*t>t¹
+ti,*t¨,U,,,,ti,*t¨,ti,ti,*t¨,*¨>i²,*t>t¹
+úsz,*uje,U,,,", oje-",us,*uje,us∅,0us∅,*0uje,*u>u¹ *e>∅²,*0>0¹ *j>s³
+út,*utka,U,,,,ut,*utka,ut∅,0ut∅,*0utka,*u>u¹ *a>∅²,*0>0¹ *tk>t³
+vessző,*waćɜ,FU,,,,vɛʃsø,*βat͡ʃʲɜ,vɛʃsø,vɛʃsø,*βat͡ʃʲɜ,*a>ɛ³ *ɜ>ø²,*β>v¹ *t͡ʃʲ>ʃs³
+vás,*wačɜ,FU,,,,vaʃ,*βat͡ʃɜ,vaʃ∅,vaʃ∅,*βat͡ʃɜ,*a>a³ *ɜ>∅²,*β>v¹ *t͡ʃ>ʃ³
+völgy,*waδ'kɜ,U,,,,vølɟ,*βaðʲkɜ,vølɟ∅,vølɟ∅,*βaðʲkɜ,*a>ø³ *ɜ>∅²,*β>v¹ *ðʲk>lɟ³
+vejsze,*waja,FU,,,,vɛjsɛ,*βaja,vɛjsɛ,vɛjsɛ,*βaja,*a>ɛ³ *a>ɛ²,*β>v¹ *j>js³
+vöcsök,*wajće,FU,,,,vøt͡ʃøk,*βajt͡ʃʲe,vøt͡ʃøk∅,vøt͡ʃøk∅,*βajt͡ʃʲe0∅,*a>ø³ *e>ø³,*β>v¹ *jt͡ʃʲ>t͡ʃ³ *0>k³
+vál,*walka,FU,,,,val,*βalka,val∅,val∅,*βalka,*a>a³ *a>∅²,*β>v¹ *lk>l³
+villám,*walkɜ,FW,,,,villam,*βalkɜ,villam∅,villam∅,*βalkɜ0∅,*a>i³ *ɜ>a³,*β>v¹ *lk>ll³ *0>m³
+villám,*waĺɜ,FP,,,,villam,*βaʎɜ,villam∅,villam∅,*βalʲɜ0∅,*a>i³ *ɜ>a³,*β>v¹ *lʲ>ll³ *0>m³
+vad,*wamta,FU,,,,vɒd,*βamta,vɒd∅,vɒd∅,*βamta,*a>ɒ³ *a>∅²,*β>v¹ *mt>d³
+vág,*waŋɜ,Ug,,,", waŋkɜ-",vaɡ,*βaŋɜ,vaɡ∅,vaɡ∅,*βaŋɜ,*a>a³ *ɜ>∅²,*β>v¹ *ŋ>ɡ³
+varjú,*warɜ,U,,,,vɒrju,*βarɜ,vɒrju,vɒrju,*βarɜ,*a>ɒ³ *ɜ>u²,*β>v¹ *r>rj³
+virrad,*warɜ,FU,,,,virrɒd,*βarɜ,virrɒd∅,virrɒd∅,*βarɜ0∅,*a>i³ *ɜ>ɒ³,*β>v¹ *r>rr³ *0>d³
+vas,*waśke,U,,,,vɒʃ,*βaʃʲke,vɒʃ∅,vɒʃ∅,*βaʃʲke,*a>ɒ³ *e>∅²,*β>v¹ *ʃʲk>ʃ³
+véd,*wäntɜ,FU,,,,ved,*βæntɜ,ved∅,ved∅,*βæntɜ,*æ>e³ *ɜ>∅²,*β>v¹ *nt>d³
+vés,*wäŋćɜ,FU,,,,veʃ,*βæŋt͡ʃʲɜ,veʃ∅,veʃ∅,*βæŋt͡ʃʲɜ,*æ>e³ *ɜ>∅²,*β>v¹ *ŋt͡ʃʲ>ʃ³
+vő,*wäŋe,U,,,,vø,*βæŋe,vø,vø0∅,*βæŋe,*æ>ø³ *e>∅³,*β>v¹ *ŋ>0³
+öl,*weδɜ,FU,,,,øl,*βeðɜ,øl∅,0øl∅,*βeðɜ,*e>ø¹ *ɜ>∅²,*β>0¹ *ð>l³
+vékony,*wekkɜ,FU,,,,vekoɲ,*βekkɜ,vekoɲ∅,vekoɲ∅,*βekkɜ0∅,*e>e³ *ɜ>o³,*β>v¹ *kk>k³ *0>ɲ³
+vezet,*wetä,FU,,,,vɛzɛt,*βetæ,vɛzɛt∅,vɛzɛt∅,*βetæ0∅,*e>ɛ³ *æ>ɛ³,*β>v¹ *t>z³ *0>t³
+víz,*wete,U,,,,viz,*βete,viz∅,viz∅,*βete,*e>i³ *e>∅²,*β>v¹ *t>z³
+vigyáz,*wića,FU,,,,viɟaz,*βit͡ʃʲa,viɟaz∅,viɟaz∅,*βit͡ʃʲa0∅,*i>i³ *a>a³,*β>v¹ *t͡ʃʲ>ɟ³ *0>z³
+velő,*wiδɜ ,FU,,*(wiδɜ-mɜ),,vɛlø,*βiðɜ,vɛlø,vɛlø,*βiðɜ,*i>ɛ³ *ɜ>ø²,*β>v¹ *ð>l³
+viv,*wiγe,FU,,,,viv,*βiɣe,viv∅,viv∅,*βiɣe,*i>i³ *e>∅²,*β>v¹ *ɣ>v³
+öv,*wiŋä ,FU,,*(wüŋä),,øv,*βiŋæ,øv∅,0øv∅,*βiŋæ,*i>ø¹ *æ>∅²,*β>0¹ *ŋ>v³
+vér,*wire,FU,,,,ver,*βire,ver∅,ver∅,*βire,*i>e³ *e>∅²,*β>v¹ *r>r³
+öt,*witte,FU,,,,øt,*βitte,øt∅,0øt∅,*βitte,*i>ø¹ *e>∅²,*β>0¹ *tt>t³
+vaj,*woje,FU,,,,vɒj,*βoje,vɒj∅,vɒj∅,*βoje,*o>ɒ³ *e>∅²,*β>v¹ *j>j³
+vív,*woje,FU,,,,viv,*βoje,viv∅,viv∅,*βoje,*o>i³ *e>∅²,*β>v¹ *j>v³
+vol,*wole,FU,,,,vol,*βole,vol∅,vol∅,*βole,*o>o³ *e>∅²,*β>v¹ *l>l³
+váll,*wolka,FU,,,,vall,*βolka,vall∅,vall∅,*βolka,*o>a³ *a>∅²,*β>v¹ *lk>ll³
+ón,*wolnɜ,FU,,,,on,*βolnɜ,on∅,0on∅,*βolnɜ,*o>o¹ *ɜ>∅²,*β>0¹ *ln>n³
+varr,*workɜ,FU,,,,vɒrr,*βorkɜ,vɒrr∅,vɒrr∅,*βorkɜ,*o>ɒ³ *ɜ>∅²,*β>v¹ *rk>rr³
+új,*wuδ'e,FU,,,,uj,*βuðʲe,uj∅,0uj∅,*βuðʲe,*u>u¹ *e>∅²,*β>0¹ *ðʲ>j³
+ásít,*ȣćɜ,FU,,,,aʃit,*ȣt͡ʃʲɜ,aʃit∅,0aʃit∅,*0ȣt͡ʃʲɜ0∅,*ȣ>a¹ *ɜ>i³,*0>0¹ *t͡ʃʲ>ʃ³ *0>t³
+ë,*¨,FU,?,,,e,*¨,e,0e,*0¨,*¨>e¹,*0>0¹
+utál,*aktɜ,Ug,,,,utal,*aktɜ,utal∅,0utal∅,*0aktɜ0∅,*a>u¹ *ɜ>a³,*0>0¹ *kt>t³ *0>l³
+alom,*alama  ,Ug,,*(alɜ-mɜ),,ɒlom,*alama,ɒlom∅,0ɒlom∅,*0alama,*a>ɒ¹ *a>o³ *a>∅²,*0>0¹ *l>l³ *m>m³
+olt,*alɜ ,Ug,,*(alɜ-ttɜ-),,olt,*alɜ,olt∅,0olt∅,*0alɜ,*a>o¹ *ɜ>∅²,*0>0¹ *l>lt³
+ágyék,*ańćɜ,Ug,,,,aɟek,*aɲt͡ʃʲɜ,aɟek∅,0aɟek∅,*0anʲt͡ʃʲɜ0∅,*a>a¹ *ɜ>e³,*0>0¹ *nʲt͡ʃʲ>ɟ³ *0>k³
+ara,*arɜ ,Ug,,*(arwa),,ɒrɒ,*arɜ,ɒrɒ,0ɒrɒ,*0arɜ,*a>ɒ¹ *ɜ>ɒ²,*0>0¹ *r>r³
+iránt,*arɜ ,Ug,,*(urɜ),,irant,*arɜ,irant∅,0irant∅,*0arɜ0∅,*a>i¹ *ɜ>a³,*0>0¹ *r>r³ *0>nt³
+i,*äjɜ,Ug,: ifjú,,,i,*æjɜ,i,0i0∅,*0æjɜ,*æ>i¹ *ɜ>∅³,*0>0¹ *j>0³
+Erdély,*älɜ ,Ug,,"*(äl-mɜ, älɜ-mɜ)",", älɜ-mɜ)",ɛrdej,*ælɜ,ɛrdej∅,0ɛrdej∅,*0ælɜ0∅,*æ>ɛ¹ *ɜ>e³,*0>0¹ *l>rd³ *0>j³
+ëb,*ämpɜ  ,Ug,,*(empɜ),,eb,*æmpɜ,eb∅,0eb∅,*0æmpɜ,*æ>e¹ *ɜ>∅²,*0>0¹ *mp>b³
+epër,*äppɜrɜkɜ,Ug,,,,ɛper,*æppɜrɜkɜ,ɛper∅,0ɛper∅0∅,*0æppɜrɜkɜ,*æ>ɛ¹ *ɜ>e³ *ɜ>∅³ *ɜ>∅²,*0>0¹ *pp>p³ *r>r³ *k>0³
+edz,*ättɜ  ,Ug,,*(ätɜ-),,ɛd͡z,*ættɜ,ɛd͡z∅,0ɛd͡z∅,*0ættɜ,*æ>ɛ¹ *ɜ>∅²,*0>0¹ *tt>d͡z³
+csókol,*ćukkɜ ,Ug,,*(ćukkɜ-lɜ-),,t͡ʃokol,*t͡ʃʲukkɜ,t͡ʃokol∅,t͡ʃokol∅,*t͡ʃʲukkɜ0∅,*u>o³ *ɜ>o³,*t͡ʃʲ>t͡ʃ³ *kk>k³ *0>l³
+süpped,*čeppɜ,Ug,,,,ʃyppɛd,*t͡ʃeppɜ,ʃyppɛd∅,ʃyppɛd∅,*t͡ʃeppɜ0∅,*e>y³ *ɜ>ɛ³,*t͡ʃ>ʃ¹ *pp>pp³ *0>d³
+sötét,*čettɜ,Ug,,,,ʃøtet,*t͡ʃettɜ,ʃøtet∅,ʃøtet∅,*t͡ʃettɜ0∅,*e>ø³ *ɜ>e³,*t͡ʃ>ʃ¹ *tt>t³ *0>t³
+süt,*čittɜ,Ug,,,,ʃyt,*t͡ʃittɜ,ʃyt∅,ʃyt∅,*t͡ʃittɜ,*i>y³ *ɜ>∅²,*t͡ʃ>ʃ¹ *tt>t³
+arany,*ϑarańa,Ug,,,", sarańa",ɒrɒɲ,*θaraɲa,ɒrɒɲ∅,0ɒrɒɲ∅,*θaranʲa,*a>ɒ¹ *a>ɒ³ *a>∅²,*θ>0¹ *r>r³ *nʲ>ɲ³
+ár,*ϑarɜ,Ug,,,,ar,*θarɜ,ar∅,0ar∅,*θarɜ,*a>a¹ *ɜ>∅²,*θ>0¹ *r>r³
+asz,*ϑasɜ,Ug,,,,ɒs,*θasɜ,ɒs∅,0ɒs∅,*θasɜ,*a>ɒ¹ *ɜ>∅²,*θ>0¹ *s>s³
+hét,*ϑäptɜ,Ug,,,", säptɜ",het,*θæptɜ,het∅,het∅,*θæptɜ,*æ>e³ *ɜ>∅²,*θ>h¹ *pt>t³
+áz,*ϑȣćɜ,Ug,,,,az,*θȣt͡ʃʲɜ,az∅,0az∅,*θȣt͡ʃʲɜ,*ȣ>a¹ *ɜ>∅²,*θ>0¹ *t͡ʃʲ>z³
+akad,*ϑȣkkɜ,Ug,,,,ɒkɒd,*θȣkkɜ,ɒkɒd∅,0ɒkɒd∅,*θȣkkɜ0∅,*ȣ>ɒ¹ *ɜ>ɒ³,*θ>0¹ *kk>k³ *0>d³
+ígér,*eŋkɜrɜ,Ug,,,,iɡer,*eŋkɜrɜ,iɡer∅,0iɡer∅,*0eŋkɜrɜ,*e>i¹ *ɜ>e³ *ɜ>∅²,*0>0¹ *ŋk>ɡ³ *r>r³
+üsző,*iśɜ  ,Ug,,*(eśɜ),,ysø,*iʃʲɜ,ysø,0ysø,*0iʃʲɜ,*i>y¹ *ɜ>ø²,*0>0¹ *ʃʲ>s³
+űz,*itɜ,Ug,,,,yz,*itɜ,yz∅,0yz∅,*0itɜ,*i>y¹ *ɜ>∅²,*0>0¹ *t>z³
+jó,*jomɜ  ,Ug,,*(jamɜ),,jo,*jomɜ,jo,jo0∅,*jomɜ,*o>o³ *ɜ>∅³,*j>j¹ *m>0³
+joh,*ju,Ug,,,,joh,*ju,joh∅,joh∅,*ju0∅,*u>o³,*j>j¹ *0>h³
+jut,*juktɜ,Ug,,,,jut,*juktɜ,jut∅,jut∅,*juktɜ,*u>u³ *ɜ>∅²,*j>j¹ *kt>t³
+gyak,*jȣkkɜ,Ug,,,,ɟɒk,*jȣkkɜ,ɟɒk∅,ɟɒk∅,*jȣkkɜ,*ȣ>ɒ³ *ɜ>∅²,*j>ɟ¹ *kk>k³
+gyalu,*jȣrɜ,Ug,,,,ɟɒlu,*jȣrɜ,ɟɒlu,ɟɒlu,*jȣrɜ,*ȣ>ɒ³ *ɜ>u²,*j>ɟ¹ *r>l³
+ját,*jȣttɜ,Ug,,,,jat,*jȣttɜ,jat∅,jat∅,*jȣttɜ,*ȣ>a³ *ɜ>∅²,*j>j¹ *tt>t³
+gyökér,*j¨kkɜrɜ,Ug,,,,ɟøker,*j¨kkɜrɜ,ɟøker∅,ɟøker∅,*j¨kkɜrɜ,*¨>ø³ *ɜ>e³ *ɜ>∅²,*j>ɟ¹ *kk>k³ *r>r³
+íz,*j¨tɜ,Ug,,,,iz,*j¨tɜ,iz∅,0iz∅,*j¨tɜ,*¨>i¹ *ɜ>∅²,*j>0¹ *t>z³
+hasad,*kaćɜ,Ug,,,,hɒʃɒd,*kat͡ʃʲɜ,hɒʃɒd∅,hɒʃɒd∅,*kat͡ʃʲɜ0∅,*a>ɒ³ *ɜ>ɒ³,*k>h¹ *t͡ʃʲ>ʃ³ *0>d³
+haj,*kajɜ,Ug,,,,hɒj,*kajɜ,hɒj∅,hɒj∅,*kajɜ,*a>ɒ³ *ɜ>∅²,*k>h¹ *j>j³
+hajol,*kajɜ,Ug,,,,hɒjol,*kajɜ,hɒjol∅,hɒjol∅,*kajɜ0∅,*a>ɒ³ *ɜ>o³,*k>h¹ *j>j³ *0>l³
+harkály,*karɜ,Ug,,,,hɒrkaj,*karɜ,hɒrkaj∅,hɒrkaj∅,*karɜ0∅,*a>ɒ³ *ɜ>a³,*k>h¹ *r>rk³ *0>j³
+híz,*katɜ,Ug,,,,hiz,*katɜ,hiz∅,hiz∅,*katɜ,*a>i³ *ɜ>∅²,*k>h¹ *t>z³
+keshed,*käńćɜ,Ug,,,", käćɜ",kɛʃhɛd,*kæɲt͡ʃʲɜ,kɛʃhɛd∅,kɛʃhɛd∅,*kænʲt͡ʃʲɜ0∅,*æ>ɛ³ *ɜ>ɛ³,*k>k¹ *nʲt͡ʃʲ>ʃh³ *0>d³
+kísér,*kećɜ,Ug,,,,kiʃer,*ket͡ʃʲɜ,kiʃer∅,kiʃer∅,*ket͡ʃʲɜ0∅,*e>i³ *ɜ>e³,*k>k¹ *t͡ʃʲ>ʃ³ *0>r³
+ki,*ki ,Ug,,"*(ki-mɜ), kü (kü-mɜ)",", kü (kü-mɜ)",ki,*ki,ki,ki,*ki,*i>i²,*k>k¹
+hattyú,*kottɜŋɜ,Ug,,,,hɒtcu,*kottɜŋɜ,hɒtcu,hɒtcu0∅,*kottɜŋɜ,*o>ɒ³ *ɜ>u³ *ɜ>∅³,*k>h¹ *tt>tc³ *ŋ>0³
+hoz,*kućɜ,Ug,,,,hoz,*kut͡ʃʲɜ,hoz∅,hoz∅,*kut͡ʃʲɜ,*u>o³ *ɜ>∅²,*k>h¹ *t͡ʃʲ>z³
+hagyap,*kuδ'ɜ ,Ug,† ,*(kuĺɜ-),,hɒɟɒp,*kuðʲɜ,hɒɟɒp∅,hɒɟɒp∅,*kuðʲɜ0∅,*u>ɒ³ *ɜ>ɒ³,*k>h¹ *ðʲ>ɟ³ *0>p³
+hód,*kumtɜ  ,Ug,,*(kuntɜ),,hod,*kumtɜ,hod∅,hod∅,*kumtɜ,*u>o³ *ɜ>∅²,*k>h¹ *mt>d³
+húz,*kupɜtɜ,Ug,,,,huz,*kupɜtɜ,huz∅,huz∅0∅,*kupɜtɜ,*u>u³ *ɜ>∅³ *ɜ>∅²,*k>h¹ *p>z³ *t>0³
+hagy,*kȣńćɜ,Ug,: hagymáz,,,hɒɟ,*kȣɲt͡ʃʲɜ,hɒɟ∅,hɒɟ∅,*kȣnʲt͡ʃʲɜ,*ȣ>ɒ³ *ɜ>∅²,*k>h¹ *nʲt͡ʃʲ>ɟ³
+kesered,*k¨ćɜ ,Ug,,*(k¨ćɜ-rɜ),,kɛʃɛrɛd,*k¨t͡ʃʲɜ,kɛʃɛrɛd∅,kɛʃɛrɛd∅,*k¨t͡ʃʲɜ0∅0∅,*¨>ɛ³ *ɜ>ɛ³ *∅>ɛ³,*k>k¹ *t͡ʃʲ>ʃ³ *0>r³ *0>d³
+köles,*k¨lɜ ,Ug,,"*(k¨lɜ-ćɜ), k¨lɜćɜ",", k¨lɜćɜ",kølɛʃ,*k¨lɜ,kølɛʃ∅,kølɛʃ∅,*k¨lɜ0∅,*¨>ø³ *ɜ>ɛ³,*k>k¹ *l>l³ *0>ʃ³
+kedv,*k¨ntɜ,Ug,,,,kɛdv,*k¨ntɜ,kɛdv∅,kɛdv∅,*k¨ntɜ,*¨>ɛ³ *ɜ>∅²,*k>k¹ *nt>dv³
+könnyű,*k¨nɜ,Ug,,,,kønɲy,*k¨nɜ,kønɲy,kønɲy,*k¨nɜ,*¨>ø³ *ɜ>y²,*k>k¹ *n>nɲ³
+köszörül,*k¨sɜ,Ug,,,,køsøryl,*k¨sɜ,køsøryl∅,køsøryl∅,*k¨sɜ0∅0∅,*¨>ø³ *ɜ>ø³ *∅>y³,*k>k¹ *s>s³ *0>r³ *0>l³
+les,*läćɜ,Ug,,,,lɛʃ,*læt͡ʃʲɜ,lɛʃ∅,lɛʃ∅,*læt͡ʃʲɜ,*æ>ɛ³ *ɜ>∅²,*l>l¹ *t͡ʃʲ>ʃ³
+ló,*luwɜ ,Ug,,*(luγǝ),,lo,*luβɜ,lo,lo0∅,*luβɜ,*u>o³ *ɜ>∅³,*l>l¹ *β>0³
+malát,*malkɜ,Ug,,,,mɒlat,*malkɜ,mɒlat∅,mɒlat∅,*malkɜ0∅,*a>ɒ³ *ɜ>a³,*m>m¹ *lk>l³ *0>t³
+magyar,*mańćɜ,Ug,,,,mɒɟɒr,*maɲt͡ʃʲɜ,mɒɟɒr∅,mɒɟɒr∅,*manʲt͡ʃʲɜ0∅,*a>ɒ³ *ɜ>ɒ³,*m>m¹ *nʲt͡ʃʲ>ɟ³ *0>r³
+mese,*mańćɜ,Ug,,,", maćɜ",mɛʃɛ,*maɲt͡ʃʲɜ,mɛʃɛ,mɛʃɛ,*manʲt͡ʃʲɜ,*a>ɛ³ *ɜ>ɛ²,*m>m¹ *nʲt͡ʃʲ>ʃ³
+márt,*marɜ,Ug,,,,mart,*marɜ,mart∅,mart∅,*marɜ,*a>a³ *ɜ>∅²,*m>m¹ *r>rt³
+meleg,*mälɜ,Ug,,,,mɛlɛɡ,*mælɜ,mɛlɛɡ∅,mɛlɛɡ∅,*mælɜ0∅,*æ>ɛ³ *ɜ>ɛ³,*m>m¹ *l>l³ *0>ɡ³
+mer,*märɜ,Ug,,,,mɛr,*mærɜ,mɛr∅,mɛr∅,*mærɜ,*æ>ɛ³ *ɜ>∅²,*m>m¹ *r>r³
+mer,*märɜ,Ug,,,,mɛr,*mærɜ,mɛr∅,mɛr∅,*mærɜ,*æ>ɛ³ *ɜ>∅²,*m>m¹ *r>r³
+meztelen,*mećɜ,Ug,,,", meśɜ-",mɛztɛlɛn,*met͡ʃʲɜ,mɛztɛlɛn∅,mɛztɛlɛn∅,*met͡ʃʲɜ0∅0∅,*e>ɛ³ *ɜ>ɛ³ *∅>ɛ³,*m>m¹ *t͡ʃʲ>zt³ *0>l³ *0>n³
+mély,*melɜ,Ug,,,,mej,*melɜ,mej∅,mej∅,*melɜ,*e>e³ *ɜ>∅²,*m>m¹ *l>j³
+mënyül,*menɜ,Ug,: kimënyül,,,meɲyl,*menɜ,meɲyl∅,meɲyl∅,*menɜ0∅,*e>e³ *ɜ>y³,*m>m¹ *n>ɲ³ *0>l³
+mered,*merɜ  ,Ug,,*(märɜ-),,mɛrɛd,*merɜ,mɛrɛd∅,mɛrɛd∅,*merɜ0∅,*e>ɛ³ *ɜ>ɛ³,*m>m¹ *r>r³ *0>d³
+marok,*mȣrɜ,Ug,,,,mɒrok,*mȣrɜ,mɒrok∅,mɒrok∅,*mȣrɜ0∅,*ȣ>ɒ³ *ɜ>o³,*m>m¹ *r>r³ *0>k³
+nevet,*m¨kɜ  ,Ug,,*(m¨γɜ-),,nɛvɛt,*m¨kɜ,nɛvɛt∅,nɛvɛt∅,*m¨kɜ0∅,*¨>ɛ³ *ɜ>ɛ³,*m>n¹ *k>v³ *0>t³
+méltó,*m¨lɜ,Ug,,,,melto,*m¨lɜ,melto,melto,*m¨lɜ,*¨>e³ *ɜ>o²,*m>m¹ *l>lt³
+nyék,*näkɜ  ,Ug,Kápolnásnyék,*(nekɜ-),,ɲek,*nækɜ,ɲek∅,ɲek∅,*nækɜ,*æ>e³ *ɜ>∅²,*n>ɲ¹ *k>k³
+nyerëg,*närkɜ,Ug,,,,ɲɛreɡ,*nærkɜ,ɲɛreɡ∅,ɲɛreɡ∅,*nærkɜ0∅,*æ>ɛ³ *ɜ>e³,*n>ɲ¹ *rk>r³ *0>ɡ³
+nyolc,*ńalɜ,Ug,,,,ɲolt͡s,*ɲalɜ,ɲolt͡s∅,ɲolt͡s∅,*nʲalɜ,*a>o³ *ɜ>∅²,*nʲ>ɲ¹ *l>lt͡s³
+nyer,*ńärɜ,Ug,,,,ɲɛr,*ɲærɜ,ɲɛr∅,ɲɛr∅,*nʲærɜ,*æ>ɛ³ *ɜ>∅²,*nʲ>ɲ¹ *r>r³
+oldal,*oŋtɜ ,Ug,,*(oŋtɜ-lɜ),,oldɒl,*oŋtɜ,oldɒl∅,0oldɒl∅,*0oŋtɜ0∅,*o>o¹ *ɜ>ɒ³,*0>0¹ *ŋt>ld³ *0>l³
+fék,*päkkɜ,Ug,,,,fek,*pækkɜ,fek∅,fek∅,*pækkɜ,*æ>e³ *ɜ>∅²,*p>f¹ *kk>k³
+fejt,*pejɜ,Ug,,,,fɛjt,*pejɜ,fɛjt∅,fɛjt∅,*pejɜ,*e>ɛ³ *ɜ>∅²,*p>f¹ *j>jt³
+fekély,*pekkɜ,Ug,,,,fɛkej,*pekkɜ,fɛkej∅,fɛkej∅,*pekkɜ0∅,*e>ɛ³ *ɜ>e³,*p>f¹ *kk>k³ *0>j³
+födél,*pentɜlɜ,Ug,,,,fødel,*pentɜlɜ,fødel∅,fødel∅,*pentɜlɜ,*e>ø³ *ɜ>e³ *ɜ>∅²,*p>f¹ *nt>d³ *l>l³
+füst,*pičɜ  ,Ug,,*(pićɜ),,fyʃt,*pit͡ʃɜ,fyʃt∅,fyʃt∅,*pit͡ʃɜ,*i>y³ *ɜ>∅²,*p>f¹ *t͡ʃ>ʃt³
+fűl,*pilɜ,Ug,,,,fyl,*pilɜ,fyl∅,fyl∅,*pilɜ,*i>y³ *ɜ>∅²,*p>f¹ *l>l³
+fű,*pimɜ,Ug,,,,fy,*pimɜ,fy,fy0∅,*pimɜ,*i>y³ *ɜ>∅³,*p>f¹ *m>0³
+fok,*pukkɜ,Ug,,,,fok,*pukkɜ,fok∅,fok∅,*pukkɜ,*u>o³ *ɜ>∅²,*p>f¹ *kk>k³
+fulánk,*pulɜ,Ug,,,,fulank,*pulɜ,fulank∅,fulank∅,*pulɜ0∅,*u>u³ *ɜ>a³,*p>f¹ *l>l³ *0>nk³
+fog,*puŋɜ,Ug,,,,foɡ,*puŋɜ,foɡ∅,foɡ∅,*puŋɜ,*u>o³ *ɜ>∅²,*p>f¹ *ŋ>ɡ³
+fárad,*pȣγrɜ,Ug,,,", pȣrkɜ-",farɒd,*pȣɣrɜ,farɒd∅,farɒd∅,*pȣɣrɜ0∅,*ȣ>a³ *ɜ>ɒ³,*p>f¹ *ɣr>r³ *0>d³
+foly,*pȣlɜ,Ug,,,,foj,*pȣlɜ,foj∅,foj∅,*pȣlɜ,*ȣ>o³ *ɜ>∅²,*p>f¹ *l>j³
+faggyú,*pȣĺćɜ,Ug,,,,fɒɡɟu,*pȣʎt͡ʃʲɜ,fɒɡɟu,fɒɡɟu,*pȣlʲt͡ʃʲɜ,*ȣ>ɒ³ *ɜ>u²,*p>f¹ *lʲt͡ʃʲ>ɡɟ³
+fekete,*p¨kkɜttɜ,Ug,,,,fɛkɛtɛ,*p¨kkɜttɜ,fɛkɛtɛ,fɛkɛtɛ,*p¨kkɜttɜ,*¨>ɛ³ *ɜ>ɛ³ *ɜ>ɛ²,*p>f¹ *kk>k³ *tt>t³
+rá,*raŋɜ,Ug,,,,ra,*raŋɜ,ra,ra0∅,*raŋɜ,*a>a³ *ɜ>∅³,*r>r¹ *ŋ>0³
+rokkan,*rȣkkɜ,Ug,,,,rokkɒn,*rȣkkɜ,rokkɒn∅,rokkɒn∅,*rȣkkɜ0∅,*ȣ>o³ *ɜ>ɒ³,*r>r¹ *kk>kk³ *0>n³
+szó,*sawɜ,Ug,,,,so,*saβɜ,so,so0∅,*saβɜ,*a>o³ *ɜ>∅³,*s>s¹ *β>0³
+szőr,*säγɜrɜ,Ug,,,", säkrɜ",sør,*sæɣɜrɜ,sør∅,sør∅0∅,*sæɣɜrɜ,*æ>ø³ *ɜ>∅³ *ɜ>∅²,*s>s¹ *ɣ>r³ *r>0³
+szél,*selɜ,Ug,,,,sel,*selɜ,sel∅,sel∅,*selɜ,*e>e³ *ɜ>∅²,*s>s¹ *l>l³
+szëg,*seŋkɜ,Ug,,,,seɡ,*seŋkɜ,seɡ∅,seɡ∅,*seŋkɜ,*e>e³ *ɜ>∅²,*s>s¹ *ŋk>ɡ³
+szül,*silɜ,Ug,,,,syl,*silɜ,syl∅,syl∅,*silɜ,*i>y³ *ɜ>∅²,*s>s¹ *l>l³
+zug,*suŋɜ,Ug,,,,zuɡ,*suŋɜ,zuɡ∅,zuɡ∅,*suŋɜ,*u>u³ *ɜ>∅²,*s>z¹ *ŋ>ɡ³
+szédül,*sȣjɜ ,Ug,,,", > s¨jɜ-",sedyl,*sȣjɜ,sedyl∅,sedyl∅,*sȣjɜ0∅,*ȣ>e³ *ɜ>y³,*s>s¹ *j>d³ *0>l³
+szalu,*sȣlkɜ  ,Ug,,*(sȣlγɜ),,sɒlu,*sȣlkɜ,sɒlu,sɒlu,*sȣlkɜ,*ȣ>ɒ³ *ɜ>u²,*s>s¹ *lk>l³
+száguld,*sȣŋɜ,Ug,,,,saɡuld,*sȣŋɜ,saɡuld∅,saɡuld∅,*sȣŋɜ0∅,*ȣ>a³ *ɜ>u³,*s>s¹ *ŋ>ɡ³ *0>ld³
+szár,*sȣrɜ,Ug,,,,sar,*sȣrɜ,sar∅,sar∅,*sȣrɜ,*ȣ>a³ *ɜ>∅²,*s>s¹ *r>r³
+titok,*tajɜttɜ,Ug,,,,titok,*tajɜttɜ,titok∅,titok∅,*tajɜttɜ,*a>i³ *ɜ>o³ *ɜ>∅²,*t>t¹ *j>t³ *tt>k³
+tál,*talɜ,Ug,,,,tal,*talɜ,tal∅,tal∅,*talɜ,*a>a³ *ɜ>∅²,*t>t¹ *l>l³
+tekint,*täkkɜ,Ug,,,,tɛkint,*tækkɜ,tɛkint∅,tɛkint∅,*tækkɜ0∅,*æ>ɛ³ *ɜ>i³,*t>t¹ *kk>k³ *0>nt³
+tegëz,*täŋɜtɜ,Ug,,,,tɛɡez,*tæŋɜtɜ,tɛɡez∅,tɛɡez∅,*tæŋɜtɜ,*æ>ɛ³ *ɜ>e³ *ɜ>∅²,*t>t¹ *ŋ>ɡ³ *t>z³
+tér,*tärɜ,Ug,,,,ter,*tærɜ,ter∅,ter∅,*tærɜ,*æ>e³ *ɜ>∅²,*t>t¹ *r>r³
+téved,*tepɜ,Ug,,,,tevɛd,*tepɜ,tevɛd∅,tevɛd∅,*tepɜ0∅,*e>e³ *ɜ>ɛ³,*t>t¹ *p>v³ *0>d³
+táltos,*tultɜ,Ug,,,,taltoʃ,*tultɜ,taltoʃ∅,taltoʃ∅,*tultɜ0∅,*u>a³ *ɜ>o³,*t>t¹ *lt>lt³ *0>ʃ³
+torok,*turɜ,Ug,,,,torok,*turɜ,torok∅,torok∅,*turɜ0∅,*u>o³ *ɜ>o³,*t>t¹ *r>r³ *0>k³
+tűz,*tüγɜtɜ,Ug,,,", tüwɜ-tɜ",tyz,*tyɣɜtɜ,tyz∅,tyz∅0∅,*tyɣɜtɜ,*y>y³ *ɜ>∅³ *ɜ>∅²,*t>t¹ *ɣ>z³ *t>0³
+domb,*tȣmpɜ,Ug,,,,domb,*tȣmpɜ,domb∅,domb∅,*tȣmpɜ,*ȣ>o³ *ɜ>∅²,*t>d¹ *mp>mb³
+dob,*tȣmpɜ,Ug,,,,dob,*tȣmpɜ,dob∅,dob∅,*tȣmpɜ,*ȣ>o³ *ɜ>∅²,*t>d¹ *mp>b³
+vár,*warɜ,Ug,,,,var,*βarɜ,var∅,var∅,*βarɜ,*a>a³ *ɜ>∅²,*β>v¹ *r>r³
+vese,*w¨ćɜ,Ug,,,,vɛʃɛ,*β¨t͡ʃʲɜ,vɛʃɛ,vɛʃɛ,*β¨t͡ʃʲɜ,*¨>ɛ³ *ɜ>ɛ²,*β>v¹ *t͡ʃʲ>ʃ³
+ajtó,*ȣjɜ,Ug,,,,ɒjto,*ȣjɜ,ɒjto,0ɒjto,*0ȣjɜ,*ȣ>ɒ¹ *ɜ>o²,*0>0¹ *j>jt³

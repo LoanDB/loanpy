@@ -1,0 +1,186 @@
+#Vowel change incl. position quantifier for dif. time layers like U FU Ug
+#In: two word lists: new and old words
+#Out: csv1: Count of Vowel changes accoding to initial medial or final position, incl. all examples
+
+#import modules
+import pandas as pd
+import os
+from lingpy import *
+import collections
+
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Versuche\Quantify_soundchange')
+
+#Define Timelayers
+timelayers=['U','FU','Ug']
+#alllayers=['all', timelayers]
+for timelayer in timelayers:
+    
+    #import csvs
+    csv = pd.read_csv("Hun_old_IPA4.csv", encoding='utf-8')
+    csv2 = pd.read_csv("H_phon.csv", encoding='utf-8')
+    
+    #select timelayer
+    csv=csv[csv.Lan == timelayer]
+    csv=csv.reset_index()
+    csv=csv.drop(['index'], axis=1)
+
+    #define variables and dfs
+    Wort = csv['H+∅']
+    old = csv['o_IPA']
+    Vowels0 = csv2['V']
+    Vowels_o0 = csv2['V_o']
+    counting=[]
+    V_hun3=[]
+    V_old3=[]
+    V_hun6=[]
+    V_old6=[]
+    dfV=pd.DataFrame()
+    dfV['hun']= csv['Hun']
+    dfV['old']= csv['Old']
+    dfV['H_IPA']= csv['H_IPA']
+    dfV['o_IPA']= csv['o_IPA']
+    df1=pd.DataFrame()
+    df2=pd.DataFrame()
+    dfQ=pd.DataFrame()
+    df_hun = pd.DataFrame()
+    Vowels0 = csv2['V']
+    Vowels_o0 = csv2['V_o']
+
+    #define functions
+    def listToString(s):  
+        str1 = " "   
+        return (str1.join(s))
+    def split(word): 
+        return list(word)
+
+    #clean data
+    Vowels = [x for x in Vowels0 if str(x) != 'nan']
+    Vowels_o = [x for x in Vowels_o0 if str(x) != 'nan']
+
+    ###get tokens, one per row
+    word_str = listToString(Wort)
+    word2 = word_str.replace(" ", ",")
+    word3 = ipa2tokens(word2)
+
+    old_str = listToString(old)
+    old2 = old_str.replace(" ", ",")
+    old3 = ipa2tokens(old2)
+
+    ###pick only vowels,
+    V_hun = [x for x in word3 if str(x) in Vowels]
+    V_hun2 = listToString(V_hun).replace(' ','').replace('ː','').split(',')
+
+    V_old = [x for x in old3 if str(x) in Vowels_o]
+    V_old2 = listToString(V_old).replace(' ','').replace('ː','').split(',')
+
+    ###longest word
+    for i in V_hun2:
+        counting.append(len(i))
+    for i in V_old2:
+        counting.append(len(i)) 
+
+    counting.sort(reverse=True)
+
+    #add ∅
+    for i in V_hun2:
+        V_hun3.append(i.ljust(counting[0],'∅'))
+
+    for i in V_old2:
+        V_old3.append(i.ljust(counting[0],'∅'))
+
+    ###insert into df
+    dfV['hunV']=V_hun3
+    dfV['oldV']=V_old3
+
+    ###one vowel per row, insert into df
+    V_old4 = listToString(V_old3)
+    V_hun4 = listToString(V_hun3)
+    V_old5=split(V_old4)
+    V_hun5=split(V_hun4)
+    df1['old']=V_old5
+    df1['hun']=V_hun5
+
+    ###remove ∅>∅
+    for index, row in df1.iterrows():
+        if row['hun']!='∅' or row['old']!='∅':
+            V_hun6.append(row['hun'])
+            V_old6.append(row['old'])
+
+    ##put 1s to word initial vowels, and 2s to word final ones
+    #define stuff
+    dftest=pd.DataFrame()
+    dftest['test']=V_hun6
+    dft=pd.DataFrame()
+    lh=[]
+    wl=[]
+    #change from one char per row to all vowels of one word per row
+    V_hun7=listToString(V_hun6).replace('   ',',').replace(' ','').split(',')
+    #append len of every line with vowels to list
+    for x in V_hun7: lh.append(len(x))
+    #insert len to df and Hungarian words
+    dft['len']=lh
+    dft['hun']=csv['H+∅']
+    #repeat every hun word as often as len of vowels
+    for index,row in dft.iterrows():
+        wl.append((row['hun']+' ')*row['len'])
+    #put list of repeated hun words into df with one vowel per row
+    newlist=str(wl)[2:][:-2].replace(' \', \'',',,').replace(' ',',').split(',')[:-1]
+    dftest['newlist']=newlist
+
+    ##add 1 if word initial, add 2 if word final
+    #add 1 to the very first element if necessary
+    if  dftest.iloc[0,0] == dftest.iloc[0,1][0]:
+        dftest.iloc[0,0]+='¹'
+    #add 1 and 2 to the rest
+    for index,row in dftest.iterrows():
+        if row['test']==' ':
+            if dftest.iloc[index+1,0] == str(dftest.iloc[index+1,1])[0]:
+                dftest.iloc[index+1,0]+='¹'
+            if dftest.iloc[index-1,0] == str(dftest.iloc[index-1,1])[-1]:
+                dftest.iloc[index-1,0]+='²'
+    #add 2 to the very last element if necessary 
+    if  dftest.iloc[-1,0] == dftest.iloc[-1,1][-1]:
+        dftest.iloc[-1,0]+='²'
+    V_hun8 = dftest['test'].tolist()
+
+    #add 3 if medial
+    for n,i in enumerate(V_hun8):
+        if len(i)==1 and i!=' ':
+            V_hun8[n]=(i+'³')
+
+    #insert into df
+    df2['hun']=V_hun8
+    df2['old']=V_old6
+
+    ###create sound change
+    df2["change"] = '*' + df2["old"] + '>' + df2["hun"]
+
+    ###remove '* > ' from line breaks
+    change = df2['change'].tolist()
+    change2=listToString(change).replace('* > ','/').replace(' / ','/').split('/')
+    dfV['change']=change2
+
+    ###create another csv quantifying sound changes
+
+    #remove first and last characters
+    cut1=len('Counter({\'* > \': 472, ')
+    cut2=len(str(collections.Counter(change)))-2-cut1
+    dfQ['Quantify_U+FU+Ug']= str(collections.Counter(change))[cut1:][:cut2].replace('\'','').split(', ')
+
+    #split into columns by ":"
+    dfQ2 = dfQ["Quantify_U+FU+Ug"].str.split(":", n = 1, expand = True)
+    dfQ["V_cng"]= dfQ2[0] 
+    dfQ["Count"]=dfQ2[1]
+    dfQ=dfQ.drop(["Quantify_U+FU+Ug"], axis=1)
+
+    #insert all the words where the sound change occurs into third column
+    dfQ['all_examples']= ''
+    for index1, row1 in dfQ.iterrows():
+        for index2, row2 in dfV.iterrows():
+            if row1['V_cng'] in row2['change']:
+                row1['all_examples'] += '*'+(row2['old']+'>'+row2['hun']+ ', ')
+
+    ###write csvs
+    #dfV.to_csv("dfV", encoding="utf-8", index=False)
+    dfQ.to_csv("Quantify_"+timelayer+"_Vowels", encoding="utf-8", index=False)

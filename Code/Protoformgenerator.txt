@@ -1,0 +1,112 @@
+##newest version
+### In: wordlist.csv (e.g.unknown.csv), sound change rules (e.g. SCin.csv)
+### Out: New csv = wordlist.csv + extra clumn with all possible protoforms
+import os
+import pandas as pd
+import itertools
+import codecs
+
+#def directory, csvs, vars, functions
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorträge\Tutkija seminaari 14.05')
+SCin = pd.read_csv("SCin_uew.csv", encoding='utf-8')
+dk = pd.read_csv("noderivIN.csv", encoding='utf-8')
+#H_phon = pd.read_csv("H_phon.csv", encoding='utf-8')
+dk['split']=''
+dk['proto']=''
+def l2s(s):  
+    str1 = ""   
+    return (str1.join(s))
+def split(word): 
+    return [char for char in word]
+H_C = 'lhkmrɲjɡɟtnѕdvzpst͡ʃfʃb'# H_phon.iloc[0,11] #define Consonants
+H_V = 'ɒɛoeaøiøuyɜ¨ȣ∅'#H_phon.iloc[0,10] # define Vowels
+
+###run code
+#create loop
+for x in list(range(len(dk['IPA']))):
+    
+    ##split word add position and 01
+    #get word
+    ipa=dk.iloc[x,5] #later change to row['ipa'] in iterrows
+    ipa=ipa.replace('ː','')
+    #add ∅ as final vowel if word final = Consonant
+    if ipa[-1] in split(H_C):
+        ipa+='∅'
+    #add % after word initial vowel
+    if ipa[0] in split(H_V):
+        ipa=ipa[:1]+'%'+ipa[1:]
+    #add % before word final vowel
+    if ipa[-1] in split(H_V):
+        ipa=ipa[:-1]+'%'+ipa[-1:]
+    #add % before and after all other vowels
+    ipasplit=split(ipa)
+    for i,n in enumerate(ipasplit):
+        if i !=0 and i != len(ipasplit)-1 and n in split(H_V):
+            ipasplit[i]='%'+n+'%'
+    ipa2=l2s(ipasplit)
+    #add 0 between %% to avoid hiatus
+    ipa2=ipa2.replace('%%','%0%')
+    #split worod by vowels
+    splitipa=ipa2.split('%')
+    #add 1,2,3 for initial, medial, final sounds
+    splitipa[0]+='¹'
+    splitipa[-1]+='²'
+    for i,n in enumerate(splitipa):
+        if i !=0 and i != len(splitipa)-1:
+            splitipa[i]+='³'
+    #add 0¹ if word initial = vowel
+    if splitipa[0][0] in split(H_V):
+        splitipa.insert(0,'0¹')
+    #insert into df
+    dk.iloc[x,6] =l2s(splitipa)
+
+    #check if all sounds can be old
+    #if yes: do combinations
+    #if no: write which sound can't be old
+    if all(i in list(SCin.columns) for i in splitipa):
+        ##combine all elements to get hypothetical protoforms
+        L=len(splitipa)
+        args=[]
+        qfy=[]
+        protolist=[]
+        NSElist=[]
+        #get all possible protoforms for each sound & append to args
+        #get number of examples for every sound change & and append to qfy
+        for i in splitipa:
+            args.append([x for x in SCin[i] if str(x) != 'nan'])
+            qfy.append([x for x in SCin[i+'_NSE'] if str(x) != 'nan'])
+
+        #combine all possible proto sounds
+        for protoform in itertools.product(*args):
+            protolist.append(l2s(protoform).replace('*',''))
+
+        #combine number of examples for each sound, add them up, divide through length of word (=NSE)
+        for NSE in itertools.product(*qfy):
+            NSElist.append(round(sum(NSE)/L,2))
+
+        #create a string from proto-words and their NSE, sorted according to NSE
+        allprotos=''
+        for i, j in reversed(sorted(zip(protolist,NSElist), key=lambda x: x[1])):
+            allprotos+=i+' ('+str(j)+'); '
+        allprotos=allprotos[:-2]
+
+        #insert string into df
+        dk.iloc[x,7]=allprotos #change later to row['proto'] in iterrows
+
+        #create dictionary
+        NSEdictstr="NSEdict = {'"
+        for i, j in reversed(sorted(zip(protolist,NSElist), key=lambda x: x[1])):
+            NSEdictstr+=i+"':"+str(j)+",'"
+        ##Below line of code will have to stand outside of the big loop
+        ##to close the dictionary after looping
+        #NSEdictstr=NSEdictstr[:-2]+'}'
+
+        #file = codecs.open("NSEdict", "w", "utf-8")
+        #file.write(NSEdictstr)
+        #file.close()
+    else:
+        for i in splitipa:
+            if i not in list(SCin.columns):
+                dk.iloc[x,7]+="'"+i+"' can't be from Uralic, "
+        dk.iloc[x,7]=dk.iloc[x,7][:-2]
+dk.to_csv("Protoforms_Tutkijaseminaari", encoding="utf-8", index=False)

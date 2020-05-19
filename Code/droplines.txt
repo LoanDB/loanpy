@@ -1,0 +1,34 @@
+#drop unnecessary lines
+#import modules
+import pandas as pd
+import os
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\Similarity Finder')
+csv = pd.read_csv("proto_withderiv_oneperline_struc.csv", encoding='utf-8')
+csv=csv[csv.struc == 'CVCV']
+csv=csv.reset_index()
+
+#figure out which sounds to drop (Hungarian sounds that appear neather in gothic nor in its substitution sounds)
+uew=pd.read_csv("uew2ipa.csv", encoding='utf-8')
+sbs=pd.read_csv("Substitutions.csv", encoding='utf-8')
+dropit=[]
+gotsnd=[item for sublist in sbs.values.tolist() for item in sublist]
+gotsnd = [x for x in gotsnd if str(x) != 'nan']
+uralsnd= uew['IPA'].tolist()
+for i in uralsnd:
+    if i not in gotsnd:
+        dropit.append(i)
+dropit.remove('ɜ')
+dropit.remove('¨')
+dropit.remove('ȣ')
+dropit.append('ŋ')
+
+#drop all lines that contain a sound that can't be associated with gothic
+csv['dropit']=''
+for i in dropit:
+    for index,row in csv.iterrows():
+        if i in row['rootipa']:
+            csv.at[index,'dropit']='yep'
+csv=csv[csv.dropit != 'yep']
+csv=csv.reset_index()
+csv.to_csv("hun_final2.csv", encoding="utf-8", index=False)

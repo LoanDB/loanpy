@@ -1,0 +1,915 @@
+#####Code for R-studio
+#Creating a dataframe from the Annex of Etimológiai szótár by Zaicz Gábor, 2006 and the dataframe created by Zaiczextractor1
+#The book itself is available here: https://regi.tankonyvtar.hu/hu/tartalom/tinta/TAMOP-4_2_5-09_Etimologiai_szotar/adatok.html
+#dataframe will have four columns: Word, year of first appearance in a text, question mark, origin
+####
+
+library(stringr)
+library(stringi)
+
+Ancient_Uralic = "aj1, al, anya?, arat?, atya?, avik1, bogyó?, bor, csorog?, csuk?, dorgál?, él1, elo?, emel?, esik, ez1, fa, fagyal, fal1, far?,
+farag, fázik?, fej2, fejsze?, fél1, fél2, fészek, fing, fogoly2, fon, fordít?, fo1, föl, fúj, fúr?, fut, hab, had?, hagy, hajnal?,
+hal1, hal2, halad, háló, hámoz?, hany?, hárít?, hat1, hát1, here, hervad?, hím1, hív1?, hó1, hó2, holló, hosszú, hos?,
+húgy1, húgy2, huny, ideg, íj?, ín, indít?, irt?, íz1, jó2, kemény?, két?, ki1?, kígyó?, köd, könny?, lap?, lapos, lát?, lék?,
+lép2?, máj, mar1?, mar2?, marad?, megy, meny, mi1, mi2, mond?, mos, mu?, név, no2, nyak?, nyal, nyál?, nyár1, nyel,
+nyél, nyíl, nyír2?, nyuszt?, nyu1, nyu2?, orr?, öl2?, öreg?, os, öv?, por?, rág?, süly, szag?, száj, szalad?, szem, szer,
+szirony2?, szív2, szügy?, talál, tanít, tat1, tat2, te, tehén?, ti, tó, tojik?, toll, tud, ujj1, ujj2?, úszik, varjú, vas, víz, vo,
+völgy"
+
+Ancient_Finno_Ugric = "ad, agg, ágy, agy?, agyar, áld, áll1, áll2, álom, alszik, apa?, apad?, ár2, ár4, arasz, árt1?, árva, avik2, bal?, bél?, berek?,
+bog?, bogyó?, bonyolít?, bújik?, csap1?, csepp?, csillag, csillámlik, csillog, csíp?, csokor?, csomó, csont?, csúcs?,
+csupor, dagad?, daru?, dug, ég1?, ég2, egér, éj, ellik?, elo?, ének, epe, ér3?, ér4, ereget, eszik, év, evez?, facsar, fagy,
+faj?, fáj?, fajd, fakad, fal2, fasz?, fazék, fed, fehér?, fej1?, fekszik?, felleg, fen, fény?, fenyo, fér?, féreg, fest?, fiú,
+fog2, fogy?, fojt, fok1?, fos, fúl2, fül, fürt?, fuz1, fuz2?, gyalog, had?, hagyma, háj, hajít?, hajnal?, hál, halk2, hályog,
+hangya, hány1, hanyatt, harag, harap1?, harap2?, három, hat2, ház, héj, hervad?, homály, horhos?, hornyol?, horog,
+horzsol, hölgy, húsz, iktat?, íny, iszik, ívik?, íz3?, izé?, jár, játék?, jég, jel, kéj, kell, kemény?, kér, kérodzik?, kerül,
+kés, kész?, keszeg, két?, kevés?, kéz, ki1?, ko, köcsög?, könyök, köszvény?, köt, követ1, követ2, köz, küsz?, lágy,
+lak?, láng?, láp, le?, lé, leg-?, légy, lel?, lep, lép2?, lesz, levél?, lóg, lom2?, lo, lök, lúd, lyuk?, mag?, mál, más,
+meggy, méh1, mell, menik, menny, mér?, méreg?, méz, múlik, nagy?, négy, nem2?, néz, nyál?, nyelv, nyes?, nyír1?,
+nyír2?, nyugszik, nyújt, nyúl2, nyuszt?, nyúz?, odú, old, ólom?, olt2, olvas?, olvaszt, ón, orr?, orvos?, ostor?, oszt?, o,
+öcs, öl1, öl2?, ön2, öröm?, osz2, öt, öv?, rács?, rak?, ravasz, rés, rész, ró, rogyik?, rongy?, rossz?, rút?, ság?, ség?, segg,
+segít?, sír2?, sok, sovány, sün, szál?, szalad?, szar, száraz, szarv, száz, szed?, szeg1, szel, szén?, szép?, szil, szomorú?,
+szoros, szo, szösz?, szú, szupojkó?, szúr, szurok, szuz?, tart?, tavasz, tél, telik, tér2, tesz, tetem?, tetu?, tomp?, to,
+togy?, töm, tor1?, túr1?, új, úr?, ügy1?, ügy2?, ük, üt?, vad, vaj, válik, váll, van, varr, vásik?, véd, vég?, vejsze?,
+vékony, vél?, velo, vén?, vér, vés, vesszo?, vet?, vezet, vigyáz, világ, visz, vív?, vöcsök?, zaj1, zaj2?"
+
+Ancient_Ugric = "ágyék, akad, alkot?, alom, ár1, ara, arany, aszik, buzog?, csíra?, csókol?, dob2, domb, edz?, ék?, él2?, enyv?, eper,
+faggyú?, falu?, far?, fárad, fázik?, fedél, fejt?, fék, fekély, fekete?, fog1, fok3?, folyik?, foszlik?, fúl1, fu, füst, gyalu?,
+gyökér, hág?, hagyap, haj1, hamu?, harkály, harmat?, hasad, hattyú, hét1, hízik, hód, hord?, húz, ígér?, jó1, jön?, jut,
+kedv?, kel1?, keseru, kísér?, köles, könnyu, közép?, küzd?, lép1?, les, levél?, ló, loll?, marok, márt, meleg, mély,
+mer1, mer2, mered?, mese, mosolyog?, mozog?, nevet, nyaláb?, nyer?, nyereg, nyolc, nyu2?, oldal?, olt1?, ostor?, óv?,
+ragad?, révül?, rokkan, rúg?, savanyú?, só, sötét, süpped, süt, száguld, szak?, szár, szédül?, szeg3, szekér?, szél1, szó,
+szög1?, szor, szül?, tál, táltos, tegez2, tekint?, tér3, tévelyeg, titok?, topán?, torok, tuz2, út, utál?, üszo?, uz?, vág?, vár1,
+vese?, zsugorodik, zug"
+
+Probably_Ancient = "ág?, ázik?, ezüst?, hárs?, haszon?, hegy?, hull?, íz2?, küszöb?, nyom?, szíj?, táj?"
+
+Permic = "ezüst?, harminc?, kenyér?, küszöb?, kilenc?, szösz?" 
+
+Iranian_forExampleAlanian = "asszony, buz?, egész?, ezer, fizet?, gazdag?, híd, hús?, ing?, kard, káva?, kincs?, legény?, méreg?, nád?, nemez, réz?,
+sajt, sátor?, szekér?, tehén?, tej, tinó?, tíz, tölgy?, üveg?, vám, vászon?, vár2, vásár?, verem?, vért?, zöld?"
+
+Caucasian = "gulya?, kefír?, körte?, legény?, ló?, réz?"
+
+Turkic_Before895_inGeneral = "ács, ágyú?, ál?, alma, áporodik?, apró?, arat?, árok, árpa, árt1?, ártány?, ászok?, barom, bársony, baszik, bátor, béka?,
+béklyó?, besenyo?, bika, bilincs?, bír?, boglya?, bojtorján, boka, bor, borít?, bors, borsó, bosszant, bosszú?,
+boszorkány, bo?, bögöly?, bölcs, bölény?, böszörmény?, bú1?, csalán, csalit?, csepu, csipa, csúnya?, enged?, ér2?,
+érdem, ero, ész, gödény?, güzü?, hajó?, harang?, homok?, illik?, irt?, kanyaró?, kapu, kar2, katáng?, kecske?, kék,
+kende, kender, kép, keselyu?, késik, kikerics, kín, kis, kor, korom, kos, kozma?, kökény, kökörcsin, kölcsön,
+köldök?, köszön?, küllo1?, ól, olcsó?, olló?, oroszlán, ölt?, örmény?, örök?, orül, sárga?, saru, sátor, sepro, sereg,
+som, szakáll, szán1, szatócs, szék, szekér?, szeplo?, szór, szökik, szunik, tanú, tarló, teker?, tekno, tengely, tér1?,
+tojik?, torma, torontál?, tömény, török?, tulok?, turul, túzok?, tur2, úr?, üno, ürge?, üröm?, ürü, váj?"
+
+Turkic_Before895_Chuvash = "bocsát, borjú, borz?, bölcso, búcsú, búza, dél, dió, disznó, dol, eke, görény, gyaláz?, gyapjú, gyapot?, gyarló?, gyárt,
+gyász, gyékény, gyeplo, gyermek?, gyertya, gyom, gyomor, gyónik, gyopár, gyöngy, gyötör?, gyula?, gyúr, gyulik?,
+gyümölcs, gyuru, gyuszu, ido?, iker, ír1?, író?, karó, komló, koporsó, kóró, ködmön, kölyök?, koris, nyár2?, ocsú,
+orsó, ökör, ölyv?, örvény?, sár1, sár2, sárkány, sarló, seper, serke, serte?, süllo, süveg?, szám, szárny?, szél2, széru?,
+szolo, szucs, szur1, tar, tenger, térd, tiló, tinó, tükör, tur1, tyúk, vályú?"
+
+Turkic_Before895_nonChuvash = "balta, bán2?, betu, bicska?, bot?, böszörmény, buvöl, csatol?, csodör?, dara, ernyed?, hurok, ige?, ildomos?, káka?,
+kancsuka, kantár, kanyaró, kárókatona?, karvaly?, kérodzik?, kobak, koboz2, kolokán, komócsin?, köldök, köpönyeg,
+kun, kuvasz?, ondó?, orosz, orv?, öreg?, öröm?, sólyom?, szesz?, szirony1?, szirt, szúnyog, tábor, tapló, teve, tok1?,
+toklyó, tor1?, tor2?, török, tozeg, túzok"
+
+Turkic_After895_Pecheneg_Cuman = "ajnároz?, balta?, bicska?, csákány?, csalit?, csosz?, dara?, kalauz, koboz2?, komondor, orv?, özön?, szúnyog?, tozeg?"
+
+Turkic_After895_Ottoman = "áfium, aga, baksis, basa, bég, beglerbég, bogrács, csiriz, csuha, dandár, deli, dervis, dívány, dohány, dolmány,
+dzsida, findzsa, gyaur, handzsár, hodzsa, hombár, ibrik, imám, iszlám, janicsár, joghurt, kádi, kaftán, kalpag, kán?,
+kátrány, kávé, kazán, kefe, korbács, kurd, mámoros, martalóc, mecset, mufti, müezzin, oszmán, pajtás, pajzán,
+pamut, papucs, pasa, sah, szandzsák, szattyán, szeráj, szpáhi, szultán, tarhonya, zseb, zsiger, zsivány?"
+
+Slavic_Southern_Bulgarian = "bátya?, bolgár, diák?, hála?, járom?, karácsony?, ladik, mezsgye, mostoha, nadrág?, nyoszolya?, oláh?, padlizsán?,
+palást?, palota?, pemete, pest, rozsda, szerencse?, tarack2?, tömjén?, vádol?, vitorla?, zarándok?"
+
+Slavic_Southern_Croatian_Serbian = "baj, bajnok, bán1, bérmál?, betyár, borostyán1?, boroszlán, bosnyák, bödön?, bunyevác, cirok?, csata, csatorna,
+cserje?, csizma, csizmadia, dalia, debella, diák?, dolog?, galóca1?, garád, gatya, golyva, gomolya?, hajdina, halina?,
+halva, haramia, horvát?, huszár, iga?, járgány, jegenye?, kabóca?, kadarka, kamat, kár?, katlan?, keresztény?,
+keresztség?, király?, kóló, kondér, konyha?, kótyavetye, kucsma?, kukac, kunyhó?, kúp?, kupac, kupica, limány,
+lom1?, mangalica, megye?, oláh?, olasz?, palást?, paprika, parittya?, paszuly, pazarol?, peták?, pokol?, potom,
+pribék, ragya?, rekettye?, rusnya, sligovica, sokác, sumák, szekerce?, szent?, szerb, szopornyica?, tambura, tarack2?,
+tömjén?, tömlöc?, tunya?, turbolya?, vargánya?, verbuvál?, viasz?, zálog?, zászló?, zsizsik?"
+
+Slavic_Southern_Slovenian = "ablak?, akol?, bérmál?, bödön?, cibere?, cirok?, csiricsáré?, darab?, gally?, galóca2?, jegenye?, kabóca?, káposzta,
+kár?, kúp?, lép3, mácsonya, malac?, megye?, olasz?, parittya?, pokol?, ragya?, rekettye?, rozse, sulyok?, szakóca,
+szamóca?, szekerce?, túr2, viasz?, vitorla?"
+
+Slavic_Southern_inGeneral = "bérc?, berkenye?, bodza?, bútor?, cigány?, cseber?, cser, csiperke?, csóka?, cso, csütörtök, dajka?, drága?, dunyha?,
+esztergál?, gabona, gát?, gázol, gereben?, gereblye?, gerezd, görbe, görög2?, hála, hörcsög?, iglice?, járom, jérce?,
+kádár1?, kalász?, kaloda?, karácsony?, kenéz, kereszt?, koponya?, kormány, kosár, kulcsol?, lúg?, malaszt?, maláta?,
+mérce?, métely, mocsár?, muslica, nyoszolya, pad, pajta, parlag?, pele?, pesztra?, picsa?, pilis?, pióca?, pogácsa,
+ponyva?, póráz?, poroszló, pozdorja?, rab, serpenyo?, sétál, szalonna?, szelemen?, szelence?, szelindek?, szemét?,
+szerencse, szittyó?, szobor, szombat?, tályog?, tengelic?, toklász?, tök, uborka?, ugar?, varádics?, virágvasárnap?,
+vitéz, zab, zanót?, zár?, ziliz?, zsilip"
+
+Slavic_Western_Czech = "batka, birka?, cseh, csésze?, hentes?, kocka?, komorna?, komornyik, kuka2, parázna?, poloska?, ramaty?, robot2,
+selma?"
+
+Slavic_Western_Polish = "bricska?, galuska, pálha?, szalonka"
+
+Slavic_Western_Slovak = "babona?, bánya?, barázda?, barkács?, batyu?, béna?, berkenye?, boróka, borovicska, bukta, csajka, csiricsáré?, durák,
+esztergál?, filkó, fricska, gácsér, gát?, gereben?, gereblye?, henyél, jérce?, jerke?, kabát?, kacsa, kádár1?, kalász?,
+kaloda?, káposzta?, kasza?, kazal, kelepce?, ketrec, kisze?, klapec, komorna?, komornyik?, krampács, krapek, kukta,
+kulcsol?, kupec, lazac?, lednek, lekvár, lóca?, mackó, malaszt?, maláta?, mamlasz, mikulás, mocsár?, nátha?, pajor,
+páka?, pálinka, parlag?, pesztonka?, petrence, pióca?, pletyka, pohánka, poloska?, poszáta?, povedál, pupák, retesz?,
+ricsaj, riska, róna, sarha, selma?, svihák, szlovák, tirpák, trehány, turbolya?, uborka?, vályog?, varkocs, vinkó?,
+viskó?"
+
+Slavic_Western_inGeneral = "agár?, akó?, bánya, cseber?, csóka?, dajka?, drága?, dunyha?, hörcsög?, iglice?, kabát?, karima?, kocka?, kór,
+kuvik?, lánc?, lazac?, lúg?, mérce?, pele?, pesztra?, picsa?, pilis?, pondró, póráz?, pozdorja?, szalonna?, szász,
+szelemen?, szelence?, szelindek?, szemét?, szín1?, szittyó?, szuka?, tályog?, tengelic?, tömlo?, ugar?, varádics?,
+verbuvál?, vinkó?, virágvasárnap?, vodka?, zabrál?, zanót?, zár?, ziliz?"
+
+Slavic_Eastern_Russian = "akó?, balalajka, csere?, diszpécser, diverzáns, glasznoszty, görög2?, jász1, kerecsen, kereszt?, kolhoz, kombájn,
+kombinát, kulák, muzsik, naszád?, óriás?, ponyva?, potroh?, pufajka, ruszki, szakács?, szovjet, tajga, talicska?,
+trojka, ukáz, vajda?, véka?, veréb?, vodka?"
+
+Slavic_Eastern_Ukrainian = "babona?, harisnya, jerke?, kalamajka, kisze?, kozák, pálha?, pesztonka?, potroh?, pózna?, talicska?, vályog?,
+zimankó"
+
+Slavic_Eastern_inGeneral = "karima?, pohárnok?, szín1?, szuka?, zabrál?"
+
+Slavic_inGeneral = "abál, abrak, abroncs, abrosz, acél, akna, aszat, asztag, asztal, bab, bába, bálvány?, bárány, barát, barlang, bátya?,
+berek?, beszéd, bodnár, bolha, bolond, borda, borona, borotva, buja, cölöp, család, császár, cseléd, cséve, csinál, csíz,
+csoda, csónak, csorba, csorda, csoroszlya, csömör?, csuka, derék?, deszka, dézsa, dinnye, doh, dorong, duda?, ebéd,
+ecet, ecset?, galamb, ganéj, garaboly?, garat, garmada, gazda?, gerenda, gerezna, giliszta, gomba, gonosz, goromba,
+gúnya, gúzs, guzsaly, halom, haraszt, hiba, igric, ikra1, ikra2, inas?, ispán?, iszap, izgága, jász2, jászol, juhar,
+kacabajka, kakas, kalács, kalapács, kalapál, kalitka, kanca, kánya, kapál, kapca, kapor, kapotnyak, kapta, karaj1,
+kárász, kas, kása, kemence?, keresztel, kóc, kocsma, kocsmáros, kolbász, koma, konc, konkoly, kopja, korcs?,
+korhol, korong, korpa, kovász, kulacs?, kulcs, kulimász, kuruzsol, kurva, lanka, lapát, lapocka, lapu, macska,
+máglya, mák, málna, malom, mátka?, máz, medence, medve, méh2?, mér?, mészáros, mézga, molnár, moly, muhar,
+munka, murok, murva, néma, német, nyavalya, olaj, oszlop, ösztön, páfrány, pagony?, páka?, pákosztos, palack,
+pálca, palóc, panasz, pára, parancsol, paraszt, párna, párol, pászma, pászta, pásztor, pata?, patak, patkó, pázsit, pecér,
+pecsenye, pecsét, pelyva, penész, pénz, perje, pince, pisztráng, pitvar, pocok?, pók, pokróc, polc, pólya, porond,
+posztó, puszta, raj, rák, remek?, rend, répa, repce, retek, ritka, rombol?, rongál?, rosta, rozs, ruha, sapka, strázsa,
+szabad, szajkó, szák, szalma, számszeríj, szapora, szarka, szecska, széna, szentel?, szerda, szikla, szikra, szilva, szita,
+szoknya, szolga, szomszéd, szömörce?, szömörcsög, szulák, szuszék, takács, tanya, tár2?, társ?, terem2, tészta, tiszt,
+tiszta, tisztel?, tompa, udvar, udvarnok, unoka, utca, uzsonna, vacsora, vápa?, varsa, vecsernye, venyige, vidra, vihar,
+villa1, vizsla?, vödör, zabál, zászpa?, zsába, zsarátnok, zsidó, zsír, zsolozsma"
+
+Latin_inGeneral = "abesszin?, abszolút, abszurd, adjunktus, adjusztál?, adminisztrál, adoptál, advent, affektál, ágál, ágens, agilis, agitál,
+agresszió, ájer, akadémia, akceptál, akció, akkumulál, akkurátus, akta, aktuális, aktus, alabástrom, alamizsna, alán,
+albán, allergia, alfa, alga, alleluja, allergia, almárium, áloé, amazon, ambíció, ámbitus, ambrózia, ámen, amnesztia,
+ampulla, amputál, amulett, anglikán, angol, angolna, angyal, anorexia, antikvárius, antipátia, apellál, apostol,
+apparátus, aprehendál, április, arab, archívum, aréna, árenda, argumentum, áristom, arkangyal, ármális, aroma,
+artikulál, aspirál, asszír, asszisztál, asztma, atavizmus, augusztus, aula, avar2, bálna, barbár, bazilika, baziliszkusz,
+bázis, bazsalikom, behemót, belga, bestia, biblia, bibliotéka, bigámia, borbolya?, botanikus, brutális, bugyelláris,
+bulla, cédrus, cédula, celebrál, cella, centrális, centrum, cenzúra, ceremónia, ceruza, cet, cézár, cifra, ciklus, cikória,
+cimbalom, cinikus, cinterem, ciprus, cirka, cirkál, cirkulál, cirkusz, ciszterna, citál, citera, citrom, cívis, csuklya, dák,
+dalmát, dán, dátum, december, dedikál, definiál, degradál, dehonesztál, dékán, deklarál, dekorál, dekrétum,
+delegátus, delfin, delírium, démon, demonstráció, denaturált, derogál, despota, destruál, desztillál, diadém, diagnózis,
+diakónus, dialektika, dialógus, diéta1, diéta2, differencia, diktál, diktátor, dilemma, dimenzió, diploma, direktor,
+direktórium, dirigál, diskurál, disputál, disszertáció, disszidens, diszciplína, diszkréció, disztingvál, diverzió, dogma,
+doktor, dokumentum, dominál, domínium, dotál, dózis, dupla, echó, égisz, egzisztencia, egzotikus, eklézsia,
+eksztázis, elefánt, elegáns, elégia, elektromos, elementáris, elemózsia, ellipszis, embléma, embrió, emigráció,
+eminencia, energia, epidurális, epikus, epilepszia, epilógus, episztola, éra, eszencia, éter, etika, etióp?, eunuch,
+evangélium, evidens, ex, exhumál, exkuzál, expediál, fabrikál, fabula, fáklya, faktor, faktum, fakultás, fáma, família,
+famulus, fantasztikus, fantázia, fáraó, farizeus, fatális, fátum, fázis, február, feudális, figura, fikusz, filológus,
+filozófia, finom, fiola, firkál?, fizikus, flaska, flastrom?, flegma, flóra, fóka, fókusz, forma, formális, formula, fórum,
+frakció, frank1, fráter, frázis, fríg, fríz1, fundál, funkció, fúria, furkó?, furunkulus, fülemüle, galád?, galaktika,
+galanga, gall, galvanizál?, gargarizál, generáció, generális1, generális2, géniusz, geometria, gesztus, gigász,
+gimnázium, gipsz, glóbusz, glória, glossza, golyóbis, gót, grácia, grádics, grammatika, grasszál, gratulál, gumi,
+gusztus, guta, gyehenna, gyömbér, habitus, hallucinál, harmónia, hárpia, héber, hektika, helvét, herbárium, herbatea,
+hidra, hiéna, himnusz, história, hisztéria, honorárium, hospitál, hozsanna, humanitás, humor, hun, huszita, icce?,
+idea, idióta, idus, iksz, illír, illuminál, illusztrál, illúzió, imitál, impérium, imponál, importál, imposztor, impresszió,
+ind, index, infámis, információ, injekció, inkvizíció, inspektor, inspirál, instancia, instrukció, intelligencia,
+interpellál, intrikál, invalidus, invitál, inzultus, ipse, ipszilon, írisz, irónia, isiász, iskola, izmaelita, izraelita, izsóp,
+jácint, január, jáspis, jezsuita, jotta, jubileum, július, június, jurátus, juss, kakál, kaláris, kalendárium, kalkulál,
+kálmos, kálvária, kálvinista, kamara, kaméleon, kámzsa, kanális, kancellár, kandidátus, kánikula, kánon, kántál,
+kántor, káosz, kápa, kapacitás, kapituláció, kápolna, káptalan, kapucinus, kar1, karakter, karbunkulus, kardinális1,
+kardinális2, karmelita, katakomba, katalógus, katasztrófa, katedra, kategória, katekizmus, katolikus, kázus,
+kelengye?, kelta, kémia, kentaur, klasszikus, klasszis, klastrom, kliens, klíma, kódex, kolera, kólika, kolléga,
+kollégium, kollokvium, kolónia, kolosszus, kombináció, komédia, komikus, kommentár, komplikál, kompozíció,
+kompromisszum, kompromittál, kondíció, konfekció, konferál, konferencia, konfirmál, konfliktus, kongresszus,
+konkurál, konspirál, konstrukció, kontinens, kontra, konvenció, konvent, konzekvencia, konzervál, konzílium,
+konzul, konzultál, kópia, korda, korifeus, korona, korrekt, korrigál, korrumpál, kórus, kotta, kráter, kreál, kréta,
+kriminális, kripta, kritérium, kritikus, krizantém, krízis, krokodil, krónika, krónikus, kulináris, kultúra, kultusz, kúrál,
+kurátor, kúria, kurta, kurzus, kvóta, laboratórium, laikus, lajstrom, lakonikus, lamentál, lápisz, lárva, latifundium,
+latin, lazúr, lecke, legális, legátus, legenda, légió, lektor, lepra, letargia, levendula, lexikon, liberális, líceum, licitál,
+liga, likvidál, liliom, lineáris, líra1, litánia, literatúra, litván, logika, lótusz, lurkó, lutheránus, luxus, macedón,
+macerál, mágia, magisztrátus, mágnás, mágnes, mágus, majális, majoránna, május, makulatúra, maliciózus, mályva,
+mammon, mandátum, mánia, manipuláció, manna, mappa, március, márga, margaréta, margó, mártír, massza,
+matematikus, matéria, matróna, mauzóleum, mechanika, medikus, meditál, médium, medúza, melankólia, melódia,
+memória, menstruáció, menta, menza, messiás, méta, meteorológia, metropolis, metropolita, millió, mimóza,
+ministrál, miniszter, mínium, minorita, mínusz, minuta, mirha, mirtusz, miskulancia, misszionárius, misztikus,
+mitológia, mizéria, mód, moderál, molesztál, momentum, monarchia, monopólium, monostor, monstrum,
+monumentális, mór, morális, móres, morfium, mormota, motívum, múmia, mungó, muníció, mutál, múzeum, múzsa,
+muzsika, nárcisz?, nebuló, negligál, nektár, nemezis, nimbusz, nimfa, norma, normann, nóta, notórius, novella,
+november, nulla?, objektum, obulus, óceán, óda, október, okulár, ókumlál, ómega, onánia, operáció, ópium, opponál,
+optika, óra, oratórium, orgánum, orgia, orgona1, ortodox, ostya, ovális, páciens, paktum, palánta, palatínus, pálma,
+pannon, pápa, papiros, parabola, paradicsom1, paragrafus, párduc, paródia, parókia, passió, pászka, passzus, pátens,
+páter, páternoszter, patetikus, patika, pátria, pátriárka, patrióta, pauza, páva, pedagógus, pedellus, pegazus, pelikán,
+penitencia, penna, per2, perfekt, pergamen, periféria, periódus, perszóna, perverzitás, perzsa, pestis, petrezselyem,
+pikszis, piktor, pingál, piramis, pirula, pityizál, pláne, platán, plébánia, plebejus, plusz, pódium, poéta, pogány,
+polemikus, polip, politika, pólus, pompa, porció, porta, pórus, posta, pozíció, praktikus, préda, prédikáció, prelátus,
+prémium, preparál, presbiter, príma, prímás1, prior, privát, privilégium, prizma, próbál, probléma, produkál,
+professzor, próféta, prológus, prolongál, propagál, proponál, prospektus, prostitúció, protekció, protestál, protestáns,
+protézis, protokoll, provinciális, provokál, próza, publikál, puliszka?, pulpitus, pulzus, pun, punktum, pupilla, purgál,
+puritán, rabbi, rabiátus, ráció, rája, rapszódia, reakció, realitás, rebellis, redukál, referál, reflektál, reformál, régió,
+regisztrál, regula, reklamál, rektor, rekvirál, reláció, renovál, reparál, repetál, reprezentál, respektus, restancia,
+restaurál, reuma, reverenda, reverzális, revízió, rezeda, rezidencia, ricinus, rima?, rinocérosz, ritmus, rítus, rivális,
+robosztus, rózsa, rubrika, rusztikus, ruta?, rutén, salétrom, sátán, sekrestye, séma, sikátor?, silabizál, sinkófál,
+skandál, skandalum, skorbut, skorpió, skót, skrupulus, smaragd, sólya, sors, speciális, spekulál, spiritusz, spongya,
+stáció, stádium, statárium, statuál, státus, stílus, stóla, strófa, stúdium, summa, sváda, szakramentum, szalamandra,
+szalutál, szanál, szankció, szarkofág, szatír, szatíra, szekta, szekunda, szeminárium, szenátor, szenilis, szentencia,
+szeparál, szeptember, szérum, szexuális, szfinx, szimbólum, szimpla, szimulál, szirén, szittya, szláv, szuggerál,
+szuperál, tabella, tábla, tacskó, taksa, taktika, taktus, talentum, tamariszkusz, tángál, teátrum, technikus, tégla,
+teketória?, temperamentum, templom, tendencia, tenor, teológus, teória, terminus, terror, testamentum, tézis, tigris,
+tinta, típus, titán, titulus, tóga, tonna, tónus, tonzúra, tortúra, trabális, tradíció, tragédia, tragikus, trágya, traktál,
+traktus, tripla, trombózis, trónus, tropikus, tubarózsa, tubus, tuja, tumultus, tunika, uncia, uniformis, unitárius, urna,
+uzsora, vacillál, vakáció, vandál, vazallus, vegetál, vehemens, verbéna, vers, vibrál, vicinális, vigília, villa2, viola,
+vipera, virgács, virtus, vírus, vivát, voks"
+
+Latin_Church = "dominikánus, franciskánus, kanonok, kerub, klérus, piarista, purgatórium, rekviem, roráté"
+
+Latin_Domestic = "báró, delikvens, konzervatórium, korrepetitor, kurrentál, szervusz"
+
+Latin_MiddleAges = "csízió, katalán"
+
+Latin_Scientific = "diftéria, ekcéma, paszternák, petúnia, primula, prosztata, rozmár"
+
+NewLatin_Italian = "alkörmös, ámpolna, ária, armada, articsóka, bagó, bakacsin, banda, bandita, bankár, bárka?, bástya, bolt, bóra,
+bordély, bravó, brigád, briganti, brokkoli, bunyó?, cipó?, csámpás?, csembaló, csemete?, csiribiri?, csonka, csúf,
+csuma?, dárda, datolya, dettó, dézsma, digó, dózse, dukál?, dukát?, dús, egres, ereklye?, eretnek, fácán, fátyol, fúga,
+furfang, füge, gálya, garaboncia, golyó?, gondola, gúla, indigó, irredenta, istálló, kagyló?, kanavász, kandalló?,
+kapiskál, kápri, karmazsin, karnevál, kárpit, kastély, katona?, kazamata, kazetta?, kontó, korall, korcsolya?, korzó,
+kóstál, kuka1?, kupa, lakat, lancetta, lándzsa, lavina?, lugas, madonna, majolika, mandula, mankó1, marcipán,
+maskara, mázsa, mazsola, mester, miniatúra, móka, mustra, narancs, nulla?, opera, osztriga, pajzs, pálya, parádé?,
+parmezán, part, pasztell, piac, picula, pikoló, pipa, pizza, pojáca, porcsin?, rakéta, rece, remete, rest, rév, rivalda, rizs,
+rizsma, rokka, rostély, ruta?, sája, sajéta, saláta, sármenta, sirokkó, skarlát, skart, skatulya, skicc, spagetti, spanyol,
+spárga1, spárga2, staféta, strucc, szalámi, szaltó, szamár, szappan, szardella, szerecsen, szóló, szoprán, sztracsatella,
+tafota, tálca, talián, talp, tányér, táska, tímár?, tombola, torta, torzsa, tréfál, trombita, tropa?, vendég"
+
+NewLatin_French = "affér, allur, amator, ankét, argó, árkád, asszó, bizsu, blabla?, blúz, bohém, bonviván, brancs, bross, brosúra, bulvár,
+butik, deviza, dizoz, dublé, elefántcsonttorony, elit, érsek?, flamand, frufru?, furmint, garzon, kampány, kánkán,
+káró, kokilla, kokott, komplé, korc?, kor, krepdesin, kroki, kuplé, kurtizán, lamé, lornyon, masszázs, milliárd,
+minyon, mutyi?, müge, naiv, neglizsé, nívó, nugát, nüánsz, omlett, omnibusz, operator, papírmasé, paraj, parfé,
+pasziánsz, pelerin, pikk, pikó, piti?, plakett, plató, poén, ponton, primer, primor, prud, purparlé, püré, ragu, raport,
+razzia, refrén, reglama, reklám, remíz, reneszánsz, reszort, reváns, rezsó, rím, riposzt, rolád, román2, rozé, rúzs,
+sanzon, sarlatán, sasszé, sikk, sodó, szerviz1, szonda, tabló, tárgy, tartár, terasz, trikó, trükk, tus4, vagány, volán"
+
+NewLatin_Romanian = "áfonya, cigány?, cimbora, ficsúr, furulya, hodály?, hóra, kaláka, kaskavál, lej, lestyán, málé, móc, mokány,
+padlizsán?, pakura, palacsinta, pohárnok?, pópa, poronty, pulya?, román1, tilinkó, tokány"
+
+Germanic_inGeneral = "abcúg, afrik, akt, alpakka, alt, angin, antiszemita, aszpirin, autogram, bagázs, bak, bakfis, bál, bála, ballaszt, bárd1,
+barhent, bendo?, bicikli, bigott, billió, bim-bam?, bitang, blanketta, blokád, blokk, blod, bocskor?, bódé, bója, bojár,
+bólé, bombaszt, bonc, bornírt, borostyán2, bóvli, börze, brácsa, brigadéros, brillíroz, brit, bruttó, buci?, budi?, buksza,
+buli, bumli, bunker, cakk, cakompakk, cement, centenárium, cián, cickány?, cigaretta, cikcakk, cilinder, cink,
+cipszer, ciráda, cirbolya, cirill, civil, colstok, copf, cselló, csinnadratta, csuszpájz, csúzli?, cúg, dáma, dauerol, deci,
+defekt, deficit, degenerált, dekagramm, demoralizál, depó, desszert, direkt, docens, dresszíroz, drukkol, dudli,
+egzaltált, egzecíroz, észt, fakszni, fater, fecni, felcser, feszt, fidibusz, fifikus, filc, filigrán, filiszter, filter, finesz,
+firma, fitt, fixíroz, flanell, flór, flott, fólia, forszíroz, foxi, frakk, frankó, frappáns, frizura, frufru?, fuga, furnéroz,
+gádor, gála, galand, galeri, gallér, galopp, galoppíroz, gang, gardedám, gardíroz, garníroz, garnitúra, garnizon, gátor,
+gázsi, gazsulíroz, gebin, gerely, gestapó, giccs, gitt, glazúr, gleccser, gléda, grafit, gránit, gríz, grund, guberál?,
+gusztál, gyémánt, gyolcs, hacuka, hajcsi?, halló, happol, hárfa, harmonika, hasé, hazárd, hercig, hermelin, herold,
+himpellér, hódol, hókuszpókusz, hoppla, hoppsza, hórukk, huligán, huncut, huta, internátus, ír3, irha, isler, ja, jacht,
+jassz?, jé?, jódli, juszt, juta, kacér, káder, kadét, káli, kaliber, kályha, kamarilla, kamilla, kampec?, kanapé, kandíroz,
+kankó?, kanna, kanóc, kantin, kappan, kapric, kapszli, kaptár, kapucni, karbid, karcol, karfiol, karnis, karszt, kartács,
+kartell, karthauzi, karton1, karton2, kaucsuk, kégli, kehely, keksz, kémény, kibic, klappol, klott, klozett, klumpa,
+kobalt, kóborol, koffer, kókler, koksz, kókusz, kolonc, kombi, komisszár, komisz, kommandó, komód, komp?,
+komplett, komposzt, konkrétum, konnektor, kontár?, kopíroz, korhely, koszt, köböl, krach, krajcár, krakéler, kredenc,
+krikszkraksz, kudarc?, kukker, kuncsaft, kunszt, kupleráj, kuplung, kurázsi, kurbli, kussol, kübli, kvadrát, kvarc,
+kvitt, láda, láger, lajhár?, lakáj, lakk, lakmusz, landol, langaléta?, lant, lárifári, lárma, lat, lator, lavina?, lavíroz,
+lavór, leander, léc?, ledér, létra, lezser, libéria, lichthof, lila, link1, liter, lóden, lófrál?, lojális, locs, lore, lösz, lucerna,
+luft, luftballon, lüszter, maccs, macher, madzag?, mafla?, makáma, málha, malter, mámi?, mandzsetta, mangán,
+mangold, mángorol, manover, márka2, markáns, markíroz, marmelád, maródi, mars, marsall, marsruta, masina,
+masíroz, maszk, matróz, matt1, mesztic, milliméter, mitesszer, modern, módi, mokka, mopszli, morfondíroz?,
+mozsár, muff, muri, muskátli, muskéta, muskotály, muszáj, muter, nárcisz?, nassol, necc, néger, nerc, nettó, nitrogén,
+norvég?, óbégat, ojjé?, okker, ordré, ostrom, pacsi, pacsuli, pagát, pakol, palánk, panama2, páncél, paníroz, pantalló,
+papa?, papír, papundekli, pár?, parádé?, paraplé, parfüm, paríroz, párkány, parketta, paroli, párt, párta, parti,
+passzíroz, passzol1, passzol2, pát, patent, patron, pávián, pavilon, pech, pelargónia, példa, pendely, pendlizik, pepita?,
+perec, perem, perjel, pernahajder, peron, persely?, pikáns, pikkely?, pincsi, pint, pitizik, placc, plafon, plakát, pléh,
+plezúr, pliszé, plömplöm, plüss, polgár, politúr, pont, popó, porkoláb, portéka, portó, portré, poszt, potentát, póz,
+pozitívum, pöce, pöröly, prém, priccs, procc, profi?, promenád, pucc, puccs, pucer, pucol, púder, pudli, puff, puli?,
+pult, pumpa, pumpol, punci, puplin, puszi, rabol?, radíroz, rajzol, rámpa, randalírozik, randevú, rang, rapli, ráspoly,
+ráta, recept, reformer, regiment, regruta, reszkíroz, retikül, retirál, rétoromán, rezervátum, rezsi, rigli, ripsz-ropsz,
+rizikó, rizling, rokolya, roller, roló, romantika, rondella, rof, rúd?, rumli, sablon, sáf, sajtár, sál, salak, samott,
+sampon, sáp, sarcol, satíroz, selejt, serpenyo?, sifon, siller, silling, simfel, simléder, sín, sing, sitt1, slafrok, slag,
+sláger, slamasztika, slendrián, slepp, slicc, slingel, slisszol?, slukk, slussz, smaci, smafu, smink, smirgli, smucig,
+snájdig, snassz, sódar, sógor, söntés, spékel, spinét, spontán, srég, stadion, stafírung, stájer, stand, stég, stempli,
+stimmel, stoppol2, stósz, stráf, stramm, strand, stréber, strichel, strici, stukatúr, suli, sut, svindler, svung, szafaládé?,
+szakrament, szalmiák, szalon, szatén, szerpentin, szervíroz, szlovén, szortíroz, sztaniol, szuterén, tabletta, talár, tallér,
+talmi, talon, tánc, tapenol, tapéta, tárcsa, tégely, teher?, tenyér?, tik-tak, tinglitangli, tip-top, torony, totó, trafó,
+tragacs?, treff, tromf, trón, tropikál, trucc, tucat, tupíroz, tus1, unka, vagon, vakol?, vatelin, vatta, vend, vermut, vicc,
+vigéc, vircsaft, vitriol, vízum, zakó, ziccer, zsandár, zsilett"
+
+Germanic_Austrian = "azsúr, balhé, buzeráns, cipzár, dunszt, eszcájg, eszpresszó, etikett, fasíroz, fiáker, fridzsider, gigerli, gikszer, grillázs,
+hapták, krampusz, kuglóf, kvargli, máriás2, mócsing?, natúrszelet, nudli, paff, parizer, pástétom, pellengér, percent,
+praliné, puceráj, pukedli, puszedli, ramazúri, retúr, ringló, rizibizi, ródlizik, römi, sarzsi, sercli, sild, skíz, spaletta,
+sparhelt, spicli2, stopli, szaletli, szekatúra, szósz, tanti, tipli, traccs, trafik, trancsíroz, trotli, tus2, valcer, vekker,
+verkli, vinkli, virsli, virtigli, vurstli, zacc, zokni, zseníroz"
+
+Germanic_Viennese = "bliccel, fess, flanc, kapucíner, kombiné, tus5, tuti, zsalugáter"
+
+Germanic_Bavarian = "adu, akác, bajor, bakter, batár, bejgli, bifláz, bubi, bükköny, céh, cetli, cidri, ciha, cikkely, csap2, csaplár, cucli,
+cukor, curukk, cvekedli, dákó, dinsztel, drót, facér?, farsang, fásli, felsál, firhang, frász, fuccs, fuszekli, gesztenye,
+gróf, gurtni, háklis, hecc, hecsedli, hóhér, hokedli, jáger, kalucsni, kamásli, káplár, kapli, karalábé, kártol, kaszni,
+kel2, kifli, kintorna?, kóstol, koton, krigli, krumpli, kucséber, kufár, kugli, lajbi, lajt, lakli, lokni, lump, major, marha,
+masni, messzely, molett, mordály, nokedli, obsit, pá, pacni, pácol, pacsni, pakli, pallér, palléroz, pancser, pancsol,
+pánt, partvis, pék, pemzli, pertli, pintér, platni, plecsni, pohár, pór, pracli, prés, prézli, pruszlik, puszpáng, puttony,
+raccsol, ráf, ráma, rámol, rékli, ribizli, ringli, ringlispíl, robot1, roletta, rósejbni, rost2, rot, rukkol, saccol, sáfár, ság?,
+salabakter, sallang, sámli, sánc, sarabol, saroglya, seft, serbli, sintér, slájm, smaci, smakkol, smarni, snapsz, snapszli,
+snidling, sóder, sonka, sorompó, sörét, spájz, spicc1, spicc2, spicli1, spórol, spriccel, sprod, stampedli, stangli, stanicli,
+stelázsi, stikli, stuccol, sufni, suszter, suviksz, sváb, szaft, talkedli, tantusz, tarack1, tarsoly, tasli, trágár, trapp,
+trécsel?, tróger, vádli, vájdling, vekni, viksz, zeller, zsalu"
+
+Germanic_UpperGerman = "boglár, borosta, böjt?, cech, cél, cérna, cin, cinkos?, cövek, csáklya?, csille?, csúz, darabont, daróc?, dore?, encián,
+érc, erkély, fegyver?, fájin, fércel, fertály, fillér, flóta, font, fortély, frigy, friss, frocliz, früstök, fukar, fullajtár, fuvar,
+hám, hamis?, herceg, hering, istráng, ostoba, plajbász, sróf, sublót, svéd, tönköly, törköly?, vándorol, vánkos,
+vincellér, zeke, zsák, zsákmány, zsámoly, zsellér, zsemle, zsindely, zsinór, zsoltár, zsúp"
+
+Germanic_MiddleGerman = "cégér, csur, fuser, gúnár, zsémbel"
+
+Germanic_Domestic = "bognár, böllér, kalmár"
+
+Germanic_Transsilvanian = "barna, dozsöl, fánk, flekken"
+
+Germanic_Saxonian = "bocs, köpöly"
+
+Germanic_English = "bricsesz, buldog, csencsel, dressz, dzsem, dzsentri, futball, globalizáció, hardver, hendikep, heroin, hobbi, humbug,
+jenki, jogging, jonatán, kenter, koktél, komfort, kord, lift, lincsel, link2, lízing, lord, löncs, makadám, meccs,
+menedzser, mohikán, mokaszin, mumpsz, nejlon, overall, pingpong, póló, póni, préri, propeller, raglán, rakett, rali,
+riport, seriff, shake, shopping, show, sort, spam, start, stencil, stewardess, szervál, szerviz2, sznóbord, szoftver,
+szörfözik, sztár, sztrájk, sztrók, szupermarket, szvetter, tájfun, talk show, tipp, trendi, víkend"
+
+Romani = "ácsi, csaj, csór, csóró, dilinós, duma2, góré2, hóhányó?, kajál, lóvé, manusz, nyikhaj, piál, pimasz?, roma, uzsgyi?"
+
+Yiddish = "gój, handlé, haver, hirig, -izál, jampec, jatt, jiddis, klezmer, kóceráj?, kóser, macesz, mázli, meló, pajesz, pinka?,
+sakter, samesz, smonca, sóher, sólet, srác, szajré"
+
+UnknownOrigin_Loan = "apáca?, apát?, árboc?, báj?, bélyeg?, bér?, burgonya?, buzogány?, csákány?, csikk?, dereglye?, gaz?, káliz?, karám?,
+káva?, korsó?, köntös?, matring?, morotva?, persze?, pertu?, pünkösd?, regatta?, tolmács?, tornác?, tót?"
+
+InternalDevelopment_Created_Onomatopoetic = "á, áhít, ájul, álmélkodik, ámul, ásít, báb, baba, babrál?, bábu, bágyad, bakcsó, ballag, bámul, bámul, bandukol, be2,
+béget, berreg, berzenkedik, bíbic, biceg, billeg, bim-bam?, birizgál, bizsereg, bong, borzad, böfög, bog, bömböl,
+brekeg, brr, brummog, bú2, búb, búg, bugyog, cafka?, cic, cici, cincog, cinke, civakodik, co, coca, cumi?, cuppant,
+csacska, csacsog, csahol, csalinkázik?, csámcsog, csatangol, csattan, csecs, cselleng?, cseng, csér, cserfel, csettint,
+cseveg, csicsereg, csihol, csík1, csikar, csikorog, csilingel, csipog, csiripel, csirke, csiszol, csitít?, csivitel, csobban,
+csócsál, csoszog, csóvál?, csörög, csörömpöl, csörtet, csucsujgat, csúszik, csücsül, dada, dádá, dadog, dal, de2,
+didereg, dirr-durr, dob1, dobog, dohog, dong, dorombol, döbben, döcög, döng, dörmög, dörög, dörömböl, dúdol,
+dunnyog, durmol, durrog, duruzsol, duzzad?, dübörög, dünnyög, etyepetye, fecseg, fecsérel, fecske, ficamodik,
+fickándozik, fortyan, fröcsög, fuj, fürj?, fütyül, gagyog, gajdol, gége?, giling-galang, gomb?, gömb?, görög1, göthös,
+gurgulázik, gurigázik, gurít, guvat, gügyög, gyagya, gyí, habog, hadar, hadonászik, hahaha, hahó, haj2, hamm, hapci,
+hápog, harákol, haris, harsan, he, hé, hebeg, hej, hemzseg, henceg?, hergel, herreg, herseg, hess, hetyeg, hibban?, hó3,
+hopp, horkant, hortyog, hobörög, hörög, hörpint, hozöng, hú, huhog, huj, huppan, hurrog, hurut, huss, huss, hu2, hüm,
+hüppög, iá, jaj, jé?, juj, kacag, kacs?, kaffog, kakukk, kap, kárál, karattyol, károg, kattog, kelepel, ketyeg, kiált,
+kongat, kopik?, koppant, korcs?, kordul, kornyikál, kortyant, kosz?, kotkodácsol, kotlik, kotyog, köhög, köp, krákog,
+krúgat, kukorékol, kukucskál, kuncog, kurjongat, kurrog, kuruttyol, kutyul, kuvik?, küllo2, láng?, lebeg, lefetyel,
+leffeg, lepke, lézeng?, libeg, liheg, lile, lobog, locsol, lohad, lohol, lomb, lotyog, lötyög, lubickol, lucskos, majszol?,
+makog, mama?, maszatol?, miákol, mormol, morog, motyog, mukkan, nesz, no, nyafog, nyaggat, nyámmog, nyávog,
+nyekereg, nyerít, nyikorog, nyiszál, nyög, nyöszörög, nyüszít, nyüzsög, ó2, óhajt, ohó, okádik, ordít, öblít?, páhol,
+pang?, paskol, pattan, pedz, peng, pép, percen, pereg, perzsel, pettyeget, pezsdül, pfuj, pfu, pillant, pinty, pipacs,
+pipogya?, pisil, pislog, pityereg, pitypang, pittypalatty, poca, pocskol, porcog, poszog, pottyan, pörköl, pösze,
+pötyög, prüszköl, pszt, puffad, pukkan, púp, püffed, püföl, ráz, rebben, rebeg, recece, recseg, remeg, reng, reped,
+repül, reszel, retten, rezeg, rí, rikácsol, rikít, rikolt, ring1, riszál, rittyent, robog, rohan, rop, rotyog, röffen, röhög,
+ruccan?, sápog, sattyog, sej, seped, serceg, sí1, sicc, sír1, sóhajt, sorol, súg, suhog, súrol, surrog, suskus, susog, suttog,
+szepeg, szikkad, sziszeg, szív1, szopik, szortyog, szörtyög, szuszog, szuköl, szürcsöl, tár1, tát, tente, tikkad, tocsog,
+top, totojázik, totyog, trécsel?, trotty, turbékol, tüsszent, tütü, ugat, uhu, ujjong, üvölt, vacog, vakkant, vernyog,
+vihog, vijjog, vinnyog, visít, viszolyog?, vív?, zakatol, zeng, zihál, zizeg, zokog, zökken, zördül, zötyköl, zubog, zúg,
+zuhan, zúz?, zümmög, zsibbad, zsibong, zsong, zsörtölodik, zsupsz"
+
+InternalDevelopment_Created_Exclamation = "ah, aha, aj2, c, eh, ej"
+
+InternalDevelopment_Formed_Derivation = "abajgat, ábrándozik, ábrázol, acsarkodik, ácsingózik, ácsorog, ágaskodik, aggódik, ajak, ajándék, ajánl, ajóka, ájtatos,
+ajz, akar?, akkora, alacsony, alak?, alap, alattomban, aláz, áldomás, áldoz, alél, alj, alkalom, alkat, alkonyodik,
+alkotmány, alkuszik, állandó, állapot, állat, állítmány, állomány, álnok?, alpári, alsó, alvad, ám?, andalog, ángy,
+annyi, anyós, ápol, áporodik?, após, apród, aranka, árnyék?, áru, árvácska, áskálódik, ásvány, aszú, át?, átall, avar1,
+avas, avat, azonos, babusgat, bagzik, bakancs, balgatag, bamba, bánt, barangol, bárgyú, batyu?, becsül, bélés, belso,
+bíbelodik, bibircsók, bíbor?, bicsaklik, bige, biggyeszt, birkózik, bírság, bizony, biztonság, biztos, bóbiskol, bóbita,
+bocsánat, bódít, bodor, bogáncs, boglya?, bohó, bojtár?, bojtár?, bóklászik, bókol, bokréta, bólogat, bolyong, boncol,
+bont, borsóka, botlik, botránkozik, bozót, bögöly?, böngészik, boszít, buborék, buci?, bucka, bugris?, bugyolál,
+bugyor, bujt1, bujt2, buksi, burjánzik, burok, búvár, büdös, büdöske, büszke, bütyök, cafat, cáfol, cafrang, cammog,
+caplat, cefet, cibál, cibere?, cica, cicoma, cihelodik, cikázik, cincál, cirkalmaz, cirmos, cirógat, cudar?, csábít, csacsi,
+csákó?, csámborog, csángó, csapat, csapda, csapodár, csápol?, csapong, csappan, csapzott, csatakos, csatlós, csatol?,
+csavar, csavarog, csecse?, csekély, cselekedik, csenevész?, csépel, cseperedik, cserkész, csibe, csibész, csicskás,
+csicsóka, csikland, csikó, csillapít?, csimbók, csimpaszkodik, csinos, csintalan, csitri, csomag, csoport, csocselék,
+csodül, csökken, csökönyös?, csöröge, csúfondáros, csuklik, csuszka, csutka, csücsök, csüggeszt, dagály, daganat,
+dáridó?, darvadozik, dédelget, dedós, degesz, derít, dermed, dicsér, divat?, domború, dorbézol?, dögönyöz, dölyfös?,
+döngöl, dönt, dragonyos, drákói, duda?, dudorodik, duhaj, dundi, durcás?, dúskál, duzzog, dülled, édes, egyed,
+egyenes, egyenlo, egyes, egyetlen, egyezik, egyke, egyszeru, éh?, ejt, ejtozik, ékes?, élc, eledel, élelem, élelmes,
+eleség, elso, émelyeg, emészt, emlékezik, emlo, enyeleg, enyészik, ennyi, eped?, érdekel, eresz, érez, érint, ért, esd,
+esdekel, eseng, esküszik, est, eszkábál, eszmél, evickél, évodik, faggat, fajta, fakó, falka, fancsali, fanyalog, farok,
+fegyelem, fegyvernök, fejedelem, fejezet, felejt, felekezet, felel, feleség, felesel, fellebbez, felség, felso, fene, fenék,
+fenyeget, ferde, ferences, fészkelodik, feszül, fetreng, fiatal, figyelem, fikarcnyi, fintorog, finnyás, fiók, fióka, firtat,
+fitogtat, fitos, fityeg, fitymál?, fizet?, fodor?, fogad, fogamzik, fogan, foglal, foglár, fogoly1, fohászkodik, foldoz,
+folt?, folytat, fonák, fonnyad, forgács, forrás, forraszt, föld?, förgeteg, förmed, förtelem, föveny?, fullánk, furcsa,
+furikázik, furmányos, fülke, füllent, fürdik, fürge, fürkész, füröszt, fut, gabalyít, gacsos, gágog, gangos?, gányol,
+gebed, gémberedik, genny, gép, gerinc?, gerjed, gida, gombóc, gombolyag, gomolyag, gondol, gordonka, göcsörtös,
+gödölye, gogicsél, gogös, gömböc, gömbölyu, göngyölít, görnyed, göröngy, grúz, guba1, guba2, gubacs, gubancos,
+gubbaszt, gubó, guggol?, gumó, gunnyaszt, gúnyol, guvad, gümo, gürcöl?, gyakorol, gyámolít, gyarapodik, gyertyán,
+gyilkos, gyógyul, gyömöszöl, gyönyöru, gyujt, gyulöl, gyürke, habar, habókos, háborgat, habozik, habzsol, hacacáré,
+hajcsár, hajhász, hajít?, hajkurász, hajlék, hajó?, hajszol, hajt1, hajt2?, halánték, hallgat, halvány, hancúrozik, háncs,
+hang?, hant?, hány2?, hanyag?, hanyatlik, harácsol, harapódzik, harcol?, hasáb, hasonlít, hatalom, hatály, határ?,
+hatóság, hatvány, házas, házsártos, hebrencs, hederít, heged, héja, hékás, hekus, helyes, hempereg, hengerít,
+hentereg, herdál?, hetvenkedik, hetyke, hézag?, hiányos, hiedelem, higany, higgad, himbál, himlo, hint, hinta,
+hirtelen, hit, hitel, hitves, hivalkodik, hivatal, hízelkedik, hóbortos, hóka, hold1, homlít, homlok, homorú, hordó,
+horgad, horpasz, hoköl, hömpölyödik, hulla, hullám, hunyászkodik, hunyor, hurcol, hurka, husáng, huzavona, hu1,
+hul, hüledezik, hüllo, hülye, hüvely, hüvelyk, huvös, idei, idétlen, idéz, idomtalan, igaz?, igéz, igyekezik, ihlet, ijeszt,
+iktelen, illa, illan, illat, illeget, illet, imád, imbolyog, inal, inas?, incselkedik, inga, ingerel, ingovány, inog, ínség,
+intéz?, ipa, iparkodik, iramlik, irány, irdal, irdatlan, irgalom, irigy, irka, irtózik, istápol, isten?, iszákos, iszamodik,
+iszkol, iszonyodik, ítél?, izgat, izmos?, izzad, jajveszékel, járvány, javall, javas, javasol, jelent, jeles, jelleg, jobbágy,
+jog, jószág, juhászodik, kába, kacsint, kacska, kacsó, kajla, kajtat, kalandozik, kalimpál, kallódik, kamatyol, kancsal,
+kandikál, kankalin, kanyarít, kapar, kapaszkodik, kapatos, kaptat, kapzsi, karika, karmantyú?, karmol, káromol,
+kaszabol, kászálódik, kavar, kecmereg, kecsegtet, kecske?, kedd, kegyelem, kehes, kelés, kelet2, kelet3, keletkezik,
+kelevény, kellemes, kenderike, kendermagos, kengyel?, kényszerít, képes, képez, képzel, kéreg, kerek, kerekedik,
+keres, kereskedik, kerge, kerget, kérkedik, kertel, keshedt, kétell, kétes, kétség, kever, kezd, kietlen, kikelet,
+kikupálódik, kilincs?, kímél, kínál, kisded, kísérel, kísért, kíván, klikkelés, klónoz, koca, kóceráj?, kocog, kódorog,
+kohol, kókad, koldul, kólint, komor, komótos, konyul, kopács, kopáncs?, kopár, kopasz, koplal, korhad, kóricál,
+kornyadozik, koslat?, kósza, koszmó?, kotor, kótyagos, kotyvaszt, kóvályog, költ1, költ2, költözik, könyörül, köpcös,
+köpül, környék, környezet, köröm, kötekedik, köteles, kötény, kötet, kötözködik, követel, közöl, közönség, közös,
+község, kubikol, kucorog, kujtorog, kuksol, kullog, kuncsorog, kunkorodik, kunyerál, kupak?, kuporgat, kuporodik,
+kurkász, kushad?, kusza?, kutat, kutya?, küld, külso, kürto, kvaterkázik, lagzi, lágyék, lagymatag, lakodalom, lakol,
+langyos, lankad, lapály, lapít, lappantyú, lassú?, látogat, latyak, lazsál, lebbencs, lebeny?, lebzsel, lecsó, leffentyu,
+legyeskedik, legyez, legyint, léha?, lehel, lejt?, lélegzik?, leng?, lepel, lét, liba, lóbál, lobbizik, loboncos, lompos,
+ludas, lüktet, magány, magas?, magasztal?, magol, magyaráz, makulátlan, marasztal, marcangol, markolat,
+markotányos, martalék, mártás, második, másol, maszat, matat, mázol, meddo?, meghitt, meglehetos, melenget,
+mellék, melloz, méltányol, méltó, menedék, ment, mentes, mento, menyegzo, menyét, mennyi, meredek, mereng,
+merénylet, merész, merevedik, mérkozik, mérnök, mero, meroleges, mérsékel, mérték, mérv, metél, metsz, mez,
+mezony, meztelen, milliomos, mind?, mismásol, moccan, modor, mogyoró, moha, mohó, mókus, mórikál, morzsa,
+moslék, motoszkál, motoz, mozdony, muci, mufurc?, mulat, mumus, murci, mutat, mütyürke, nemes, nemz, nesze,
+nevel, nógat, noszogat, nostény, nyájas, nyalka, nyamvadt, nyargal?, nyekken, nyihog, nyilallik, nyílik, nyilván,
+nyirkos?, nyiszlett, nyit?, nyivákol, nyomorék, nyugalom, nyugta, nyurga?, ócsárol?, ócska, ocsúdik, ódzkodik, okos,
+ólálkodik, oldalog, omlik, orja, ormótlan, orom, oroz, ország, oson, ószeres, osztály, odöng, ogyeleg, öklendezik,
+ölel, ölt?, öltözik, oröl, örvény?, ösztökél, ötlik, ötvös, paci, packázik?, pacsirta, pacsmagol, padlás, padló, pákász,
+pala?, pállik, pálos, pántlika, panyóka?, papi, parányi?, parázik, parolázik, pecázik, pecek, pécéz, pehely, pempo,
+penderedik, pengo, pepecsel, permetez, petyhüdt, piciny, piheg, pihen, pikkel, pillangó, pilled, pindurka, pipiskedik,
+pirinyó, pirít, pirkad, pirók, pirongat, piros, pisze?, piszi, piszkál, piszmog, pisszent, pitymallik?, pityókos, pittyed,
+plázázik, pocak, pocsékol, pocskondiáz, pofa, pohárnok?, pohos, porcika, porhanyít?, poroszkál, poshad, posvány,
+potya, pozsgás, pöccint, pödör, pöfeteg, pöfög, pörsen, pöttöm, prímás2, prücsök, pufók, puha, puhatol, pulyka,
+pusmog, pusztít, rabol?, rafinált, rágalom, ragyog, rajcsúroz, rajkó?, rakoncátlan, ráncigál, ránt2, ravatal, réce, regös,
+rejt, rekesz, remél, rémül, rengeteg, repkény?, részeg, reszket, resztelt, réteg, rianás, riaszt, ribanc?, ribiszke,
+rimánkodik, ringyó, ripakodik, rivall, róka, rókázik, rombol?, romlik, roncsol, roppan, roppant, roskad, rost 1?,
+rostokol, rothad, rozzant, rökönyödik, rövid?, rücsök, sajnál, sajtó?, sajtol, sánta, sanyarú, sápad, sápítozik, sarang,
+sárga?, sarjú, sarkalatos, sarkall, sarkantyú, sármány, sarok, satnya?, satrafa, sav, savó, sávos, sebes, segéd, segély,
+sehonnai, sejdít, sejt1, sello, selypít, sémi, semleges, senyved, serdül, seregély, serény, serkent, sért, serte?, sertés,
+sérv, sétafikál, settenkedik, siet, siheder, sikál, sikamlós, sikít, sikkad, siklik, silány, sima?, sincs, sínylik, sió, síp,
+sipít, sirály, sistereg, sivalkodik, sivár, sivatag, sívó, slampos, sodor, somfordál, sompolyog, sopánkodik, sordély?,
+sorvad, sóska, sóvárog, sömör, sörény, sövény, spiné, sudár, sugár, sújt?, sujtás, sulyok?, sunyi, suvaszt, sül, süllyed,
+sündörög, sürög, suru, süvölt, süvölvény, szabados, szabály, szabatos, szabódik, szád, szakad, szakasz, szakma,
+szalag?, szálka, szállás, szállít, szálló, szálloda, szándék, szánt, szapul, szárcsa, származik, szárnyék, szaval,
+szavatos, szavaz, szegodik, szegül, szelep, széles, szélhudés, személy, szemerkél, szemernyi, szemfüles, szemlél,
+szemölcs, szenderedik, szentel?, szenved, szerel, szerelem, szerez, szerkezet, szerzet, sziget, szigorú, szik?, szikár,
+szilánk, szimatol, színész, szipirtyó, szipka, szipoly, szippant, szirony1?, szít?, szitkozódik, szivárvány, szívós,
+szomjas, szontyolodik, szórakozik, szorgalom, szotyola, szottyan, szoke, szonyeg, szörnyu, szöszke, szöszmötöl,
+szöveg, szövetség, szundít, szunnyad, szurdok, szurkol, szutykos, szutyongat, szüret, szürke, tág?, tagló, tajték?,
+takar?, takarék, takarékos, takarít, takarodik, takaros, talány, talicska?, támad, támla, támolyog, tanács?, tanakodik?,
+tántorog, tapasz, tápászkodik, tapasztal, tapogat, tapos, tapsol, tárca, tarhál, tarja, tarka, tarkó, tárna, tartalom, tartály,
+tartomány, tartozik, tartóztat, taszít, távozik, téblábol, tébolyog, tegez1, tékozol, telek, telepedik, televény, teljes,
+temet, tengodik, tény, tenyészik, terebélyes, terel, terít, térít, terjed, természet, termet, terpeszkedik, terv, tesped,
+tetemes, tetszik, tettet, tilt, tipor, tisztel?, tivornyázik, toboroz, tobzódik, tódul, told, tolvaj, tombol, tompor, topog,
+toporzékol, torlaszt, torlódik, torol, torpan, torzsalkodik, totyakos, toke, tökél, tölcsér, tölt, töméntelen, tömkeleg?,
+tömör, tömzsi, tönk?, töpörödik, töpörtyu, töpreng, törek, törekedik, törköly?, törleszkedik, törleszt, töröl, törpe,
+törtet, tövis, tozsde, tuba2, tukmál, tulajdon, turcsi, turpisság, tus3, tusakodik?, tuskó?, tuszkol, tücsök, tündöklik,
+tunodik, tüntet, tüske, tuz1, tüzetes, uccu?, ukrán, undok, undorodik, unszol?, uszít?, utal, utasít, utó, utolsó, útszéli,
+ücsörög, üdül, üdvözít, üdvözöl, üget, ül2?, üldöz, üreg, üzekedik, üzen?, vadon, vágány, vágtat, vajákol, vajúdik,
+vakondok, választ, vállal, való, vált, vánszorog, ványad, varangy, varázs, város, vaskos?, vastag?, vedel?, vedlik,
+vemhes, verbunkos, vércse, verejték, verseng?, veszekedik, veszodik, veszt, veszteget, vetélkedik, vetélo, vetemedik,
+vetkozik, vezér, vicsorít, vigasztal, vigyorog, villám, villog, virgonc, virrad, virul, visel, viszálykodik, viszket,
+viszontagság, vitat, vizsgál, vizsla?, vonatkozik, vonít, zaci, zacskó, zaklat, zavar?, zilál, zivatar?, zuhé, zupál,
+zsendül, zsenge, zsivaj, zsombék?, zsúfol, zsuppol"
+
+InternalDevelopment_Formed_NewSuffix = "adjusztál?, adresszál, blamál, cizellál, flangál?, konstatál, köntörfalaz, replikáz, tetovál"
+
+InternalDevelopment_Formed_FixParadigm = "alatt, alig, állítólag, által, azonban, azonnal, bele, belül, benn, benneteket, bezzeg, bízvást, cigányútra, dérrel-dúrral,
+dosztig, ébren, egyedül, egyetemben, egyre, együtt, egyveleg, éjjel, el, elébe, elég, eleinte, eleve, eleven, ellen,
+ellenben, elott, enyém, érte, esetleg, fel, felette, felol, félre, fenn, fölösleg, fölül, garral, gyakran, ha, hadilábon,
+hajadonfott, hát2, haza2, hegyibe, helyett, helyre, heon, hevenyében, hiába, híján, hol, honn, honnét, hova, hozzá, ide,
+idén, igen, ily, imént, innét, iránt, itt, jelen, képest, keresztül, ki2, kinn, kívül, körömszakadtáig, körül, közben, közel,
+közepett, között, közre, külön, különb, különben, ma, maga, magán, másutt, meddig, meg1, megint, mellesleg,
+mellett, méltán, mely, menten, merre, messze, miatt, mienk, míg, mindig, mint, miszlikbe, most, mögött, nála, neki,
+oda, oly, onnan, óta, ott, önként, oszinte, össze, övé, rá, rajta, reggel, ripityára, rokon, róla, rögtön, stikában, számára,
+szégyenszemre, széjjel, szembe, szerint, szerte, szét, szinte, szintén, távol, tessék, tied, tietek, toka, tova, tole, túl,
+tüstént, után, utol, utoljára, váltig, végett, végig, vele, veszteg, viszont, viszontlátásra, vissza, zokon"
+
+InternalDevelopment_Formed_Playful = "ákombákom, bácsi, bazsalyog, boci, bringa, cókmók, csalafinta?, csecsebecse, cserebere, csigabiga, csínja-bínja,
+csur-csavar, dínomdánom, diribdarab, duci, egyedem-begyedem, fickó?, fúr-farag, futrinka, gezemice?, gézengúz,
+handabanda, homokos, hórihorgas, icipici, ihog-vihog, ipiapacs, kíváncsi, limlom, matek?, mozi, nyanya, nyimnyám,
+nyuszi, oktondi, ötöl-hatol, paksaméta, piff-puff, pipitér?, pökhendi, pudvás?, sertepertél, tarkabarka, telis-tele,
+terefere, vityilló, zsaru?"
+
+InternalDevelopment_Formed_Abstraction = "botor, borönd, busz?, cég, cím, cipello, csat?, csend, csörte, dúc2?, egyetem, évfolyam, fanyar, foncsor, gönc, gyök,
+hahota, hercehurca, indonéz, kohó, kolomp, kör, lámpa?, lap?, lapp, lob, mezítláb, morc, mord, mundér, narkó,
+norvég?, or, pamacs, parázs, per1, perc, pilács?, pimpó, píp?, píp?, pipere, piszok?, plomba?, prókátor, pumi, ránc?,
+rege, rönk, sajna?, sanda, siker, sitt2, szín3, szörny, szufla, túra, zúzmara"
+
+InternalDevelopment_Formed_SkipLastWordofCompound = "bankó, befott, centi, drapp?, ér1, ezerjó, frottír, gulyás, gyertyaszentelo, jéger, kalap, kanári, kelet1, kivált, kölni,
+körözött, krinolin2, lábos, levego, mobil, nádor, napló, panama1, röntgen, szalicil?, szamorodni, százszorszép,
+tárogató, tengeri, termosz, tinóru, tört, zápor, zsurló"
+
+InternalDevelopment_Formed_Abbreviation = "alássan, alászolgája, át?, bár1, be1, bili, bugyi, burkus, diadal, filosz, gemkapocs, hentes?, kicsi, légó, maszek, profi?,
+resti"
+
+InternalDevelopment_Formed_Blending = "csibor, elnök, hasztalan, indok, jámbor, kegyed, konflis, lám, számuz, talaj, teremburáját"
+
+InternalDevelopment_Formed_ShiftofWordType = "adó, agyon, ajtó, akár, általveto, aszó, béles, bibe?, bibi?, bimbó, bíró, borissza, borravaló, bögyöro, bökkeno,
+bunda?, cafra, cakó, cefre, ciki, cinege, csáklya?, csecsemo, csélcsap, csemege, cséphadaró, csepurágó, csiga?,
+csigolya, csikló, csínján, csípo, csóka?, csörlo, csuhé?, csukló?, csusza, de1?, dulo, -e?, egyszeregy, éljen, elme?,
+elvétve?, enyhe, éppen, erdo, ernyo?, eso, fagylalt, farkas, fecskendo, fejsze?, ferto, fésu, fityma, fityula, fogas,
+fogva, fokos, folyosó, folytán, fo2, foköto, földszint, fülbemászó1, fülbevaló, gebe?, háború, hadd, haza1, hernyó?,
+hiszen, hív2, hogy2, idény, jelenik, jós, jövo, kallantyú, kalló, kéknyelu, kelengye?, kendo, kengyelfutó, kény, kerék,
+keszkeno, kesztyu, kezes, kopó, kopoltyú, koszorú, köszöru, kuka1?, lángos, lepedo, leves, lotyó, mart?, meg2, mersz,
+mezo, múlva, nézve, papramorgó, pénzváltó, pilla, pille, pocsolya, pörkölt, rántotta, részére, rétes?, révén, rigó,
+suttyó, suttyomban, szarvas, szöcske, szur2?, talán, teto, tömlo?, tu, ultimó, üllo, vagy, vagyon, varga?"
+
+InternalDevelopment_Formed_Paronym = "árt2, baka?, bánik, banka?, bozontos, bútor?, cápa?, cikornya, cipekedik, ciripel, császkál, csel, cserreg, csicsás?,
+csíny, csömör?, csücsörít, dürög, elöl, érik, fondor, forr, fúr?, gyík?, hajdú, hoz?, ibolya, ingyen, ív, jegy, kalóz,
+kampó?, karakán, kátyú?, komoly, lép4?, manó?, matyó?, még, mert, moholy, moszat, paca, pacák?, palló, pedig,
+portya, rég, ribillió, rigmus, rigolyás, satu, sejt2, sekély, somolyog, sor?, szál?, szaru, szirom, szög2, szütyo, ténfereg?,
+teper?, tipeg, tomp?, tömpe, vacak, vall, virág, vonz, vörös, zömök, zsineg"
+
+InternalDevelopment_Formed_SeparationofMeaning = "bikavér, csík2, deres, fok1, fok4, fontol, fontos, hajt2, hajt3, hét2, hold2, karaj2, kétszínu, kisüt, kóla, lakik2, loval,
+meglett, nyakas, nyár2, olló?, orgona2, örv2, rét2, ruszli, tér1, tor1?, zaj2"
+
+InternalDevelopment_Formed_fromProperNoun = "ádámcsutka, aggastyán, árgus, atilla, atlasz, bán1, barkochba, behemót, bencés, betlehem, buddhizmus, cézár,
+csermely, dália, dobostorta, dominikánus, domonkos, drákói, elod, érsek, fizimiska, flóra, franciskánus, fregoli,
+fruska, fukar, galád, galvánelem, geci, gobelin, Göncölszekér, gyula, herkópáter, hobbi, hortenzia, huszita,
+hübelebalázs, isler, izmaelita, izraelita, jezsuita, jonatán, júdás, július, kacér, kadarka, kaján, kálmánkörte, kaolin,
+kasmír, katicabogár, kereszt, király, kismiska, korvina, labirintus, lacikonyha, levente, liliputi, lucaszéke, maca,
+madonna, majolika, majonéz, makadám, margaréta, máriás, matuzsálem, mauzóleum, mazsola, mecénás, melák?,
+mikulás, mirelit, mohamedán, morfium, muki, nescafé, óperencia, ors, palatínus, pálfordulás, pali, pamflet, pamlag,
+panama2, pánik, pannon, pantalló, paprikajancsi, pej, pepita, pete?, pityipalkó, premontrei, rác, rekamié, ringló,
+ruszki, sémi, szendvics, szilveszter, sziszifuszi, tamás, varég, zrí, zsoké"
+
+InternalDevelopment_Formed_Compound = "ádámcsutka, ág-bog, ágrólszakadt, agyafúrt, ágynemu, ahol, ajtófél, aki, alagút, álarc, alattvaló, alávaló, alföld,
+állkapocs, álomszuszék, alperes, amaz, ámbár, amott, angyalbögyöro, angyalbor, anyakönyv, anyanyelv, anyarozs,
+anyaszentegyház, árfolyam, árnyékszék, árvalányhaj, árverés, árvíz, áspiskígyó, atyafi, avagy, azaz, azután, bajvívás,
+bakkecske, baklövés, balítélet, balkezes, baloldal, barátfüle, barázdabillegeto, baromfi, bazsarózsa, becsiccsent,
+békalencse, békaúszás, bekrepál, belföld, bélpoklos, bennfentes, birsalma, bordó, borvirág, borvíz, botfülu, bokezu,
+bölömbika, boregér, bugylibicska, bumfordi, búzavirág, cerkófmajom, cintányér?, csálé?, csalfa, csapszék,
+császármadár, cseppfolyós, cserbenhagy, csicseriborsó, csipkebokor, csirkefogó, csuromvíz, csurdöngölo, dédanya,
+delej, délibáb, derékalj, dobostorta, döghalál, drágako, drágalátos?, dúvad, ebadta, ebihal, édesanya, édesgyökér,
+édesvíz, egérút, éghajlat, égöv, egyaránt, egyelore, egyén, egyenruha, egyensúly, egyfajta, egyhangú, egyház,
+egyívású, egymás, egyszersmind, együgyu, éhenkórász, éjfél, ejha, ejnye, éjszaka, ékszer, elfogódik,
+elkámpicsorodik, elképed, elkövet, ellát, ellenvetés, eloadás, elohegy, elokelo, elöljáró, elpatkol, eltökél, elvégre,
+ember?, emberfajta, emberölto, emitt, épkézláb, eroszak, és?, észak, eszeveszett, észrevesz, esztendo, évad?,
+ezerjófu, ezermester, fabatka, fagyöngy, fahéj, fahíd, farkasfog, farkasordító, farkasvakság, favágó, fehérnemu,
+fehérnép, fejfa, fejtörés, fekhely, felebarát, felemás, félhold, felperes, felsül, félszeg, félszemu, felvég, fémjelez,
+fenevad, fennhéjáz, fennkölt, férfi, férj, fészer, Fiastyúk, finnugor, fityfene, fivér, fogdmeg, fogház, foghegyrol,
+fokhagyma, forgószél, foangyal, fobenjáró, földesúr, földhözragadt, fováros, frászkarika, fülbemászó2, fuszer,
+fuzfapoéta, gálicko, galvánelem, gazember, gépkocsi, géppuska, gímszarvas, gondviselo, górcso, Göncölszekér,
+gyalogfenyo, gyalogposta, gyalogszán, gyalogszerrel, gyalogút, gyászvitéz, gyufa, gyujtoványfu, haddelhadd,
+hadnagy, hagyján, hagymáz?, hajciho, hajcsi?, hajrá, halihó, hamupipoke, hanem, hangsúly, hasmánt, hasonmás,
+hatvan, hazafi, háztuznézo, hébe-hóba, hebehurgya, hektó, hepehupás, herkópáter, hetet-havat, hétfo, hétköznap,
+hétszilvafás, hetven, hévíz, hideglelés, hímez-hámoz, hímpor, hírforrás, hírharang, hírmondó, hírnév, hoci, holmi,
+holnap, holott, holtrészeg, holtsúly, holtverseny, hónalj, hónap, hovatovább, homéro, hungarocell, hupikék,
+húshagyókedd, húsvét, huszonöt, hubelebalázs, hubér, huhó, iafia, idojárás, ifjú, ihaj, ihol, ilyenféle, íme, immár,
+iramszarvas, írmag, is?, isa?, ismét, istenadta, istenfáját, istenhozzád, istenigazában, istenkáromló, istennyila, itthon,
+játékszín, jávorszarvas, jelenlét, jelmez, jelszó, jóféle, jóformán, jóllehet, jómadár, jonh, jótékony, kacifántos?,
+kacskaringós, kajszibarack, kakasülo, kakukkfu, kálmánkörte, kapcabetyár, karbantart, karikacsapás, karszék,
+kartárs, kártékony, katicabogár, kávéház, kecskebéka, keljfeljancsi, keménykötésu, kenyértörés, képmás, képmutató,
+képviselo, kerékpár, keresztfiú, keresztvíz, készakarva, kétkulacsos, kézenfekvo, kicsoda, kiebrudal, kifog,
+kikosaraz, kilencven, királydinnye, kirándul, kiskapu, kiskirály, kismama, kismiska, kisöreg, kispolgár, kocavadász,
+kondorkeselyu, konzumidióta, korántsem, kotnyeles, komuves, köpönyegforgató, korisbogár, körmönfont,
+körülbelül, koszál, közakarat, középszeru, középút, közfal, köznép, kunhalom, kupaktanács, kurafi, kútfo, kutyafajta,
+kutyaszorító, kutyatej, külföld, kürtoskalács, lacikonyha, ládafia, laktanya, lángész, leány?, lebuj, legott, légyott,
+léhuto, lemezlovas, lepényhal, lépfene, lesipuskás, libabor, libasorban, libikóka?, liliomtipró, linzer, lóbab, locspocs,
+lófo, lóhalálában, lóhere, lóköto, lópikula, lucaszéke, lucfenyo, lúdtalp, mácsik?, macskagyökér, macskaszem,
+madárcseresznye, madártej, magvaváló, magyar?, majdnem, makkegészséges, makrapipa, máma, martinkemence,
+másállapot, másfél, másodperc, mátyásmadár, megannyi, mégis, megvált, mekkora, melléknév, menhely, ménku,
+mentsvár, menyasszony, mérföld, mészárszék, mézesmázos, mezováros, miatyánk, micisapka, micsoda, miféle,
+mihaszna, mihelyt, mindegy, mindenféle, mindenható, mindenszentek, mindjárt, mindnyájan, minemu, mintegy,
+mitugrász, módszer, mondvacsinált, muszka, muhely, nádméz, nagyanya, nagykövet, nagylelku, nahát, naná,
+napfény, napraforgó, napszám, násznagy, nebáncsvirág, négykézláb, negyven, néha, nekidurál, nekiveselkedik,
+nélkül, némber, nemcsak, nemde, nemrég, nemulass, nemzetközi, netalántán, netkávézó, nincs, noha, nos, nótafa,
+noszirom, novér, nyakatekert, nyakleves, nyelvjárás, nyolcvan, nyoszolyólány, nyugdíjpénztár, nyúlgát, nyúlszáj,
+ojjé?, okirat, oklevél, olyanfajta, orgazda, orgyilkos, országút, országgyulés, otthon, ótvar, ofelsége, ökörnyál,
+önmaga, ördögszekér, ornagy?, összevissza, ösztöndíj, ötven, pálfordulás, pápaszem, paprikajancsi, papsajt,
+paradicsom2, párbaj, párhuzamos, pártfogó, pártütés, példabeszéd, példakép, pénzügy, perpatvar, piha, pipi,
+pirospozsgás, piszkafa, pityipalkó, póréhagyma, poszméh, püspökfalat, rabszolga, rákfene, raktár, rátarti, rendor,
+rendszer, rénszarvas, rosseb, rosszmájú, rózsaszínu, röpgyulés, röplabda, sámfa, sápkór, sárarany, sasszeg, sebaj,
+sebbel-lobbal, sehol, selyemfiú, sem?, semmi, semmiházi, senki, siserehad, soha, sóhivatal, sokféle, sot, sütnivaló,
+svábbogár, szabadlábra, szakember, szállóige, szamárköhögés, számkivet, számtan, szanaszét, szárazföld, szarkaláb,
+szarufa, szarvashiba, szedett-vedett, szegfu, szegrol-végrol, szégyenfolt, székelygulyás, székfoglaló, székfu,
+székhely, székrekedés, szeleburdi, szélhámos, szélvész, szemenszedett, szemfedél, szemfényvesztés, szemfog,
+szemközt, szempont, szemügy, szemüveg, szentigaz, szentjánosbogár, szentjánoskenyér, szentjobb, szépanya,
+szépfiú, szépszerével, szerszám, szertartás, szikvíz, színarany, színház, színtiszta, színvonal, szitaköto, szolgabíró,
+szószátyár, szószóló, szótár, szökoév, szökokút, szormók, szukmarkú, szuzhártya, tagbaszakadt, takonypóc, támpont,
+tapsifüles, tárház, távköz, tegnap, tehát, teknosbéka, telivér, ténsúr, térdkalács, térkép, testvér, tetemrehívás, tétova,
+timsó, tiszafa, tiszavirág, tisztesfu, tizenéves, tizenketto, toportyánféreg, toprongyos?, torokgyík, tótágas, tökfilkó,
+tökkelütött, tökrészeg, tönkretesz, törökbúza, törökülés, törvényszék, tosgyökeres, tudniillik, tulipiros, túlpart,
+tutyimutyi, tükörszó, tyúkszem1, uborkafa, ugrabugrál, ugrifüles, ugyanott, ugye, újfent, unokabátya, úrvacsora,
+útonálló, úttöro, ügyefogyott, ügyvéd, ünnep, vadonatúj, vadvíz, vagyis, vakablak, vakmero, valaki, válaszút, válfaj,
+vargabetu, vármegye, vásárfia, vasárnap, vaskalapos, vasmacska, vászoncseléd, vegytan, vendégoldal, vérhas,
+verofény, világfi, virágének, visszaél, vitustánc, víziló, vofély, volegény, zabigyerek, zápfog, zenebona, zokszó,
+zöldfülu, zsibvásár"
+
+InternalDevelopment_Formed_TwinWords = "apró-csepro, bubáj, cseng-bong, csetepaté, csetlik-botlik, csihi-puhi, csim-bum, csip-csup, csiricsáré?, csitt-csatt,
+dirmeg-dörmög, dúl-fúl, egyre-másra, fúr-farag, fu-fa, hányaveti, hejehuja, icipici, ímmel-ámmal, incifinci, ingóbingó,
+irkál-firkál, izeg-mozog, ízzé-porrá, keresztül-kasul, kézen-közön, lépten-nyomon, lót-fut, mendemonda,
+nyakra-fore, retyerutya, sertepertél, tarkabarka, terefere, torzonborz, ukmukfukk"
+
+InternalDevelopment_Formed_LetterWords = "ábécé, tébécé, vécé"
+
+InternalDevelopment_ConsciouslyFormed_inGeneral = "adoma, agancs, álca, anyag, anyakönyv, anyanyelv, anyarozs, áramlik, arány, ármány?, árverés, ászka?, átalány,
+átlag, átló, bajtárs, bitorol, burgundi, cintányér?, cisztercita, csáp, csapadék, csempész, csendor, csod, csor, delej,
+dúvad, édeleg, éghajlat, égöv, egyén, egylet, éhkoppon, ékszer, élelmiszer, elv, élv, érdes, erély, érem, erény,
+erjedezik, érv, estély, észlel, eszmefuttatás, fellengzo, fém, fémjelez, fennkölt, fenség, fényuzés, fogalom, fogház,
+folyóirat, forradalom, födém, fuvola, gadóc?, gépkocsi, gümokór, gyár, halandzsa, halmaz, hímpor, hitbizomány,
+horgony, hubér, igény, iramszarvas, ivar, játékszín, jelmez, jótékony, kartárs, kecses, kedély, kényelem, képlékeny,
+képlet, kerámia, keramit, kerékpár, keret, kétely, kétkedik, kiváltság, kolostor, körös-körül, körülmény, kötvény,
+közeg, közlekedik, közömbös, közöny?, központ, közület, közvetít, közvetve, küllem, különc, lonc, melléknév,
+mellény, mellso, menekül, meó, mérleg, mímel, minta, monda, mucsai, mut, muvész, noszirom, növény, nyák,
+nyelvjárás, ódon, okirat, ormány, ósdi, osztag, osztrák, óvatos, óvoda, ön1, parafa, penge, pillanat, pillér, raktár,
+regény, rendor, rendszer, roham, rom?, rovancs, rovat, röplabda, számtan, szilvórium, szoroz, terpesz, testor, tor2,
+torna, torz, tömb, tömeg, tülekedik, uszály, uszkár, utód, ügyvéd, üteg, ütem, üzelem, üzem, üzér, üzlet, válfaj,
+válság, vegyít, vegytan, vény, vetélytárs, vezényel, villamos, villany, viszonoz, viszony, vízszintes, vonal, vonat,
+vonul, vörheny, zene, zongora, zöm, zönge, zuzmó, zur, zsarnok"
+
+InternalDevelopment_ConsciouslyFormed_Abstraction = "elem, haránt, merev, porc, rag, szende, szint"
+
+InternalDevelopment_ConsciouslyFormed_Blending = "könnyelmu, laticel, lég"
+
+InternalDevelopment_ConsciouslyFormed_Derivation = "buvész, cincér, csalogány, csillár, eszmény, felettes, felület, fölény, ideiglenes, ínyenc, irodalom, ismérv, javadalom,
+jellem, jogar, sodrony, szellem, szemcse, szenvtelen, szerény, szerep, szerv, szeszély, szilárd, szivacs, szivar, szorme,
+szörp, talapzat, táv, terep" 
+
+InternalDevelopment_LoanTranslation_Latin_MirrorTranslation = "aranyér?, rendkívüli, sípcsont"
+
+InternalDevelopment_LoanTranslation_Latin_Compound = "dobhártya, elvont, félteke, feltétel, fodormenta, földrajz, gyanúper, helytartó, hópénz, kakastej, készpénz, kifogás,
+kiküszöböl, koolaj, libatop, mássalhangzó, rokonszenv, rögeszme, szentlélek, tejút, tyúkszem2"
+
+InternalDevelopment_LoanTranslation_Latin_Derivation = "alany, állag, állam, állomás, felszín, kárhozik, mozzanat, névszó, rovar, tengerszem, turnus"
+
+InternalDevelopment_LoanTranslation_German_MirrorTranslation = "ádámkosztüm, altiszt, aranyeso, bunbak, hangulat, pályaudvar, pásztoróra, rabicfal, rajong, részvét, struccpolitika,
+szabadkomuves"
+
+InternalDevelopment_LoanTranslation_German_Compound = "álláspont, ámokfutó, bárányhimlo, befolyás, célszeru?, cibetmacska, császármetszés, csendélet, cseppko, dámvad,
+délkör, égtáj, egykedvu, egyöntetu, elévül, ellenfél, eloítélet, eloszoba, elpasszol, eltussol, érdemrend, értékpapír,
+esernyo, étvágy, fegyház, fejdísz, feketelista, feketepiac, felhang, felhokarcoló, felvonás, fénykép, fesztáv, földrész,
+fomérnök, fonév, franciakulcs, gyászruha, gyepmester, gyógyszer, gyöngytyúk, hangszer, hattyúdal, helyrajz,
+hétalvó, hidegvéru, holdkóros, honvéd, jármu, jogcím, kandiscukor, karácsonyfa, karhatalom, kebelbarát, kiadós,
+kínafa, kórház, koronatanú, köbgyök, köbtartalom, könyvmoly, közhely, kulcscsont, külvilág, lámpaláz, látcso,
+légcso, létige, lombfurész, loszer, macskaasztal, macskazene, madárijeszto, magánhangzó, májfolt, majomszeretet,
+máriaüveg, mellkas, mértan, mezogazdaság, mosómedve, muszó, naplopó, nefelejcs, névérték, névnap, nyárspolgár,
+ökörszem, önismeret, ormester, osapa, oserdo, oshaza, oslakos, passzátszél, pótkötet, pótszer, régimódi, rózsafüzér,
+röpirat, sósav, szalmaözvegy, szalonképes, szélrózsa, szépíró, szuzföld, távcso, tearózsa, tejfog, tetszhalál, tévút,
+tojástánc, tokehal, tükörtojás, tuzfal, uborkaszezon, utófájdalom, urmérték, vágóhíd, valószínu, vasút, védjegy,
+vesszofutás, vesszoparipa, vezércikk, viceházmester, visszhang, viszontszeretet, zsákutca, zuglap"
+
+InternalDevelopment_LoanTranslation_German_PartlyTranslated = "hopmester, pullmankocsi?, tonhal"
+
+InternalDevelopment_LoanTranslation_German_Derivation = "elfogulatlan, fegyenc, fonök, pincér"
+
+InternalDevelopment_LoanTranslation_Croatian_Serbian_Compound = "hárslevelu"
+
+InternalDevelopment_LoanTranslation_Croatian_Serbian_PartlyTranslated = "jugoszláv"
+
+InternalDevelopment_LoanTranslation_Slavic_Compound = "fehérorosz, nagypéntek, vízkereszt"
+
+InternalDevelopment_LoanTranslation_Italian_Compound = "gránátalma"
+
+InternalDevelopment_LoanTranslation_English_Compound = "lemezlovas, shoppingcenter, szkinhed"
+
+InternalDevelopment_LoanTranslation_International_Compound_inGeneral = "barátkeselyu, békaperspektíva, elektromotor, felszarvaz, kamara-énekesno, kékharisnya, kékszakáll, kékvéru,
+kolorádóbogár, krokodilkönnyek, oroszlánrész"
+
+InternalDevelopment_LoanTranslation_International_PartlyTranslated = "angóranyúl, pánamerikai"
+
+Wanderwort = "achát, alabárd, alarm, almanach, ámbra, ametiszt, ánizs, atlasz1, babér, baldachin, balzsam, bank, berill, bomba,
+borbély, brindza, brokát, cár, címer, cinóber, citadella, coboly, csárda, cserge, csokoládé, csutora, damaszt, dénár,
+dóm, dromedár, ében, esperes, forint, gajd, galeta, garas, gavallér, gránát1, gránát2, griff, gyanta, hártya, horda,
+hugenotta, ispotály, iszák, jázmin, kabala, kacagány, kakadu, kakaó, kalyiba, kámfor, kannibál, kapitány, káplán,
+karabély, karát, kármin, kártya, kaszárnya, kassza, kazár, kecsege?, kerevet, kocsány, kompánia, koriander, kömény,
+könyv, kristály, kujon, kukorica, kurkuma, kvártély, lista, lombik, magazin, majom, mama?, mameluk, márka1,
+márvány, maszlag, matrac, mécs, medál, mente, mise, moher, mongol, mulya, must, mustár, muszlin, muzulmán,
+nadragulya, naspolya, oltár, opál, ordináré, padisah, pandúr, papagáj, paripa, paróka, paszomány, patália, patkány,
+petárda, petróleum, pézsma, pikét, piskóta, pisztoly, pite, pomádé, porcelán, porosz, prépost, puska, püspök,
+rebarbara, rozmaring, rozsomák, rubel, rubin, sáfrány, sajka, sakk, sakk-matt, selyem, sör, sörbet, spenót, suba, suta,
+szablya, szalvéta, szán2, szandál, szekrény, szenna, szirup, szoba, szóda, szófa, taliga, talmud, tarisznya, tárkony, tata,
+tatár, tea, tepsi, terpentin, topáz, tuba1, tubák, tulipán, turbán, türkiz, tüszo, vallon, vanília, varég, velence, viza, zafír,
+zománc, zubbony, zsold"
+
+Internationalisms = "abrakadabra, abszint, absztrakt, adjutáns, admirális, agresszor, agronómus, akkord, akrobata, aktív, akusztika,
+akvarell, akvárium, albínó, album, algebra, alibi, aligátor, alkohol, alkóv, allé, allergén, alumínium, amoba,
+anakronizmus, analfabéta, ananász, anarchia, anekdota, anorák, antant, antenna, antik, antilop, apacs, apanázs, apátia,
+apropó, ár3, arabeszk, arbitrázs, archaikus, arisztokrata, árja, artista, arzén, arzenál, ász, aszfalt, aszkéta, aszpik,
+asszociál, asztrakán, ateizmus, atlasz2, atléta, atmoszféra, atom, attrakció, autó, autóbusz, automata, autonómia,
+avokádó, azbeszt, azték, azúr, ázsió, bacilus, bagatell, bajadér, bajonett, bakelit, baktérium, balerina, balett, balkon,
+ballada, ballon, bambusz, banális, banán, bankett, bankomat, baptista, bár2, barakk, bárd2, barikád, bariton, barokk,
+barométer, baskír, baszk, basszus, batik, batiszt, bauxit, bazalt, bazár, bébi, beduin, benzin, benzol, berber, beton,
+bifsztek, bikini, biléta, biliárd, biológia, bisztró, bitumen, bizarr, bizmut, blöff, boa, bodega, bojkott, boksz1, boksz2,
+boleró, bolsevik, bon, bonbon, bór, bórax, bravúr, bridzs, brikett, briliáns, briós, bróm, bronz, buddhizmus, buldózer,
+bumeráng, búr, burját, burleszk, burnusz, burzsoá, busz?, bután, büdzsé, büfé, bürokrata, cellulóz, celofán, ciklámen,
+ciklon, civilizál, cunami, csekk, cseremisz, csimpánz, csincsilla, csuvas, dália, dekadencia, dekoráció, delikát, delta,
+deltoid, demagóg, demarkációs, demizson, demokrácia, deportál, design, detektív, dezertál, diagram, dialektus,
+didaktika, dilettáns, dinamika, dinamit, dinamó, dinasztia, dioptria, diplomácia, diszkó, diszkosz, díva, dokk,
+doktrína, dokumentál, dolina, dollár, dolomit, dominó, donzsuán, dopping, dór, dosszié, dömping, dráma,
+dramaturgia, drapéria, drapp?, drasztikus, drazsé, drogéria, duett, duma1, düftin, dune, dzsessz, dzsinn, dzsungel,
+egoizmus, ekrazit, eldorádó, elektron, elliptikus, enciklopédia, enzim, epigon, epigramma, epilál, epizód, erotikus,
+eszkimó, eszperantó, esszé, esztétika, eternit, etimológia, etnográfia, etruszk, export, expressz, extra, fagott, fajansz,
+fájl, fakír, fakszimile, fakultatív, falanszter, fanatikus, fanfár, fantom, farmer, fasizmus, fatalista, faun, fauna,
+favorizál, fazon, fesztivál, fétis, fiaskó, fikció, filé, film, filoxéra, finálé, finánc, finis, finn, fitness, flamingó, flotta,
+flörtöl, folklór, fonetika, fonográf, formalin, formalitás, formátum, foszfát, foszfor, fotel, fotográfia, foxtrott, frank2,
+freskó, frigid, frivol, fríz2, front, fukszia, funkcionál, furgon, futurizmus, fúzió, gáláns, galéria, gallicizmus, garancia,
+garázs, gárda, gardrób, gáz, gazella, gejzír, gén, generátor, gengszter, gerilla, germán, gésa, gesztikulál, gettó, géz,
+girland, gitár, glicerin, gnóm, gobelin, gól, golf, gong, gorilla, gótika, graffiti, grafika, gramm, gramofon, grandiózus,
+grenadin, grill, grimasz, groteszk, guanó, hall2, hamburger, hangár, harakiri, hárem, harmónium, hasis, hektár,
+helikopter, hérosz, herpesz, hetéra, hibrid, hidrogén, hindu, hoki, horizont, hormon, horoszkóp, horror, hortenzia,
+hotel, hottentotta, humusz, huri, hurrá, ideológia, idill, iglu, ikon, imperialista, impertinens, impozáns, impregnál,
+indián, infláció, influenza, inka, inkognitó, installáció, intendáns, interjú, internacionális, internál, internet, intim, ion,
+izotóp, jaguár, jakobinus, jód, jóga, joviális, kabaré, kábel, kabin, kabinet, kádencia, kajak, kajüt, kaktusz, kalifa,
+kalikó, kalória, kamélia, kamion, kandeláber, kaolin, kapitalista, karambol, karamell, karaván, kardigán, karikatúra,
+karosszéria, karrier, kartoték, kasmír, kaszinó, kaszt, katasztrális, kaverna, kaviár, kazah, kefir, keki, kemping,
+kenguru, kenu, keszon, ketchup, kibernetika, kilogramm, kimonó, kioszk, kirgiz, klarinét, klikk, klinika, klisé, klór,
+klub, kobold, kobra, kokain, kokárda, kokett, kolibri, kollektív, kóma, kommunista, kommün, kompót, komputer,
+koncert, konduktor, konfetti, konténer, kontraszt, kontroll, kontúr, konvoj, konzervatív, konyak, korán1, kordon,
+kormorán, korridor, korvett, kosztüm, kozmetika, kozmopolita, kozmosz, krém, krematórium, kreol, krepp, kretén,
+krinolin1, króm, kuli, kulissza, kumisz, kupé, kupola, lagúna, láma1, láma2, lampion, lanolin, lasszó, latrina, láva, lett,
+lézer, lián, lignit, likor, limonádé, linóleum, líra2, logisztika, lokál, lottó, lutri, madám, madeira, madrigál, maffia,
+magnetofon, mahagóni, maharadzsa, majonéz, makaróni, makett, maki, maláj, malária, mamut, mandarin1,
+mandarin2, mandolin, mandzsu, manikur, mankó2, manzárd, margarin, márki, marxista, masszív, matador, matiné,
+matrica, matt2, maximum, mazurka, melasz, mentol, mentor, menü, menüett, merinó, metán, meteor, méter, metró,
+migrén, mikrokozmosz, militarizál, mimika, minaret, mini, minimum, mítosz, mixer, modell, mohamedán, molekula,
+móló, monitor, monogram, monokli, monológ, monoton, monszun, mordvin, moszkitó, motel, motor, mottó, mozaik,
+mulatt, multiplex, nábob, náci, nacionalista, naftalin, naturalista, negatív, négus, neon, nikkel, nikotin, nirvána,
+nomád, notesz, nukleáris, nutria, oázis, ombudsman, ondolál, operett, opportunista, optimista, orangután, orchidea,
+oszét, osztják, oxigén, ózon, pagoda, paletta, pamflet, panel, pánik, panoptikum, panoráma, pantomim, panzió,
+pápua, parazita, parcella, pardon, pária, park, parlament, partizán, partner, passzió, passzív, paszta, pasztilla,
+pasztörizál, patina, pedál, pedáns, pedikur, penicillin, perkál, peronoszpóra, pesszimista, pianínó, piké, piknik,
+pikula, piláf, pilóta, pingvin, pizsama, platina, pléd, plénum, pogrom, póker, polka, precíz, premier, presztízs, prím,
+primadonna, primitív, profán, profil, profit, program, proletár, prototípus, puding, pulóver, puma, puncs, radar,
+radikalizmus, rádió, radioaktív, rádium, rafia, rassz, reaktív, rébusz, reflektor, reflex, rekord, renegát, republikánus,
+revolver, revü, rezsim, ring2, ripsz, rizottó, rokokó, románc, rondó, rögbi, rulett, rum, rutin, sakál, sámán, sampinyon,
+sansz, saszla, sejk, sevró, sezlon, sí2 'síléc', siló, skála, skalp, skandináv, sofor, sokk, soviniszta, spion, spirál,
+spiritiszta, spóra, sport, stabil, statiszta, statisztika, steril, stoppol1, stúdió, szabotál, szacharin, szadizmus, szamojéd,
+szamovár, szanatórium, szangvinikus, szardínia, szauna, szaxofon, szcientológia, szekció, szelektív, szemafor,
+szendvics, szentimentális, szenzáció, szeparatista, szerenád, széria, szezon, szifon, szimfónia, szimmetria, szimpátia,
+szinkrón, szintetizátor, szintézis, sziréna, szkepticizmus, szleng, szmoking, sznob, szociális, szója, szolid, szonáta,
+szonett, sztyeppe, szubjektív, szuverenitás, tabu, talizmán, tangó, tank, tára, tarifa, tarokk, taxi, tékvandó, telefon,
+televízió, téma, tempó, tenisz, teszt, tífusz, tiráda, toalett, topless, tornádó, torpedó, torzó, tószt, totem, trafikál,
+traktor, transz, transzformál, transzplantáció, transzport, transzvesztita, trapéz, trappista, tréning, tribün, trilla, trillió,
+trolibusz, tröszt, trubadúr, tufa, tundra, turbina, turista, turné, tüll, ufó, ugor, ultimátum, utópia, üzbég, valuta,
+vámpír, váza, vazelin, velúr, véna, ventilátor, veranda, verszt, veterán, vétó, viadukt, videó, vinyetta, vitamin, vitrázs,
+vitrin, vizit, vogul, volt, votják, vulkán, walkman, xilofon, zebra, zefír2, zéró, zürjén, zsabó, zsakett, zsargon, zselatin,
+zselé, zsiráf, zsonglor, zsuri"
+
+ContestedOrigin = "adjusztál, áporodik, arat, árt1, át, bátya, batyu, berek, bicska, bim-bam, birka, boglya, bojtár, bögöly, buci, busz,
+bútor, buz, cibere, csáklya, csámpás, csat, csatol, csiricsáré, csóka, csokor, csömör, cumi, drapp, duda, edz, ér3, érsek,
+etióp, fejsze, firkál, fizet, fok1, fúr, hajcsi, hajít, hajó, hajt2, hamis, hentes, hóhányó, inas, ír1, irt, jé, kecske, kelengye,
+kérodzik, kilincs, kóceráj, korcs, kuka1, kuvik, lajhár, láng, lap, leg-, léha, lélegzik, levél, mama, mér, méreg, norvég,
+nyár2, ojjé, olló, olt1, óriás, ölt, öreg, öröm, örvény, papa, pepita, píp, pohárnok, profi, rabol, rombol, ság, sárga,
+serpenyo, serte, sulyok, szál, szalag, szárny, szekér, szentel, szirony1, talicska, tata, tehén, teher, tér1, tisztel, tojik,
+tomp, tor1, tömlo, törköly, trécsel, ujj2, úr, ügy1, váj, vív, vizsla, zaj2, zivatar, zöld"
+
+UnknownOrigin = "ádáz, agyag, ás, atka, bádog, bagoly, bajusz, bakó, bandzsa, bárca, béke, bikfic, bízik, bocs, bojt, bokor, boly, bolyh,
+bögre, bök, börtön, bukik, bunkó, busa, buta, bun, bürök, cécó, céda, cimpa, cingár, comb, csak, csal, csalamádé,
+csarnok, csempe, csen, csótány, csupa, csüd, csülök, csüng, csürhe, dac, darázs, délceg, denevér, dér, derelye, dévaj,
+díj, dísz, dödölle, döf, dög, drusza, dúc1, dudva, dúl, durva, düh, edény, éger, ép, épít, erkölcs, erszény, eszköz,
+faramuci, fattyú, fedd, filagória, fösvény, fránya, függ, furész, gajdesz, galacsin, galiba, garázda, gém, góbé, góc,
+gond, góré1, gödör, gote, goz, grimbusz, gyanú, gyatra, gyáva, gyenge, gyep, gyepu, gyér, gyere, gyors, gyoz, gyújt,
+halk1, hamar, hanga, harcsa, has, hely, hérics, herkentyu, heveder, híg, hím2, hír, hisz, hitvány, hiúz, horka, ho, húg,
+húr, idegen, inda, ír2, izzik, juh, kabar, kacat, kamasz, kan, kanál, kancsó, kandúr, káprázik, karcsú, kebel, kelevéz,
+kelme, kém, ken, kén, kérész, kese, kócsag, kocsonya, kofa, kondás, konok, kópé, korlát, kosbor, kullancs, kúszik,
+kút, kürt, lanyha, lepény, lidérc, liget, lomha, lop, lórom, lórum, lusta, madár, magyal, makacs, makk, makrancos,
+mállik, mancs, marcona, mászik, meder, méla, mén, mész, meténg, mirigy, mogorva, nap, náspángol, nász, nedv,
+negédes, nehéz, nem1, no1, nyáj, nyárs, nyers, nyug, ocsmány, orbánc, ordas, otromba, öböl, önt, ördög, örv1, ösvény,
+osz1, ösztövér, öszvér, oz, özvegy, pacal, páholy, pajkos, pányva, pej, pér, pereputty, pina, poggyász, ponty, pótol,
+pöcs, pore, pucér, putri, racka, ránt1, remény, renyhe, rét1, rideg, rög, rügy, rüh, saját, sás, sáska, seb, séd, serleg,
+sikér, sisak, smárol, sonkoly, súly, sügér, süket, szab, szajha, száll, szatyor, szeder, szegény, szégyen, székely, szelíd,
+szemérem, szid, szigony, szike, szín2, szokik, szurtos, szuk, tag, tahó, takony, taraj, targonca, tataroz, teke, tép,
+terem1, test, tincs, tippan, toboz, tok2, tol, tör, történik, törvény, turha, túsz, tutaj, tüdo, tülök, tunik, ugrik, un, ül1, üst,
+üstök, üszög, vackor, vágyik, vak, valag, váz, ver, vész, vét, vézna, vidék, von, zagyva, záp, zordon, züllik, zsarol,
+zsázsa"
+
+
+
+
+
+
+### define function
+
+create_df_origin = function ( text ) {
+      
+    b0 = unlist ( strsplit(text,",") )
+    
+    word = gsub( "\n" , " ",  b0   ) 
+    
+    output = data.frame(word = word, 
+                        question = 0,
+                        origin = deparse(substitute(text)),
+                        stringsAsFactors = F)
+    output$question = stri_detect_fixed(output$word, "?") 
+    output$question = ifelse(output$question == TRUE, "?", 0 )
+    output$word =  gsub("?", "", output$word, fixed = T)
+    output$word = str_trim(output$word)
+    return(output)  
+    }
+
+df_0b =  create_df_origin(Ancient_Uralic)   
+df_1b =  create_df_origin(Ancient_Finno_Ugric ) 
+df_2b =  create_df_origin(Ancient_Ugric)   
+df_3b =  create_df_origin(Probably_Ancient)   
+df_4b =  create_df_origin(Permic)   
+df_5b =  create_df_origin(Iranian_forExampleAlanian)   
+df_6b =  create_df_origin(Caucasian )
+df_7b =  create_df_origin(Turkic_Before895_inGeneral)
+df_8b =  create_df_origin(Turkic_Before895_Chuvash)
+df_9b =  create_df_origin(Turkic_Before895_nonChuvash)    
+df_10b =  create_df_origin(Turkic_After895_Pecheneg_Cuman)
+df_11b =  create_df_origin(Turkic_After895_Ottoman)
+df_12b =  create_df_origin(Slavic_Southern_Bulgarian)
+df_13b =  create_df_origin(Slavic_Southern_Croatian_Serbian)
+df_14b =  create_df_origin(Slavic_Southern_Slovenian)
+df_15b =  create_df_origin(Slavic_Southern_inGeneral)
+df_16b =  create_df_origin(Slavic_Western_Czech)
+df_17b =  create_df_origin(Slavic_Western_Polish)
+df_18b =  create_df_origin(Slavic_Western_Slovak)
+df_19b =  create_df_origin(Slavic_Western_inGeneral)
+df_19b =  create_df_origin(Slavic_Eastern_Russian)
+df_20b =  create_df_origin(Slavic_Eastern_Ukrainian)
+df_21b =  create_df_origin(Slavic_Eastern_inGeneral)
+df_22b =  create_df_origin(Slavic_inGeneral)
+df_23b =  create_df_origin(Latin_inGeneral)
+df_24b =  create_df_origin(Latin_Church )
+df_25b =  create_df_origin(Latin_Domestic)
+df_26b =  create_df_origin(Latin_MiddleAges)
+df_27b =  create_df_origin(Latin_Scientific)
+df_28b =  create_df_origin(NewLatin_Italian)
+df_29b =  create_df_origin(NewLatin_French)
+df_30b =  create_df_origin(NewLatin_Romanian)
+df_31b =  create_df_origin(Germanic_inGeneral)
+df_32b =  create_df_origin(Germanic_Austrian)
+df_33b =  create_df_origin(Germanic_Viennese)
+df_34b =  create_df_origin(Germanic_Bavarian)
+df_35b =  create_df_origin(Germanic_UpperGerman)
+df_36b =  create_df_origin(Germanic_MiddleGerman)
+df_37b =  create_df_origin(Germanic_Domestic)
+df_38b =  create_df_origin(Germanic_Transsilvanian)
+df_39b =  create_df_origin(Germanic_Saxonian)
+df_40b =  create_df_origin(Germanic_English)
+df_41b =  create_df_origin(Romani)
+df_42b =  create_df_origin(Yiddish)
+df_43b =  create_df_origin(UnknownOrigin_Loan)
+df_44b =  create_df_origin(InternalDevelopment_Created_Onomatopoetic)
+df_45b =  create_df_origin(InternalDevelopment_Created_Exclamation)
+df_46b =  create_df_origin(InternalDevelopment_Formed_Derivation)
+df_47b =  create_df_origin(InternalDevelopment_Formed_NewSuffix)
+df_48b =  create_df_origin(InternalDevelopment_Formed_FixParadigm)
+df_49b =  create_df_origin(InternalDevelopment_Formed_Playful)
+df_51b =  create_df_origin(InternalDevelopment_Formed_Abstraction)
+df_52b =  create_df_origin(InternalDevelopment_Formed_SkipLastWordofCompound)
+df_53b =  create_df_origin(InternalDevelopment_Formed_Abbreviation)
+df_54b =  create_df_origin(InternalDevelopment_Formed_Blending)
+df_55b =  create_df_origin(InternalDevelopment_Formed_ShiftofWordType)
+df_56b =  create_df_origin(InternalDevelopment_Formed_Paronym)
+df_57b =  create_df_origin(InternalDevelopment_Formed_SeparationofMeaning)
+df_58b =  create_df_origin(InternalDevelopment_Formed_fromProperNoun)
+df_59b =  create_df_origin(InternalDevelopment_Formed_Compound)
+df_60b =  create_df_origin(InternalDevelopment_Formed_TwinWords)
+df_601b = create_df_origin(InternalDevelopment_Formed_LetterWords)
+df_61b =  create_df_origin(InternalDevelopment_ConsciouslyFormed_inGeneral)
+df_62b =  create_df_origin(InternalDevelopment_ConsciouslyFormed_Abstraction)
+df_63b =  create_df_origin(InternalDevelopment_ConsciouslyFormed_Blending)
+df_64b =  create_df_origin(InternalDevelopment_ConsciouslyFormed_Derivation)
+df_65b =  create_df_origin(InternalDevelopment_LoanTranslation_Latin_MirrorTranslation)
+df_66b =  create_df_origin(InternalDevelopment_LoanTranslation_Latin_Compound)
+df_67b =  create_df_origin(InternalDevelopment_LoanTranslation_Latin_Derivation)
+df_68b =  create_df_origin(InternalDevelopment_LoanTranslation_German_MirrorTranslation)
+df_69b =  create_df_origin(InternalDevelopment_LoanTranslation_German_Compound)
+df_70b =  create_df_origin(InternalDevelopment_LoanTranslation_German_PartlyTranslated)
+df_71b =  create_df_origin(InternalDevelopment_LoanTranslation_German_Derivation)
+df_72b =  create_df_origin(InternalDevelopment_LoanTranslation_Croatian_Serbian_Compound)
+df_73b =  create_df_origin(InternalDevelopment_LoanTranslation_Croatian_Serbian_PartlyTranslated)
+df_74b =  create_df_origin(InternalDevelopment_LoanTranslation_Slavic_Compound)
+df_75b =  create_df_origin(InternalDevelopment_LoanTranslation_Italian_Compound)
+df_76b =  create_df_origin(InternalDevelopment_LoanTranslation_English_Compound)
+df_77b =  create_df_origin(InternalDevelopment_LoanTranslation_International_Compound_inGeneral)
+df_78b =  create_df_origin(InternalDevelopment_LoanTranslation_International_PartlyTranslated)
+df_79b =  create_df_origin(Wanderwort)
+df_80b =  create_df_origin(Internationalisms)
+df_81b =  create_df_origin(ContestedOrigin)
+df_82b =  create_df_origin(UnknownOrigin)
+
+df_total_origin = do.call("rbind", list(df_1b, df_2b, df_3b, df_4b, df_5b, df_6b, df_7b,
+                                        df_8b, df_9b, df_10b, df_11b, df_12b, df_13b,
+                                        df_14b, df_15b, df_16b, df_17b, df_18b, df_19b,
+                                        df_20b, df_21b, df_22b, df_23b, df_24b, df_25b,
+                                        df_26b, df_27b, df_28b, df_29b, df_30b, df_31b,
+                                        df_32b, df_33b, df_34b, df_35b, df_36b, df_37b,
+                                        df_38b, df_39b, df_40b, df_41b, df_42b, df_43b,
+                                        df_44b, df_45b, df_46b, df_47b, df_48b, df_49b,
+                                        df_51b, df_52b, df_53b, df_54b, df_55b,
+                                        df_56b, df_57b, df_58b, df_59b, df_60b, df_601b,
+                                        df_61b, df_62b, df_63b, df_64b, df_65b, df_66b,
+                                        df_67b, df_68b, df_69b, df_70b, df_71b, df_72b,
+                                        df_73b, df_74b, df_75b, df_76b, df_77b, df_78b,
+                                        df_79b, df_80b, df_81b, df_82b))
+                                         
+
+                          
+
+#### merge
+
+df_merged = merge(df_total, df_total_origin , by = "word", all= T)
+
+write.csv ( df_merged, "df_year_origin.csv", row.names = F)
+
+
+                          
+     gg = for (i in 1:82) {
+       print( paste0("df_", i, "b", "," ))}
+       
+       
+       
+  getwd()                        
+
+

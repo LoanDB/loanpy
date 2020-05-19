@@ -1,0 +1,150 @@
+#Consonant cluster change incl. position quantifier for dif time layers lik U, FU, Ug
+#In: two word lists: new and old words
+#Out: csv1: Consonant cluster changes, csv2: Count of Consonant cluster changes incl. all examples
+
+#import modules
+import pandas as pd
+import os
+import collections
+
+#define directory
+os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Versuche\Quantify_soundchange')
+
+#Define Timelayers
+timelayers=['U','FU','Ug']
+for timelayer in timelayers:
+
+    #define variables and dfs
+    csv = pd.read_csv("Hun_old_IPA4.csv", encoding='utf-8')
+    csv2 = pd.read_csv("H_phon.csv", encoding='utf-8')
+    Vowels0 = csv2['V']
+    Vowels_o0 = csv2['V_o']
+    df1=pd.DataFrame()
+    dfQ=pd.DataFrame()
+
+    #DEFINE THE LAYER LIKE U, FU, Ug OVER HERE
+    csv=csv[csv.Lan == timelayer]
+    csv=csv.reset_index()
+    csv=csv.drop(['index'], axis=1)
+
+    #define functions
+    def listToString(s):  
+        str1 = " "   
+        return (str1.join(s))
+
+    #clean data
+    Vowels = [x for x in Vowels0 if str(x) != 'nan']
+    Vowels_o = [x for x in Vowels_o0 if str(x) != 'nan']
+
+    ##make all words same length by counting Vowels and adding '0∅' until they have same nr of vowels
+
+    for index, row in csv.iterrows():
+        Vnew = [x for x in row['0+H+∅'] if str(x) in Vowels]
+        Vold = [x for x in row['0+old'] if str(x) in Vowels_o]
+        while len(Vnew)<len(Vold):
+            row['0+H+∅']+='0∅'
+            Vnew = [x for x in row['0+H+∅'] if str(x) in Vowels]
+        while len(Vnew)>len(Vold):
+            row['0+old']+='0∅'
+            Vold = [x for x in row['0+old'] if str(x) in Vowels_o]
+
+    #split both lists by vowels,
+    a=listToString(csv['0+H+∅']).replace('ɒ','V').replace('ɛ','V').replace('o','V').replace('e','V').replace('a','V').replace('i','V').replace('ø','V').replace('u','V').replace('y','V').replace('ɜ','V').replace('¨','V').replace('ȣ','V').replace('∅','V').replace('VV','V0V').replace(' ','V').split('V')
+    b=listToString(csv['0+old']).replace('ɤ','V').replace('æ','V').replace('o','V').replace('e','V').replace('a','V').replace('i','V').replace('u','V').replace('y','V').replace('ɜ','V').replace('¨','V').replace('ȣ','V').replace('∅','V').replace('VV','V0V').replace(' ','V').split('V')
+    b=b[:-1]
+
+    ##put 1s to word initial vowels, and 2s to word final ones
+    #define stuff
+    dftest=pd.DataFrame()
+    dftest['test']=a
+    dftest.drop(dftest.tail(1).index,inplace=True)
+    dft=pd.DataFrame()
+    lh=[]
+    wl=[]
+    t3=[]
+    t6=[]
+    #replace each consonant cluster with '1' from list a
+    for x in a:
+        if x!='':
+            t3.append(1)
+        if x=='':
+            t3.append('')
+
+    #add all '1's within a word. The sum equals the number of C clusters within a word
+    t4 = str(t3).replace(',','').replace(' ','').replace('\'\'',' ').replace('[','').replace(']','')
+    t5 = t4.split(' ')
+
+    for i in t5:
+        t6.append(sum(list(map(int, i)))) 
+
+    #insert len to df and Hungarian words
+    dft['len']=t6
+    dft['hun']=csv['0+H+∅']
+    dft.drop(dft.tail(1).index,inplace=True)
+    #repeat every hun word as often as len of Consonants
+    for index,row in dft.iterrows():
+        wl.append((row['hun']+' ')*row['len'])
+    #put list of repeated hun words into df with one C cluster per row
+    newlist=str(wl)[2:][:-2].replace(' \', \'',',,').replace(' ',',').split(',')[:-1]
+    dftest['newlist']=newlist
+
+    ##add 1 if word initial, add 2 if word final
+    #add 1 to the very first element if necessary
+    if  dftest.iloc[0,0] == dftest.iloc[0,1][0]:
+        dftest.iloc[0,0]+='¹'
+    #add 1 or 2 to all other elements
+    for index,row in dftest.iterrows():
+        if row['test']=='':
+            if dftest.iloc[index+1,0] == str(dftest.iloc[index+1,1])[0]:
+                dftest.iloc[index+1,0]+='¹'
+            if dftest.iloc[index-1,0] == str(dftest.iloc[index-1,1])[-1]:
+                dftest.iloc[index-1,0]+='²'
+    #add 2 to the very last element if necessary 
+    if  dftest.iloc[-1,0] == dftest.iloc[-1,1][-1]:
+        dftest.iloc[-1,0]+='²'
+    V_hun8 = dftest['test'].tolist()
+    #add 3 if medial
+    for n,i in enumerate(V_hun8):
+        if i != '' and i[-1]!='¹' and i[-1]!='²':
+            V_hun8[n]=(i+'³')
+    a=V_hun8
+
+    ##create new column with sound changes
+    df1['new']=a
+    df1['old']=b
+    df1["change"] = '*' + df1["old"] + '>' + df1["new"]
+
+    #put all changes within one word into one line and insert into df
+    change = df1['change'].tolist()
+    change2=listToString(change).replace(' *> ','/').split('/')
+    csv['Cchanges']=change2
+
+    ###create 2nd csv quantifying sound changes
+
+    #Count soundchanges and remove first and last characters
+    cut1=len('Counter({\'* > \': 472,')
+    cut2=len(str(collections.Counter(change)))-2-cut1
+    dfQ['Quantify_C']= str(collections.Counter(change))[cut1:][:cut2].replace('\'','').split(', ')
+    #split into columns by ":"
+    dfQ2 = dfQ["Quantify_C"].str.split(":", n = 1, expand = True)
+    dfQ["C_cng"]= dfQ2[0] 
+    dfQ["Count"]=dfQ2[1]
+    dfQ=dfQ.drop(["Quantify_C"], axis=1)
+
+    #insert all the words where the sound change occurs into third column
+    dfQ['all_examples']=''
+    for index1, row1 in dfQ.iterrows():
+        for index2, row2 in csv.iterrows():
+            if row1['C_cng'] in str(row2['Cchanges']).split(' '):
+                row1['all_examples'] += '*'+(row2['Old']+'>'+row2['Hun']+ ', ')
+
+    #add * to all protoforms
+    for index, row in csv.iterrows():
+        row['Old']='*'+row['Old']
+        row['o_IPA']='*'+row['o_IPA']
+        row['0+old']='*'+row['0+old']
+        if str(row['o_extra']) != 'nan':
+            row['o_extra']='*'+row['o_extra']
+    #write csvs
+    #csv.to_csv("Consonants_U_pos", encoding="utf-8", index=False)
+    dfQ.to_csv("Quantify_"+timelayer+"_CClusters", encoding="utf-8", index=False)
