@@ -1,8 +1,7 @@
 Partial and preliminary results of my dissertation with the working title "Hungarian-Gothic relations" at the University of Vienna  
-Folder Code: Contains all Python-Codes as .txt (+2 R-Studio Codes)  
-Folder Data: Contains all input and output files  
-Folder Presentation: Contains the most important Datasets in xlsx-format, as well as a pptx-Presentation explaining each Dataset  
-Diss_Martinovic0.0.docx contains a description of the workflow with which Codes and Data were produced/used  
+Folder Code: Contains the main Code, loanpy34.py  
+Metadata will be made separately available via Google Drive  
+More information as well as a release on pypi.org follows in the next days   
   
-https://doi.org/10.5281/zenodo.3834071  
+http://doi.org/10.5281/zenodo.4009627
  
