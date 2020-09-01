@@ -6,7 +6,7 @@ Open cmd and type in "python -m pip install loanpy"
 Then run python and type "from loanpy import loanpy34"  
 Create a folder from which you want to work and change your python directory to that folder  
 Do this e.g. by importing os and then using the os.chdir(r'C:\insertpathhere) command  
-Download the metatdata from [insert link here] and save them into your working folder   
+Download the metatdata from https://drive.google.com/drive/folders/1wlJ7XliYHC9VWocMg54cxR1bwpQ5vmvL?usp=sharing and save them into your working folder   
   
 http://doi.org/10.5281/zenodo.4009627
  
