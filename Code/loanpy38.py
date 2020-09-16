@@ -1,7 +1,5 @@
 #loanpy module. Main function loan()
-#(c) Viktor Martinovic 08.08.2020
-#import os
-#os.chdir(r'C:\Users\Viktor\OneDrive\PhD cloud\Vorgehensweisen\loanpy3') #directory where python works
+#(c) Viktor Martinovic 01.09.2020
 import pandas as pd #to work with dataframes
 from lingpy import ipa2tokens #posy etc needs this to split and identify consonants and vowels
 import itertools #for shuffle function mainly
@@ -21,13 +19,22 @@ from itertools import combinations #to shuffle the substituted clusters
 from collections import Counter #to Count clusters
 from collections import defaultdict #for sufy
 from itertools import count #for sufy
+import requests
+from bs4 import BeautifulSoup
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.layout import LAParams
+from pdfminer.converter import TextConverter
+from io import StringIO
+from pdfminer.pdfpage import PDFPage
+import gc
 
 forbidden=['nan','0.0','∅',"0","<NA>"] #shuffle needs this variable. Add sounds to this variable that can't be...
 ipa2uewdict={'¨':'ȣ̈','ɑ':'a','æ':'ä','ð':'δ','ðʲ':'δ́','ɣ':'γ','lʲ':'ĺ',\
              'nʲ':'ń','ʃ':'š','y':'ü','θ':'ϑ','t͡ʃ':'č','ʃʲ':'ś','t͡ʃʲ':'ć'}
 #check uewscrape2ipa()
 semsimdict={'KeyError gensim, KeyError gensim': 'KeyError gensim, KeyError gensim, -1'}
-wikipos='Abkürzung,Adj.,Adv.,Art.,Buchstabe,F.,Interj.,Konj.,LN.,M.,N.,Num.,ON.,Partikel,PN.,Präp.,Pron.,Sb.,V.,Wort,nan'
+wikipos='Abkürzung,Adj.,Adv.,Art.,Buchstabe,F.,Interj.,Konj.,LN.,M.,N.,Num.,ON.,Partikel,PN.,Präp.,'\
+'Pron.,Sb.,V.,Wort,nan'
 wikikeys=wikipos.split(',')
 wikivalues=['r','a','r','r','r','n','r','r','n','n','n','r','n','r','n','r','r','n','v','n','nvar']
 wikidict = dict(zip(wikikeys, wikivalues))
@@ -37,7 +44,8 @@ model=[]
 
 def ipacsvfunction(column): #extracts soundtypes from ipa.csv (panphon) and ads them to a string (=faster)
     try:
-        ipacsv= pd.read_csv("ipa_table.csv", encoding='utf-8',sep=';') #list from panphon to tell if an IPA sound is a vowel
+        ipacsv= pd.read_csv("ipa_table.csv", encoding='utf-8',sep=';') #list from panphon to tell if an
+        #IPA sound is a vowel
     except FileNotFoundError:
         return 'ipa_table.csv not found, download ipa_table.csv via https://pypi.org/project/panphon/0.1/'
     listyes=''
@@ -56,6 +64,191 @@ Vow='ɑɘɞɤɵʉaeiouyæøœɒɔəɘɵɞɜɛɨɪɯɶʊɐʌʏʔɥɰʋʍɹɻɜ¨�
 back='wɡkqɠɢʛq͡χɢ͡ʁxħɣʁʕχŋɴʀɫɑɤouɒɔəɘɵɞɜɨɯʊɐʌʍɹȣ' #ipacsvfunction('back')[0]
 front='jcɖɟʄʈbb͡ddd̪pp͡ttt̪ɓɗc͡çd͡ʒt͡ʃɟ͡ʝb͡vd͡zd͡ʑp͡ft͡st͡ɕçʂʃʐʒʝfss̪vzz̪ðɸβθɕʑɳmnn̪ɲʎhll̪ɦɘɞɵʉaeiyæøœɛɪɶʏʔɥɻ¨'#ipacsvfunction('back')[1]
 
+#####CREATE INPUT FILE
+#convert pdf to string (from youtube tutorial)
+def get_pdf_file_content(path_to_pdf):
+    resource_manager = PDFResourceManager(caching=True)
+    out_text = StringIO()
+    laParams = LAParams()
+    text_converter = TextConverter(resource_manager, out_text,laparams=laParams)
+    fp = open(path_to_pdf, 'rb')
+    interpreter = PDFPageInterpreter(resource_manager,text_converter)
+    for page in PDFPage.get_pages(fp,pagenos=set(),maxpages=0,password="",caching=True,check_extractable=True):
+        interpreter.process_page(page)
+    text= out_text.getvalue()
+    
+    fp.close()
+    text_converter.close()
+    out_text.close()
+    
+    return text
+    
+#webscrape hungarian-english dictionary, store as txt
+def scrapedict_huen():
+    for i in range(ord('a'), ord('z')+1): #dictionary entries from a-z
+        if i != ord("q"): #only letter missing from dictionary's website is "q"
+            URL='https://mek.oszk.hu/00000/00076/html/hun-eng/'+chr(i)+'.htm'
+            page = requests.get(URL)
+            text_file = open("szotar"+chr(i)+".txt", "w")
+            text_file.write(page.text) #write the webscraped page to a txt file
+            text_file.close()
+
+#convert txt to dictionary
+def getdict_huen():
+    hunendict={}
+    for i in range(ord('a'), ord('z')+1): #dictionary entries from a-z
+        print(chr(i))
+        if i != ord("q"): #only letter missing from dictionary's website is "q"
+            hul=[]
+            enl=[]
+            subdict={}
+            soup1=BeautifulSoup(open("szotar"+chr(i)+".txt").read())
+            soup1=soup1.body #cut out trash from beignning and end
+            for s in soup1.select('script'): #cut off anything between tag "script"(bottom)
+                s.extract()
+            for s in soup1.select('center'):  #cut off anything between tag "center" (top)
+                s.extract() 
+            zl= re.sub(r'\<.*?\>', '', str(soup1)) #remove tags <body> and <html> from top and bottom
+            if i == ord("z"): #z has some extra strings in the end that cause errors
+                zl=zl[1:-9] #cut off the troublesome strings
+            zlsplit=zl.split("\n\n ")[1:-1] #cut off first and last char, they cause errors
+            for j in zlsplit:
+                wordpair=j.split(" -» ") #split into hu and en word
+                hul.append(wordpair[0].replace("õ","ő").replace("û","ű"))#correct wrong encoding
+                enl.append(wordpair[1])
+            for index, j in enumerate(hul):
+                if j in hunendict:
+                    hunendict[j].append(enl[index]) #add meaning if already in dict
+                else:
+                    hunendict[j]=[enl[index]] #else create new entry
+    hunendict="hunendict="+str(hunendict)
+    with open('hunendict.py','w',encoding="utf-8") as data:
+        data.write(hunendict)
+    return hunendict
+
+#key: word, value: origin, extracted from zaicz pdf
+def getdictorig():   
+    zaiczcsv=pd.DataFrame(columns=['word','year','info','disambiguated','suffix',"en"]) #dffinal
+    #zaicz1: year, zaicz2: origin
+    zaicz2=zaicz.split(' \n \n\n \n\n\x0cA SZAVAK EREDET SZERINTI CSOPORTOSÍTÁSA* \n\n \n \n \n \n \n \n',1)[1]
+    dictorig={}
+    zlist=zaicz2.split("\n \n")
+    for index,i in enumerate(zlist):
+        if index<101:
+            para=i.split("\n",1)
+            paratag=para[0]
+            if len(para)>1:
+                paratxt=para[1]
+                for i in paratxt.split(", "):
+                    if i[-1]=="?":
+                        dictorig[i.replace("x0c","").replace("\n","").replace("?","")]=paratag+"?"
+                    else:
+                        dictorig[i.replace("x0c","").replace("\n","")]=paratag
+        if index>=101 and (index % 2) ==0:
+            for j in i.split(", "):
+                if i[-1]=="?":
+                    dictorig[j.replace("x0c","").replace("\n","")]=zlist[index-1]+"?"
+                else:
+                    dictorig[j.replace("x0c","").replace("\n","")]=zlist[index-1]
+    dictorig="dictorig="+str(dictorig)
+    with open('dictorig.py','w',encoding="utf-8") as data:
+        data.write(dictorig)
+    return dictorig
+
+#read annex of zaicz pdf and tranform to csv (main input file)
+def zaicz2csv():
+    try:
+        from hunendict import hunendict
+    except:
+        print("create dictorig with getdictorig()")
+        
+    try:
+        from dictorig import dictorig
+    except:
+        print("create dictorig with getdict_huen()")
+    zaiczcsv=pd.DataFrame(columns=['word','year','info','disambiguated','suffix',"en","orig","pos_hun",\
+                                  "wordipa"]) #dffinal
+    #zaicz1: year, zaicz2: origin
+    path_to_pdf = r"C:\Users\Viktor\Desktop\TAMOP_annex.pdf"
+    zaicz=get_pdf_file_content(path_to_pdf)
+    zaicz1=zaicz.split(' \n \n\n \n\n\x0cA SZAVAK EREDET SZERINTI CSOPORTOSÍTÁSA* \n\n \n \n \n \n \n \n',1)[0]
+    zaicz2=zaicz.split(' \n \n\n \n\n\x0cA SZAVAK EREDET SZERINTI CSOPORTOSÍTÁSA* \n\n \n \n \n \n \n \n',1)[1]
+
+    #zaicz1 (year):
+    for index,i in enumerate(zaicz1.split('[')): #list of year-word pairs
+        if ':' in i: #otherwise error
+            zaiczcsv.at[index,'word']=i.split(':')[1].replace(" ","").replace("\n","")\
+            .replace("1951-től","").replace("1000-ig","") 
+            zaiczcsv.at[index,'year']=re.sub("[^0-9]", "", i.split(':')[0].split(',')[-1]) #the sure year
+            zaiczcsv.at[index,'info']=i.split(':')[0][:-1].replace("\n","") #all other info
+
+    for index,row in zaiczcsv.iterrows():
+        zaiczcsv.at[index,'word']=row['word'].split(',') #explode funktioniert nur mit listen, darum split()
+    #explode, reset index,drop old index,remove rows with empty cells in column "word"
+    zcsv=zaiczcsv.explode('word')
+    zcsv=zcsv.reset_index()
+    zcsv=zcsv.drop('index',axis=1)
+    zcsv= zcsv[zcsv.word != '']
+
+    for index,row in zcsv.iterrows():
+        if len(row['year'])==2: #e.g. 20 ist left from "20.sz" (20th century) so we'll append "00"
+            zcsv.at[index,'year']=row['year']+'00'
+        if row['word'][-2:].isnumeric(): #remove headers (like "1001-1100")
+            zcsv.at[index,'word']=row['word'][:-9] #4+4+1 (year1+hyphen+year2)
+        zcsv.at[index,'disambiguated']=row['word']
+        if row['word'][-1].isnumeric(): #disambiguation to other column
+            zcsv.at[index,'word']=row['word'][:-1]
+        zcsv.at[index,'word']=row['word'].replace("~","/").split("/") #explode needs list, so split()
+
+    zcsv=zcsv.explode('word')
+    zcsv=zcsv.reset_index() #reset index to 1,2,3,4,... again
+    zcsv=zcsv.drop('index',axis=1) #drop old index 1,1,1,2,2,3,4,....
+
+    for index,row in zcsv.iterrows():
+        if row['word'][0]=="-": #remove hyphens
+            zcsv.at[index,"word"]=row["word"][1:]
+            zcsv.at[index,"suffix"]="+" #mark that they're a suffix in extra column
+        #insert translations
+        try:
+            zcsv.at[index,"en"]=str(hunendict[row["word"]]).replace("[","").replace("]","").\
+            replace("'","").replace('"','') #b/c semsim requires a string not a list
+            #b/c you can not store lists in a csv, only strings
+        except KeyError:
+            pass
+        try:
+            zcsv.at[index,"orig"]=dictorig[row["disambiguated"]]
+        except KeyError:
+            pass
+        zcsv.at[index,"wordipa"]=epi.transliterate(row["word"])
+    zcsv.to_excel("zcsv.xlsx", encoding="utf-8", index=False)
+    zcsv.to_csv("zcsv.csv", encoding="utf-8", index=False)
+
+#works on python 3.5. and spacy 2.0.12 (Hungarian pos_tagger)
+#create virtual environment via anaconda navigator (environments->play)
+def getpos_hu():
+    zcsv=pd.read_csv("zcsv.csv", encoding='utf-8')
+    import hu_core_ud_lg
+    nlp = hu_core_ud_lg.load()
+    for index,row in zcsv.iterrows():
+        doc=nlp(row["word"])
+        for i in doc:
+            zcsv.loc[[index],["pos_hun"]]=i.pos_ #df.at does not work (maybe bc older python version?)
+            print(index)
+    zcsv.to_csv("zaicz_in.csv", encoding="utf-8", index=False)
+    return zcsv
+
+#converts spacy's pos-tags to nltk's. https://spacy.io/api/annotation
+def spacy2nltk_postags():
+    zcsv=pd.read_csv("zaicz_in.csv",encoding="utf-8")
+    hunposdict={"ADJ":"a","ADP":"r","ADV":"r","AUX":"v","CONJ":"r","CCONJ":"r","DET":"r","INTJ":"r","NOUN":"n",\
+                "NUM":"r","PART":"r","PRON":"r","PROPN":"r","PUNCT":"r","SCONJ":"r","SYM":"r","VERB":"v","X":"r",\
+                "SPACE":"r"}
+    for index,row in zcsv.iterrows():
+        zcsv.at[index,"pos_hun"]=hunposdict[row["pos_hun"]]
+    zcsv.to_csv("zaicz_in.csv", encoding="utf-8", index=False)
+    return zcsv
+#####################
+
 def l2s(s):  
     str1 = ""   
     return (str1.join(s))
@@ -65,7 +258,8 @@ def convertTuple(tup): #for shuffling the clusters
     return str
 
 def ipa2uew(word): #converts ipa strings to clean uew
-    for i in ipa2tokens(word, merge_vowels=False, merge_geminates=False): #load the corresponding csv and transcribe according to table
+    for i in ipa2tokens(word, merge_vowels=False, merge_geminates=False): #load the corresponding 
+        #csv and transcribe according to table
         if i in ipa2uewdict:
             word=word.replace(i,ipa2uewdict[i])
     return word
@@ -115,13 +309,6 @@ def settimelayer(layer):
     uralin=uralin[uralin.Lan == layer] #keep only Uralic timelayer, dynamise later
     global allowedstruc
     allowedstruc=sndclusterdf(uralin, 'Old') #get set of allowed clusters
-    global dfgot
-    try:
-        dfgot=pd.read_csv("dfgot"+layer+".csv", encoding='utf-8')
-        dfgot=dfgot[dfgot['substi_struc'].isin(allowedstruc)] #keep only words with allowed structure in dfgot (ca.140K)
-    except FileNotFoundError:
-        print('dfgot'+layer+'.csv not found')
-        pass
     try:
         global SCin
         SCin={}
@@ -130,10 +317,15 @@ def settimelayer(layer):
             SCin[column]=[x for x in SCincsv[column] if str(x) not in forbidden]
     except FileNotFoundError:
         print("scingot"+layer+".csv not found")
-        pass
-        
+    lenlist=[]
+    for i in list(allowedstruc):
+        lenlist.append(len(i))
+    global maxlength
+    maxlength=max(lenlist)
     global timelayer
     timelayer=layer
+    global dfgot
+    dfgot=pd.read_csv("dfgot"+timelayer+".csv", encoding='utf-8')
 
 #Wordinitial¹ Wordfinal² Medial³ sound
 def posy(ipaword): #requires an ipastring as input, use epitran and uewscrape2ipa to transcribe your data
@@ -270,7 +462,8 @@ def gclean(graw): #input=df like G_raw_link.csv
         try:
             gothic3=row['Englische Bedeutung'].replace(', ',',').replace(' (','(').replace(' ','_')
             gothic3=re.sub(r" ?\([^)]+\)", "", gothic3) #remove parentheses and their content
-            gothic3=re.sub(r'[^A-Za-z,_]+', '', gothic3) #keep only letters of English alphabet, commas, and underscores
+            gothic3=re.sub(r'[^A-Za-z,_]+', '', gothic3) #keep only letters of English alphabet, commas, 
+            #and underscores
             gothic3=gothic3.replace(',',', ') #looks nicer. csv can only store strings.
             graw.at[index,'got_en']= gothic3
         except AttributeError:
@@ -293,7 +486,7 @@ def getsubsti(gcln): #in: df created with gclean() out: Table1 to fill in substi
     posylist=[]
     for index, row in gcln.iterrows():
         posx=posy(got2ipa(row['got_lemma']))
-        if len(posx)<=6: #limit only true for Uralic timelayer
+        if len(posx)<=6: #limit only true for Uralic timelayer, #dynamise later
             posylist+=posx
     mastercolumnlist=list(sum(Counter(posylist).most_common(), ()))
     cms1=[]
@@ -417,9 +610,17 @@ def dfsufy(gcln): #needs a dataframe such as "gcln3.csv" made by gclean() (=list
     gcln=gcln.explode("substi").reset_index(drop=True) #put every substituted form into own row
     gcln.fillna("",inplace=True)
     gcln['substi_struc']=gcln['substi'].apply(word2struc)
-    gcln.to_csv("dfgot"+timelayer+".csv", encoding="utf-8",index=False) #write csv
+    gcln.to_csv("dfgot"+timelayer+"_raw.csv", encoding="utf-8",index=False) #write csv
     #don't write to excel b/c it will take for ever. Rather transform csv with excel later.
     return gcln
+
+def gotdf_keepallowedstruc():
+    try:
+        dfgot=pd.read_csv("dfgot"+timelayer+"_raw.csv", encoding='utf-8')
+        dfgot=dfgot[dfgot['substi_struc'].isin(allowedstruc)] #keep only words with allowed 
+        dfgot.to_csv("dfgot"+timelayer+".csv", encoding="utf-8",index=False)
+    except FileNotFoundError:
+        print('dfgot'+timelayer+'.csv not found, generate with dfsufy()')
 
 
 def SCE(dfwcipa): #sound change extractor. In: df with wordchanges: new word in clm0 and old word in clm1, all in ipa
@@ -582,7 +783,8 @@ def noder(word): #no derivative suffixes. Returns a list of possible wordforms w
             try:
                 if Wort[-1] in SCin: #to avoid KeyErrors
                     x=SCin[Wort[-1]] #remove derivational suffixes one after another in a while loop
-                    while '0' in list(x) or '∅' in list(x): #'0' or '∅' being in SCin[Wort] means it's a possible der. suff.
+                    while '0' in list(x) or '∅' in list(x): #'0' or '∅' being in SCin[Wort] means it's a 
+                        #possible der. suff.
                         Wort=Wort[:-1] #remove der.suff.
                         nyd.append(Wort) #append word without suff to list
                         try:
@@ -622,7 +824,8 @@ def structure(protolist):  #replace the first part of this function with this wo
         for idx,j in enumerate(protolist):
             pw='' #this will contain the structure of the word, has to be emptied every round
             for i in list(ipa2tokens(j)): #lingpy's tokenizer is useful here
-                if str(i)!='0': #0 would give a KeyError because it's not in ipacsv and shouldn't be inserted there since 0 is not a C.
+                if str(i)!='0': #0 would give a KeyError because it's not in ipacsv and shouldn't be 
+                    #inserted there since 0 is not a C.
                     if str(i)[0] in Vow: #[0] after strin(i) necessary so geminates are interpreted as single C
                         #if sound is defined as a vowel in ipacsv, add a 'V' to pw
                         pw+='V'
@@ -649,27 +852,33 @@ def NSE(lwipa,dwipa): #has to be dictionary based. Because you can't write the N
     NSE=SE/len(dfsce.index) #calculate the NSE based on the length of df (includes 0,∅, and padding)
     return NSE,SE,E
 
-def semsim(hungarian, gothic, nvarhun='n,v,a,r', nvargot='n,v,a,r'): #nvar=noun/verb(adjective/adverb)
+def semsim(hungarian, gothic, nvarhun='n,v,a,r', nvargot='n,v,a,r',\
+           gensimpath=r'C:\Users\Viktor\Downloads\GoogleNews-vectors-negative300.bin'): 
+    #nvar=noun/verb(adjective/adverb)
 #hungarian means English translation of the hungarian word. Can't change the var name bc find and replace in jupyter...
 #...is so bad. Also "gothic" is the English translation of the Gothic word.
     global model
     if model==[]:
         from gensim.models import KeyedVectors #to calculate semantic similarities
-        model = KeyedVectors.load_word2vec_format(r'C:\Users\Viktor\Downloads\GoogleNews-vectors-negative300.bin', binary=True)
+        model = KeyedVectors.load_word2vec_format(gensimpath, binary=True)
     try:
             #if isinstance(hungarian, str):
         if str(gothic)+', '+str(hungarian) in semsimdict:
             return semsimdict[str(gothic)+', '+str(hungarian)]
+        if hungarian=="" or gothic=="":
+            return "some translation missing"
         else:
-            hungarian=hungarian.replace(', ',',').replace(' ','_')
-            hungarian=re.sub(r'[^A-Za-z,_]+', '', hungarian)
-            hungarian=hungarian.split(',') #turns translations into clean list
+            #make sure "hungarian"/"gothic" is a string with separator=", "
+            hungarian=hungarian.replace(', ',',').replace(' ','_') #prepare to convert string to list
+            hungarian=re.sub(r'[^A-Za-z,_]+', '', hungarian) #clean
+            hungarian=hungarian.split(',') #turns string to list
             gothic=gothic.split(', ') #because you can't store lists in csvs, only strings
 
             hungarian=[hungarian]+[y.lemma_names() for y in [wn.synsets(x) for x in hungarian][0] if y.pos() in nvarhun]
             hungarian = list(dict.fromkeys([item for sublist in hungarian for item in sublist]))[:20]
             gothic= [gothic]+[y.lemma_names() for y in [wn.synsets(x) for x in gothic][0] if y.pos() in nvargot]
             gothic = list(dict.fromkeys([item for sublist in gothic for item in sublist]))[:20]
+            #get names of synsets, if they match the wordtype, flatten list, remove duplicates
 
             topsim=-1 #score of the most similar word pair
             hwrd='KeyError gensim'
@@ -680,7 +889,8 @@ def semsim(hungarian, gothic, nvarhun='n,v,a,r', nvargot='n,v,a,r'): #nvar=noun/
                 for i in gothic: #calculate semantic similarity of all pairs
                     try:
                         #####print(j,i,model.similarity(j, i))
-                        if model.similarity(j, i)>topsim: #if word pair is more similar than the current topsim, replace topsim
+                        if model.similarity(j, i)>topsim: #if word pair is more similar than the current topsim, 
+                            #replace topsim
                             topsim=model.similarity(j, i)
                             gwrd=i
                             hwrd=j
@@ -696,46 +906,171 @@ def semsim(hungarian, gothic, nvarhun='n,v,a,r', nvargot='n,v,a,r'): #nvar=noun/
     except AttributeError:
         return 'something is missing'
 
-def loan(word, en='', de='', nvarhun='n,v,a,r', age='', etymology=''):
-    strushuff=[]
-    #print(type(word)) #str
-    noderword=noder(word)
-    if noderword is not None: #get alternativeforms() of the word
-        for l in noderword:
-            strushuff+=(structure(shuffle(l)))
-    if strushuff is not None:
-        compdf=pd.DataFrame({'proto':strushuff,'word':word, 'hun_en':en,'hun_de':de,'pos_hun':nvarhun,\
-                            'appearance_year':age,'etymology':etymology})
-        dfmatch = pd.merge(compdf, dfgot, how='inner', right_on=['substi'],left_on=['proto'])
+def loan(wordipa,word="",info="",disambiguated="",suffix="",en="",pos_hun="n,v,a,r",year="",origin=""):
+    if len(ipa2tokens(wordipa))> maxlength:
+        #print("word too long")
+        dfmatch=pd.DataFrame()
+        return dfmatch       
+    else:
+        strushuff=[]
+        #print(type(word)) #str
+        noderword=noder(wordipa)
+        if noderword is not None: #get alternativeforms() of the word
+            for l in noderword:
+                strushuff+=(structure(shuffle(l)))
+        if strushuff is not None:
+            compdf=pd.DataFrame({"proto":strushuff,"wordipa":wordipa,"word":word,"info":info,\
+                                 "disambiguated":disambiguated,"suffix":suffix,"hun_en":en,"pos_hun":pos_hun,\
+                                 "year":year,"origin":origin})
+            dfmatch = pd.merge(compdf, dfgot, how='inner', right_on=['substi'],left_on=['proto'])
            
     return dfmatch #pandas dataframe
 
 def loanaddsemsim(df):
-    df['semsim']=''
-    for index,row in df.iterrows():
-        #print(index)
-        df.at[index,'semsim']=semsim(row['hun_en'],row['got_en'],row['pos_hun'],row['got_pos'])
-    df.to_csv("loans"+timelayer+"2.csv", encoding="utf-8",index=False)
-    df.to_excel("loans"+timelayer+"2.xlsx", encoding="utf-8",index=False)
-    return df
+    semlist=[]
+    try:
+        for index,row in df.iterrows():
+            semlist.append(semsim(row['hun_en'],row['got_en'],row['pos_hun'],row['got_pos']))
+            if index % 1000 == 0:
+                print(index)
+        return semlist
+    except:
+        with open("sem.py", "w") as output:
+            output.write("semlist="+str(semlist))
 
-def loandf(df,wordipa,en,de,pos_hun):
+        return semlist
+
+def loandf(df): #spped up by vectorizing!!
     dfout=pd.DataFrame()
     for index,row in df.iterrows():
         print(index)
-        dfout=dfout.append(loan(str(row[wordipa]),str(row[en]),str(row[de]),str(row[pos_hun])))
+        dfout=dfout.append(loan(wordipa=str(row["wordipa"]),word=str(row["word"]),info=str(row["info"]),\
+                                disambiguated=str(row["disambiguated"]),suffix=str(row["suffix"]),\
+                                en=str(row["en"]),pos_hun=str(row["pos_hun"]),\
+                                year=str(row["year"]), origin=str(row["orig"])))
     dfout['layer']=timelayer
     dfout.to_csv("loans"+timelayer+".csv", encoding="utf-8",index=False)
+    #dfout.to_excel("loans"+timelayer+".xlsx", encoding="utf-8",index=False)
     return dfout
 
-def getloans(layer):
-    indf=pd.read_csv("unknown.csv", encoding='utf-8') #if keyerror, try sep=';' b/c excel often screws this up
+def getloans(layer, filename):
+    indf=pd.read_csv(filename, encoding='utf-8') #if keyerror, try sep=';' b/c excel often screws this up
     settimelayer(layer) #returns the correct uralin file and define global variable timelayer
     try:
         loans=pd.read_csv("loans"+timelayer+".csv", encoding='utf-8')
     except FileNotFoundError:
         qfyscgot(uralin) #qfy the correct layer every time
-        loandf(indf,'IPA','en','de','type')
-        loans=pd.read_csv("loans"+timelayer+".csv", encoding='utf-8')
-        
+        loandf(df=indf,wordipa="wordipa",en="en",pos_hun="pos_hun",year="year",origin="orig",word="word",info="info",\
+              disambiguated="disambiguated",suffix="suffix")
+        loans=pd.read_csv("loans"+timelayer+".csv", encoding='utf-8')        
     loanaddsemsim(loans)
+
+def loanbigdf(): #cut in chunks of 500 rows
+    zcsv=pd.read_csv("zaicz_in.csv",encoding="utf-8")
+    zcsvpre1600=zcsv[zcsv.year <= 1600] #ca. 4500 words
+    for i in list(range(0,len(zcsvpre1600)))[0::500]: #cut into chunks of 500
+        if i == 4000:
+            chunky=zcsvpre1600[i:]
+        else:
+            chunky=zcsvpre1600[i:i+500]
+        z=loandf(chunky)
+        zai=pd.read_csv("loansU.csv",encoding="utf-8")
+        zai.to_csv("loans"+timelayer+str(i)+".csv", encoding="utf-8",index=False) #rename chunk
+        zai=() #empty variably so it doesn't eat up memory (?)
+        gc.collect()
+        
+def semsimbigdf(): #cut in chunks of 500 rows
+    zcsv=pd.read_csv("zaicz_in.csv",encoding="utf-8")
+    zcsvpre1600=zcsv[zcsv.year <= 1600] #ca. 4500 words
+    leny=len(zcsvpre1600)
+    zcsvpre1600=()
+    for i in list(range(0,leny))[0::500]: #cut into chunks of 500
+            z_in=pd.read_csv("loans"+timelayer+str(i)+".csv",encoding="utf-8",low_memory=False,\
+                             usecols=["hun_en","got_en","pos_hun","got_pos"])
+            z_in=z_in.fillna("")
+            #z_in=z_in.head(100)
+            semlist=loanaddsemsim(z_in)
+            z_in=""
+            z_in2=pd.read_csv("loans"+timelayer+str(i)+".csv",encoding="utf-8",low_memory=False)
+            z_in2["semsim"]=pd.Series(semlist)
+            z_in2.to_csv("loans"+timelayer+str(i)+"a_sem.csv", encoding="utf-8",index=False)
+            z_in=() #empty variably so it doesn't eat up memory (?)
+            gc.collect()
+            
+def getcutoffval(): #takes 4min 25s
+    listy=[]
+    for i in range(0,4000)[0::500]:
+        listy.append(str(i))
+    listy.append("4000a")
+    listy.append("4000b") #append parts of all filenames to list
+    cutoff=pd.DataFrame(columns=["semsim"]) #new df only col "semsim"
+    for i in listy: #open one chunk after another
+        print(i)
+        z_in=pd.read_csv("loans"+timelayer+str(i)+"_sem.csv",encoding="utf-8",low_memory=False,\
+                                 usecols=["semsim"])
+        cutoff=cutoff.append(z_in) #append col "semsim" to main df "cutoff"
+    print("resetting index")
+    cut=cutoff.reset_index() #cln
+    print("dropping old index")
+    cut=cut.drop("index",axis=1) #cln
+    print("removing brackets")
+    cut["semsim"]=cut["semsim"].str[1:-1] #remove brackets (=first and last char)
+    print("splitting cols")
+    cut[["semsim","words"]]=cut["semsim"].str.split(",",1,True) #nrs & wrds in sep cols
+    print("sorting values")
+    cut=cut.sort_values(by=["semsim"],ascending=False) #sort nrs by descending order
+    print("removing non-floats")
+    cut2=cut.tail(len(cut)-5415858) #first 5415858 elements miss a translation (manual evaluation)
+    print("cutting top 200K")
+    cut3=cut2.head(200000)
+    print("writing to csv")
+    cut3.to_csv("cut.csv", encoding="utf-8", index=False)
+    cutoffval=cut3.iloc[199999,0]
+    return cutoffval #top 200 000 elements, the last one is the cut-off value
+
+def cut_off():
+    listy=[]
+    print("Creating filename parts")
+    for i in range(0,4000)[0::500]:
+        listy.append(str(i))
+    listy.append("4000a")
+    listy.append("4000b")
+    for i in listy:
+        print("reading loans"+timelayer+str(i)+"_sem.csv")
+        cut=pd.read_csv("loans"+timelayer+str(i)+"_sem.csv",encoding="utf-8",low_memory=False)
+        #cut=cut.head(30000)
+        floatlist=[]
+        print("removing brackets")
+        cut["semsim"]=cut["semsim"].str[1:-1] #remove brackets (=first and last char)
+        print("splitting cols")
+        cut[["semsim","meanings"]]=cut["semsim"].str.split(",",1,True) #nrs & wrds in sep cols
+        floatlist=[]
+        print("Converting to float, nr of rows: "+str(len(cut)))
+        for ind,r in cut.iterrows():
+            
+            if ind % 10000 == 0:
+                print(ind)
+            try:
+                floatlist.append(float(r["semsim"]))
+            except ValueError:
+                floatlist.append(float(-1))
+        print("Inserting floatlist")
+        cut["semsim"]=floatlist
+        print("Cutting off")
+        cut=cut[cut.semsim >= float(0.46550298)]# calculated with getcutoffval()
+        print("Writing csv")
+        cut.to_csv("loans"+timelayer+str(i)+"_cut.csv", encoding="utf-8",index=False)
+        
+def mergeout():
+    listy=[]
+    print("Creating filename parts")
+    for i in range(0,4000)[0::500]:
+        listy.append(str(i))
+    listy.append("4000a")
+    listy.append("4000b")
+    mainout=pd.DataFrame()
+    for i in listy:
+        print("reading loans"+timelayer+str(i)+"_cut.csv")
+        cut=pd.read_csv("loans"+timelayer+str(i)+"_cut.csv",encoding="utf-8",low_memory=False)
+        mainout=mainout.append(cut)
+    mainout.to_csv("mainout.csv", encoding="utf-8", index=False)
