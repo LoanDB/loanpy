@@ -1,5 +1,6 @@
 Partial and preliminary results of my dissertation "Hungarian loanwords in Gothic? Towards a framework for automated borrowing detection" at the University of Vienna  
-Folder Code: Contains the main Code, loanpy44.py  
+Folder Code: Contains the main Code, loanpy44.py
+Folder metadata: Contains all necessary files (wordlist from uralonet.nytud.hu, wordlist from wikiling.de, transcription-table, Gothic-Uralic substitutions)  
 View at pypi.org https://pypi.org/manage/projects/  
 Open cmd and type "python -m pip install loanpy"  
 Run python and type "from loanpy import loanpy44"  
