@@ -4,11 +4,6 @@ from tqdm import tqdm
 import pandas as pd #to work with dataframes
 from lingpy import ipa2tokens #posy etc needs this to split and identify consonants and vowels
 import itertools #for shuffle function mainly
-try: #try/except because these dictionaries are to be written by qfysc() first. So qfysc has to work without them.
-    from uraloEdict import dictex #dictionary of all examples for every sound change, created with qfysc()
-    from uraloSEdict import dictse #dictionary with sum of examples for every sound change, created with qfysc()
-except  ModuleNotFoundError:
-    pass
 import re #to clean the translations in the gothic dataframe. Should actually be part of preprocessing
 from nltk.corpus import wordnet as wn #for geting synonyms
 import epitran #just to occasionally transcribe Hun words to ipa, since loan requires ipa as input
@@ -28,6 +23,7 @@ from io import StringIO
 from pdfminer.pdfpage import PDFPage
 import gc
 import sys #to exit code in case of error
+import numpy as np
 
 forbidden=['nan','0.0','∅',"0","<NA>"] #shuffle needs this variable. Add sounds to this variable that can't be...
 ipa2uewdict={'¨':'ȣ̈','ɑ':'a','æ':'ä','ð':'δ','ðʲ':'δ́','ɣ':'γ','lʲ':'ĺ',\
@@ -722,7 +718,7 @@ def sufy(word): #in: word, out: list of poss. substitutions
 def get_dfgot(gcln): #needs a dataframe such as "gcln3.csv" made by gclean() (=list of words in Gothic IPA, cleaned)
     print("Creating substitutions for every Gothic lemma in dataframe...(Length: "+str(len(gcln))+" rows)...")
     gcln['substi']=''
-    gcln["substi"]=gcln["got_ipa"].apply(sufy)
+    gcln["substi"]=gcln["got_ipa"].progress_apply(sufy)
     print("Putting every substituted word into an own row...")
     gcln=gcln.explode("substi").reset_index(drop=True) #put every substituted form into own row
     print("Replacing 'nan' with ''")
@@ -735,7 +731,7 @@ def get_dfgot(gcln): #needs a dataframe such as "gcln3.csv" made by gclean() (=l
     dfgot.to_csv("dfgot"+timelayer+".csv", encoding="utf-8",index=False) #write csv
     return dfgot
 
-def SCE(dfwcipa): #sound change extractor. In: df with wordchanges: new word in clm0 and old word in clm1, all in ipa
+def sce(dfwcipa): #sound change extractor. In: df with wordchanges: new word in clm0 and old word in clm1, all in ipa
     dfscefinal=pd.DataFrame(columns=['loansound','donorsound','soundchange','wordchange'])
     for idx,row in dfwcipa.iterrows():
         #four columns: loansound, donorsound, soundchange, wordchange
@@ -783,7 +779,7 @@ def qfysc(dfwcipa): #takes a dataframe with new words in col "New" and old word 
     global dictex #ex means examples
     dictex={}
     print("Extracting sound changes from "+uralin.name+"...")
-    dfsce=SCE(dfwcipa)
+    dfsce=sce(dfwcipa)
     sclist=dfsce['soundchange'].tolist() #transform column to list because you can't count uniques in a column later
     wclist=dfsce['wordchange'].tolist()
     print("Counting sound changes and inserting them to a dictionary...")
@@ -802,10 +798,10 @@ def qfysc(dfwcipa): #takes a dataframe with new words in col "New" and old word 
     print("Writing dictionary of examples (dictex.py) and sum of examples (dictse.py)"\
           "of every sound change to .txt...")
     #write both dicts to txt-files
-    file = codecs.open("uraloSEdict.py", "w", "utf-8")
+    file = codecs.open("sedict"+timelayer+".py", "w", "utf-8")
     file.write('dictse='+str(dictse))
     file.close()
-    file = codecs.open("uraloEdict.py", "w", "utf-8")
+    file = codecs.open("edict"+timelayer+".py", "w", "utf-8")
     file.write('dictex='+str(dictex))
     file.close()
 
@@ -954,22 +950,17 @@ def structure(protolist):  #replace the first part of this function with this wo
                 protolist2.append(j) #only append words to new list that have an allowed structure
     return protolist2 #input for loan(), like posy() but better
 
-def NSE(lwipa,dwipa): #has to be dictionary based. Because you can't write the NSE manually into a csv
-                      #NSE can only be calculated with this module, which means you'll always have a dictionary also
-                      #NSE is only in SCin to view for the human eye
-                      #it's 100 times easier to extract NSE from dictionary than from csv
-    data = {'New': [lwipa], 'Old': [dwipa]} #since SCE takes df as input, we have to convert the input to df first
-    df4sce=pd.DataFrame(data, columns=['New','Old'])
-    E=[]
-    SE=0
-    NSE=0
-    dfsce=SCE(df4sce) #get the sound changes of the two words
-    scl=dfsce['soundchange'].tolist()
-    for i in scl: #get the necessary info out of the dictionaries created with qfysc
-        E.append(i+': '+str(dictex[i])) #if this throws a keyerror it's mostly true. Soundchange rules are strict
-        SE+=dictse[i] #To test this don't use random words. Mostly they throw legitimatelly a keyerror
-    NSE=SE/len(dfsce.index) #calculate the NSE based on the length of df (includes 0,∅, and padding)
-    return NSE,SE,E
+def nse(newipa,oldipa):
+    i = importlib.import_module("dict"+str(layer)+".py") #import module dynamically
+    dictlayer = getattr(i, "dictse") #from module import dict dynamically
+    #used to be "from uraloSEdict import dictse" earlier
+    df4sce=pd.DataFrame({'New': [newipa], 'Old': [oldipa]}, columns=['New','Old']) #b/c sce() needs df as input
+    se=0
+    nse=0
+    sndcng=sce(df4sce) #get sound changes, output is df
+    se=sndcng['soundchange'].map(dictlayer).sum() #get nr of examples from dict, add them to get sum of examples (se)
+    nse=se/len(sndcng.index) #normalised sum of examples (nse) based on length of df (includes 0,∅, and padding)
+    return nse
 
 def semsim(hun_en, got_en, nvarhun='n,v,a,r', nvargot='n,v,a,r',\
            gensimpath=r'C:\Users\Viktor\Downloads\GoogleNews-vectors-negative300.bin'): 
@@ -1024,6 +1015,7 @@ def semsim(hun_en, got_en, nvarhun='n,v,a,r', nvargot='n,v,a,r',\
                 semsimdict.update({str(hun_en)+', '+str(got_en) : [topsim,hwrd,gwrd]})
             return str(topsim) #don't return hwrd&gwrd b/c it overcomplicates stuff + is redundant info
                           #also it's in semsimdict so if you're curious you can look it up there (->USER MANUAL!)
+                          #or I can insert them to the relevant final df
 
     except TypeError:
         #print('en_transl missing')
@@ -1061,10 +1053,54 @@ def loan(layer,wordipa,en,word,info="",disambiguated="",suffix="",pos_hun="n,v,a
     loandf['layer']=timelayer
     if len(loandf)!=0:
         loandf['semsim']=loandf.apply(lambda x: semsim(x.hun_en, x.got_en), axis=1)
-    return loandf
-    #else it returns None
-    
+        loandf.to_csv(str(word)+".txt",encoding="utf-8",index=False)
+        return word
+
+def appender(filenamelist):
+    dfapp=pd.DataFrame()
+    for idx,i in enumerate(filenamelist):
+        print(str(idx)+"/"+str(len(filenamelist))+": "+str(i))
+        df=pd.read_csv(i+".txt",encoding="utf-8")
+        dfapp=dfapp.append(df)
+    return dfapp
+
 def loandf(layer,df):
-    tqdm.pandas(desc="Progress:")
-    df['match']=df.progress_apply(lambda x: loan(layer,x.wordipa,x.en,x.word), axis=1) #inserts a df into every row
-    return df #empty df has len 0
+    tqdm.pandas(desc="Searching loans")
+    loanlist=df.progress_apply(lambda x: loan(layer,x.wordipa,x.en,x.word), axis=1) #inserts a df into every row
+    dfout=appender(list(filter(None.__ne__, loanlist))).sort_values(by='semsim', ascending=False).head(200000)
+    dfout.to_csv("bestof.txt",encoding="utf-8",index=False)
+    return dfout
+
+#input: loanx=pd.read_csv("bestof.txt",encoding="utf-8",low_memory=False) generated by loandf()
+def delbynse(df): #keeps only highest nse-scores for duplicate word-pairs
+    #from tqdm.auto import tqdm #to fix errors in jupyter
+    df["nse"]=df.progress_apply(lambda x: nse(x.wordipa,x.proto), axis=1) #fill nse into new col
+    df["wordpair"]=""
+    #print(df)
+    nsedeldict={}
+    for i,row in loany.iterrows():
+        if i %1000 == 0:
+            print(i)
+        entr=str(row["word"])+"-"+str(row["got_lemma"])
+        df.at[i,"wordpair"]=entr
+        print(entr)
+        if entr not in nsedeldict:
+            nsedeldict.update({entr:row["nse"]}) #create new entry if ele not in dict yet
+        else:
+            if row["nse"]>nsedeldict[entr]:
+                nsedeldict.update({entr:row["nse"]}) #if it's in dict update so that the highest nse will remain
+    print(nsedeldict)
+    df["nsehi"] = df["wordpair"].map(nsedeldict) #fill highest nse for each pair into new col
+    df=df[df.nse==df.nsehi] #from duplicate word pairs keep only those with the highest nse
+    return df
+
+def addexamples(lwipa,dwipa): #beta
+    i = importlib.import_module("edict"+str(layer)+".py") #import module dynamically
+    dictlayer = getattr(i, "dictex") #from module import dict dynamically
+    #formerly: from uraloedict import dictex #dictionary of all examples for every sound change, created with qfysc()
+    examples=[]
+    dfsce=sce(df4sce) #get the sound changes of the two words
+    scl=dfsce['soundchange'].tolist()
+    for j in scl: #get the necessary info out of the dictionaries created with qfysc
+        examples.append(j+': '+str(dictex[i])) #if this throws a keyerror it's mostly true. Soundchange rules are strict
+    return examples #list of all examples for every sound change
