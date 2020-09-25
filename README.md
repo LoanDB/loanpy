@@ -1,3 +1,4 @@
+[loanpy](https://github.com/martino-vic/Framework-for-computer-aided-borrowing-detection/blob/master/white_logo_dark_background.jpg)](https://github.com/martino-vic/Framework-for-computer-aided-borrowing-detection)
 Partial and preliminary results of my dissertation "Hungarian loanwords in Gothic? Towards a framework for automated borrowing detection" at the University of Vienna  
 Folder Code: Contains the main Code, loanpy.py  
 Folder inputdata: Contains all necessary inputfiles (wordlist from uralonet.nytud.hu, wordlist from wikiling.de, transcription-table, Gothic-Uralic substitutions, wordlist from Zaicz 2006)  
