@@ -24,6 +24,7 @@ from pdfminer.pdfpage import PDFPage
 import gc
 import sys #to exit code in case of error
 import numpy as np
+import os #so vectors can be imported from right path for semsim()
 
 forbidden=['nan','0.0','∅',"0","<NA>"] #shuffle needs this variable. Add sounds to this variable that can't be...
 ipa2uewdict={'¨':'ȣ̈','ɑ':'a','æ':'ä','ð':'δ','ðʲ':'δ́','ɣ':'γ','lʲ':'ĺ',\
@@ -208,7 +209,7 @@ def zaicz2csv():
         except KeyError:
             pass
         zcsv.at[index,"wordipa"]=epi.transliterate(row["word"])
-    zcsv.to_excel("zcsv.xlsx", encoding="utf-8", index=False)
+    #zcsv.to_excel("zcsv.xlsx", encoding="utf-8", index=False)
     zcsv.to_csv("zcsv.csv", encoding="utf-8", index=False)
 
 #works on python 3.5. and spacy 2.0.12 (Hungarian pos_tagger)
@@ -565,10 +566,10 @@ def getsubsti(gcln): #in: df created with gclean() out: Table1 to fill in substi
     substi1 = pd.DataFrame(columns=cms1) #for i in columns, if vowel insert ɜ¨ȣ
     substi2 = pd.DataFrame(columns=cms2)
    
-    substi1.to_excel("substi_single_empty.xlsx", encoding="utf-8",index=False)
-    substi2.to_excel("substi_clusters.xlsx", encoding="utf-8",index=False)
-    substi1.to_csv("substi_single_empty.csv", encoding="utf-8",index=False)
-    substi2.to_csv("substi_clusters.csv", encoding="utf-8",index=False)
+    #substi1.to_excel("substi_single_empty.xlsx", encoding="utf-8",index=False)
+    #substi2.to_excel("substi_clusters.xlsx", encoding="utf-8",index=False)
+    substi1.to_csv("substi_single"+timelayer+"_empty.csv", encoding="utf-8",index=False)
+    substi2.to_csv("substi_clusters"+timelayer+".csv", encoding="utf-8",index=False)
     #Excel: File/Options/Formula/Enable R1C1-Format for better overview
     return substi1,substi2 
 
@@ -580,7 +581,7 @@ def gclustercng(substitutions1, substitutions2): #2 dfs: substi1&substi2 from gc
     forbidden=['nan','0'] #otherwise the 0 from h will be in middle, since pos is lost
     try:
         print("Reading table of sound substitutions...")
-        substi1=pd.read_csv(substitutions1,encoding="utf-8")
+        substi1=pd.read_csv("substi_single"+timelayer+".csv" ,encoding="utf-8")
     except FileNotFoundError:
         print("Table of single sound substitutions not found, generating now...")
         try:
@@ -590,7 +591,10 @@ def gclustercng(substitutions1, substitutions2): #2 dfs: substi1&substi2 from gc
             print("'gcln.csv' not found, generating now from 'g_raw.csv'...")
             gcln=gclean("g_raw.csv")
         getsubsti(gcln)
-        print("Fill in Gothic-"+timelayer+" sound substitutions manually into 'substi_single_empty.xlsx' and save as"\
+        try:
+            substi1=pd.read_csv(substitutions1 ,encoding="utf-8")
+        except:
+            sys.exit("Fill in Gothic-"+timelayer+" sound substitutions manually into 'substi_single_empty.xlsx' and save as"\
               " utf-8 encoded csv or download a filled-out version from:\n"\
                "https://drive.google.com/drive/folders/1iKZRxTCSHTLPdxqVr97oNagfmZD8krKk \n"\
                "This part will be automated along the ideas of Paradis (1988) and Herd (2005): "\
@@ -599,7 +603,9 @@ def gclustercng(substitutions1, substitutions2): #2 dfs: substi1&substi2 from gc
                "Paradis, Carole. 1988a. Towards a Theory of Constraint Violations."\
                " McGill Working Papers in Linguistics 5: 1-43,"\
                " 1988b: On Constraints and Repair Strategies. The Linguistic Review 6: 71-97."\
-               "\n\nPlease re-run code after having filled out and saved file as 'substi_single.csv'(utf-8 encoded)")
+               "\n\nPlease re-run code after having filled out and saved file as 'substi_singleU.csv' or "\
+               "'substi_singleFU.csv', 'substi_singleUg.csv' (always utf-8 encoded)")
+        
     substsnd=substi1.rename(columns= lambda s: s[:-1]) #remove 123 from col names (!)
     substsnd = substsnd.loc[:,~substsnd.columns.duplicated()] #remove duplicate columns, else problems
     try:
@@ -616,7 +622,7 @@ def gclustercng(substitutions1, substitutions2): #2 dfs: substi1&substi2 from gc
         substclt=pd.read_csv(substitutions2,encoding="utf-8")
     cltlst=list(substclt.columns) #convert the clumns to a list
     del cltlst[1::2] #delete every second element (=frequency)
-    print("Applying combinatorics to 'substi_cluster.csv' ("+str(len(cltlst))+" items)...")
+    print("Applying combinatorics to 'substi_cluster"+timelayer+".csv' ("+str(len(cltlst))+" items)...")
     for idxnr,i in enumerate(cltlst):
         args=[]
         sndlst2=[]
@@ -664,8 +670,8 @@ def gclustercng(substitutions1, substitutions2): #2 dfs: substi1&substi2 from gc
                 elif str(i[0])[0] in front: #if front vowel
                     dffinal[i]= pd.Series([x for x in dffinal[i].tolist() if str(x) != 'nan']+['ɜ','¨']) #append ɜ,¨
     print("Write table to csv- and excel files")                          
-    dffinal.to_excel("substituions12.xlsx",encoding='utf-8',index=False)
-    dffinal.to_csv("substitutions12.csv",encoding='utf-8',index=False) #write an excel and a csv file
+    #dffinal.to_excel("substituions12.xlsx",encoding='utf-8',index=False)
+    dffinal.to_csv("substitutions"+timelayer+".csv",encoding='utf-8',index=False) #write an excel and a csv file
     return dffinal #df containing all possible sound substituions single sounds+clusters
 
 def sufy(word): #in: word, out: list of poss. substitutions
@@ -676,11 +682,11 @@ def sufy(word): #in: word, out: list of poss. substitutions
     global subsdict
     if subsdict=={}:
         try:
-            print("Reading table of Gothic-"+timelayer+" sound substitutions ('substitutions12.csv')...")
-            sbsin = pd.read_csv("substitutions12.csv", encoding='utf-8') #created by gclustercng()
+            print("Reading table of Gothic-"+timelayer+" sound substitutions ('substitutions"+timelayer+".csv')...")
+            sbsin = pd.read_csv("substitutions"+timelayer+".csv", encoding='utf-8') #created by gclustercng()
         except FileNotFoundError:
-            print("substitutions12.csv not found, generating now...")
-            sbsin=gclustercng("substi_single.csv","substi_clusters.csv")
+            print("substitutions"+timelayer+".csv not found, generating now...")
+            sbsin=gclustercng("substi_single"+timelayer+".csv","substi_clusters"+timelayer+".csv")
         sbsin=sbsin.replace(0.0,'0') #sonst nervig
         print("Creating computer-readable dictionary from csv...")
         for column in sbsin:
@@ -700,7 +706,7 @@ def sufy(word): #in: word, out: list of poss. substitutions
                 try:
                     args.append(subsdict[i])
                 except KeyError:
-                    print("'"+str(i)+"' not in 'substitutions12.csv', "\
+                    print("'"+str(i)+"' not in 'substitutions"+timelayer+".csv', "\
                           "Please write '"+str(i)+"' manually into 'substi_single.csv' and re-run code")
                     return []
         #reconstruct the word from the combinations and unique indexes
@@ -712,12 +718,13 @@ def sufy(word): #in: word, out: list of poss. substitutions
             subby.append(Spiegel)
         return subby
     except KeyError:
-        print("'"+word,+"' has soundclusters not in 'substitutions12.csv'")
+        print("'"+word,+"' has soundclusters not in 'substitutions"+timelayer+".csv'")
         return []
               
 def get_dfgot(gcln): #needs a dataframe such as "gcln3.csv" made by gclean() (=list of words in Gothic IPA, cleaned)
     print("Creating substitutions for every Gothic lemma in dataframe...(Length: "+str(len(gcln))+" rows)...")
     gcln['substi']=''
+    tqdm.pandas(desc="Sound substituting Gothic words")
     gcln["substi"]=gcln["got_ipa"].progress_apply(sufy)
     print("Putting every substituted word into an own row...")
     gcln=gcln.explode("substi").reset_index(drop=True) #put every substituted form into own row
@@ -795,7 +802,7 @@ def qfysc(dfwcipa): #takes a dataframe with new words in col "New" and old word 
                     if wclist[idx] not in allex: #and if the example in question is not in the allex-list yet
                         allex.append(wclist[idx]) #append the wordchange example to the allex-list
             dictex[scstr]=allex #insert list of all examples to value of dict[key]
-    print("Writing dictionary of examples (dictex.py) and sum of examples (dictse.py)"\
+    print("Writing dictionary of examples (edict"+timelayer+".py) and sum of examples (sedict"+timelayer+".py)"\
           "of every sound change to .txt...")
     #write both dicts to txt-files
     file = codecs.open("sedict"+timelayer+".py", "w", "utf-8")
@@ -847,12 +854,12 @@ def qfysc(dfwcipa): #takes a dataframe with new words in col "New" and old word 
         scin[column+'_E']=pd.Series(exl) #insert into the next column of new dataframe
     print("Writing table of sound changes to .xlsx and .csv files...")   
     scin.to_csv("scin"+timelayer+".csv", encoding="utf-8") #write a csv (other functions use this as input)
-    scin.to_excel("scin"+timelayer+".xlsx", encoding="utf-8") #write an Excel file, to be able to read it yourself
+    #scin.to_excel("scin"+timelayer+".xlsx", encoding="utf-8") #write an Excel file, to be able to read it yourself
    
     return scin #return df with Soundchanges, Sum of Examples and Exampless
 
 def qfyscgot(dfwcipa): #like qfysc() but excludes impossible sounds based on substitutions from goth.
-    shwubby=pd.read_csv("substitutions12.csv", encoding='utf-8') #read substitutions, made with gclustercng()
+    shwubby=pd.read_csv("substitutions"+timelayer+".csv", encoding='utf-8') #read substitutions, made with gclustercng()
     shwlist=[]
     for column in shwubby:
         shwlist+=shwubby[column].tolist() #put all clms into one list
@@ -884,7 +891,7 @@ def qfyscgot(dfwcipa): #like qfysc() but excludes impossible sounds based on sub
                 scin2[column+'_E']=pd.Series(exl,dtype='object') #insert into the next column of new dataframe
                 
     scin2.to_csv("scin"+timelayer+".csv", encoding="utf-8") #write a csv (other functions use this as input)
-    scin2.to_excel("scin"+timelayer+".xlsx", encoding="utf-8") #write an Excel file, to be able to read it yourself
+    #scin2.to_excel("scin"+timelayer+".xlsx", encoding="utf-8") #write an Excel file, to be able to read it yourself
     #global scin
     scin=scin2
     return scin2
@@ -962,15 +969,14 @@ def nse(newipa,oldipa):
     nse=se/len(sndcng.index) #normalised sum of examples (nse) based on length of df (includes 0,∅, and padding)
     return nse
 
-def semsim(hun_en, got_en, nvarhun='n,v,a,r', nvargot='n,v,a,r',\
-           gensimpath=r'C:\Users\Viktor\Downloads\GoogleNews-vectors-negative300.bin'): 
+def semsim(hun_en, got_en, nvarhun='n,v,a,r', nvargot='n,v,a,r'): 
     global model
     if model==[]:
         try:
             from gensim.models import KeyedVectors #to calculate semantic similarities
-            model = KeyedVectors.load_word2vec_format(gensimpath, binary=True)
+            model = KeyedVectors.load_word2vec_format(str(os.getcwd())+r"\GoogleNews-vectors-negative300.bin", binary=True)
         except FileNotFoundError:
-            print("x not found. Download from:\nhttps://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit\n"\
+            print("KeyedVectors not found. Download from:\nhttps://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit\n"\
             "More infos: https://code.google.com/archive/p/word2vec/")
             return ''
     try:
@@ -1024,7 +1030,7 @@ def semsim(hun_en, got_en, nvarhun='n,v,a,r', nvargot='n,v,a,r',\
         #print('something is missing')
         return ''
 
-def loan_nosem(layer,wordipa,word="",info="",disambiguated="",suffix="",en="",pos_hun="n,v,a,r",year="",origin=""):
+def loan_nosem(layer,wordipa,en="",word="",pos_hun="n,v,a,r",info="",disambiguated="",suffix="",year="",origin=""):
     if timelayer=='' or not timelayer==layer:
               settimelayer(layer)
     if len(word2struc(wordipa))> maxlength:
@@ -1047,9 +1053,9 @@ def loan_nosem(layer,wordipa,word="",info="",disambiguated="",suffix="",en="",po
            
     return dfmatch #pandas dataframe
 
-def loan(layer,wordipa,en,word,info="",disambiguated="",suffix="",pos_hun="n,v,a,r",year="",origin=""):
-    loandf=loan_nosem(layer,wordipa,word,info,disambiguated,suffix,en,\
-               pos_hun,year="",origin="")
+def loan(layer,wordipa,en,word,pos_hun="n,v,a,r",info="",disambiguated="",suffix="",year="",origin=""):
+    loandf=loan_nosem(layer,wordipa,en,word,pos_hun,info,disambiguated,suffix,\
+               year="",origin="")
     loandf['layer']=timelayer
     if len(loandf)!=0:
         loandf['semsim']=loandf.apply(lambda x: semsim(x.hun_en, x.got_en), axis=1)
@@ -1066,7 +1072,7 @@ def appender(filenamelist):
 
 def loandf(layer,df):
     tqdm.pandas(desc="Searching loans")
-    loanlist=df.progress_apply(lambda x: loan(layer,x.wordipa,x.en,x.word), axis=1) #inserts a df into every row
+    loanlist=df.progress_apply(lambda x: loan(layer,x.wordipa,x.en,x.word,x.pos_hun), axis=1) #inserts a df into every row
     dfout=appender(list(filter(None.__ne__, loanlist))).sort_values(by='semsim', ascending=False).head(200000)
     dfout.to_csv("bestof.txt",encoding="utf-8",index=False)
     return dfout
@@ -1092,7 +1098,7 @@ def delbynse(df): #keeps only highest nse-scores for duplicate word-pairs
     print(nsedeldict)
     df["nsehi"] = df["wordpair"].map(nsedeldict) #fill highest nse for each pair into new col
     df=df[df.nse==df.nsehi] #from duplicate word pairs keep only those with the highest nse
-    return df
+    df.to_csv("bestof2.txt",encoding="utf-8",index=False)
 
 def addexamples(lwipa,dwipa): #beta
     i = importlib.import_module("edict"+str(layer)+".py") #import module dynamically
