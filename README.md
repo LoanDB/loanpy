@@ -1,7 +1,7 @@
 # LOANPY
 
 [![loanpy](https://github.com/martino-vic/Framework-for-computer-aided-borrowing-detection/blob/master/white_logo_dark_background.jpg)](https://pypi.org/project/loanpy/)  
-[![Build Status](https://about.zenodo.org/static/img/logos/zenodo-gradient-square.svg)](https://zenodo.org/record/4009627#.X26Z_2gzaUk)
+[![Build Status](https://about.zenodo.org/static/img/logos/zenodo-gradient-square.svg)](https://zenodo.org/record/4051875#.X2-EimgzaUk)
 
 loanpy is a tool for historical linguists. It extracts sound changes and constraints from etymological dictionaries, generates pseudo-roots of L1, pseudo- sound substituted forms of L2, searches for matches and ranks them according to semantic similarity.
 
