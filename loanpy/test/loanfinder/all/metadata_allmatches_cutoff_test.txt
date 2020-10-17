@@ -1,0 +1,50 @@
+
+    Number of matches: 450
+
+
+    Substitutes:
+
+    	Uniques: 123
+
+    	Structure distribution: [('CVCV', 216), ('CV', 169), ('VCV', 40), ('V', 25)]
+
+    	Consonant/Vowel Cluster distribution: [('e', 333), ('æ', 232), ('w', 159), ('ŋ', 107), ('i', 103), ('s', 101), ('m', 73), ('p', 71), ('j', 70), ('k', 60), ('ɑ', 16), ('o', 13), ('u', 9)]
+
+    	Consonant/Vowel distribution: [('e', 333), ('æ', 232), ('w', 159), ('ŋ', 107), ('i', 103), ('s', 101), ('m', 73), ('p', 71), ('j', 70), ('k', 60), ('ɑ', 16), ('o', 13), ('u', 9)]
+
+    	Distribution of word initial clusters: [('w', 128), ('s', 101), ('p', 71), ('m', 58), ('æ', 35), ('j', 27), ('e', 15), ('i', 14), ('ɑ', 1)]
+
+    	Distribution of word final clusters:  [('e', 250), ('æ', 139), ('i', 59), ('o', 1), ('u', 1)]
+
+    	Distribution of medial clusters:  [('ŋ', 107), ('e', 78), ('æ', 63), ('k', 60), ('j', 43), ('i', 40), ('w', 31), ('ɑ', 15), ('m', 15), ('o', 12), ('u', 8)]
+
+    Hungarian words:
+
+    	Uniques: 2
+
+    	Distribution of matches (index in zaicz.csv : nr of matches): Counter({'íz': 379, 'fal': 71})
+
+    	Distribution of year of first appearance: Counter({1372: 379, 1395: 71})
+
+    	Distribution of part of speach (nltk-tags: n=noun,v=verb,a=adjective,r=other): Counter({'n': 450})
+
+    	Distribution of origin: Counter({'1. Ancient Uralic words': 450})
+
+    	Suffixes: Counter({nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1, nan: 1})
+
+   
+    Gothic words:
+
+    	Uniques: 160
+
+    	Distribution of matches: Counter({'bai': 24, 'biūhti': 21, 'biƕē': 20, 'baírhtei': 18, 'faúrhtei': 12, 'þwaírhei': 12, 'fe': 10, 'ba': 9, 'hi': 8, 'tweihnai': 8, 'faih': 8, 'broe': 7, 'swaei': 6, 'faski': 6, 'baírga': 6, 'ia': 6, 'fulhsni': 6, 'frikei': 5, 'bi': 5, 'frijei': 5, 'filmei': 5, 'swiknei': 4, 'swē': 4, 'ƕēh': 4, 'spaíha': 4, 'hiuhma': 4, 'ƕē': 4, 'baúrgja': 4, 'twi': 4, 'mijcha': 4, 'ƕke': 4, 'swaíhra': 4, 'sai': 3, 'jai': 3, 'awi': 3, 'flahta': 3, 'fraþjei': 3, 'fāh': 3, 'wai': 3, 'aggwei': 3, 'Plfawai': 3, 'Nba': 3, 'Fragka': 3, 'fra': 3, 'twai': 3, 'saei': 3, 'ea': 3, 'ahei': 3, 'athe': 3, 'saio': 3, 'hiwi': 2, 'swah': 2, 'swa': 2, 'strigga': 2, 'ibai': 2, 'hagka': 2, 'waíhsta': 2, 'wahtwa': 2, 'arbi': 2, 'wiljei': 2, 'mēki': 2, 'siukei': 2, 'milhma': 2, 'ƕilftri': 2, 'straua': 2, 'hawi': 2, 'simlē': 2, 'þiubi': 2, 'þiuh': 2, 'ei': 2, 'the': 2, 'saíhsta': 2, 'stáua': 2, 'weih': 2, 'weiha': 2, 'wrēkei': 2, 'i': 2, 'e': 2, 'þagki': 2, 'þē': 2, 'þei': 2, 'þēei': 2, 'wīh': 2, 'azwme': 2, 'þūei': 2, 'iowi': 2, 'micha': 2, 'sei': 2, 'si': 2, 'tme': 2, 'ikei': 2, 'me': 2, 'ih': 2, 'mīcha': 2, 'ie': 2, 'swau': 2, 'ƕah': 2, 'sōei': 2, 'frumei': 2, 'buggja': 2, 'ahma': 1, 'saúrga': 1, 'armaiō': 1, 'jah': 1, 'akei': 1, 'swaswē': 1, 'wagga': 1, 'hauhei': 1, 'waúrki': 1, 'wammei': 1, 'mawi': 1, 'hāh': 1, 'strau': 1, 'aha': 1, 'stagga': 1, 'þau': 1, 'þauh': 1, 'sahrja': 1, 'jabai': 1, 'sa': 1, 'slahta': 1, 'ja': 1, 'aƕa': 1, 'þiwi': 1, 'þramstei': 1, 'waúrstwei': 1, 'arƕa': 1, 'arha': 1, 'agga': 1, 'aúhsa': 1, 'agkja': 1, 'arga': 1, 'skagkja': 1, 'ahtau': 1, 'ahsa': 1, 'þammei': 1, 'twa': 1, 'sah': 1, 'sau': 1, 'sauh': 1, 'jau': 1, 'marha': 1, 'skalki': 1, 'a': 1, 'pragga': 1})
+
+    	Uniques' part of speach (pos) distribution (nltk-tags: n=noun,v=verb,a=adjective,r=other): Counter({'n': 240, 'r': 145, 'rr': 20, 'a': 17, 'nn': 12, 'rv': 5, 'v': 4, 'rn': 4, 'vr': 3})
+
+    	Uniques' occurences distribution: Counter({'[]': 149, "['1']": 73, "['2']": 48, "['3']": 34, "['6']": 30, "['13']": 12, "['20']": 8, "['1', '7']": 8, "['7']": 7, "['11']": 6, "['8']": 6, "['23']": 6, "['384381']": 5, "['29']": 5, "['12']": 4, "['181']": 4, "['10']": 4, "['102']": 3, "['1', '1']": 3, "['4']": 3, "['59']": 3, "['956', '952']": 3, "['2', '1']": 3, "['117115']": 2, "['69']": 2, "['76']": 2, "['98']": 2, "['551']": 2, "['155153']": 1, "['109']": 1, "['3937']": 1, "['9998']": 1, "['182180']": 1, "['86']": 1, "['289287']": 1, "['2827']": 1, "['2', '7']": 1, "['1', '27']": 1, "['74']": 1, "['9']": 1, "['5']": 1})
+
+    	Uniques' certainty distribution: Counter({'certain': 381, 'uncertain': 69})
+
+    	Uniques' reconstructedness distribution: Counter({nan: 256, 'word': 107, 'form': 87})
+
+    
