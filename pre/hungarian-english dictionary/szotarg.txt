@@ -1,0 +1,4387 @@
+<HTML>
+<HEAD>
+        <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=iso-8859-2">
+        <TITLE>Magyar-angol szótár</TITLE>
+
+<LINK href="/vmek2/vmek.php3" type="text/css" rel=STYLESHEET>
+</HEAD>
+<body text="#000000" bgcolor="#FFFFEE" link="#660000" vlink="#664422" alink="#444444" leftmargin=25 rightmargin=25>
+
+<center>
+
+  <a href=../index.htm>  <h1>Magyar-angol szótár</h1></a>
+<table align=center border=5 cellpadding=15 bgcolor="#FAFFEE"><tr><td>
+        <h2 align="center"> <a href=0-9.htm>0-9</a> &nbsp; <a href=a.htm>A-Á</a>
+          &nbsp; <a href=b.htm>B</a> &nbsp; <a href=c.htm>C-Cs</a> &nbsp; <a href=d.htm>D</a>
+          &nbsp; <a href=e.htm>E-É</a> &nbsp; <a href=f.htm>F</a> &nbsp; <a href=g.htm>G</a>
+          &nbsp; <a href=h.htm>H</a> &nbsp; <a href=i.htm>I-Í</a> &nbsp; <a href=j.htm>J</a>
+          &nbsp; <a href=k.htm>K</a> &nbsp; <a href=l.htm>L-Ly</a>
+          <br>
+          <a href=m.htm>M</a> &nbsp;  <a href=n.htm>N</a> &nbsp; <a href=o.htm>O-Ö</a>
+          &nbsp; <a href=p.htm>P</a>&nbsp; <a href=r.htm></a><a href=r.htm>R</a>
+          &nbsp; <a href=s.htm>S-Sz</a> &nbsp; <a href=t.htm>T-Ty</a> &nbsp; <a href=u.htm>U-Ü</a>
+          &nbsp; <a href=v.htm>V</a> &nbsp; <a href=w.htm>W</a> &nbsp; <a href="x.htm">X</a> &nbsp;
+          <a href=z.htm></a><a href=y.htm>Y</a> &nbsp; <a href=z.htm></a><a href=z.htm>Z-Zs</a>
+</td></tr></table><p><hr><p>
+</center>
+
+ g kulcs -&#187; treble clef<br>
+ gabardin -&#187; gabardine<br>
+ gabona -&#187; corn<br>
+ gabona -&#187; grain<br>
+ gabonában dús -&#187; corny<br>
+ gabonaféreg -&#187; corn weevil<br>
+ gabonaféreg -&#187; grain weevil<br>
+ gabonakereszt -&#187; shock<br>
+ gabonanemű -&#187; cereal<br>
+ gabonanövény -&#187; cereal<br>
+ gabonapehely -&#187; cereal<br>
+ gabonarend -&#187; windrow<br>
+ gabonarendek -&#187; windrow<br>
+ gabonarosta -&#187; fan<br>
+ gabonarosta -&#187; separator<br>
+ gabonarosta -&#187; winnower<br>
+ gabonaszem -&#187; corn<br>
+ gabonatermés -&#187; growth of corn<br>
+ gabonatőzsde -&#187; corn exchange<br>
+ gabonatőzsde -&#187; pit<br>
+ gabonaüszög -&#187; rust<br>
+ gabonaüszög -&#187; smut<br>
+ gabonaüszöggel fertőz -&#187; to smut<br>
+ gabonaüszöggel fertőződik -&#187; to smut<br>
+ gabonával dugig teli zsák -&#187; sack bursting with corn<br>
+ gabonazsizsik -&#187; corn weevil<br>
+ gabonazsizsik -&#187; grain weevil<br>
+ gácsér -&#187; drake<br>
+ gadolinium -&#187; gadolinium<br>
+ gádorkáva -&#187; coaming<br>
+ gagát -&#187; jet<br>
+ gagátfekete -&#187; jet-black<br>
+ gágog -&#187; to cackle<br>
+ gágog -&#187; to gaggle<br>
+ gágog -&#187; to honk<br>
+ gágogás -&#187; cackle<br>
+ gagyog -&#187; to babble<br>
+ gagyog -&#187; to chirp<br>
+ gagyog -&#187; to gurgle<br>
+ gagyogás -&#187; babble<br>
+ gagyogás -&#187; chirp<br>
+ gagyogás -&#187; chirping<br>
+ gagyogás -&#187; crow<br>
+ gagyogás -&#187; crowing<br>
+ gagyogás -&#187; prattle<br>
+ gagyogó -&#187; babbler<br>
+ gála- -&#187; gala<br>
+ gála -&#187; kid-glove<br>
+ galacsin -&#187; pellet<br>
+ galád -&#187; atrocious<br>
+ galád -&#187; dirty<br>
+ galád csel -&#187; mean trick<br>
+ galádság -&#187; perfidy<br>
+ galádul -&#187; atrociously<br>
+ galádul -&#187; meanly<br>
+ galagonya -&#187; hawthorn<br>
+ galagonya -&#187; may<br>
+ galagonyabokor -&#187; hawthorn<br>
+ galamb -&#187; dove<br>
+ galamb -&#187; pigeon<br>
+ galambcsapat -&#187; loft of pigeons<br>
+ galambdúc -&#187; loft<br>
+ galambdúcban tart -&#187; to loft<br>
+ galambházban tart -&#187; to loft<br>
+ galambocskám -&#187; lovey-dovey<br>
+ galambom -&#187; ducky<br>
+ galambom -&#187; my ducky<br>
+ galambraj -&#187; kit<br>
+ galandféreg -&#187; tapeworm<br>
+ galandféreg ízülete -&#187; tapeworm joint<br>
+ gáláns -&#187; gallant<br>
+ galaxis -&#187; galaxy<br>
+ galaxisok közötti -&#187; intergalactic<br>
+ galéria -&#187; gallery<br>
+ galéria -&#187; loft<br>
+ gall kakas -&#187; chanticleer<br>
+ gallér -&#187; bands<br>
+ gallér -&#187; collar<br>
+ gallér -&#187; neck<br>
+ gallér nélküli -&#187; collarless<br>
+ gallércsomó -&#187; collar knot<br>
+ galléron ragad -&#187; to collar<br>
+ galléron ragad vkit -&#187; to seize sy by the collar<br>
+ gallérvédő -&#187; scarf, scarves<br>
+ gallonmennyiség -&#187; gallonage<br>
+ gally -&#187; bough<br>
+ gally -&#187; snub<br>
+ gally -&#187; spray<br>
+ gally -&#187; twig<br>
+ gallyacska -&#187; sprig<br>
+ gallyacska -&#187; wattle<br>
+ gallyfa és rőzse -&#187; lop and crop<br>
+ gallyfa és rőzse -&#187; lop and top<br>
+ gálma -&#187; sublimated zinc oxide<br>
+ galóca -&#187; agaric<br>
+ galopp -&#187; gallop<br>
+ galuska -&#187; noodle<br>
+ galván bevonás -&#187; electrodeposition<br>
+ galván lecsapás -&#187; electrodeposition<br>
+ galvánelem -&#187; cell<br>
+ galvanizál -&#187; to electrodeposit<br>
+ galvanizál -&#187; to electroplate<br>
+ galvanizál -&#187; to galvanize<br>
+ galvanizál -&#187; to plate<br>
+ galvanizálás -&#187; galvanization<br>
+ galvanizálás -&#187; plating<br>
+ galvanizált -&#187; electrodeposited<br>
+ galvanizált -&#187; galvanized<br>
+ galvános -&#187; galvanic<br>
+ galvánosság -&#187; galvanism<br>
+ galvanoszkóp -&#187; galvanoscope<br>
+ galvánúton bevon -&#187; to electrodeposit<br>
+ galvánúton bevont -&#187; electrodeposited<br>
+ galvánúton lecsapott -&#187; electrodeposited<br>
+ gálya -&#187; galleon<br>
+ gálya -&#187; galley<br>
+ gályarab -&#187; galley slave<br>
+ ganaj -&#187; turd<br>
+ ganajlé -&#187; addle<br>
+ ganajozik -&#187; to dung<br>
+ gáncs -&#187; reflection<br>
+ gáncs -&#187; slur<br>
+ gáncs -&#187; stricture<br>
+ gáncs -&#187; trip<br>
+ gáncsol -&#187; to trip<br>
+ gáncsolás -&#187; trip<br>
+ gáncsoló -&#187; vituperative<br>
+ gáncsoskodik -&#187; to crab<br>
+ gáncsoskodik -&#187; to find fault with<br>
+ gáncsoskodó -&#187; critical<br>
+ gáncsoskodó -&#187; vituperative<br>
+ gáncsoskodó megjegyzés -&#187; hit<br>
+ gáncsoskodó személy -&#187; vituperator<br>
+ gáncsot vet -&#187; to trip<br>
+ gáncsot vet -&#187; to trip up<br>
+ gáncsvetés -&#187; chip<br>
+ gáncsvetés -&#187; trip<br>
+ gané -&#187; crap<br>
+ gané -&#187; grunch<br>
+ gané -&#187; grunge<br>
+ gané -&#187; gunk<br>
+ ganéj -&#187; chip<br>
+ ganéj -&#187; dung<br>
+ ganéj -&#187; manure<br>
+ ganéj -&#187; muck<br>
+ ganés -&#187; crappy<br>
+ ganés -&#187; grungy<br>
+ ganglion -&#187; ganglion, ganglia<br>
+ gangos járású személy -&#187; high-stepper<br>
+ gangréna -&#187; gangrene<br>
+ gány -&#187; gunge<br>
+ garancia -&#187; assurance<br>
+ garancia -&#187; guarantee<br>
+ garancia -&#187; safeguard<br>
+ garancia -&#187; warrant<br>
+ garancia -&#187; warranty<br>
+ garancialevél -&#187; warranty card<br>
+ garantál -&#187; to guarantee<br>
+ garantál -&#187; to warrant<br>
+ garas -&#187; copper<br>
+ garasos -&#187; mingy<br>
+ garasos -&#187; scrimp<br>
+ garasos -&#187; scrimpy<br>
+ garasos -&#187; skimpy<br>
+ garasosan él -&#187; to live near<br>
+ garat -&#187; boot<br>
+ garat -&#187; gorge<br>
+ garat -&#187; gullet<br>
+ garat -&#187; hopper<br>
+ garatmandula-gyulladás -&#187; adenioditis<br>
+ garázda -&#187; riotous<br>
+ garázda -&#187; rowdy<br>
+ garázda -&#187; ruffianly<br>
+ garázda -&#187; truculent<br>
+ garázda ember -&#187; hell-raiser<br>
+ garázda ember -&#187; yob<br>
+ garázda ember -&#187; yobbo<br>
+ garázdálkodás -&#187; affray<br>
+ garázdálkodó katonák -&#187; soldiers on the loot<br>
+ garázdaság -&#187; breach of peace<br>
+ garázdaság -&#187; rowdyism<br>
+ garázdaság -&#187; truculence<br>
+ garázdaság -&#187; truculency<br>
+ garázs -&#187; garage<br>
+ garázsba beállítás -&#187; housing<br>
+ garázsba elhelyezés -&#187; housing<br>
+ garazsírozás -&#187; housing<br>
+ garbó -&#187; polo neck jumper<br>
+ garbó -&#187; polo neck sweater<br>
+ garbó -&#187; pullover<br>
+ garbó -&#187; roll neck jumper<br>
+ garbó -&#187; roll neck sweater<br>
+ garbó -&#187; turtleneck sweater<br>
+ garbónyak -&#187; turtleneck<br>
+ garcinia -&#187; mangosteen<br>
+ gárdaezred -&#187; guards<br>
+ gardedám -&#187; chaperon<br>
+ gardedám -&#187; chaperone<br>
+ gardénia -&#187; gardenia<br>
+ gardíroz -&#187; to chaperon<br>
+ gardíroz -&#187; to chaperone<br>
+ gárdisták -&#187; guards<br>
+ gargalizál -&#187; to gargle<br>
+ garmond -&#187; long primer<br>
+ garnéla -&#187; palaemon<br>
+ garnéla rákra halászik -&#187; to shrimp<br>
+ garnélarák -&#187; palaemon<br>
+ garnélarák -&#187; prawn<br>
+ garnélarák -&#187; shrimp<br>
+ garnitúra -&#187; set<br>
+ garnitúra -&#187; suit<br>
+ garnitúra -&#187; suite<br>
+ garnitúra -&#187; suite of furniture<br>
+ garzonéletet élő nő -&#187; bachelor girl<br>
+ garzonlakás -&#187; bachelor flat<br>
+ gasztritisz -&#187; gastritis<br>
+ gasztronómia -&#187; gastronomy<br>
+ gasztronómiai -&#187; gastronomic<br>
+ gát -&#187; baffle<br>
+ gát -&#187; bar<br>
+ gát -&#187; barrage<br>
+ gát -&#187; dike<br>
+ gát -&#187; dyke<br>
+ gát -&#187; hindrance<br>
+ gát -&#187; hurdle<br>
+ gát -&#187; obstacle<br>
+ gát -&#187; pen<br>
+ gát -&#187; seal<br>
+ gát -&#187; shackle<br>
+ gát -&#187; traverse<br>
+ gát -&#187; weir<br>
+ gátat emel -&#187; to dam<br>
+ gátat vet -&#187; to forestall<br>
+ gátfutás -&#187; hurdle-race<br>
+ gátfutás -&#187; hurdles<br>
+ gátfutás -&#187; hurdling<br>
+ gátfutásban vesz részt -&#187; to hurdle<br>
+ gátfutó -&#187; hurdler<br>
+ gátkorona-magasság -&#187; freeboard<br>
+ gátlás -&#187; clog<br>
+ gátlás -&#187; hindrance<br>
+ gátlás -&#187; inhibition<br>
+ gátlás -&#187; retardation<br>
+ gátlás nélkül tör vmire -&#187; to be hell-bent for sg<br>
+ gátlás nélküli -&#187; uninhibited<br>
+ gátlása van -&#187; to be hung up<br>
+ gátlásoktól mentes -&#187; uninhibited<br>
+ gátlástalan -&#187; hell-bent<br>
+ gátlástalan -&#187; intemperate<br>
+ gátlástalanul nagylábon él -&#187; to be hogging it<br>
+ gátló -&#187; inhibitory<br>
+ gátló -&#187; inhibitor<br>
+ gátló -&#187; obstructive<br>
+ gátló -&#187; retardant<br>
+ gátló befolyás -&#187; swaddling-bends<br>
+ gátló befolyás -&#187; swaddling-clothes<br>
+ gátló körülmény -&#187; check<br>
+ gátló körülmény -&#187; hindrance<br>
+ gátló körülmény -&#187; traverse<br>
+ gátló módon -&#187; obstructively<br>
+ gátló szer -&#187; retarder<br>
+ gátló szerkezet -&#187; arrester<br>
+ gátló szerkezet -&#187; arrestor<br>
+ gátlómű -&#187; escapement<br>
+ gátlószer -&#187; inhibitor<br>
+ gátol -&#187; to arrest<br>
+ gátol -&#187; to balk<br>
+ gátol -&#187; to bar<br>
+ gátol -&#187; to baulk<br>
+ gátol -&#187; to block<br>
+ gátol -&#187; to clog<br>
+ gátol -&#187; to clog up<br>
+ gátol -&#187; to cramp<br>
+ gátol -&#187; to detain<br>
+ gátol -&#187; to embarrass<br>
+ gátol -&#187; to hamper<br>
+ gátol -&#187; to impede<br>
+ gátol -&#187; to obstruct<br>
+ gátol -&#187; to retard<br>
+ gátol -&#187; to throttle<br>
+ gátol -&#187; to traverse<br>
+ gátol vkit terveinek keresztülvitelében -&#187; to balk sy's plans<br>
+ gátol vmiben -&#187; to interfere<br>
+ gátol vmit -&#187; to be a bar to sg<br>
+ gátolás -&#187; incapacitation<br>
+ gátolja a forgalmat -&#187; to obstruct the traffic<br>
+ gátolja vkinek a mozdulatait -&#187; to obstruct sy's movements<br>
+ gátolja vkinek a mozgását -&#187; to obstruct sy's movements<br>
+ gátolt -&#187; hampered<br>
+ gátoltatás -&#187; incapacitation<br>
+ gáttal véd -&#187; to dike<br>
+ gáttalan -&#187; untrammelled<br>
+ gatya -&#187; pair of drawers<br>
+ gatya (madáré) -&#187; flag<br>
+ gatyába ráz -&#187; to whip into shape<br>
+ gatyaszaggató -&#187; hooch<br>
+ gatyázik -&#187; to eff about<br>
+ gatyázik -&#187; to eff around<br>
+ gatyázik -&#187; to horse around<br>
+ gatyázik -&#187; to ponce about<br>
+ gatyázik -&#187; to ponce around<br>
+ gauss-féle eloszlás -&#187; normal distribution<br>
+ gavallér -&#187; beaus<br>
+ gavallér -&#187; gallant<br>
+ gavallér -&#187; handsome<br>
+ gavallér -&#187; spark<br>
+ gavallér -&#187; squire<br>
+ gavallérosan -&#187; handsomely<br>
+ gavallérosan fizetett -&#187; he came down handsomely<br>
+ gáz -&#187; gas<br>
+ gaz -&#187; nefarious<br>
+ gaz -&#187; rascally<br>
+ gaz -&#187; roguish<br>
+ gaz -&#187; scoundrelly<br>
+ gaz -&#187; weed<br>
+ gaz csíny -&#187; rascality<br>
+ gázadagoló -&#187; accelerator<br>
+ gázadagoló -&#187; throttle<br>
+ gázalakú égéstermék -&#187; flue gas<br>
+ gázalakú égéstermék -&#187; stack gas<br>
+ gázalakú hulladéktermék -&#187; flue gas<br>
+ gázalakú hulladéktermék -&#187; stack gas<br>
+ gázalakú növényvédőszer -&#187; fumigant<br>
+ gázálarc -&#187; face-piece<br>
+ gázálarc -&#187; gas mask<br>
+ gázálarc -&#187; respirator<br>
+ gázbenzin -&#187; gasoline<br>
+ gázbuborék-fejlődés -&#187; gassing<br>
+ gázcsatorna -&#187; piper<br>
+ gazda -&#187; baas<br>
+ gazda -&#187; boss cocky<br>
+ gazda -&#187; farmer<br>
+ gazdaember -&#187; husbandman, husbandmen<br>
+ gazdag -&#187; affluent<br>
+ gazdag -&#187; crackerjack<br>
+ gazdag -&#187; crummy<br>
+ gazdag -&#187; exuberant<br>
+ gazdag -&#187; fat<br>
+ gazdag -&#187; fraught<br>
+ gazdag -&#187; luxuriant<br>
+ gazdag -&#187; mellow<br>
+ gazdag -&#187; plentiful<br>
+ gazdag -&#187; redundant<br>
+ gazdag -&#187; rich<br>
+ gazdag -&#187; sumptuous<br>
+ gazdag -&#187; wealthy<br>
+ gazdag -&#187; well possessed<br>
+ gazdag -&#187; well-to-do<br>
+ gazdag burzsuj -&#187; fat cat<br>
+ gazdag ember -&#187; bankroller<br>
+ gazdag érclelőhely -&#187; bonanza<br>
+ gazdag koncentrátum -&#187; heads<br>
+ gazdag kőolajforrás -&#187; gusher<br>
+ gazdag lesz -&#187; to strike pay dirt<br>
+ gazdag nyelvezet -&#187; copious language<br>
+ gazdag nyelvezet -&#187; copious style<br>
+ gazdag telér -&#187; bonanza<br>
+ gazdag termés -&#187; rich harvest<br>
+ gazdag vagy, de ő még gazdagabb -&#187; you are rich but he is more so<br>
+ gazdag választék -&#187; rich assortment<br>
+ gazdag zsákmányt ejt -&#187; to get a big haul<br>
+ gazdaggá tesz vkit -&#187; to make sy rich<br>
+ gazdagítás -&#187; enrichment<br>
+ gazdagodás -&#187; enrichment<br>
+ gazdagodik -&#187; to enrich<br>
+ gazdagok -&#187; plutocracy<br>
+ gazdagok és szegények -&#187; haves and have-nots<br>
+ gazdagoknak való -&#187; upscale<br>
+ gazdagon -&#187; redundantly<br>
+ gazdagon -&#187; richly<br>
+ gazdagon nősül -&#187; to marry money<br>
+ gazdagság -&#187; affluence<br>
+ gazdagság -&#187; copiousness<br>
+ gazdagság -&#187; exuberance<br>
+ gazdagság -&#187; exuberancy<br>
+ gazdagság -&#187; money<br>
+ gazdagság -&#187; opulence<br>
+ gazdagság -&#187; plenty<br>
+ gazdagság -&#187; profuseness<br>
+ gazdagság -&#187; profusion<br>
+ gazdagság -&#187; riches<br>
+ gazdagság -&#187; wealth<br>
+ gazdagság fölé helyezi az erényt -&#187; to put virtue before wealth<br>
+ gazdagságban él -&#187; to luxuriate<br>
+ gazdagszik -&#187; to enrich<br>
+ gazdagszik -&#187; to thrive, throve, thriven<br>
+ gazdálkodás -&#187; farming<br>
+ gazdálkodás -&#187; husbandry<br>
+ gazdálkodik -&#187; to farm<br>
+ gazdálkodik -&#187; to husband<br>
+ gazdálkodik -&#187; to manage<br>
+ gazdálkodó -&#187; farmer<br>
+ gazdaság -&#187; economy<br>
+ gazdaság -&#187; farm<br>
+ gazdaság -&#187; farmland<br>
+ gazdasági -&#187; economic<br>
+ gazdasági alap -&#187; economic foundation<br>
+ gazdasági alaptörvény -&#187; basic economic law<br>
+ gazdasági cseléd -&#187; mop fair<br>
+ gazdasági élet -&#187; economy<br>
+ gazdasági és pénzügyi újjászervezés -&#187; economic and financial reconstruction<br>
+ gazdasági háború -&#187; white war<br>
+ gazdasági helyzet -&#187; economics<br>
+ gazdasági intéző -&#187; steward<br>
+ gazdasági lehiggadás -&#187; shakeout<br>
+ gazdasági munkás -&#187; mop fair<br>
+ gazdasági normalizálódás -&#187; shakeout<br>
+ gazdasági rendszer -&#187; economy<br>
+ gazdasági sejtforma -&#187; economic cell-form<br>
+ gazdasági szektor -&#187; sector<br>
+ gazdasági tervezés -&#187; economic planning<br>
+ gazdasági törvények -&#187; economic laws<br>
+ gazdasági udvar -&#187; barnyard<br>
+ gazdasági udvar -&#187; farmyard<br>
+ gazdasági válság -&#187; slump<br>
+ gazdaságilag -&#187; economically<br>
+ gazdaságilag elmaradt -&#187; underdeveloped<br>
+ gazdaságos -&#187; economic<br>
+ gazdaságosság -&#187; thrift<br>
+ gazdaságtalan -&#187; uneconomic<br>
+ gazdaságtalan -&#187; uneconomical<br>
+ gazdaságtan -&#187; economy<br>
+ gazdaságtudomány -&#187; economic science<br>
+ gazdászati tiszt -&#187; quartermaster<br>
+ gazdát cserél -&#187; to change hands<br>
+ gazdát cserél -&#187; to pass into<br>
+ gazdátlan -&#187; derelict<br>
+ gazdátlan -&#187; unattended<br>
+ gazdátlan -&#187; unclaimed<br>
+ gazdátlan birtok -&#187; land in abeyance<br>
+ gazdátlan hajó -&#187; derelict<br>
+ gazdátlan jószág -&#187; derelict<br>
+ gazdátlan kincslelet -&#187; treasure-trove<br>
+ gazdátlan kincslelet -&#187; trove<br>
+ gazdátlan tárgy -&#187; derelict<br>
+ gazdátlan tárgy -&#187; waif<br>
+ gazdátlanul hagyás -&#187; dereliction<br>
+ gázégő -&#187; jet<br>
+ gazella -&#187; gazelle<br>
+ gázeltávolítás -&#187; degassing<br>
+ gázelvonás -&#187; degassing<br>
+ gazember -&#187; bad hat<br>
+ gazember -&#187; bad lot<br>
+ gazember -&#187; badmash<br>
+ gazember -&#187; blackguard<br>
+ gazember -&#187; bugger<br>
+ gazember -&#187; cad<br>
+ gazember -&#187; miscreant<br>
+ gazember -&#187; rascal<br>
+ gazember -&#187; rogue<br>
+ gazember -&#187; s.o.b.<br>
+ gazember -&#187; scoundrel<br>
+ gazember -&#187; shag<br>
+ gazember -&#187; son of a bitch<br>
+ gazember -&#187; villain<br>
+ gazemberség -&#187; scoundrelism<br>
+ gázfejlesztés -&#187; gassing<br>
+ gázfejlődés -&#187; gasification<br>
+ gázfejlődés -&#187; gassing<br>
+ gázfertőtlenítő készülék -&#187; aerator<br>
+ gazfickó -&#187; knave<br>
+ gazfickó -&#187; miscreant<br>
+ gazfickó -&#187; rogue<br>
+ gázgyári retortacsoport -&#187; bench<br>
+ gázharang -&#187; bell<br>
+ gázharisnya -&#187; mantle<br>
+ gázhegesztés -&#187; torch welding<br>
+ gázjelző -&#187; gasoscope<br>
+ gázkályha -&#187; gas fire<br>
+ gázkamra -&#187; gas chamber<br>
+ gázkandalló -&#187; gas fire<br>
+ gázló -&#187; ford<br>
+ gázlómadár -&#187; stilt<br>
+ gázlómadár -&#187; wader<br>
+ gázmentesít -&#187; to degasify<br>
+ gázmentesít -&#187; to outgas<br>
+ gázmentesítés -&#187; degassing<br>
+ gázmérés -&#187; gasometry<br>
+ gázmérgezés -&#187; gassing<br>
+ gázmérőtartály -&#187; gasometer<br>
+ gáznemű testek tana -&#187; pneumatics<br>
+ gázok (belekben) -&#187; wind<br>
+ gázol -&#187; to wade<br>
+ gázol -&#187; to wallow<br>
+ gázolaj -&#187; heavy oil<br>
+ gázolás -&#187; running over<br>
+ gázolható -&#187; passable<br>
+ gazométer -&#187; bell<br>
+ gazos -&#187; weedy<br>
+ gázosítás -&#187; gasification<br>
+ gázosítás -&#187; gassing<br>
+ gázosodás -&#187; gassing<br>
+ gázpedál -&#187; accelerator<br>
+ gázpedál -&#187; accelerator pedal<br>
+ gazság -&#187; enormity<br>
+ gazság -&#187; foul play<br>
+ gazság -&#187; knavery<br>
+ gazság -&#187; roguery<br>
+ gazság -&#187; scoundrelism<br>
+ gazság -&#187; villainy<br>
+ gázsugár -&#187; jet<br>
+ gázsugárhajtómű -&#187; jet<br>
+ gázsütő -&#187; gas-oven<br>
+ gázszén -&#187; non-caking coal<br>
+ gázszerelő -&#187; gas-fitter<br>
+ gázt ad -&#187; to open out the throttle<br>
+ gázt bugyborékoltat át folyadékon -&#187; to bubble a gas through a liquid<br>
+ gázt ereszt át folyadékon -&#187; to bubble a gas through a liquid<br>
+ gázt kiűz -&#187; to outgas<br>
+ gázt lecsapol -&#187; to degasify<br>
+ gázt neki! -&#187; let it rip!<br>
+ gázt vezet (réteg) -&#187; to bleed, bled<br>
+ gáztalanít -&#187; to outgas<br>
+ gáztalanítás -&#187; degasification<br>
+ gáztalanítás -&#187; degassing<br>
+ gáztalanítás -&#187; outgassing<br>
+ gáztámadás -&#187; gas attack<br>
+ gáztartály -&#187; gasometer<br>
+ gaztett -&#187; deed<br>
+ gaztett -&#187; evil-doing<br>
+ gaztett -&#187; foul deed<br>
+ gaztett -&#187; misdeed<br>
+ gaztett -&#187; outrage<br>
+ gaztett -&#187; villainy<br>
+ gaztett -&#187; wrongdoing<br>
+ gáztisztítás -&#187; scrubbing<br>
+ gáztisztító berendezés -&#187; scrubber<br>
+ gáztisztító készülék -&#187; rectifier<br>
+ gaztól megszabadít -&#187; to weed<br>
+ gaztól megtisztít -&#187; to weed<br>
+ gáztüzelésű kemence -&#187; gas-oven<br>
+ gáztűzhely -&#187; gas-oven<br>
+ gázvédő szemüveg -&#187; eyepiece<br>
+ gázzal ellát -&#187; to gas<br>
+ gázzal megmérgez -&#187; to gas<br>
+ gázzal tölt -&#187; to gas<br>
+ gázzal világít -&#187; to gas<br>
+ gebasz -&#187; shit city<br>
+ gebasz -&#187; shithouse<br>
+ gebe -&#187; jade<br>
+ gebe -&#187; nag<br>
+ gebe -&#187; plug<br>
+ gebe -&#187; skin<br>
+ geci -&#187; fucking<br>
+ geci -&#187; jism<br>
+ geci -&#187; jisom<br>
+ geci -&#187; jissom<br>
+ geci -&#187; sodding<br>
+ geci -&#187; spunk<br>
+ gége -&#187; gorge<br>
+ gége- -&#187; laryngeal<br>
+ gége -&#187; larynx<br>
+ gége -&#187; throttle<br>
+ gégefedő- -&#187; epiglottic<br>
+ gégefedő -&#187; epiglottis<br>
+ gégefedőre vonatkozó -&#187; epiglottic<br>
+ gégefedővel kapcsolatos -&#187; epiglottic<br>
+ gégefedővel összefüggő -&#187; epiglottic<br>
+ gégefő -&#187; larynx<br>
+ gégegyulladás -&#187; laryngitis<br>
+ gégészet -&#187; laryngology<br>
+ gégetükör -&#187; laryngoscope<br>
+ gejzerit -&#187; geyserite<br>
+ gejzír -&#187; geyser<br>
+ gejzirit -&#187; geyserite<br>
+ gekko -&#187; gecko<br>
+ gél -&#187; gel<br>
+ gelignit -&#187; gelignite<br>
+ géllé alakul -&#187; to gel<br>
+ geller -&#187; ricochet<br>
+ gellert kap -&#187; to ricochet<br>
+ gémeskút -&#187; draw well<br>
+ gemkapocs -&#187; clip<br>
+ gemkapocs -&#187; paper clip<br>
+ gemkapocs -&#187; paperclip<br>
+ gémmozgató mű -&#187; luffing gear<br>
+ gémorfaj -&#187; musk<br>
+ gén -&#187; gene<br>
+ genealógia -&#187; genealogy<br>
+ genealógus -&#187; genealogist<br>
+ generáció -&#187; generation<br>
+ generálás -&#187; generation<br>
+ generálbasszus -&#187; figured bass<br>
+ generáljavítás -&#187; overhaul<br>
+ generáloz -&#187; to overhaul<br>
+ generikus -&#187; generic<br>
+ genetika -&#187; genetics<br>
+ genetikus kutató -&#187; geneticist<br>
+ gengszter -&#187; gangster<br>
+ gengszter -&#187; hood<br>
+ gengszter -&#187; hoodlum<br>
+ gengszter -&#187; racketeer<br>
+ gengszter -&#187; thug<br>
+ gengszterbanda -&#187; gang<br>
+ gengszterek lakónegyede -&#187; gangland<br>
+ gengszterség -&#187; racketeering<br>
+ genitívuszban használt -&#187; possessed<br>
+ genny -&#187; crappy<br>
+ genny -&#187; matter<br>
+ genny- -&#187; purulent<br>
+ genny -&#187; pus<br>
+ genny -&#187; shitty<br>
+ genny alak -&#187; scuz<br>
+ genny alak -&#187; scuzz<br>
+ gennyed -&#187; to come to a head<br>
+ gennyed -&#187; to fester<br>
+ gennyed -&#187; to gather to a head<br>
+ gennyed -&#187; to ulcerate<br>
+ gennyedés -&#187; fester<br>
+ gennyedés -&#187; festering<br>
+ gennyedés -&#187; running<br>
+ gennyedő -&#187; festering<br>
+ gennyedő -&#187; purulent<br>
+ gennyedő -&#187; running<br>
+ gennyedő seb -&#187; running sore<br>
+ gennyedzik -&#187; to run, ran, run<br>
+ gennyedző -&#187; running<br>
+ gennyes -&#187; crappy<br>
+ gennyes -&#187; purulent<br>
+ gennyes alak -&#187; geek<br>
+ gennyes mandulagyulladás -&#187; putrid sore throat<br>
+ gennyes pattanás -&#187; blotch<br>
+ gennyes seb -&#187; dirty wound<br>
+ gennyes torokgyulladás -&#187; putrid sore throat<br>
+ gennyes váladék -&#187; purulent discharge<br>
+ gennyesedés -&#187; gathering<br>
+ gennyesedés -&#187; ulceration<br>
+ gennyesedést okoz -&#187; to ulcerate<br>
+ gennyesedik -&#187; to putrefy<br>
+ gennyesít -&#187; to fester<br>
+ gennyezik -&#187; to matter<br>
+ genova -&#187; genoa<br>
+ génua -&#187; genoa<br>
+ genus- -&#187; generic<br>
+ genus -&#187; genus, genera<br>
+ genyó -&#187; scuzzbag<br>
+ genyó -&#187; yuck<br>
+ genyó -&#187; yuk<br>
+ geodéta -&#187; surveyor<br>
+ geometria -&#187; geometry<br>
+ geometriai -&#187; geometric<br>
+ geometriai -&#187; geometrical<br>
+ geometriai test -&#187; solid figure<br>
+ geometriai test -&#187; three-dimensional figure<br>
+ geopolitika -&#187; geopolitics<br>
+ geopolitikai -&#187; geopolitical<br>
+ geopolitikai szakértő -&#187; geopolitician<br>
+ Georgia állam -&#187; cracker state<br>
+ gép -&#187; appliance<br>
+ gép -&#187; engine<br>
+ gép -&#187; machine<br>
+ gép szerelési helye -&#187; bed<br>
+ gépágy -&#187; bed<br>
+ gépágy -&#187; bench<br>
+ gépágyú repülőgép orrában -&#187; nose-gun<br>
+ gép-alapterület -&#187; floorspace<br>
+ gépállvány faanyaga -&#187; rig timber<br>
+ gepárd -&#187; cheetah<br>
+ gépasztal -&#187; bed<br>
+ gépbehelyezés -&#187; putting<br>
+ gépcsarnok -&#187; engine-room<br>
+ gépcsoport -&#187; aggregate<br>
+ gépcsoport -&#187; compound<br>
+ gépegység -&#187; unit<br>
+ gépel -&#187; to type<br>
+ gépel -&#187; to typewrite, typed, typewritten<br>
+ gépelem -&#187; detail<br>
+ gépelés -&#187; typing<br>
+ gépelt kézirat -&#187; typescript<br>
+ gépeltérítő -&#187; hijacker<br>
+ gépember -&#187; robot<br>
+ gépesít -&#187; to mechanize<br>
+ gépesít -&#187; to robotize<br>
+ gépesítés -&#187; automation<br>
+ gépesítés -&#187; engineering<br>
+ gépesített -&#187; mechanized<br>
+ gépesített egységek -&#187; mechanized troops<br>
+ gépesített hadviselés -&#187; mechanized warfare<br>
+ gépesített mezőgazdálkodás -&#187; mechanized farming<br>
+ gépész -&#187; engineer<br>
+ gépész -&#187; engine-room artificer<br>
+ gépész -&#187; engine-room hand<br>
+ gépész -&#187; machinist<br>
+ gépész -&#187; operator<br>
+ gépészet -&#187; engineering<br>
+ gépet elront -&#187; to rack a machine to pieces<br>
+ gépet tönkretesz -&#187; to rack a machine to pieces<br>
+ gépezet -&#187; machinery<br>
+ gépezet -&#187; mechanism<br>
+ gépezetet konstruáló -&#187; erector<br>
+ gépezetet összeállító -&#187; erector<br>
+ gépfegyver -&#187; machine-gun<br>
+ gépfegyveres bunker -&#187; pillbox<br>
+ gépfegyveres kiserőd -&#187; pillbox<br>
+ gépfegyverkezelő -&#187; gunner<br>
+ gépfegyver-megfigyelő -&#187; gunner-observer<br>
+ gépfűrész -&#187; power saw<br>
+ géphajtású lókefe -&#187; groomer<br>
+ gépház -&#187; engine-room<br>
+ gépi adatfeldolgozás -&#187; data processing<br>
+ gépi csipke -&#187; lace<br>
+ gépi tüzelőberendezés -&#187; stoker<br>
+ gépies -&#187; automatic<br>
+ gépies teremtmény -&#187; automaton, automata<br>
+ gépiesen -&#187; automatically<br>
+ gépiesen -&#187; by rote<br>
+ gépiessé tesz -&#187; to mechanize<br>
+ gépipari műszaki főiskola -&#187; engineering college<br>
+ gépír -&#187; to typewrite, typed, typewritten<br>
+ gépíró -&#187; typist<br>
+ gépírónő -&#187; typist<br>
+ gépjármű -&#187; motor vehicle<br>
+ gépjárműre szerelt ágyú -&#187; mechanized gun<br>
+ gépjárműre szerelt géppuska -&#187; mechanized gun<br>
+ gépjárművek részére járhatatlan út -&#187; road unfit for motor traffic<br>
+ gépkarabély -&#187; carbine submachine gun<br>
+ gépkenőcs -&#187; lubricant<br>
+ gépkenőzsír -&#187; lubricant<br>
+ gépkezelő -&#187; engineer<br>
+ gépkezelő -&#187; engine-room artificer<br>
+ gépkezelő -&#187; engine-room hand<br>
+ gépkezelő -&#187; machinist<br>
+ gépkezelő -&#187; operator<br>
+ gépkocsi- -&#187; automotive<br>
+ gépkocsi kölcsönzés -&#187; car rental<br>
+ gépkocsi mérnök -&#187; automotive engineer<br>
+ gépkocsigyártás -&#187; automotive industry<br>
+ gépkocsikíséret -&#187; motorcade<br>
+ gépkocsi-kölcsönzés -&#187; car rental<br>
+ gépkocsivezetést tanul -&#187; to take driving lesson<br>
+ gépkocsivezető -&#187; teamster<br>
+ gépkocsivezetői vizsga -&#187; driving test<br>
+ gépkocsizó egységek -&#187; mechanized troops<br>
+ géplakatos -&#187; engine fitter<br>
+ géplakatos -&#187; fitter<br>
+ gépműhely -&#187; engine-room<br>
+ gépműhely -&#187; machine shop<br>
+ gépnapló -&#187; log<br>
+ gépolaj -&#187; engine oil<br>
+ gépolaj -&#187; lubricant<br>
+ gépolló -&#187; shears<br>
+ géppapír -&#187; typing-paper<br>
+ géppel sokszorosított -&#187; mimeographic<br>
+ géppisztoly -&#187; machine-pistol<br>
+ géppisztoly -&#187; rifle<br>
+ géppisztoly -&#187; sten<br>
+ géppisztoly -&#187; sten-gun<br>
+ géppisztoly -&#187; submachine-gun<br>
+ géppisztoly -&#187; tommy gun<br>
+ géppisztoly -&#187; tommy-gun<br>
+ géppuska -&#187; machine gun<br>
+ géppuska -&#187; machine-gun<br>
+ géppuska-heveder -&#187; machine-gun belt<br>
+ géppuskás -&#187; gunner<br>
+ géppuskás pásztázás -&#187; strafe<br>
+ géppuskáz -&#187; to strafe<br>
+ géprészek beállítása -&#187; alignment<br>
+ géprészek vonalba állítása -&#187; alignment<br>
+ géprevízió -&#187; machine proof<br>
+ gépromboló -&#187; luddite<br>
+ gépselyem -&#187; sewing thread<br>
+ gépselyem -&#187; thread<br>
+ gépszalag -&#187; tape<br>
+ gépszerelő -&#187; machinist<br>
+ gépszerelő -&#187; mechanician<br>
+ gépszerkesztés -&#187; engineering<br>
+ gépszíj -&#187; belt<br>
+ gépszín -&#187; shed<br>
+ gépszínbe beállítás -&#187; housing<br>
+ gépszínbe elhelyezés -&#187; housing<br>
+ géptan -&#187; mechanics<br>
+ gépterem -&#187; engine-room<br>
+ gépvezető -&#187; operator<br>
+ gépzene -&#187; canned music<br>
+ gépzongora -&#187; piano organ<br>
+ gereben -&#187; comb<br>
+ gereben -&#187; hackle<br>
+ gerebenez -&#187; to comb<br>
+ gerebenez -&#187; to hackle<br>
+ gerebenező -&#187; heckler<br>
+ gerebenező gép -&#187; heckler<br>
+ gereblye -&#187; rake<br>
+ gereblyéz -&#187; to rake<br>
+ gereblyéz -&#187; to rake over<br>
+ gereblyézés -&#187; raking<br>
+ gerely -&#187; lance<br>
+ gerely -&#187; lancet<br>
+ gerelyhajítás -&#187; javelin throw<br>
+ gerenda -&#187; balk<br>
+ gerenda -&#187; beam<br>
+ gerenda -&#187; joist<br>
+ gerenda -&#187; lumber<br>
+ gerenda -&#187; spar<br>
+ gerenda -&#187; spile<br>
+ gerenda -&#187; timber<br>
+ gerenda -&#187; tree<br>
+ gerendacsatlakozás -&#187; splice<br>
+ gerendaház -&#187; blockhouse<br>
+ gerendaköz -&#187; aft-bay<br>
+ gerendaköz -&#187; bay<br>
+ gerendaköz -&#187; tail-bay<br>
+ gerendamező -&#187; aft-bay<br>
+ gerendamező -&#187; frieze<br>
+ gerendamező -&#187; tail-bay<br>
+ gerendasor -&#187; beams and joints<br>
+ gerendát ácsol -&#187; to square timber<br>
+ gerendát ferdén állít fel -&#187; to cant a beam<br>
+ gerendát ferdére vág -&#187; to cant a beam<br>
+ gerendával épített -&#187; timbered<br>
+ gerendavég -&#187; end<br>
+ gerendázat -&#187; frame<br>
+ gerendázatra erősít -&#187; to joist<br>
+ gerendely -&#187; beam<br>
+ gerendely -&#187; crab<br>
+ gerezd -&#187; clove<br>
+ gerezd -&#187; section<br>
+ gerezd -&#187; segment<br>
+ gerezd fokhagyma -&#187; clove of garlic<br>
+ Gergely-naptár -&#187; Gregorian calendar<br>
+ Gergely-naptár -&#187; new style calendar<br>
+ gerilla -&#187; guerilla<br>
+ gerilla -&#187; guerrilla<br>
+ gerilla-harcos -&#187; bushwhacker<br>
+ gerillaharcos -&#187; guerilla<br>
+ gerillaharcos -&#187; guerrilla<br>
+ gerinc -&#187; backbone<br>
+ gerinc -&#187; ridge<br>
+ gerinc -&#187; saddle<br>
+ gerinc- -&#187; spinal<br>
+ gerinc- -&#187; spinalis<br>
+ gerinc -&#187; spine<br>
+ gerinc -&#187; stagnation<br>
+ gerinc- -&#187; vertebral<br>
+ gerinc két barázda között -&#187; rig<br>
+ gerincagy -&#187; spinal cord<br>
+ gerincagyi érzéstelenítés -&#187; spinal<br>
+ gerincagyi érzéstelenítő szer -&#187; spinal<br>
+ gerincbántalom -&#187; spinal complaint<br>
+ gerinccsapolás -&#187; lumbar puncture<br>
+ gerince vminek -&#187; pith<br>
+ gerinces -&#187; vertebrate<br>
+ gerincgörbület -&#187; spinal curvature<br>
+ gerincingerlő szer -&#187; spinant<br>
+ gerincoszlop- -&#187; spinal<br>
+ gerincoszlop -&#187; spinal column<br>
+ gerincoszlop -&#187; vertebral column<br>
+ gerinctelen -&#187; invertebrate<br>
+ gerinctelen -&#187; spineless<br>
+ gerinctelen -&#187; supple<br>
+ gerinctelen állat -&#187; invertebrate<br>
+ gerinctető -&#187; edge<br>
+ gerinctövi érzéstelenítés -&#187; caudal anesthesia<br>
+ gerincvelő -&#187; pith<br>
+ gerincvelő -&#187; spinal marrow<br>
+ gerjed -&#187; to fester<br>
+ gerjeszt -&#187; to excite<br>
+ gerjeszt -&#187; to induce<br>
+ gerjeszt -&#187; to kindle<br>
+ gerjesztés megszüntetése -&#187; deexcitation<br>
+ gerjesztő -&#187; exciting<br>
+ gerjesztő -&#187; impulsive<br>
+ gerle -&#187; dove<br>
+ gerle -&#187; turtle<br>
+ gerle -&#187; turtle-dove<br>
+ gerlice -&#187; turtle<br>
+ gerlice -&#187; turtle-dove<br>
+ germó -&#187; scuz<br>
+ germó -&#187; scuzz<br>
+ gerontokrácia -&#187; gerontocracy<br>
+ gerontokrata -&#187; gerontocrat<br>
+ gerontológia -&#187; gerontology<br>
+ gersli -&#187; pearl barley<br>
+ gesztenye -&#187; chestnut<br>
+ gesztenye pej -&#187; light bay<br>
+ gesztenyebarna -&#187; maroon<br>
+ gesztikulál -&#187; to flourish<br>
+ gesztikulál -&#187; to gesticulate<br>
+ gesztikulál -&#187; to gesture<br>
+ gesztikulál -&#187; to saw the air<br>
+ gesztikulálás -&#187; gesticulation<br>
+ gesztus -&#187; gesture<br>
+ Getszemáné-kert -&#187; Gethsemane<br>
+ gettó -&#187; ghetto<br>
+ gettóba szorít -&#187; to ghettotize<br>
+ gettóba zár -&#187; to ghettotize<br>
+ gézcsomó -&#187; wick<br>
+ gézkötés -&#187; gauze dressing<br>
+ gézkötőcsomó -&#187; gauze pad<br>
+ gézpólya -&#187; band<br>
+ gézpólya -&#187; gauze bandage<br>
+ gibbon -&#187; gibbon<br>
+ giccs -&#187; kitsch<br>
+ giccs -&#187; mush<br>
+ giccs -&#187; slush<br>
+ giccs -&#187; squish<br>
+ giccs -&#187; trash<br>
+ giccses -&#187; arty<br>
+ giccses -&#187; conventional<br>
+ giccses -&#187; corny<br>
+ giccses -&#187; kitschy<br>
+ giccses -&#187; mushy<br>
+ giccses -&#187; slushy<br>
+ giccses film -&#187; hokum<br>
+ giccses melodráma -&#187; tank drama<br>
+ giccses színdarab -&#187; hokum<br>
+ giccsgyártó -&#187; schlockmeister<br>
+ gida -&#187; kid<br>
+ gigantizmus -&#187; gigantism<br>
+ gigászi -&#187; gigantean<br>
+ gigászi -&#187; gigantesque<br>
+ gigászi -&#187; gigantic<br>
+ gigerli -&#187; tip-topper<br>
+ gikszer -&#187; bloomer<br>
+ gikszer -&#187; blooper<br>
+ gikszer -&#187; false note<br>
+ gikszer -&#187; goose-note<br>
+ gikszer -&#187; miscue<br>
+ gikszer -&#187; trip<br>
+ gikszert kap -&#187; to miscue<br>
+ giliszta -&#187; worm<br>
+ gilisztája van -&#187; have worms<br>
+ gilisztás -&#187; have worms<br>
+ gilisztás -&#187; verminous<br>
+ gimnasztikai -&#187; gymnastic<br>
+ gimnázium -&#187; gymnasium, gymnasia<br>
+ gímnyelv -&#187; adder's-tongue<br>
+ gin -&#187; gin<br>
+ ginszeng -&#187; ginseng<br>
+ gipsszel betöm -&#187; to plaster up<br>
+ gipsz -&#187; gypsum<br>
+ gipszbe tesz -&#187; to encase in plaster<br>
+ gipszbe tesz -&#187; to incorporate in plaster<br>
+ gipszbe tesz -&#187; to plaster<br>
+ gipszbe tesz -&#187; to put in plaster<br>
+ gipszbe tesz -&#187; to set in plaster<br>
+ gipszel -&#187; to plaster<br>
+ gipszes -&#187; plastery<br>
+ gipszhabarcs -&#187; beaumontage<br>
+ gipszkötés -&#187; cast<br>
+ gipszkötés -&#187; plaster cast<br>
+ gipszmider -&#187; plaster jacket<br>
+ gipszminta -&#187; cast<br>
+ gipszöntő -&#187; caster<br>
+ gipszöntvény -&#187; cast<br>
+ gipszszerű -&#187; plastery<br>
+ gipszvakolat -&#187; plaster<br>
+ girhes -&#187; lean<br>
+ girhesség -&#187; emaciation<br>
+ girland -&#187; festoon<br>
+ girland -&#187; garland<br>
+ giroszkóp -&#187; gyroscope<br>
+ gitár -&#187; guitar<br>
+ gitáros -&#187; guitar player<br>
+ gitárt penget -&#187; to thrum on a guitar<br>
+ gitárt penget -&#187; to twang a guitar<br>
+ gitárt penget -&#187; to twang on a guitar<br>
+ gitárt penget -&#187; to twangle a guitar<br>
+ gitt -&#187; putty<br>
+ gizgaz -&#187; weed<br>
+ g-kulcs -&#187; g-clef<br>
+ glaciális -&#187; glacial<br>
+ gladiátor -&#187; gladiator<br>
+ gladiátori -&#187; gladiatorial<br>
+ gladiólusz -&#187; gladiolus, gladioli<br>
+ glandula -&#187; glandula, glandulae<br>
+ glaszé -&#187; kid<br>
+ glaszékesztyű -&#187; kid gloves<br>
+ glazúr -&#187; glaze<br>
+ glazúrfesték -&#187; glaze<br>
+ glazúrfestékkel bevon -&#187; to glaze<br>
+ glazúrral bevon -&#187; to glaze<br>
+ gleccser -&#187; glacier<br>
+ gleccsertó -&#187; tarn<br>
+ gleccserturzás -&#187; moraine<br>
+ glicínia -&#187; wistaria<br>
+ gliptika -&#187; glyptics<br>
+ gliptodon -&#187; glyptodon<br>
+ gliptográfia -&#187; glyptography<br>
+ glissando -&#187; slide<br>
+ globális -&#187; aggregate<br>
+ globális -&#187; global<br>
+ globálisan -&#187; in the aggregate<br>
+ globalizálás -&#187; globalization<br>
+ glóbusz -&#187; globe<br>
+ glória -&#187; glory<br>
+ glória -&#187; halo<br>
+ glossza -&#187; gloss<br>
+ glosszál -&#187; to gloss<br>
+ glosszárium -&#187; glossary<br>
+ glutaminsav -&#187; glutamic acid<br>
+ glutársav -&#187; glutaric acid<br>
+ gluteális -&#187; gluteal<br>
+ glükóz -&#187; glucose<br>
+ gnóm -&#187; gnome<br>
+ gnú -&#187; gnu<br>
+ gnú -&#187; wildebeest<br>
+ gobelin -&#187; tapestry<br>
+ gócképződés -&#187; nucleation<br>
+ gócpont -&#187; focuse<br>
+ gógyizik -&#187; to noodle<br>
+ gógyizik vmin -&#187; to noodle sg around<br>
+ gól -&#187; goal<br>
+ gól (amerikai futballban) -&#187; touch-down<br>
+ gól (amerikai futballban) -&#187; touchdown<br>
+ gól nélküli döntetlen -&#187; goalless draw<br>
+ golf -&#187; golf<br>
+ golffelszerelés -&#187; golfing kit<br>
+ golfjátékos -&#187; golfer<br>
+ golfklub -&#187; golf-club<br>
+ golf-klubház -&#187; golf-house<br>
+ golflabda -&#187; golf ball<br>
+ golflabda begurítása a lyukba -&#187; putting<br>
+ golflabda beütése a lyukba -&#187; putting<br>
+ golflabda elütési helye -&#187; tee<br>
+ golfot játszik -&#187; to golf<br>
+ golfozik -&#187; to golf<br>
+ golfozó -&#187; golfer<br>
+ golföltöny -&#187; golf-suit<br>
+ golfpálya -&#187; golf course<br>
+ golfpálya -&#187; golf-course<br>
+ golfpálya -&#187; golf-links<br>
+ golfpálya -&#187; green<br>
+ golfpálya ápolt pázsitos sima része -&#187; fairway<br>
+ golfpálya lyuk körüli része -&#187; green<br>
+ golfpálya lyuk körüli sima része -&#187; putting-green<br>
+ golfpavilon -&#187; golf-pavilion<br>
+ golfruha -&#187; golf-suit<br>
+ golfütő -&#187; club<br>
+ golfütő -&#187; golf-club<br>
+ golfütő -&#187; golf-stick<br>
+ golfütő (egy fajta) -&#187; niblick<br>
+ golfütő fajta -&#187; putter<br>
+ golfütő targonca -&#187; caddie car<br>
+ golf-zsák -&#187; golf bag<br>
+ golgotavirág -&#187; passion flower<br>
+ golgotavirág gyümölcse -&#187; passion fruit<br>
+ gólszám -&#187; score<br>
+ gólt szerez rögbiben -&#187; to touch down<br>
+ gólvonal -&#187; goal line<br>
+ gólya -&#187; freshman, freshmen<br>
+ gólya -&#187; stork<br>
+ gólyaláb -&#187; stilt<br>
+ gólyaláb -&#187; wooden leg<br>
+ gólyalábon járó -&#187; stilted<br>
+ golyó -&#187; ball<br>
+ golyó -&#187; bullet<br>
+ golyó -&#187; shot<br>
+ golyó -&#187; sphere<br>
+ golyó -&#187; stone<br>
+ golyó alakú bonbon -&#187; dump<br>
+ golyó lyukba küldése másik golyó érintése nélkül -&#187; coup<br>
+ golyóálló -&#187; shell-proof<br>
+ golyócska -&#187; globule<br>
+ golyócska -&#187; pellet<br>
+ golyófogó domb -&#187; butt<br>
+ golyófogó töltés -&#187; butt<br>
+ golyós csap -&#187; toggle-joint<br>
+ golyós csapágy -&#187; ball bearing<br>
+ golyós csapágy -&#187; ball-bearing<br>
+ golyós csukló -&#187; toggle-joint<br>
+ golyós dezodor -&#187; roll-on deodorant<br>
+ golyós sarkcsap -&#187; ball pivot<br>
+ golyóstoll -&#187; ball pen<br>
+ golyóstoll -&#187; ball point pen<br>
+ golyóstoll -&#187; ball-pen<br>
+ golyóstoll -&#187; ball-point pen<br>
+ golyóstoll -&#187; ballpoint pen<br>
+ golyóstoll fajta -&#187; biro<br>
+ golyószóró -&#187; light machine-gun<br>
+ golyót biliárdasztal párnázott széléig lök -&#187; to bank<br>
+ golyót ereszt vkibe -&#187; to pip<br>
+ golyót ereszt vkibe -&#187; to plug<br>
+ golyóvá alakít -&#187; to ball<br>
+ golyóvá alakul -&#187; to ball<br>
+ golyózápor -&#187; drift of bullets<br>
+ golyózás -&#187; marbles<br>
+ golyózik -&#187; to play bowls<br>
+ golyva -&#187; clubbing<br>
+ golyva -&#187; goiter<br>
+ golyva -&#187; goitre<br>
+ golyva -&#187; wen<br>
+ golyvás tengely -&#187; cambered axle<br>
+ gomb -&#187; button<br>
+ gomb -&#187; knob<br>
+ gomb -&#187; stud<br>
+ gomba -&#187; mushroom<br>
+ gomba alakú tárgy -&#187; mushroom<br>
+ gomba módra szaporodik -&#187; to mushroom<br>
+ gombaféle -&#187; fungus<br>
+ gombaölő -&#187; fungicide<br>
+ gombás -&#187; fungous<br>
+ gombaszerű -&#187; fungous<br>
+ gombaszerűen szétlapul -&#187; to mushroom<br>
+ gombászik -&#187; to mushroom<br>
+ gombdísz -&#187; boss<br>
+ gombfejű szög -&#187; stud<br>
+ gomblyuk -&#187; buttonhole<br>
+ gomblyukaz -&#187; to buttonhole<br>
+ gomblyukba tűzött virág -&#187; buttonhole<br>
+ gomblyukfedő lebeny -&#187; fly<br>
+ gomblyukretesz -&#187; bar of a buttonhole<br>
+ gomblyukzáró öltés -&#187; bar of a buttonhole<br>
+ gombó -&#187; okra<br>
+ gombóc -&#187; dumpling<br>
+ gombol -&#187; to button<br>
+ gombolás -&#187; fastening<br>
+ gombolás -&#187; fly<br>
+ gombolódik -&#187; to button<br>
+ gombolódik -&#187; to fasten<br>
+ gombolyag -&#187; ball<br>
+ gombolyag -&#187; clew<br>
+ gombolyag -&#187; clue<br>
+ gombolyagba csavar -&#187; to ball<br>
+ gombolyagba teker -&#187; to ball<br>
+ gombolyít -&#187; to ball<br>
+ gombolyít -&#187; to reel<br>
+ gombolyít -&#187; to wind, wound<br>
+ gombolyítatlan -&#187; uncoiled<br>
+ gombolyító motolla -&#187; hasp<br>
+ gombos cipő -&#187; button boots<br>
+ gombos cipő -&#187; buttoned boots<br>
+ gombostű -&#187; pin<br>
+ gombostű -&#187; preen<br>
+ gombostűfej -&#187; pinhead<br>
+ gombot felvarr -&#187; to put on a button<br>
+ gombszemű -&#187; beady<br>
+ gomolyfelhő -&#187; cumulonimbus<br>
+ gomolyog -&#187; to wreathe<br>
+ gond -&#187; attention<br>
+ gond -&#187; care<br>
+ gond -&#187; chagrin<br>
+ gond -&#187; concern<br>
+ gond -&#187; snag<br>
+ gond -&#187; trouble<br>
+ gond -&#187; worry<br>
+ gond nélküli -&#187; free from care<br>
+ gondatlan -&#187; careless<br>
+ gondatlan -&#187; floppy<br>
+ gondatlan -&#187; inadvertent<br>
+ gondatlan -&#187; incautious<br>
+ gondatlan -&#187; mindless<br>
+ gondatlan -&#187; neglectful<br>
+ gondatlan -&#187; negligent<br>
+ gondatlan -&#187; slack<br>
+ gondatlan -&#187; sloppy<br>
+ gondatlan -&#187; unheeding<br>
+ gondatlan kocsivezetés -&#187; reckless driving<br>
+ gondatlanság -&#187; carelessness<br>
+ gondatlanság -&#187; dereliction<br>
+ gondatlanság -&#187; inadvertence<br>
+ gondatlanság -&#187; malpractice<br>
+ gondatlanság -&#187; neglect<br>
+ gondatlanság -&#187; negligence<br>
+ gondatlanság -&#187; recklessness<br>
+ gondatlanság -&#187; want of care<br>
+ gondatlanságból -&#187; out of neglect<br>
+ gondatlanságon alapuló tényállásból folyó kötelem -&#187; technical offence<br>
+ gondatlanul -&#187; carelessly<br>
+ gondatlanul -&#187; incautiously<br>
+ gondatlanul -&#187; mindlessly<br>
+ gondatlanul nevel -&#187; to drag up<br>
+ gondjaiba vesz -&#187; to take charge of<br>
+ gondjaiba vesz -&#187; to take charge<br>
+ gondjaira bíz -&#187; to charge<br>
+ gondjaira bíz vkinek vmit -&#187; to leave sg in charge of sy<br>
+ gondjaira bíz vkinek vmit -&#187; to place sg in sy's charge<br>
+ gondjaira van bízva -&#187; to be in charge of sg<br>
+ gondjaira van bízva vkinek -&#187; to be in the charge of sy<br>
+ gondjaira van bízva vmi -&#187; have charge of sg<br>
+ gondjaira van bízva vmi -&#187; have sg on one's hands<br>
+ gondját viseli -&#187; to shepherd<br>
+ gondját viseli -&#187; to tend<br>
+ gondját viseli vkinek -&#187; to look after sy<br>
+ gondját viseli vkinek -&#187; to take care of sg<br>
+ gondját viseli vkinek -&#187; to take up with sy<br>
+ gondnok -&#187; caretaker<br>
+ gondnok -&#187; curator<br>
+ gondnok -&#187; custodian<br>
+ gondnok -&#187; guardian<br>
+ gondnok -&#187; janitor<br>
+ gondnok -&#187; overseer<br>
+ gondnok -&#187; person in charge<br>
+ gondnok -&#187; steward<br>
+ gondnok -&#187; trustee<br>
+ gondnok -&#187; warden<br>
+ gondnoknő -&#187; laundress<br>
+ gondnoknő -&#187; matron<br>
+ gondnoknői -&#187; matronly<br>
+ gondnokság -&#187; board of trustees<br>
+ gondnokság -&#187; guardianship<br>
+ gondnokság -&#187; stewardship<br>
+ gondnokság -&#187; trusteeship<br>
+ gondnokság alá helyezett elmebeteg -&#187; certified lunatic<br>
+ gondok között él -&#187; to shuffle<br>
+ gondokkal küzd -&#187; have a hard time of it<br>
+ gondol -&#187; to conceit<br>
+ gondol -&#187; to expect<br>
+ gondol -&#187; to fancy<br>
+ gondol -&#187; to figure<br>
+ gondol -&#187; to judge<br>
+ gondol -&#187; to mean, meant<br>
+ gondol -&#187; to mean<br>
+ gondol -&#187; to opine<br>
+ gondol -&#187; to reckon<br>
+ gondol -&#187; to remember<br>
+ gondol -&#187; to suppose<br>
+ gondol -&#187; to think, thought<br>
+ gondol a jövőre -&#187; to look ahead<br>
+ gondol vhogyan -&#187; to make of<br>
+ gondol vminek -&#187; to deem<br>
+ gondol vminek -&#187; to put down<br>
+ gondol vmire -&#187; to bear sg in mind<br>
+ gondol vmire -&#187; have sg in mind<br>
+ gondol vmire -&#187; to keep sg in mind<br>
+ gondol vmire -&#187; to think of<br>
+ gondola -&#187; carriage<br>
+ gondola -&#187; gondola<br>
+ gondolás -&#187; gondolier<br>
+ gondolat -&#187; idea<br>
+ gondolat -&#187; thought<br>
+ gondolat nélküli -&#187; vacant<br>
+ gondolataiba mélyed -&#187; to be rapt<br>
+ gondolataiban elmerülve -&#187; lost in thought<br>
+ gondolatától is irtózik -&#187; to shudder at the bare idea<br>
+ gondolatban visszaszáll a múltba -&#187; to project oneself into the past<br>
+ gondolatébresztő -&#187; thought-provoking<br>
+ gondolatjel -&#187; break<br>
+ gondolatjel -&#187; dash<br>
+ gondolatjel -&#187; score<br>
+ gondolatmenet -&#187; train of thought<br>
+ gondolatnyi vmi -&#187; dash of sg<br>
+ gondolatokba merült -&#187; preoccupied<br>
+ gondolatokba merült -&#187; sunk in thoughts<br>
+ gondolatokba merülten -&#187; sunk in thoughts<br>
+ gondolatokba merülve -&#187; raptly<br>
+ gondolatokba merülve ül -&#187; to sit moping<br>
+ gondolatokkal teli -&#187; thoughtful<br>
+ gondolatolvasás -&#187; thought-reading<br>
+ gondolatolvasó -&#187; mind-reader<br>
+ gondolatolvasó -&#187; thought-reader<br>
+ gondolatot felvet -&#187; to raise an issue<br>
+ gondolatot forgat a fejében -&#187; to churn a thought in one's mind<br>
+ gondolatsor -&#187; train of thought<br>
+ gondolatszegény -&#187; vacuous<br>
+ gondolatszegény költészet -&#187; poetry tenuous in thought<br>
+ gondolatszegénység -&#187; vacuousness<br>
+ gondolatvilág -&#187; range of one's ideas<br>
+ gondold meg először a dolgot -&#187; look before you leap<br>
+ gondold meg jól! -&#187; think it over!<br>
+ gondold meg! -&#187; think it over!<br>
+ gondolják vkinek -&#187; to pass for<br>
+ gondolkodás -&#187; cogitation<br>
+ gondolkodás -&#187; think<br>
+ gondolkodás -&#187; thinking<br>
+ gondolkodás -&#187; thought<br>
+ gondolkodási -&#187; reflective<br>
+ gondolkodási képesség -&#187; reflectiveness<br>
+ gondolkodásmód -&#187; cast of thought<br>
+ gondolkodásmód -&#187; mentality<br>
+ gondolkodásmód -&#187; mind<br>
+ gondolkodásra képes -&#187; thinking<br>
+ gondolkodású -&#187; minded<br>
+ gondolkodik -&#187; to noodle<br>
+ gondolkodik -&#187; to reason<br>
+ gondolkodik -&#187; to think, thought<br>
+ gondolkodik vmin -&#187; to noodle sg around<br>
+ gondolkodik vminek jegyében -&#187; to think in terms of sg<br>
+ gondolkodó -&#187; pensive<br>
+ gondolkodó -&#187; philosopher<br>
+ gondolkodó -&#187; reasonable<br>
+ gondolkodó -&#187; reflective<br>
+ gondolkodó -&#187; thinker<br>
+ gondolkodó -&#187; thinking<br>
+ gondolkodó -&#187; thoughtful<br>
+ gondolkodó lények -&#187; reasonable beings<br>
+ gondolkodóba ejt -&#187; to set sy thinking<br>
+ gondolkodóképesség -&#187; faculty of reasoning<br>
+ gondolkodva -&#187; pensively<br>
+ gondolkozik -&#187; to cogitate<br>
+ gondolkozik -&#187; to deliberate<br>
+ gondolkozik -&#187; to think, thought<br>
+ gondolkozik rajta -&#187; have another think<br>
+ gondolkozz! -&#187; use your brains!<br>
+ gondoltam magam, hogy -&#187; I bethought that<br>
+ gondolva az anyagi haszon lehetőségére is -&#187; with an eye to the main chance<br>
+ gondos -&#187; careful<br>
+ gondos -&#187; diligent<br>
+ gondos -&#187; heedful<br>
+ gondos -&#187; mindful<br>
+ gondos -&#187; painstaking<br>
+ gondos -&#187; searching<br>
+ gondos -&#187; solicitous<br>
+ gondos -&#187; tender<br>
+ gondos -&#187; thoughtful<br>
+ gondos -&#187; tidy<br>
+ gondos alaposság -&#187; elaboration<br>
+ gondos átolvasás -&#187; perusal<br>
+ gondos munka -&#187; fine work<br>
+ gondosan -&#187; narrowly<br>
+ gondosan -&#187; religiously<br>
+ gondosan ápol -&#187; to manicure<br>
+ gondosan ápolt -&#187; smart<br>
+ gondosan átvizsgál -&#187; to peruse<br>
+ gondosan elolvas -&#187; to peruse<br>
+ gondosan elrak vmit -&#187; to stow sg away<br>
+ gondosan elrejt vmit -&#187; to stow sg away<br>
+ gondosan eltitkolt -&#187; well-kept<br>
+ gondosan figyel vmire -&#187; to heed<br>
+ gondosan kidolgoz -&#187; to elaborate<br>
+ gondosan kidolgozott -&#187; elaborate<br>
+ gondosan kiválaszt -&#187; to pick<br>
+ gondosan kiválogatott -&#187; hand-picked<br>
+ gondosan kiválogatott egyének összejövetele -&#187; hand-picked gathering<br>
+ gondosan leír -&#187; to trace<br>
+ gondosan megszűrt egyének összejövetele -&#187; hand-picked gathering<br>
+ gondosan megválogat -&#187; to pick<br>
+ gondosan titkolt -&#187; well-kept<br>
+ gondosan válogatott -&#187; hand-picked<br>
+ gondoskodás -&#187; care<br>
+ gondoskodás -&#187; charge<br>
+ gondoskodás -&#187; foresight<br>
+ gondoskodás -&#187; forethought<br>
+ gondoskodás -&#187; maintenance<br>
+ gondoskodás -&#187; thought<br>
+ gondoskodik -&#187; to cater<br>
+ gondoskodik -&#187; to ensure<br>
+ gondoskodik -&#187; to look after<br>
+ gondoskodik -&#187; to provide<br>
+ gondoskodik -&#187; to see after<br>
+ gondoskodik -&#187; to see to<br>
+ gondoskodik vkiről -&#187; to do for<br>
+ gondoskodik vkiről -&#187; to fend for sy<br>
+ gondoskodik vmi elhárításáról -&#187; to provide against sg<br>
+ gondoskodik vmiről -&#187; to attend to sg<br>
+ gondoskodik vmiről -&#187; to do for<br>
+ gondoskodik vmiről -&#187; to provide for<br>
+ gondoskodik vmiről -&#187; to provide for sg<br>
+ gondoskodik vmiről -&#187; to see, saw, seen<br>
+ gondoskodj róla, hogy -&#187; see that<br>
+ gondoskodjék róla, hogy -&#187; see that<br>
+ gondoskodó -&#187; provider<br>
+ gondosság -&#187; care<br>
+ gondosság -&#187; daintiness<br>
+ gondosság -&#187; diligence<br>
+ gondosság -&#187; thoughtfulness<br>
+ gondot okoz -&#187; to disease<br>
+ gondoz -&#187; to attend<br>
+ gondoz -&#187; to husband<br>
+ gondoz -&#187; to keep, kept<br>
+ gondoz -&#187; to look after<br>
+ gondoz -&#187; to nurse<br>
+ gondoz -&#187; to tend<br>
+ gondoz vki részére vmit -&#187; to hold sg in trust for sy<br>
+ gondozás -&#187; attendance<br>
+ gondozás -&#187; attention<br>
+ gondozás -&#187; care<br>
+ gondozás -&#187; looking after<br>
+ gondozás -&#187; maintenance<br>
+ gondozás -&#187; nursing<br>
+ gondozás -&#187; nurture<br>
+ gondozás -&#187; servicing<br>
+ gondozás nélküli -&#187; unattended<br>
+ gondozatlan -&#187; uncared-for<br>
+ gondozatlan -&#187; untidy<br>
+ gondozó -&#187; attendant<br>
+ gondozó -&#187; nurturer<br>
+ gondozó -&#187; tender<br>
+ gondozónő -&#187; fostress<br>
+ gondozott -&#187; snug<br>
+ gondozott -&#187; tended<br>
+ gondozott -&#187; trim<br>
+ gondozott -&#187; well turned out<br>
+ gondtalan -&#187; carefree<br>
+ gondtalan -&#187; careless<br>
+ gondtalan -&#187; easy<br>
+ gondtalan -&#187; free from care<br>
+ gondtalan -&#187; happy-go-lucky<br>
+ gondtalan -&#187; unclouded<br>
+ gondtalan -&#187; uncomplicated<br>
+ gondtalan állás -&#187; sinecure<br>
+ gondtalan élet -&#187; easy life<br>
+ gondtalan élet -&#187; life of ease<br>
+ gondtalan vidámság -&#187; rollick<br>
+ gondtalanság -&#187; ease<br>
+ gondtalanul -&#187; free from care<br>
+ gondterhelt -&#187; careworn<br>
+ gondterhes -&#187; heavy-laden<br>
+ gondviselés-küldötte -&#187; heaven-sent<br>
+ gong -&#187; gong<br>
+ gonorrea -&#187; gonorrhea<br>
+ gonorrea -&#187; gonorrhoea<br>
+ gonosz -&#187; atrocious<br>
+ gonosz -&#187; bad<br>
+ gonosz -&#187; black<br>
+ gonosz -&#187; black bogy<br>
+ gonosz -&#187; bogy man<br>
+ gonosz -&#187; envious<br>
+ gonosz -&#187; evil<br>
+ gonosz -&#187; felon<br>
+ gonosz -&#187; felonious<br>
+ gonosz -&#187; ill<br>
+ gonosz -&#187; iniquitous<br>
+ gonosz -&#187; maleficent<br>
+ gonosz -&#187; malicious<br>
+ gonosz -&#187; nefarious<br>
+ gonosz -&#187; rancorous<br>
+ gonosz -&#187; shrewd<br>
+ gonosz -&#187; spiteful<br>
+ gonosz -&#187; ungodly<br>
+ gonosz -&#187; unholy<br>
+ gonosz -&#187; unnatural<br>
+ gonosz -&#187; vicious<br>
+ gonosz -&#187; vile<br>
+ gonosz -&#187; viperine<br>
+ gonosz -&#187; viperish<br>
+ gonosz -&#187; viperous<br>
+ gonosz -&#187; wicked<br>
+ gonosz -&#187; wrong<br>
+ gonosz asszony -&#187; vixen<br>
+ gonosz ember -&#187; wrong'un<br>
+ gonosz fráter -&#187; rep<br>
+ gonosz lélek -&#187; fiend<br>
+ gonosz manó -&#187; gremlin<br>
+ gonosz megjegyzések -&#187; remarks fraught with malice<br>
+ gonosz nyelv -&#187; evil tongue<br>
+ gonosz nyelv -&#187; viperish tongue<br>
+ gonosz ötlet -&#187; wasp<br>
+ gonosz pillantásokat vet vkire -&#187; to eye sy evilly<br>
+ gonosz szellem -&#187; boggle<br>
+ gonosz szellem -&#187; bogle<br>
+ gonosz szellem -&#187; cacodaemon<br>
+ gonosz szellem -&#187; cacodemon<br>
+ gonosz szellem -&#187; demon<br>
+ gonosz szellem -&#187; goblin<br>
+ gonosz szellem -&#187; gremlin<br>
+ gonosz személy -&#187; viper<br>
+ gonosz tekintet -&#187; evil eye<br>
+ gonosz természet -&#187; ill nature<br>
+ gonoszan -&#187; vixenly<br>
+ gonoszat cselekszik -&#187; to do ill<br>
+ gonoszkodás -&#187; devilment<br>
+ gonoszkodás -&#187; devilry<br>
+ gonoszkodás -&#187; mischief<br>
+ gonoszkodó -&#187; elfin<br>
+ gonoszkodó -&#187; elfish<br>
+ gonoszság -&#187; depravity<br>
+ gonoszság -&#187; evil<br>
+ gonoszság -&#187; evil-doing<br>
+ gonoszság -&#187; iniquity<br>
+ gonoszság -&#187; monstrosity<br>
+ gonoszság -&#187; ungodliness<br>
+ gonoszság -&#187; viciousness<br>
+ gonoszság -&#187; viperousness<br>
+ gonoszság -&#187; wickedness<br>
+ gonosztett -&#187; deed<br>
+ gonosztett -&#187; foul deed<br>
+ gonosztevő -&#187; baddie<br>
+ gonosztevő -&#187; evildoer<br>
+ gonosztevő -&#187; felon<br>
+ gonosztevő -&#187; miscreant<br>
+ gonoszul -&#187; evil<br>
+ gonoszul -&#187; maliciously<br>
+ gonoszul -&#187; viciously<br>
+ gonoszul -&#187; vixenly<br>
+ gonoszul -&#187; wrongly<br>
+ gordonka -&#187; cello<br>
+ góré -&#187; boss<br>
+ góré -&#187; exec<br>
+ gorilla -&#187; gorilla<br>
+ goromba -&#187; bouncy<br>
+ goromba -&#187; brusque<br>
+ goromba -&#187; coarse<br>
+ goromba -&#187; crude<br>
+ goromba -&#187; foulmouthed<br>
+ goromba -&#187; gross<br>
+ goromba -&#187; hirsute<br>
+ goromba -&#187; offensive<br>
+ goromba -&#187; rough<br>
+ goromba -&#187; rude<br>
+ goromba -&#187; ruffianly<br>
+ goromba -&#187; surly<br>
+ goromba beszéd -&#187; rough tongue<br>
+ goromba de tisztességes ember -&#187; john blunt<br>
+ goromba ember -&#187; tartar<br>
+ goromba fráter -&#187; chuff<br>
+ goromba fráter -&#187; cur<br>
+ goromba kritika -&#187; razz<br>
+ goromba pokróc -&#187; chuff<br>
+ gorombán -&#187; brusquely<br>
+ gorombán -&#187; surlily<br>
+ gorombaság -&#187; bluntness<br>
+ gorombaság -&#187; coarseness<br>
+ gorombaság -&#187; grossness<br>
+ gorombaság -&#187; rudeness<br>
+ gorombaság -&#187; surliness<br>
+ gorombaságokkal illet vkit -&#187; to call sy names<br>
+ gorombáskodik -&#187; to use abusive language<br>
+ gót -&#187; gothic<br>
+ gót -&#187; gothish<br>
+ gót betű -&#187; black letter<br>
+ gót betű -&#187; gothic<br>
+ gót betű -&#187; gothic type<br>
+ gót betűk -&#187; gothic characters<br>
+ gót betűtípus -&#187; black letter<br>
+ gót építészet -&#187; gothic architecture<br>
+ gót nyelv -&#187; gothic<br>
+ gót stílus -&#187; gothic<br>
+ gót stílusúvá tesz -&#187; to gothicize<br>
+ gótikus -&#187; gothic<br>
+ gótikus betű -&#187; gothic<br>
+ gótikus betűtípus -&#187; black letter<br>
+ gótikus építészet -&#187; gothic architecture<br>
+ gótikus stílus -&#187; gothic<br>
+ gótikus stílus -&#187; gothicism<br>
+ göb -&#187; knot<br>
+ göcsörtös -&#187; pinny<br>
+ göcsös -&#187; knobly<br>
+ gödény -&#187; pelican<br>
+ gödölye -&#187; kid<br>
+ gödör -&#187; hole<br>
+ gödör -&#187; pit<br>
+ gödör -&#187; pothole<br>
+ gödör -&#187; socket<br>
+ gödör -&#187; swale<br>
+ gödörbe került (golflabda) -&#187; to be bunkered<br>
+ gödörkézettség -&#187; pitting<br>
+ gödröcske -&#187; dimple<br>
+ gödröcskés -&#187; dimply<br>
+ gödröcskét csinál -&#187; to dimple<br>
+ gödröket képez -&#187; to dimple<br>
+ gödrös -&#187; dimpled<br>
+ gödrös -&#187; pitted<br>
+ gödrösödés -&#187; pitting<br>
+ gödrösödés -&#187; swale<br>
+ gödrössé válik -&#187; to dimple<br>
+ gőg -&#187; arrogance<br>
+ gőg -&#187; conceit<br>
+ gőg -&#187; haughtiness<br>
+ gőg -&#187; high stomach<br>
+ gőg -&#187; loftiness<br>
+ gőg -&#187; perkiness<br>
+ gőg -&#187; pride<br>
+ gőg -&#187; proud stomach<br>
+ gőg -&#187; stand-offishness<br>
+ gőg -&#187; stomach<br>
+ gőg nélküli -&#187; prideless<br>
+ gőgicsél -&#187; to chirp<br>
+ gőgicsélés -&#187; chirp<br>
+ gőgicsélés -&#187; chirping<br>
+ gőgicsélő -&#187; chirping<br>
+ gőgös -&#187; arrogant<br>
+ gőgös -&#187; contemptuous<br>
+ gőgös -&#187; haughty<br>
+ gőgös -&#187; high and mighty<br>
+ gőgös -&#187; ikey<br>
+ gőgös -&#187; lofty<br>
+ gőgös -&#187; lordly<br>
+ gőgös -&#187; overweening<br>
+ gőgös -&#187; prideful<br>
+ gőgös -&#187; self-important<br>
+ gőgös -&#187; stuck-up<br>
+ gőgös -&#187; supercilious<br>
+ gőgös -&#187; superior<br>
+ gőgösen -&#187; arrogantly<br>
+ gőgösen -&#187; contemptuously<br>
+ gőgösen -&#187; haughtily<br>
+ gőgösen -&#187; loftily<br>
+ gőgösen -&#187; overweeningly<br>
+ gőgösen -&#187; pridefully<br>
+ gőgösen viselkedik -&#187; to bridle<br>
+ gőgösen viselkedik -&#187; to bridle up<br>
+ gőgösség -&#187; pridefulness<br>
+ gömb -&#187; ball<br>
+ gömb -&#187; orb<br>
+ gömb -&#187; sphere<br>
+ gömb alakot vesz fel -&#187; to ball up<br>
+ gömb alakú foglalat -&#187; ball-shaped housing<br>
+ gömb alakú kupak -&#187; ball-shaped housing<br>
+ gömb alakú tok -&#187; ball-shaped housing<br>
+ gömb alakúvá válik -&#187; to ball up<br>
+ gömb pólusai -&#187; poles of a sphere<br>
+ gömbászka -&#187; armadillo, armadillos<br>
+ gömbcsap -&#187; ball pivot<br>
+ gömbcsukló -&#187; ball and socket joint<br>
+ gömbcsukló -&#187; knuckle-joint<br>
+ gömbcsukló -&#187; toggle-joint<br>
+ gömbfa -&#187; log<br>
+ gömbfát darabokra hasít -&#187; to side rough timber<br>
+ gömbfát feldolgoz -&#187; to lumber<br>
+ gömbháromszögtan -&#187; doctrine of the sphere<br>
+ gömbkilincs -&#187; door knob<br>
+ gömbmértan -&#187; doctrine of the sphere<br>
+ gömböc -&#187; fatty<br>
+ gömböcske -&#187; globule<br>
+ gömböcske -&#187; pat<br>
+ gömbölyded -&#187; rotund<br>
+ gömbölyded -&#187; roundabout<br>
+ gömbölyded -&#187; roundish<br>
+ gömbölyded -&#187; tubby<br>
+ gömbölyded idomú -&#187; curvaceous<br>
+ gömbölyded kopár hegytető -&#187; scalp<br>
+ gömbölydedség -&#187; rotundity<br>
+ gömbölyít -&#187; to make round<br>
+ gömbölyödik -&#187; to round<br>
+ gömbölyű -&#187; rotund<br>
+ gömbölyű -&#187; round<br>
+ gömbölyű -&#187; spherical<br>
+ gömbölyű -&#187; tubby<br>
+ gömbölyű akvárium -&#187; fishbowl<br>
+ gömbölyű betűs írás -&#187; round hand<br>
+ gömbölyű formák -&#187; rotundity<br>
+ gömbölyű idomok -&#187; rotundity<br>
+ gömbölyűség -&#187; rotundity<br>
+ gömbúszó -&#187; leading buoy<br>
+ gönc -&#187; duds<br>
+ Göncölszekér -&#187; big dipper<br>
+ göndör -&#187; crinkly<br>
+ göndör -&#187; crisp<br>
+ göndör -&#187; crispy<br>
+ göndör -&#187; curly<br>
+ göndör -&#187; frizzy<br>
+ göndör -&#187; fuzzy<br>
+ göndör -&#187; kinky<br>
+ göndör -&#187; ringleted<br>
+ göndör -&#187; ringlety<br>
+ göndör hajfürt -&#187; ringlet<br>
+ göndörít -&#187; to curl<br>
+ göndörít -&#187; to frizzle<br>
+ göndörítés -&#187; napping<br>
+ göndörített haj -&#187; frizzle<br>
+ göndörödik -&#187; to curl<br>
+ göndörödik -&#187; to frizzle<br>
+ göndörödő hajfürt -&#187; curl<br>
+ göndörszőrű uszkár -&#187; poodle<br>
+ göngyöl -&#187; to collar<br>
+ göngyöleg -&#187; empties<br>
+ göngyöleg -&#187; envelope<br>
+ göngyöleg -&#187; furl<br>
+ göngyöleg -&#187; roll<br>
+ göngyöleg -&#187; swathing<br>
+ göngyöleg -&#187; wrapper<br>
+ göngyöleg -&#187; wrapping<br>
+ göngyölít -&#187; to ball<br>
+ göngyölít -&#187; to roll<br>
+ göngyölít -&#187; to wind, wound<br>
+ göngyölődik -&#187; to wind, wound<br>
+ göngyölt hal -&#187; collar<br>
+ göngyölt hering -&#187; roll-mops<br>
+ göngyölt hús -&#187; collar<br>
+ görbe -&#187; bow<br>
+ görbe -&#187; crooked<br>
+ görbe -&#187; curve<br>
+ görbe -&#187; curved<br>
+ görbe -&#187; devious<br>
+ görbe -&#187; diagram<br>
+ görbe -&#187; hooked<br>
+ görbe -&#187; tortuous<br>
+ görbe éjszaka -&#187; bash<br>
+ görbe éjszakát csinál -&#187; to go on the spree<br>
+ görbe éjszakát csinál -&#187; to go on the bend<br>
+ görbe éjszakát csinál -&#187; have a spree<br>
+ görbe élű hosszú kard -&#187; scimitar<br>
+ görbe észjárás -&#187; crookedness<br>
+ görbe felület kifejtése -&#187; rectification<br>
+ görbe hát -&#187; stoop<br>
+ görbe háta van -&#187; have round shoulders<br>
+ görbe meredeksége -&#187; rise of a curve<br>
+ görbe orr -&#187; crooked nose<br>
+ görbe pályájú -&#187; curvilinear<br>
+ görbe szemmel néz -&#187; to skew at<br>
+ görbe tengely -&#187; cambered axle<br>
+ görbe út -&#187; oblique ways<br>
+ görbe vonal kifejtése -&#187; rectification<br>
+ görbe vonalú -&#187; curvilinear<br>
+ görbén néz vkire -&#187; to give sy a dirty look<br>
+ görbeség -&#187; tortuousity<br>
+ görbeség -&#187; tortuosity<br>
+ görbeség -&#187; twist<br>
+ görbeszelet -&#187; sector<br>
+ görbét meghúz -&#187; to set out a curve<br>
+ görbévé tesz -&#187; to hump<br>
+ görbévé tesz -&#187; to hunch<br>
+ görbít -&#187; to bend, bent<br>
+ görbít -&#187; to crook<br>
+ görbít -&#187; to curl<br>
+ görbít -&#187; to curve<br>
+ görbítés -&#187; inflection<br>
+ görbíthetetlen -&#187; unbendable<br>
+ görbül -&#187; to bend, bent<br>
+ görbül -&#187; to curve<br>
+ görbülés -&#187; crookedness<br>
+ görbület -&#187; bend<br>
+ görbület -&#187; camber<br>
+ görbület -&#187; crook<br>
+ görbület -&#187; curvature<br>
+ görbület -&#187; curve<br>
+ görbület -&#187; elbow<br>
+ görbület -&#187; ply<br>
+ görbületi sugár -&#187; radius of curvature<br>
+ görccsel összehúz -&#187; to cramp<br>
+ görcs -&#187; cramp<br>
+ görcs -&#187; fit<br>
+ görcs -&#187; gnarl<br>
+ görcs -&#187; joint<br>
+ görcs -&#187; kink<br>
+ görcs -&#187; knot<br>
+ görcs -&#187; spasm<br>
+ görcs -&#187; wart<br>
+ görcs fogja el -&#187; to be seized with a cramp<br>
+ görcs oldódása -&#187; relaxation of spasm<br>
+ görcsei támadnak -&#187; to be seized with a cramp<br>
+ görcsös -&#187; convulsive<br>
+ görcsös -&#187; cramp<br>
+ görcsös -&#187; cramped<br>
+ görcsös -&#187; fitful<br>
+ görcsös -&#187; spasmodic<br>
+ görcsös -&#187; spastic<br>
+ görcsös fájdalom -&#187; grip<br>
+ görcsös helyzet -&#187; cramped position<br>
+ görcsös húzó köhögéssel köhög -&#187; to whoop<br>
+ görcsös idegösszehúzódás -&#187; tetanus<br>
+ görcsös kézírás -&#187; cramped handwriting<br>
+ görcsös testtartás -&#187; cramped position<br>
+ görcsösen -&#187; fitfully<br>
+ görcsösen -&#187; spasmodically<br>
+ görcsösség -&#187; crampedness<br>
+ görcsöt kap -&#187; to be seized with a cramp<br>
+ görcsöt okoz -&#187; to cramp<br>
+ gördeszka -&#187; skateboard<br>
+ gördeszkázik -&#187; to skateboard<br>
+ gördít -&#187; to bowl<br>
+ gördít -&#187; to roll<br>
+ gördít -&#187; to wheel<br>
+ gördítés -&#187; roll<br>
+ gördíthető kocsi -&#187; dolly<br>
+ gördül -&#187; to bowl<br>
+ gördül -&#187; to castor<br>
+ gördül -&#187; to roll<br>
+ gördül -&#187; to roll along<br>
+ gördül -&#187; to wheel<br>
+ gördülékeny -&#187; fluent<br>
+ gördülékeny -&#187; smooth<br>
+ gördülékeny beszédű -&#187; glib<br>
+ gördülékeny stílus -&#187; easy style<br>
+ gördülékenység -&#187; ease<br>
+ gördülékenység -&#187; fluency<br>
+ gördülés -&#187; roll<br>
+ gördülő -&#187; rolling<br>
+ gördülő felvétel -&#187; running shot<br>
+ gördülő ülés -&#187; slide<br>
+ görény -&#187; creep<br>
+ görény -&#187; faggot<br>
+ görény -&#187; nerd<br>
+ görény -&#187; nurd<br>
+ görény -&#187; polecat<br>
+ görény -&#187; shit-face<br>
+ görény -&#187; shit-heel<br>
+ görény -&#187; stinkard<br>
+ görény -&#187; stinker<br>
+ görény -&#187; wart<br>
+ görény -&#187; yuck<br>
+ görény -&#187; yuk<br>
+ görfüggöny -&#187; shade<br>
+ görget -&#187; to roll<br>
+ görget -&#187; to trundle<br>
+ görget -&#187; to wheel<br>
+ görgeteg -&#187; pebble stone<br>
+ görgő -&#187; castor-wheel<br>
+ görgő -&#187; crab<br>
+ görgő -&#187; roll<br>
+ görgő -&#187; roller<br>
+ görgő -&#187; runner<br>
+ görgő -&#187; spool<br>
+ görgő -&#187; trundle<br>
+ görgőjárat -&#187; roller bed<br>
+ görgőkerék -&#187; trundle<br>
+ görgőláb -&#187; roller<br>
+ görgős csapágy -&#187; roller bearing<br>
+ görgős futómű -&#187; roller<br>
+ görgős futómű -&#187; roller gear<br>
+ görgős híd -&#187; running bridge<br>
+ görgős saru -&#187; rocker bearing<br>
+ görgővihar -&#187; squall<br>
+ görkorcsolya -&#187; roller skates<br>
+ görkorcsolya -&#187; roller-skates<br>
+ görkorcsolya -&#187; roller<br>
+ görkorcsolyapálya -&#187; rink<br>
+ görkorcsolyapálya -&#187; skating rink<br>
+ görkorcsolyapálya -&#187; skating-rink<br>
+ görkorcsolyaverseny -&#187; roller derby<br>
+ görkorcsolyázik -&#187; to rink<br>
+ görkorcsolyázik -&#187; to roller-skate<br>
+ görl -&#187; showgirl<br>
+ görnyedt -&#187; stooping<br>
+ görnyedt háta van -&#187; have round shoulders<br>
+ görnyedten jár -&#187; to walk with a stoop<br>
+ görnyedtség -&#187; stoop<br>
+ görög -&#187; to castor<br>
+ görög -&#187; Grecian<br>
+ görög (vademse) -&#187; to brim<br>
+ görög betűkkel ír -&#187; to write in Greek letters<br>
+ görög fenyőgyantás bor -&#187; retsina<br>
+ görög szerző magyarázása -&#187; construing of a Greek author<br>
+ görög szoborművek -&#187; Greek statuary<br>
+ görög szobrok -&#187; Greek statuary<br>
+ görög váza -&#187; Grecian urn<br>
+ görögdinnye -&#187; water melon<br>
+ görögdinnye -&#187; watermelon<br>
+ görögös -&#187; Grecian<br>
+ görögös hajviselet -&#187; Grecian knot<br>
+ görögtűz -&#187; Bengal light<br>
+ görögtűz -&#187; wildfire<br>
+ göröngy -&#187; clod<br>
+ göröngy -&#187; lump<br>
+ göröngy -&#187; nodule<br>
+ göröngyök -&#187; bumps in a road<br>
+ göröngyös -&#187; lumpy<br>
+ göröngyös -&#187; rugged<br>
+ göröngyös út -&#187; rough going<br>
+ göröngyösség -&#187; scragginess<br>
+ görvélyes -&#187; scrofulous<br>
+ görvélykór -&#187; king's evil<br>
+ görvélykór -&#187; scrofula<br>
+ görvélykóros -&#187; scrofulide<br>
+ göthös -&#187; peaky<br>
+ göthös ló -&#187; weed<br>
+ gőz -&#187; fume<br>
+ gőz -&#187; steam<br>
+ gőz -&#187; vapor<br>
+ gőz -&#187; vapour<br>
+ gőz hatja -&#187; it goes by steam<br>
+ gőzdóm -&#187; dome<br>
+ gőze sincs vmiről -&#187; to know beans about sg<br>
+ gőzerővel -&#187; at full throttle<br>
+ gőzerővel -&#187; full blast<br>
+ gőzerővel -&#187; like smoke<br>
+ gőzerővel dolgozik -&#187; to be in full swing<br>
+ gőzerővel dolgozik -&#187; to steam<br>
+ gőzerővel halad -&#187; to steam<br>
+ gőzfátyol -&#187; gauze<br>
+ gőzfürdő -&#187; sauna<br>
+ gőzfürdő -&#187; Turkish bath<br>
+ gőzhajó -&#187; steamboat<br>
+ gőzhajó -&#187; steamer<br>
+ gőzhajó -&#187; steamship<br>
+ gőzmozdony -&#187; steam engine<br>
+ gőzmozdony -&#187; steam locomotive<br>
+ gőznyomás -&#187; head of steam<br>
+ gőzöl -&#187; to steam<br>
+ gőzölgő -&#187; reeking<br>
+ gőzölgő -&#187; steamy<br>
+ gőzölő -&#187; smoking<br>
+ gőzölő -&#187; steamer<br>
+ gőzölög -&#187; to fume<br>
+ gőzölög -&#187; to reek<br>
+ gőzölög -&#187; to steam<br>
+ gőzölög -&#187; to vapor<br>
+ gőzölög -&#187; to vapour<br>
+ gőzölögni hagyja a fazekat -&#187; to keep the pot boiling<br>
+ gőzölögtet -&#187; to fume<br>
+ gőzön főz -&#187; to jug<br>
+ gőzös -&#187; steamy<br>
+ gőzös -&#187; steamboat<br>
+ gőzös -&#187; steamer<br>
+ gőzpárna -&#187; steam cushion<br>
+ gőzpuffer -&#187; steam cushion<br>
+ gőzsíp -&#187; buzzer<br>
+ gőzsíp -&#187; siren<br>
+ gőzsugár -&#187; blast of steam<br>
+ gőzsugár -&#187; jet<br>
+ gőzt ad -&#187; to put the steam on<br>
+ gőzt bocsát ki -&#187; to fume<br>
+ gőzt rábocsát -&#187; to put the steam on<br>
+ gőzüzemű ásógép -&#187; steam-shovel<br>
+ gőzüzemű kanalas ásógép -&#187; steam-shovel<br>
+ gőzüzemű kanalas ásógép -&#187; steam shovel<br>
+ gőzüzemű kanalas kotrógép -&#187; steam-shovel<br>
+ gőzüzemű kanalas kotrógép -&#187; steam shovel<br>
+ gőzzé válás -&#187; volatilization<br>
+ gőzzé válik -&#187; to volatilize<br>
+ grácia -&#187; grace<br>
+ gráciák -&#187; three graces<br>
+ grádicsosan nyír -&#187; to notch<br>
+ gradiens -&#187; gradient<br>
+ grafika -&#187; art work<br>
+ grafika -&#187; graphic<br>
+ grafika -&#187; graphics<br>
+ grafikon -&#187; chart<br>
+ grafikon -&#187; curve<br>
+ grafikon -&#187; diagram<br>
+ grafikon -&#187; graph<br>
+ grafikonba feljegyez -&#187; to chart<br>
+ grafikonosan ábrázol -&#187; to chart<br>
+ grafikont készít -&#187; to chart<br>
+ grafikus -&#187; graphic<br>
+ grafikus -&#187; graphic artist<br>
+ grafikusan -&#187; graphically<br>
+ grafit -&#187; lead<br>
+ grafit -&#187; plumbago<br>
+ grafit -&#187; wad<br>
+ grafitceruza -&#187; lead pencil<br>
+ grafitpor -&#187; powdered carbon<br>
+ gramm -&#187; gram<br>
+ gramm -&#187; gramme<br>
+ gramofon -&#187; phonograph<br>
+ gramofontű -&#187; stylus<br>
+ Gramot felvevő -&#187; stainable<br>
+ Gram-pozitív -&#187; stainable<br>
+ gránát -&#187; bomb-shell<br>
+ gránát -&#187; garnet<br>
+ gránát -&#187; grenade<br>
+ gránát -&#187; shell<br>
+ gránátalma -&#187; pomegranate<br>
+ gránátkő -&#187; garnet<br>
+ gránátnyomás -&#187; shell-shock<br>
+ gránátnyomás -&#187; shell shock<br>
+ gránátnyomásos -&#187; shell-shocked<br>
+ gránátszilánk-fogó földhányás -&#187; traverse<br>
+ gránáttűz -&#187; shellfire<br>
+ grandiózus -&#187; grandiose<br>
+ gránit -&#187; granite<br>
+ grapefruit -&#187; grapefruit<br>
+ grasszál -&#187; to be on the rampage<br>
+ gratuláció -&#187; felicitation<br>
+ gratulál -&#187; to compliment<br>
+ gratulál -&#187; to congratulate<br>
+ gratulál vkinek -&#187; to offer sy one's felicitations<br>
+ gratulál vkinek vmihez -&#187; to felicitate sy on sg<br>
+ gratuláló -&#187; congratulatory<br>
+ gravíroz -&#187; to engrave<br>
+ gravírozás -&#187; etchwork<br>
+ gravírozó szerszám -&#187; embossing iron<br>
+ gravírozógép -&#187; engraver<br>
+ gravitáció -&#187; force of gravity<br>
+ gravitáció -&#187; gravitation<br>
+ gravitáció -&#187; gravity<br>
+ gravitáció -&#187; gravitational pull<br>
+ gravitáció -&#187; pull of gravity<br>
+ gravitációs -&#187; gravitational<br>
+ gravitációs vonzás -&#187; gravitational pull<br>
+ gravitációs vonzás -&#187; pull of gravity<br>
+ gravitál -&#187; to gravitate<br>
+ gregorián ének -&#187; Gregorian chant<br>
+ grenadin -&#187; grenadine<br>
+ griff -&#187; heel<br>
+ griffmadár -&#187; griffin<br>
+ grill -&#187; grill<br>
+ grillsütő -&#187; barbecue<br>
+ grillsütő -&#187; bbq<br>
+ grillsütő -&#187; grill<br>
+ grimasz -&#187; grimace<br>
+ grimasz -&#187; mop<br>
+ grimaszokat csinál -&#187; to pull a face<br>
+ grimaszokat csinál -&#187; to pull faces<br>
+ grimaszokat vág -&#187; to grimace<br>
+ grimaszokat vág -&#187; to make faces<br>
+ grimaszokat vág -&#187; to mop<br>
+ grimaszokat vág -&#187; to pull faces<br>
+ grimaszol -&#187; to grimace<br>
+ grimaszt vág -&#187; to pull a face<br>
+ grimaszt vág -&#187; to pull faces<br>
+ gróf -&#187; count<br>
+ gróf -&#187; earl<br>
+ grófné -&#187; countess<br>
+ grófnő -&#187; countess<br>
+ grófság fegyveres ereje -&#187; posse comitatus<br>
+ grossz -&#187; gross, gross<br>
+ groteszk -&#187; bizarre<br>
+ groteszk -&#187; camp<br>
+ groteszk -&#187; fantastic<br>
+ groteszk -&#187; grotesque<br>
+ groteszk -&#187; ludicrous<br>
+ groteszk -&#187; surreal<br>
+ groteszk díszítés -&#187; fantasy<br>
+ groteszk dolog -&#187; grotesque<br>
+ groteszk minta -&#187; fantasy<br>
+ groteszk módon -&#187; grotesquely<br>
+ groteszk műalkotás -&#187; fantasy<br>
+ groteszk rajz -&#187; fantasy<br>
+ groteszk tárgy -&#187; grotesque<br>
+ groteszkség -&#187; grotesqueness<br>
+ grotta -&#187; grotto, grottoes<br>
+ grüberli -&#187; dimple<br>
+ grüberlis -&#187; dimply<br>
+ guajáva -&#187; guava<br>
+ guajávafa -&#187; guava<br>
+ guba -&#187; bean<br>
+ guba -&#187; chips<br>
+ guba -&#187; dough<br>
+ guba -&#187; dumps<br>
+ guba -&#187; lolly<br>
+ guba -&#187; rhino<br>
+ guba -&#187; wampum<br>
+ gubacs -&#187; gall<br>
+ gubanc -&#187; matting<br>
+ gubanc -&#187; ravel<br>
+ gubanc -&#187; screw-up<br>
+ gubanc -&#187; snag<br>
+ gubanc -&#187; snick<br>
+ gubanc -&#187; tangle<br>
+ gubancos -&#187; matted<br>
+ gubancos -&#187; shaggy<br>
+ guberál -&#187; to scavenge<br>
+ guberálás -&#187; scavenging<br>
+ guberáló -&#187; scavenger<br>
+ gubó -&#187; head<br>
+ gubó -&#187; pod<br>
+ gubó -&#187; seed box<br>
+ gubóselyem -&#187; floss silk<br>
+ gubóselyem -&#187; hard silk<br>
+ guga -&#187; wen<br>
+ guggol -&#187; to crouch<br>
+ guggol -&#187; to sit on one's heels<br>
+ guggol -&#187; to squat<br>
+ guggoló -&#187; squat<br>
+ guggoló -&#187; squatter<br>
+ guggoló ember -&#187; squatter<br>
+ guggolva -&#187; on one's hunkers<br>
+ gugora -&#187; capstan<br>
+ gugorafej -&#187; drum-head<br>
+ guillotine -&#187; guillotine<br>
+ gúla -&#187; pyramid<br>
+ gúla -&#187; stack<br>
+ gúlába rak -&#187; to stack<br>
+ gulipán -&#187; scooper<br>
+ gulya -&#187; herd<br>
+ gulyás -&#187; goulash<br>
+ gulyás -&#187; herd<br>
+ gulyás -&#187; stockman, stockmen<br>
+ gulyásleves -&#187; pottage<br>
+ gumi -&#187; gum<br>
+ gumi -&#187; rubber<br>
+ gumi simítóhenger -&#187; roller squeegee<br>
+ gumiabroncs -&#187; tire<br>
+ gumiabroncs -&#187; tyre<br>
+ gumiabroncs-elcsúszás -&#187; creep<br>
+ gumiabroncsot felszerel -&#187; to tire<br>
+ gumiabroncsot felszerel -&#187; to tyre<br>
+ gumiabroncs-tapasz -&#187; tyre-repair plaster<br>
+ gumibelső -&#187; inner tube<br>
+ gumibelső -&#187; tube<br>
+ gumibélyegző -&#187; rubber stamp<br>
+ gumibeszövéses szövet -&#187; elastic webbing<br>
+ gumibetét -&#187; filler<br>
+ gumibetétes ablaktörlő -&#187; squeegee<br>
+ gumibetétes felmosó -&#187; squeegee<br>
+ gumibetétes felmosóval mos -&#187; to squeegee<br>
+ gumibetétes törlő -&#187; squeegee<br>
+ gumibetétes törlővel mos -&#187; to squeegee<br>
+ gumibot -&#187; baton<br>
+ gumibot -&#187; billy club<br>
+ gumibot -&#187; cosh<br>
+ gumibot -&#187; nightstick<br>
+ gumibot -&#187; truncheon<br>
+ gumibugyi -&#187; elastic pants<br>
+ gumibugyi -&#187; plastic pants<br>
+ gumibugyi -&#187; rubber baby pants<br>
+ gumicsizma -&#187; gum boots<br>
+ gumicsizma -&#187; gum-boots<br>
+ gumicsizma -&#187; gums<br>
+ gumicsizma -&#187; rubber boots<br>
+ gumicsizma -&#187; wellies<br>
+ gumicsizma -&#187; wellingtons<br>
+ gumicsónak -&#187; dinghy<br>
+ gumicső -&#187; rubber tubing<br>
+ gumicsúzli -&#187; tweaker<br>
+ gumicucli -&#187; nipple<br>
+ gumicukor -&#187; gum<br>
+ gumidefekt -&#187; blow-out<br>
+ gumidefekt -&#187; flat<br>
+ gumiember -&#187; contortionist<br>
+ gumifa -&#187; gum<br>
+ gumihengerrel végigsimít -&#187; to squeegee<br>
+ gumilencse -&#187; zoom lens<br>
+ gumilencsével behoz -&#187; to zoom in<br>
+ gumimatrac -&#187; beach mattress<br>
+ gumimatrac -&#187; inflatable raft<br>
+ gumimatrac -&#187; lilo<br>
+ gumiobjektív -&#187; zoom lens<br>
+ gumiperem -&#187; clincher<br>
+ gumiperemes autóköpeny -&#187; clincher tyre<br>
+ gumipólya -&#187; elastic band<br>
+ gumíroz -&#187; to rubberize<br>
+ gumírozott -&#187; rubberized<br>
+ gumírozott szövet -&#187; elastic webbing<br>
+ gumis ablakmosó -&#187; squeegee-scraper<br>
+ gumis ablaktisztító -&#187; squeegee-scraper<br>
+ gumisarok -&#187; rubber heel<br>
+ gumiszalag -&#187; elastic<br>
+ gumiszalag -&#187; elastic band<br>
+ gumiszalag -&#187; rubber band<br>
+ gumiszerű -&#187; rubbery<br>
+ gumiszerű műanyag -&#187; elastomer<br>
+ gumiszövet -&#187; elastic<br>
+ gumitalpú cipő -&#187; sneakers<br>
+ gumitalpú tornacipő -&#187; sneakers<br>
+ gumitömlő -&#187; hose-pipe<br>
+ gumival bevon -&#187; to rubberize<br>
+ gumivulkanizálás -&#187; vulcanization of rubber<br>
+ gumiz -&#187; to gum<br>
+ gumiz -&#187; to rubberize<br>
+ gumizott -&#187; gummed<br>
+ gumizsinór -&#187; elastic<br>
+ gumó -&#187; bulb<br>
+ gumó -&#187; root<br>
+ gumó -&#187; tuber<br>
+ gumós -&#187; bulbous<br>
+ gumós -&#187; tubercular<br>
+ gumós -&#187; tuberous<br>
+ gumós gazdasági növények -&#187; root-crops<br>
+ gumós növények -&#187; root-crops<br>
+ gumós növények -&#187; roots<br>
+ gúnár -&#187; gander<br>
+ gúnár -&#187; goosey<br>
+ gúnár -&#187; goosey-gander<br>
+ gúnár -&#187; goosey-goosey<br>
+ gúnnyal -&#187; mockingly<br>
+ gúny -&#187; irony<br>
+ gúny -&#187; mock<br>
+ gúny -&#187; ridicule<br>
+ gúny -&#187; scorn<br>
+ gúny -&#187; taunt<br>
+ gúny -&#187; taunting<br>
+ gúny árnyéka -&#187; streak of irony<br>
+ gúny céltáblája -&#187; butt for ridicule<br>
+ gúny nyilai -&#187; shaft of satire<br>
+ gúny nyilai -&#187; shaft of ridicule<br>
+ gúny tárgya -&#187; byword<br>
+ gúny tárgya -&#187; derision<br>
+ gúny tárgya -&#187; flouting-stock<br>
+ gúny tárgya -&#187; mockery<br>
+ gúny tárgya -&#187; scoff<br>
+ gúny tárgya -&#187; taunt<br>
+ gúny tárgyává tesz vkit -&#187; to make mock of sy<br>
+ gúny tárgyává válik -&#187; to become the taunt of the public<br>
+ gúnyirat -&#187; libel<br>
+ gúnyirat -&#187; satire<br>
+ gúnyirat -&#187; squib<br>
+ gúnyiratban kipellengérez -&#187; to squib<br>
+ gúnyiratban megcsipked -&#187; to squib<br>
+ gúnyiratot ír -&#187; to squib<br>
+ gúnykacaj -&#187; jeer<br>
+ gúnyképet rajzol -&#187; to cartoon<br>
+ gúnyképrajzoló -&#187; cartoonist<br>
+ gúnynév -&#187; nickname<br>
+ gúnynév -&#187; sobriquet<br>
+ gúnynevet ad -&#187; to nickname<br>
+ gúnyol -&#187; to chip at<br>
+ gúnyol -&#187; to flout<br>
+ gúnyol -&#187; to jest<br>
+ gúnyol -&#187; to jibe<br>
+ gúnyol -&#187; to mock<br>
+ gúnyol -&#187; to mock at sg<br>
+ gúnyol vmit -&#187; to chip at sg<br>
+ gúnyolás -&#187; mockery<br>
+ gúnyoló -&#187; flouter<br>
+ gúnyoló -&#187; mocker<br>
+ gúnyolódás -&#187; flout<br>
+ gúnyolódás -&#187; gibe<br>
+ gúnyolódás -&#187; jape<br>
+ gúnyolódás -&#187; jeer<br>
+ gúnyolódás -&#187; raillery<br>
+ gúnyolódás -&#187; scoff<br>
+ gúnyolódás -&#187; taunt<br>
+ gúnyolódik -&#187; to flout<br>
+ gúnyolódik -&#187; to jape<br>
+ gúnyolódik -&#187; to jest<br>
+ gúnyolódik -&#187; to jibe<br>
+ gúnyolódik -&#187; to mock<br>
+ gúnyolódik -&#187; to quip<br>
+ gúnyolódik -&#187; to scoff<br>
+ gúnyolódik -&#187; to sport<br>
+ gúnyolódik -&#187; to taunt<br>
+ gúnyolódik vkivel -&#187; to gird at sy<br>
+ gúnyolódó -&#187; derisory<br>
+ gúnyolódó -&#187; derisive<br>
+ gúnyolódó -&#187; taunter<br>
+ gúnyolódó -&#187; taunting<br>
+ gúnyolódó megjegyzés -&#187; fling<br>
+ gúnyolódva -&#187; mockingly<br>
+ gunyoros megjegyzés -&#187; hit<br>
+ gunyoros megjegyzések -&#187; remarks fraught with malice<br>
+ gúnyos -&#187; biting<br>
+ gúnyos -&#187; bland<br>
+ gúnyos -&#187; derisive<br>
+ gúnyos -&#187; derisory<br>
+ gúnyos -&#187; ironic<br>
+ gúnyos -&#187; ironical<br>
+ gúnyos -&#187; mordant<br>
+ gúnyos -&#187; sarky<br>
+ gúnyos -&#187; satirical<br>
+ gúnyos -&#187; scornful<br>
+ gúnyos elutasítás -&#187; razz<br>
+ gúnyos kiáltás -&#187; jeer<br>
+ gúnyos kiáltásokkal fogad -&#187; to whoop<br>
+ gúnyos megjegyzés -&#187; dig<br>
+ gúnyos megjegyzés -&#187; fling<br>
+ gúnyos megjegyzés -&#187; hit<br>
+ gúnyos megjegyzés -&#187; sarcasm<br>
+ gúnyos megjegyzés -&#187; taunt<br>
+ gúnyos megjegyzések -&#187; remarks fraught with malice<br>
+ gúnyos megjegyzésekkel csipdes vkit -&#187; have a fling at sy<br>
+ gúnyos megjegyzésekkel szurkál vkit -&#187; have a fling at sy<br>
+ gúnyos megjegyzést tesz vkire -&#187; have a hit at sy<br>
+ gúnyos mosoly -&#187; sneer<br>
+ gúnyos oldalpillantás -&#187; leer<br>
+ gúnyos szavak -&#187; words with an edge<br>
+ gúnyos szemrehányás -&#187; taunt<br>
+ gúnyos szemrehányásokat tesz vkinek vmi miatt -&#187; to taunt sy with sg<br>
+ gúnyos visszavágás -&#187; quip<br>
+ gúnyos visszavágás -&#187; quirk<br>
+ gúnyosan -&#187; derisively<br>
+ gúnyosan -&#187; ironically<br>
+ gúnyosan -&#187; mockingly<br>
+ gúnyosan -&#187; scornfully<br>
+ gúnyosan -&#187; tauntingly<br>
+ gúnyosan mosolyog -&#187; to sneer<br>
+ gúnyosan szemére vet vkinek vmit -&#187; to taunt sy with sg<br>
+ gúnyrajz -&#187; cartoon<br>
+ gúnyrajzot készít -&#187; to cartoon<br>
+ gúnyt kifejező prüszkölő hang -&#187; raspberry<br>
+ gúnyt űz vkiből -&#187; to flout<br>
+ gúnyt űz vkiből -&#187; to make a game of sy<br>
+ gurít -&#187; to bowl<br>
+ gurít -&#187; to putt<br>
+ gurít -&#187; to roll<br>
+ gurít -&#187; to roll along<br>
+ gurít -&#187; to trundle<br>
+ gurít -&#187; to wheel<br>
+ gurítás -&#187; putt<br>
+ gurítás -&#187; roll<br>
+ gurítás -&#187; wheeling<br>
+ gurítható díszlet -&#187; skate<br>
+ gurító -&#187; gradient<br>
+ gurító -&#187; plane<br>
+ gurító -&#187; pull hole<br>
+ gurító -&#187; rise<br>
+ gurítódomb -&#187; bank<br>
+ gurítókerék -&#187; caster<br>
+ gurítókerék -&#187; castor<br>
+ gurka -&#187; gurkha<br>
+ gurka -&#187; welt<br>
+ gurkráma -&#187; weather-stripped welt<br>
+ gurtni -&#187; lifting belt<br>
+ guru -&#187; guru<br>
+ gurul -&#187; to bowl<br>
+ gurul -&#187; to roll<br>
+ gurul -&#187; to roll along<br>
+ gurul -&#187; to taxi<br>
+ gurul -&#187; to trundle<br>
+ gurul -&#187; to wheel<br>
+ gurulás -&#187; rolling<br>
+ guruló -&#187; rolling<br>
+ guruló ülés -&#187; slide<br>
+ gurulóút -&#187; taxiway<br>
+ gurulóülés -&#187; roller seat<br>
+ gusztus -&#187; gusto<br>
+ gusztus -&#187; relish<br>
+ gusztustalan -&#187; rank<br>
+ gusztustalan -&#187; unappetizing<br>
+ gusztustalan -&#187; unsavory<br>
+ gusztustalan -&#187; unsavoury<br>
+ gusztustalan dolgokat kerülő -&#187; kid-glove<br>
+ gusztustalan étel -&#187; glop<br>
+ gutaütés -&#187; apoplectic fit<br>
+ gutaütés -&#187; apoplectic stroke<br>
+ gutaütés -&#187; apoplexy<br>
+ gutaütés éri -&#187; to be seized with apoplexy<br>
+ gutaütéses -&#187; apoplectic<br>
+ gutaütésre hajlamos -&#187; apoplectic<br>
+ guvrírozás -&#187; milling<br>
+ gügye -&#187; to be ten pence a shilling<br>
+ gügyög -&#187; to babble<br>
+ gügyög -&#187; to chirp<br>
+ gügyög -&#187; to coo<br>
+ gügyög -&#187; to crow, crew<br>
+ gügyög -&#187; to crow, crowed, crew<br>
+ gügyög -&#187; to crow<br>
+ gügyögés -&#187; babble<br>
+ gügyögés -&#187; baby-talk<br>
+ gügyögés -&#187; chirp<br>
+ gügyögés -&#187; chirping<br>
+ gügyögés -&#187; crow<br>
+ gügyögés -&#187; crowing<br>
+ gügyögő -&#187; babbler<br>
+ gümőkór -&#187; tuberculosis<br>
+ gümőkóros -&#187; tubercular<br>
+ gümős -&#187; tubercular<br>
+ gürcöl -&#187; to be on the job<br>
+ gürcöl -&#187; to grind, ground<br>
+ gürcöl -&#187; to grub<br>
+ gürcöl -&#187; to toil<br>
+ gürcöl -&#187; to toil and moil<br>
+ gürcölés -&#187; plodding<br>
+ gürcölés -&#187; toil<br>
+ gürcölő -&#187; plodder<br>
+ güzül -&#187; to shit oneself to do sg<br>
+ güzül -&#187; to shit oneself trying to do sg<br>
+ gyagya -&#187; weak in the head<br>
+ gyakori -&#187; common<br>
+ gyakori -&#187; familiar<br>
+ gyakori -&#187; frequent<br>
+ gyakori -&#187; hourly<br>
+ gyakori -&#187; of common occurrence<br>
+ gyakori -&#187; prevalent<br>
+ gyakori -&#187; rife<br>
+ gyakori eset -&#187; to be a frequent occurrence<br>
+ gyakori látogató -&#187; frequenter<br>
+ gyakoriság -&#187; frequency<br>
+ gyakorító -&#187; frequentative<br>
+ gyakorlás -&#187; cultivation<br>
+ gyakorlás -&#187; exercise<br>
+ gyakorlás -&#187; practice<br>
+ gyakorlat -&#187; class work<br>
+ gyakorlat -&#187; exercise<br>
+ gyakorlat -&#187; field-work<br>
+ gyakorlat -&#187; métier<br>
+ gyakorlat -&#187; practice<br>
+ gyakorlat -&#187; practise<br>
+ gyakorlat -&#187; practical class<br>
+ gyakorlat -&#187; routine<br>
+ gyakorlat -&#187; training<br>
+ gyakorlat -&#187; tutorial<br>
+ gyakorlat -&#187; tutorial class<br>
+ gyakorlat -&#187; use<br>
+ gyakorlat teszi a mestert -&#187; practice makes perfect<br>
+ gyakorlatba átültet vmit -&#187; to put sg into practise<br>
+ gyakorlatba átvisz -&#187; to practice<br>
+ gyakorlatba átvisz -&#187; to practise<br>
+ gyakorlatban -&#187; in practice<br>
+ gyakorlatban is követi elveit -&#187; to square one's practice with one's principles<br>
+ gyakorlatban marad -&#187; to keep one's hand in<br>
+ gyakorlatban vagyok -&#187; my hand is in<br>
+ gyakorlatban van -&#187; to be in practice<br>
+ gyakorlati -&#187; functional<br>
+ gyakorlati -&#187; practicable<br>
+ gyakorlati -&#187; practical<br>
+ gyakorlati -&#187; pragmatic<br>
+ gyakorlati -&#187; pragmatical<br>
+ gyakorlati -&#187; technical<br>
+ gyakorlati alkalmazás -&#187; practice<br>
+ gyakorlati áramlástan -&#187; hydraulics<br>
+ gyakorlati idejét tölti -&#187; to be on probation<br>
+ gyakorlati szabályzat -&#187; training manual<br>
+ gyakorlatias -&#187; businesslike<br>
+ gyakorlatias -&#187; down to earth<br>
+ gyakorlatias -&#187; down-to-earth<br>
+ gyakorlatias -&#187; efficient<br>
+ gyakorlatias -&#187; hardheaded<br>
+ gyakorlatias -&#187; hard-headed<br>
+ gyakorlatias -&#187; matter-of-fact<br>
+ gyakorlatias -&#187; practical<br>
+ gyakorlatias -&#187; realist<br>
+ gyakorlatias -&#187; realistic<br>
+ gyakorlatias ember -&#187; realist<br>
+ gyakorlatiasság -&#187; practicality<br>
+ gyakorlatiasság -&#187; pragmatism<br>
+ gyakorlatilag -&#187; in effect<br>
+ gyakorlatilag -&#187; in practice<br>
+ gyakorlatilag -&#187; practically<br>
+ gyakorlatlan -&#187; inexperienced<br>
+ gyakorlatlan -&#187; unskilled<br>
+ gyakorlatlan -&#187; untrained<br>
+ gyakorlatlan játékos -&#187; rabbit<br>
+ gyakorlatlanság -&#187; newness<br>
+ gyakorlatot folytat -&#187; to be in practice<br>
+ gyakorlatot folytat -&#187; to practice<br>
+ gyakorlatot folytat -&#187; to practise<br>
+ gyakorlatozás -&#187; drill<br>
+ gyakorlatozás -&#187; drilling<br>
+ gyakorlatozik -&#187; to drill<br>
+ gyakorlatozik -&#187; to exercise<br>
+ gyakorlatozó század -&#187; company at drill<br>
+ gyakorlatoztat -&#187; to drill<br>
+ gyakorlatoztat -&#187; to exercise<br>
+ gyakorló -&#187; practising<br>
+ gyakorló orvos -&#187; practitioner<br>
+ gyakorló ügyvéd -&#187; practitioner<br>
+ gyakorlóéves -&#187; probational<br>
+ gyakorlóéves -&#187; probationary<br>
+ gyakorlórepülés -&#187; dry run<br>
+ gyakorlóruha -&#187; fatigue-clothes<br>
+ gyakorlóruha -&#187; fatigue-uniform<br>
+ gyakorlott -&#187; practiced<br>
+ gyakorlott -&#187; practised<br>
+ gyakorlott -&#187; proficient<br>
+ gyakorlott -&#187; skilful<br>
+ gyakorlott -&#187; skillful<br>
+ gyakorlott -&#187; trained<br>
+ gyakorlott -&#187; veteran<br>
+ gyakorlott ember -&#187; old roadster<br>
+ gyakorlott vívó -&#187; thruster<br>
+ gyakorlott vmiben -&#187; to be in practice<br>
+ gyakorlottan -&#187; skillfully<br>
+ gyakornok -&#187; apprentice<br>
+ gyakornok -&#187; assistant lecturer<br>
+ gyakornok -&#187; cadet<br>
+ gyakornok -&#187; trainee<br>
+ gyakornok -&#187; volunteer<br>
+ gyakorol -&#187; to be in practice<br>
+ gyakorol -&#187; to cultivate<br>
+ gyakorol -&#187; to exercise<br>
+ gyakorol -&#187; to exert<br>
+ gyakorol -&#187; to practice<br>
+ gyakorol -&#187; to practise<br>
+ gyakorol -&#187; to profess<br>
+ gyakorol (hatalmat) -&#187; to wield<br>
+ gyakoroltat -&#187; to exercise<br>
+ gyakoroltat -&#187; to practice<br>
+ gyakoroltat -&#187; to practise<br>
+ gyakorta -&#187; oft<br>
+ gyakorta -&#187; often<br>
+ gyakorta -&#187; oftentimes<br>
+ gyakorta -&#187; oft-times<br>
+ gyakran -&#187; again and again<br>
+ gyakran -&#187; frequently<br>
+ gyakran -&#187; many a time<br>
+ gyakran -&#187; oft<br>
+ gyakran -&#187; often<br>
+ gyakran -&#187; oftentimes<br>
+ gyakran -&#187; oft-times<br>
+ gyakran -&#187; on divers occasions<br>
+ gyakran -&#187; on several occasions<br>
+ gyakran ellátogat vhova -&#187; to frequent<br>
+ gyakran előfordul -&#187; to be a frequent occurrence<br>
+ gyakran látogat -&#187; to haunt<br>
+ gyakran látogat -&#187; to resort to<br>
+ gyakran megtörténik -&#187; to be a frequent occurrence<br>
+ gyakran összejön másokkal -&#187; to rub shoulders with others<br>
+ gyakran találkozol vele? -&#187; do you see much of him?<br>
+ gyakran van együtt vkivel -&#187; to see a great deal of sy<br>
+ gyakran visszatérő -&#187; haunting<br>
+ gyaláz -&#187; to abuse<br>
+ gyaláz -&#187; to bad-mouth<br>
+ gyaláz -&#187; to opprobriate<br>
+ gyaláz -&#187; to outrage<br>
+ gyaláz -&#187; to revile<br>
+ gyalázat -&#187; dishonor<br>
+ gyalázat -&#187; dishonour<br>
+ gyalázat -&#187; ignominy<br>
+ gyalázat -&#187; odium<br>
+ gyalázat -&#187; opprobrium<br>
+ gyalázat -&#187; outrage<br>
+ gyalázat -&#187; shame<br>
+ gyalázat -&#187; slur<br>
+ gyalázatban hal meg -&#187; to die a dog's death<br>
+ gyalázatban hal meg -&#187; to die like a dog<br>
+ gyalázatos -&#187; abominable<br>
+ gyalázatos -&#187; atrocious<br>
+ gyalázatos -&#187; damnable<br>
+ gyalázatos -&#187; dishonorable<br>
+ gyalázatos -&#187; dishonourable<br>
+ gyalázatos -&#187; disreputable<br>
+ gyalázatos -&#187; ignominious<br>
+ gyalázatos -&#187; infamous<br>
+ gyalázatos -&#187; it's an atrocity<br>
+ gyalázatos -&#187; monstrous<br>
+ gyalázatos -&#187; nefarious<br>
+ gyalázatos -&#187; opprobrious<br>
+ gyalázatos -&#187; outrageous<br>
+ gyalázatos -&#187; shameful<br>
+ gyalázatos -&#187; shocking<br>
+ gyalázatos alak -&#187; rotter<br>
+ gyalázatos dolog -&#187; dishonor<br>
+ gyalázatos dolog -&#187; dishonour<br>
+ gyalázatos dolog -&#187; outrage<br>
+ gyalázatos fickó -&#187; rotter<br>
+ gyalázatos tett -&#187; outrage<br>
+ gyalázatosan -&#187; atrociously<br>
+ gyalázatosan -&#187; ignominiously<br>
+ gyalázatosan -&#187; monstrously<br>
+ gyalázatosan -&#187; outrageously<br>
+ gyalázatosság -&#187; monstrosity<br>
+ gyalázatosság -&#187; outrageousness<br>
+ gyalázatosság -&#187; turpitude<br>
+ gyalázkodás -&#187; abuse<br>
+ gyalázkodik -&#187; to blaspheme<br>
+ gyalázkodó -&#187; abusive<br>
+ gyalázkodó -&#187; opprobrious<br>
+ gyalázkodó -&#187; vituperative<br>
+ gyalázkodó beszéd -&#187; abuse<br>
+ gyalázkodó személy -&#187; vituperator<br>
+ gyalázó -&#187; abuser<br>
+ gyalázó -&#187; vituperative<br>
+ gyalog -&#187; by road<br>
+ gyalog -&#187; on foot<br>
+ gyalog (sakkban) -&#187; pawn<br>
+ gyalog megy -&#187; to go on foot<br>
+ gyalog megy -&#187; to walk<br>
+ gyalogátkelőhely -&#187; crossing<br>
+ gyalogátkelőhely -&#187; crosswalk<br>
+ gyalogátkelőhely -&#187; pedestrian crossing<br>
+ gyalogátkelőhely -&#187; street crossing<br>
+ gyalogátkelőhely -&#187; zebra crossing<br>
+ gyaloghíd -&#187; footbridge<br>
+ gyalogjáró -&#187; catwalk<br>
+ gyalogjáró -&#187; goer<br>
+ gyalogjáró -&#187; manway<br>
+ gyalogjáró -&#187; path<br>
+ gyalogjáró -&#187; pathway<br>
+ gyalogjáró -&#187; side path<br>
+ gyaloglás -&#187; march<br>
+ gyaloglás -&#187; tramp<br>
+ gyaloglás -&#187; walk<br>
+ gyaloglás -&#187; walking<br>
+ gyalogol -&#187; to chase the sun<br>
+ gyalogol -&#187; to foot it<br>
+ gyalogol -&#187; to hike<br>
+ gyalogol -&#187; to hoof<br>
+ gyalogol -&#187; to hoof it<br>
+ gyalogol -&#187; to leg<br>
+ gyalogol -&#187; to march<br>
+ gyalogol -&#187; to pad<br>
+ gyalogol -&#187; to pad it<br>
+ gyalogol -&#187; to pad the hoof<br>
+ gyalogol -&#187; to pad the road<br>
+ gyalogol -&#187; to walk<br>
+ gyalogos -&#187; afoot<br>
+ gyalogos -&#187; fantassin<br>
+ gyalogos -&#187; footsoldier<br>
+ gyalogos -&#187; infantry<br>
+ gyalogos -&#187; pedestrian<br>
+ gyalogos -&#187; wayfaring<br>
+ gyalogos -&#187; wobbler<br>
+ gyalogos felüljáró -&#187; footbridge<br>
+ gyalogos felüljáró -&#187; pedestrian bridge<br>
+ gyalogos katona -&#187; fantassin<br>
+ gyalogos katona -&#187; footsoldier<br>
+ gyalogos katona -&#187; grunt<br>
+ gyalogösvény -&#187; beat<br>
+ gyalogság -&#187; foot, feet<br>
+ gyalogság és lovasság -&#187; foot and horse<br>
+ gyalogszerrel utazó -&#187; wayfaring<br>
+ gyalogtávolság -&#187; march<br>
+ gyalogtőr -&#187; springe<br>
+ gyalogtőrrel fog -&#187; to springe<br>
+ gyalogtúra -&#187; hike<br>
+ gyalogtúra -&#187; hiking<br>
+ gyalogtúrán van -&#187; to be on the tramp<br>
+ gyalogtúrázik -&#187; to hike<br>
+ gyalogút -&#187; footpath<br>
+ gyalogút -&#187; path<br>
+ gyalom -&#187; dragnet<br>
+ gyalu -&#187; plane<br>
+ gyaluforgács -&#187; shavings<br>
+ gyalukés -&#187; skiver<br>
+ gyalul -&#187; to pare<br>
+ gyalul -&#187; to plane<br>
+ gyalul -&#187; to plough<br>
+ gyalul -&#187; to trim<br>
+ gyalulás -&#187; shaving<br>
+ gyalulás -&#187; shooting<br>
+ gyalult káposzta -&#187; slaw<br>
+ gyaluvas -&#187; bit<br>
+ gyám -&#187; bearer<br>
+ gyám -&#187; bearing<br>
+ gyám -&#187; guardian<br>
+ gyám -&#187; hold<br>
+ gyám -&#187; person in charge<br>
+ gyám -&#187; shoulder<br>
+ gyám -&#187; stanchion<br>
+ gyám -&#187; tree<br>
+ gyám nélküli -&#187; helpless<br>
+ gyámfa -&#187; balk<br>
+ gyámfa -&#187; prop<br>
+ gyámfa -&#187; puncheon<br>
+ gyámfa -&#187; shore<br>
+ gyámfa -&#187; strut<br>
+ gyámfa -&#187; upright<br>
+ gyámfa -&#187; upright pole<br>
+ gyámfal -&#187; buttress<br>
+ gyámfallal megtámaszt -&#187; to buttress<br>
+ gyámfával aládúcol -&#187; to buttress<br>
+ gyámfával alátámaszt -&#187; to buttress<br>
+ gyámív -&#187; flying battress<br>
+ gyámív -&#187; flying buttress<br>
+ gyámkodás -&#187; tutelage<br>
+ gyámkodnak felette -&#187; to be in leading-strings<br>
+ gyámlyukakba szerelt főtetartó gerenda -&#187; single beam<br>
+ gyámolít -&#187; to buoy up<br>
+ gyámolít -&#187; to prop<br>
+ gyámolít -&#187; to support<br>
+ gyámolt -&#187; ward<br>
+ gyámoltalan -&#187; helpless<br>
+ gyámoltalan -&#187; resourceless<br>
+ gyámoltalan -&#187; shiftless<br>
+ gyámoltalan -&#187; supportless<br>
+ gyámoltalan -&#187; unhelpful<br>
+ gyámoltalan ember -&#187; milquetoast<br>
+ gyámoltalanság -&#187; helplessness<br>
+ gyámoltalanul -&#187; helplessly<br>
+ gyámoszlop -&#187; pier<br>
+ gyámság -&#187; guardianship<br>
+ gyámság -&#187; trusteeship<br>
+ gyámság -&#187; tutelage<br>
+ gyámság -&#187; ward<br>
+ gyámsági tanács -&#187; trusteeship council<br>
+ gyámsági terület -&#187; trust territory<br>
+ gyanakodik -&#187; have misgivings<br>
+ gyanakodva -&#187; suspiciously<br>
+ gyanakodva néz -&#187; to skew at<br>
+ gyanakvás -&#187; distrust<br>
+ gyanakvás -&#187; misgiving<br>
+ gyanakvó -&#187; cagey<br>
+ gyanakvó -&#187; misgiving<br>
+ gyanakvó -&#187; mistrustful<br>
+ gyanakvó -&#187; trustless<br>
+ gyanakvó -&#187; yellow<br>
+ gyanakvó tekintet -&#187; yellow looks<br>
+ gyanít -&#187; to conjecture<br>
+ gyanít -&#187; to opine<br>
+ gyanít -&#187; to presume<br>
+ gyanít -&#187; to smoke<br>
+ gyanít -&#187; to surmise<br>
+ gyanít -&#187; to suspect<br>
+ gyanítás -&#187; suspicion<br>
+ gyanítható -&#187; assumable<br>
+ gyantaképző hajlam -&#187; ageing<br>
+ gyantás -&#187; fat<br>
+ gyantát gyűjt -&#187; to tap a tree for resin<br>
+ gyanú -&#187; hunch<br>
+ gyanú -&#187; idea<br>
+ gyanú -&#187; inkling<br>
+ gyanú -&#187; suspicion<br>
+ gyanú alapjául szolgáló -&#187; incriminating<br>
+ gyanú alatt dacosan viselkedik -&#187; to brave it out<br>
+ gyanúba kerül -&#187; to fall under suspicion<br>
+ gyanúba kever -&#187; to incriminate<br>
+ gyanúba keverés -&#187; incrimination<br>
+ gyanún felül álló -&#187; unsuspected<br>
+ gyanúnak árnya sem -&#187; not a shadow of a suspicion<br>
+ gyanús -&#187; bung<br>
+ gyanús -&#187; doubtful<br>
+ gyanús -&#187; dubious<br>
+ gyanús -&#187; equivocal<br>
+ gyanús -&#187; fishy<br>
+ gyanús -&#187; incriminating<br>
+ gyanús -&#187; queer<br>
+ gyanús -&#187; shady<br>
+ gyanús -&#187; suspect<br>
+ gyanús ajándék -&#187; Grecian gift<br>
+ gyanús dolog -&#187; monkey business<br>
+ gyanús körülmény -&#187; nigger in the woodpile<br>
+ gyanús trükk -&#187; hanky-panky<br>
+ gyanús ügy -&#187; shenanigan<br>
+ gyanús üzleteket köt a tőzsdén -&#187; to rig the market<br>
+ gyanús volta vminek -&#187; equivocality<br>
+ gyanúsan -&#187; suspiciously<br>
+ gyanúsít -&#187; to suspect<br>
+ gyanúsít vkit -&#187; to be leery of sy<br>
+ gyanúsítás -&#187; imputation<br>
+ gyanúsító célzás -&#187; insinuation<br>
+ gyanúsított -&#187; prisoner at the bar<br>
+ gyanút keltő -&#187; incriminating<br>
+ gyanútlan -&#187; unseeing<br>
+ gyanútlan -&#187; unsuspecting<br>
+ gyanútlanul -&#187; unseeingly<br>
+ gyapjas -&#187; fleecy<br>
+ gyapjas -&#187; wool-bearing<br>
+ gyapjas -&#187; woolly<br>
+ gyapjasítás -&#187; napping<br>
+ gyapjasság -&#187; napping<br>
+ gyapjú -&#187; fleece<br>
+ gyapjú -&#187; flock<br>
+ gyapjú -&#187; wool<br>
+ gyapjú- -&#187; woolen<br>
+ gyapjú- -&#187; woollen<br>
+ gyapjú alsóruha -&#187; woolly<br>
+ gyapjú kendő -&#187; afghan<br>
+ gyapjú sál -&#187; afghan<br>
+ gyapjúanyag -&#187; woolen<br>
+ gyapjúanyag -&#187; woollen<br>
+ gyapjúáru -&#187; woolens<br>
+ gyapjúfa -&#187; bombax<br>
+ gyapjúfésű -&#187; card<br>
+ gyapjúfonál kötöttárukhoz -&#187; scotch fingering<br>
+ gyapjúholmi -&#187; woolens<br>
+ gyapjúholmi -&#187; woollies<br>
+ gyapjúkasa -&#187; flannel<br>
+ gyapjúnyíró olló -&#187; clips<br>
+ gyapjúpihe -&#187; lock<br>
+ gyapjúszál -&#187; staple<br>
+ gyapjúszövet -&#187; serge<br>
+ gyapjúszövet -&#187; stuff<br>
+ gyapjúszövet -&#187; tweed<br>
+ gyapjúszövet -&#187; woolen<br>
+ gyapjúszövet -&#187; woollen<br>
+ gyapjút báláz -&#187; to dump<br>
+ gyapjút présel -&#187; to dump<br>
+ gyapjút szolgáltató -&#187; wool-bearing<br>
+ gyapjúvelúrszövet -&#187; velour<br>
+ gyapjúvelúrszövet -&#187; velours<br>
+ gyapjúzsír -&#187; lanoline<br>
+ gyapot -&#187; cotton<br>
+ gyapotmagtalanító gép -&#187; gin<br>
+ gyapotszál -&#187; staple<br>
+ gyapotszedő gép -&#187; picker<br>
+ gyár -&#187; factory<br>
+ gyár -&#187; house<br>
+ gyár -&#187; mill<br>
+ gyár -&#187; -works<br>
+ gyár -&#187; works<br>
+ -gyár -&#187; -works<br>
+ gyarapít -&#187; to augment<br>
+ gyarapít -&#187; to put on<br>
+ gyarapítja vagyonát -&#187; to thrive, throve, thriven<br>
+ gyarapodás -&#187; accession<br>
+ gyarapodás -&#187; accretion<br>
+ gyarapodás -&#187; gain<br>
+ gyarapodás -&#187; growth<br>
+ gyarapodás -&#187; increment<br>
+ gyarapodik -&#187; to augment<br>
+ gyarapodó -&#187; thriving<br>
+ gyarapszik -&#187; to gain<br>
+ gyarapszik -&#187; to thrive, throve, thriven<br>
+ gyáregység -&#187; plant<br>
+ gyárépület -&#187; house<br>
+ gyári sziréna -&#187; buzzer<br>
+ gyarló -&#187; fallible<br>
+ gyarló -&#187; feeble<br>
+ gyarló -&#187; flimsy<br>
+ gyarló -&#187; frail<br>
+ gyarló -&#187; unworthy<br>
+ gyarló -&#187; vile<br>
+ gyarló -&#187; weak<br>
+ gyarló ember módjára -&#187; after the flesh<br>
+ gyarlóság -&#187; caducity<br>
+ gyarlóság -&#187; failing<br>
+ gyarlóság -&#187; fallibility<br>
+ gyarlóság -&#187; peccadillo<br>
+ gyarmat -&#187; colony<br>
+ gyarmat -&#187; dependency<br>
+ gyarmat -&#187; plantation<br>
+ gyarmat -&#187; settlement<br>
+ gyarmati -&#187; colonial<br>
+ gyarmati kalap -&#187; topee<br>
+ gyarmati mandátum -&#187; international mandate<br>
+ gyarmati rendszer -&#187; colonialism<br>
+ gyarmati sisak -&#187; topee<br>
+ gyarmati terjeszkedés híve -&#187; colonial expansionist<br>
+ gyarmatok -&#187; possessions<br>
+ gyarmatos -&#187; colonial<br>
+ gyarmatos -&#187; colonist<br>
+ gyarmatosít -&#187; to colonize<br>
+ gyarmatosítás -&#187; colonialism<br>
+ gyarmatosítás -&#187; colonization<br>
+ gyarmatosítás -&#187; settling<br>
+ gyarmatosítás -&#187; white man's burden<br>
+ gyarmatosítás híve -&#187; colonialist<br>
+ gyarmatosító -&#187; colonizer<br>
+ gyáron belüli -&#187; in-house<br>
+ gyáros -&#187; captain of industry<br>
+ gyáros -&#187; maker<br>
+ gyárt -&#187; to fabricate<br>
+ gyárt -&#187; to make, made<br>
+ gyárt -&#187; to mint<br>
+ gyárt -&#187; to produce<br>
+ gyárt -&#187; to turn out<br>
+ gyártás -&#187; fabrication<br>
+ gyártás -&#187; making<br>
+ gyártási titok -&#187; trade secret<br>
+ gyártelep -&#187; -works<br>
+ gyártelep -&#187; works<br>
+ gyártmány -&#187; make<br>
+ gyártmány -&#187; product<br>
+ gyász -&#187; bereavement<br>
+ gyász -&#187; black<br>
+ gyász -&#187; mourning<br>
+ gyászban -&#187; in black<br>
+ gyászdal -&#187; elegy<br>
+ gyászdal -&#187; threnody<br>
+ gyászének -&#187; dirge<br>
+ gyászének -&#187; threnody<br>
+ gyászeset -&#187; bereavement<br>
+ gyászfátyol -&#187; crepe<br>
+ gyászjelentés -&#187; obituary<br>
+ gyászjelentések -&#187; deaths<br>
+ gyászkarszalag -&#187; crepe<br>
+ gyászkarszalag -&#187; crepe band<br>
+ gyászkeretes levélpapír -&#187; mourning-paper<br>
+ gyászlepel -&#187; hearse-cloth<br>
+ gyászlepke -&#187; Camberwell beauty<br>
+ gyászmise -&#187; black mass<br>
+ gyászmise -&#187; office for the dead<br>
+ gyászmise -&#187; the office for the dead<br>
+ gyászmisedíj -&#187; mortuary<br>
+ gyászol -&#187; to bemoan<br>
+ gyászol -&#187; to mourn<br>
+ gyászol vkit -&#187; to be in mourning for sy<br>
+ gyászol vkit -&#187; to mourn for sy<br>
+ gyászol vmit -&#187; to mourn for sg<br>
+ gyászol vmit -&#187; to mourn over sg<br>
+ gyászoló -&#187; mourner<br>
+ gyászoló család -&#187; bereaved<br>
+ gyászos -&#187; abject<br>
+ gyászos -&#187; doleful<br>
+ gyászos -&#187; elegiac<br>
+ gyászos -&#187; funereal<br>
+ gyászos -&#187; gray<br>
+ gyászos -&#187; grey<br>
+ gyászos -&#187; grim<br>
+ gyászos -&#187; lugubrious<br>
+ gyászos -&#187; mournful<br>
+ gyászos alak -&#187; sad dog<br>
+ gyászos hangulat -&#187; gloom<br>
+ gyászos hangulatú -&#187; elegiac<br>
+ gyászos képet vág -&#187; have a face as long as a fiddle<br>
+ gyászos kimenetelű -&#187; tragic<br>
+ gyászos látvány -&#187; grim sight<br>
+ gyászos óra -&#187; inevitable hour<br>
+ gyászos vége lesz -&#187; to come to a bad end<br>
+ gyászos vége van -&#187; to come to a sticky end<br>
+ gyászos véget ér -&#187; to come to a bad end<br>
+ gyászos végzet -&#187; doom<br>
+ gyászosan -&#187; dolefully<br>
+ gyászosan -&#187; funereally<br>
+ gyászosan -&#187; mournfully<br>
+ gyászosan -&#187; tragically<br>
+ gyászruha -&#187; black<br>
+ gyászruha -&#187; mourning<br>
+ gyászruhában -&#187; draped in black<br>
+ gyászruhában -&#187; draped in mourning<br>
+ gyászszalag -&#187; black armband<br>
+ gyászszalag -&#187; mourning-band<br>
+ gyászszertartás -&#187; obsequies<br>
+ gyászszertartás -&#187; obsequy<br>
+ gyászt ölt -&#187; to go into mourning<br>
+ gyatra -&#187; lame<br>
+ gyatra -&#187; scummy<br>
+ gyáva -&#187; candyassed<br>
+ gyáva -&#187; coward<br>
+ gyáva -&#187; cowardly<br>
+ gyáva -&#187; milquetoastish<br>
+ gyáva -&#187; timid<br>
+ gyáva -&#187; timorous<br>
+ gyáva -&#187; weak-hearted<br>
+ gyáva -&#187; yellow<br>
+ gyáva alak -&#187; piker<br>
+ gyáva ember -&#187; candyass<br>
+ gyáva ember -&#187; milksop<br>
+ gyáva ember -&#187; rabbit<br>
+ gyáva ember -&#187; squib<br>
+ gyáva kukac -&#187; have no guts<br>
+ gyáva kukac -&#187; have not the guts of a louse<br>
+ gyáva kukac -&#187; he has not guts<br>
+ gyáva kukac -&#187; he hasn't the guts of a louse<br>
+ gyáva lelkű -&#187; unheroic<br>
+ gyáva, mint a nyúl -&#187; as timid as a rabbit<br>
+ gyáva, mint a nyúl -&#187; as timid as a hare<br>
+ gyáván -&#187; abjectly<br>
+ gyáván -&#187; cowardly<br>
+ gyáván megfutamodik -&#187; to turn yellow<br>
+ gyáván otthagy -&#187; to crap out<br>
+ gyáván viselkedik -&#187; to turn turkey<br>
+ gyávaság -&#187; cowardice<br>
+ gyávaság -&#187; rabbit fever<br>
+ gyávaság -&#187; timidity<br>
+ gyávaság -&#187; timidness<br>
+ gyávaság -&#187; timorousness<br>
+ gyávaság -&#187; white feather<br>
+ gyávaság jele -&#187; white feather<br>
+ gyávává tesz -&#187; to cow<br>
+ gyékényfonat -&#187; mat<br>
+ gyékényfonat -&#187; matting<br>
+ gyékényfonat -&#187; wattle<br>
+ gyékénykosár -&#187; frail<br>
+ gyékényszőnyeg -&#187; mat<br>
+ gyékényszőnyeg -&#187; matting<br>
+ gyémánt -&#187; diamond<br>
+ gyémánt -&#187; sparkler<br>
+ gyémánt keménységű -&#187; hard as adamant<br>
+ gyémánt tartalmú -&#187; diamantiferous<br>
+ gyémántboglár -&#187; spray of diamonds<br>
+ gyémántdiadém -&#187; spray of diamonds<br>
+ gyémántforgács -&#187; splint<br>
+ gyémántkeménységű -&#187; adamant<br>
+ gyémántkeménységű anyag -&#187; adamant<br>
+ gyémántkeménységű kő -&#187; adamant<br>
+ gyémántot aranyba foglal -&#187; to chase a diamond in gold<br>
+ gyémántszilánk -&#187; splint<br>
+ gyenge -&#187; crazy<br>
+ gyenge -&#187; delicate<br>
+ gyenge -&#187; dicky<br>
+ gyenge -&#187; dim<br>
+ gyenge -&#187; extenuate<br>
+ gyenge -&#187; failing<br>
+ gyenge -&#187; faint<br>
+ gyenge -&#187; feeble<br>
+ gyenge -&#187; flabby<br>
+ gyenge -&#187; flimsy<br>
+ gyenge -&#187; fragile<br>
+ gyenge -&#187; frail<br>
+ gyenge -&#187; impotent<br>
+ gyenge -&#187; infirm<br>
+ gyenge -&#187; lame<br>
+ gyenge -&#187; light<br>
+ gyenge -&#187; limp<br>
+ gyenge -&#187; low<br>
+ gyenge -&#187; mild<br>
+ gyenge -&#187; nerveless<br>
+ gyenge -&#187; no class<br>
+ gyenge -&#187; reedy<br>
+ gyenge -&#187; sickly<br>
+ gyenge -&#187; slack<br>
+ gyenge -&#187; slender<br>
+ gyenge -&#187; soft<br>
+ gyenge -&#187; tender<br>
+ gyenge -&#187; vulnerable<br>
+ gyenge -&#187; weak<br>
+ gyenge -&#187; weakly<br>
+ gyenge -&#187; wimpy<br>
+ gyenge -&#187; woozy<br>
+ gyenge csapat -&#187; scratch team<br>
+ gyenge dolog -&#187; poor show<br>
+ gyenge egészség -&#187; ill health<br>
+ gyenge ejtésű alak -&#187; weak form<br>
+ gyenge elégséges -&#187; just on the line<br>
+ gyenge elméjű -&#187; wanting<br>
+ gyenge elméjű ember -&#187; moron<br>
+ gyenge ember -&#187; broken reed<br>
+ gyenge ember -&#187; cream-puff<br>
+ gyenge ember -&#187; creampuff<br>
+ gyenge ember -&#187; wimp<br>
+ gyenge érintés -&#187; tip<br>
+ gyenge érintő ütés -&#187; snick<br>
+ gyenge érverés -&#187; low pulse<br>
+ gyenge fény -&#187; waning light<br>
+ gyenge gyermek -&#187; delicate child<br>
+ gyenge idegzetű -&#187; neurotic<br>
+ gyenge ital -&#187; water bewitched<br>
+ gyenge jellemű -&#187; weak-kneed<br>
+ gyenge kézzel igazgat vmit -&#187; to keep a slack rein on sg<br>
+ gyenge kézzel igazgat vmit -&#187; to keep a slack hand on sg<br>
+ gyenge kézzel kormányoz vmit -&#187; to keep a slack rein on sg<br>
+ gyenge kézzel kormányoz vmit -&#187; to keep a slack hand on sg<br>
+ gyenge kiejtésű alak -&#187; weak form<br>
+ gyenge kifogás -&#187; lame excuse<br>
+ gyenge kifogás -&#187; salvo<br>
+ gyenge kifogás -&#187; slim excuse<br>
+ gyenge kifogás -&#187; thin excuse<br>
+ gyenge kifogás! -&#187; that's a fine excuse!<br>
+ gyenge kifogások -&#187; disingenuous excuses<br>
+ gyenge kis kifogás! -&#187; that's a fine excuse!<br>
+ gyenge külső -&#187; inelegance<br>
+ gyenge külső -&#187; inelegancy<br>
+ gyenge labda -&#187; loose ball<br>
+ gyenge látási viszonyok -&#187; zero<br>
+ gyenge mentség -&#187; lame excuse<br>
+ gyenge minőség -&#187; cheapness<br>
+ gyenge minőségű -&#187; no class<br>
+ gyenge minőségű dolog -&#187; shit<br>
+ gyenge minőségű fenyőfa -&#187; white fir<br>
+ gyenge minőségű marihuána -&#187; hay<br>
+ gyenge oldal -&#187; weak point<br>
+ gyenge oldala vkinek -&#187; sy's blind side<br>
+ gyenge oldala vkinek -&#187; weak spot of sy<br>
+ gyenge oldala vkinek -&#187; weakness<br>
+ gyenge oldala vminek -&#187; weakness<br>
+ gyenge oldalán közelít meg vkit -&#187; to get on the blind side of sy<br>
+ gyenge oldalán közelít meg vkit -&#187; to get on the soft side of sy<br>
+ gyenge pont -&#187; soft spot<br>
+ gyenge pont -&#187; weak point<br>
+ gyenge pontja vkinek -&#187; weakness<br>
+ gyenge pontja vminek -&#187; weakness<br>
+ gyenge pontra tapint -&#187; to put one's finger on a weak spot<br>
+ gyenge pulzus -&#187; low pulse<br>
+ gyenge sör -&#187; single ale<br>
+ gyenge szemű -&#187; weak-eyed<br>
+ gyenge szereplés -&#187; poor show<br>
+ gyenge szervezetű -&#187; unfit<br>
+ gyenge tartású -&#187; sleazy<br>
+ gyenge tea -&#187; water bewitched<br>
+ gyenge termés -&#187; lean crops<br>
+ gyenge tüdejű -&#187; weak-chested<br>
+ gyenge tűz -&#187; slack oven<br>
+ gyenge utánzat -&#187; parody<br>
+ gyenge ütés -&#187; clap<br>
+ gyenge ütés -&#187; loose ball<br>
+ gyenge ütés -&#187; pat<br>
+ gyenge vicc -&#187; blue joke<br>
+ gyenge vigasz -&#187; cold comfort<br>
+ gyenge vigasz -&#187; Dutch comfort<br>
+ gyenge világítás -&#187; waning light<br>
+ gyenge vízellátás -&#187; short supply of water<br>
+ gyenge vmiben -&#187; to be bad at sg<br>
+ gyenge vmiben -&#187; to be suck in sg<br>
+ gyenge zenei hallású -&#187; unmusical<br>
+ gyengébb csapat -&#187; scrub<br>
+ gyengébb fél -&#187; underdog<br>
+ gyengébb nem -&#187; gentle sex<br>
+ gyengébb vitorlázatú és árbocú brig -&#187; hermaphrodite<br>
+ gyengéd -&#187; affectionate<br>
+ gyengéd -&#187; dainty<br>
+ gyengéd -&#187; endearing<br>
+ gyengéd -&#187; fond<br>
+ gyengéd -&#187; gentle<br>
+ gyengéd -&#187; languorous<br>
+ gyengéd -&#187; motherly<br>
+ gyengéd -&#187; silky<br>
+ gyengéd -&#187; tactful<br>
+ gyengéd -&#187; tender<br>
+ gyengéd -&#187; warm<br>
+ gyengéd -&#187; womanly<br>
+ gyengéd -&#187; woozily<br>
+ gyengéd édesanya -&#187; fond mother<br>
+ gyengéd érzelmeket táplál -&#187; have an affection for sy<br>
+ gyengéd ütés -&#187; pat<br>
+ gyengéden -&#187; endearingly<br>
+ gyengéden -&#187; tactfully<br>
+ gyengédség -&#187; daintiness<br>
+ gyengédség -&#187; delicacy<br>
+ gyengédség -&#187; endearment<br>
+ gyengédség -&#187; fondness<br>
+ gyengédség -&#187; tenderness<br>
+ gyengédtelenül viselkedő -&#187; unfilial<br>
+ gyengeelméjű -&#187; feeble-minded<br>
+ gyengeelméjű -&#187; imbecile<br>
+ gyengeelméjű -&#187; lightheaded<br>
+ gyengeelméjű -&#187; mentally deficient<br>
+ gyengeelméjű -&#187; weak in the head<br>
+ gyengeelméjű -&#187; weak-minded<br>
+ gyengeelméjűség -&#187; imbecility<br>
+ gyengéje az ital -&#187; have a failing for drink<br>
+ gyengéje vkinek -&#187; weak spot of sy<br>
+ gyengéje vkinek -&#187; weakness<br>
+ gyengéje vmi -&#187; have a failing for sg<br>
+ gyengéje vminek -&#187; weakness<br>
+ gyengélkedés -&#187; ailment<br>
+ gyengélkedés -&#187; ill health<br>
+ gyengélkedés -&#187; indisposition<br>
+ gyengélkedés -&#187; malaise<br>
+ gyengélkedés -&#187; upset<br>
+ gyengélkedik -&#187; to ail<br>
+ gyengélkedik -&#187; to be indisposed<br>
+ gyengélkedik -&#187; to be unwell<br>
+ gyengélkedik -&#187; to feel indisposed<br>
+ gyengélkedik -&#187; to feel unfit<br>
+ gyengélkedő -&#187; infirmary<br>
+ gyengélkedő -&#187; seedy<br>
+ gyengélkedő -&#187; sick-bay<br>
+ gyengélkedő szoba -&#187; infirmary<br>
+ gyengén -&#187; low<br>
+ gyengén -&#187; poorly<br>
+ gyengén -&#187; weakly<br>
+ gyengén előhívott -&#187; underdeveloped<br>
+ gyengén érzi magát -&#187; to feel low<br>
+ gyengén hozzáér -&#187; to brush<br>
+ gyengén megüt -&#187; to tap<br>
+ gyengén megy az üzlet -&#187; business is slack<br>
+ gyengén szerepel -&#187; to cut a poor figure<br>
+ gyengén szerepel -&#187; to cut a sorry figure<br>
+ gyengén üt -&#187; to snick<br>
+ gyengén végződik -&#187; to fizzle out<br>
+ gyengének érzi magát -&#187; to feel faint<br>
+ gyengeség -&#187; debility<br>
+ gyengeség -&#187; failing<br>
+ gyengeség -&#187; faintness<br>
+ gyengeség -&#187; flimsiness<br>
+ gyengeség -&#187; fragility<br>
+ gyengeség -&#187; impotence<br>
+ gyengeség -&#187; incapacity<br>
+ gyengeség -&#187; languidity<br>
+ gyengeség -&#187; lightness<br>
+ gyengeség -&#187; powerlessness<br>
+ gyengeség -&#187; tenuity<br>
+ gyengeség -&#187; tenuousness<br>
+ gyengeség -&#187; vulnerability<br>
+ gyengeség -&#187; weakness<br>
+ gyengeség következtében elalszik -&#187; to fall asleep through weakness<br>
+ gyengeségtől elalszik -&#187; to fall asleep through weakness<br>
+ gyengít -&#187; to attenuate<br>
+ gyengít -&#187; to deaden<br>
+ gyengít -&#187; to degrade<br>
+ gyengít -&#187; to extenuate<br>
+ gyengít -&#187; to lessen<br>
+ gyengít -&#187; to slack<br>
+ gyengít -&#187; to slacken<br>
+ gyengít -&#187; to stultify<br>
+ gyengít -&#187; to weaken<br>
+ gyengítés -&#187; extenuation<br>
+ gyengítés -&#187; weakening<br>
+ gyengíti az érzést -&#187; to blunt the feelings<br>
+ gyengíti vminek a hatását -&#187; to blunt the edge of sg<br>
+ gyengítő -&#187; attenuative<br>
+ gyengítő -&#187; debilitant<br>
+ gyengítő szer -&#187; debilitant<br>
+ gyengül -&#187; to attenuate<br>
+ gyengül -&#187; to deaden<br>
+ gyengül -&#187; to decline<br>
+ gyengül -&#187; to dwindle<br>
+ gyengül -&#187; to dwindle away<br>
+ gyengül -&#187; to extenuate<br>
+ gyengül -&#187; to lessen<br>
+ gyengül -&#187; to relax<br>
+ gyengül -&#187; to slack<br>
+ gyengül -&#187; to slacken<br>
+ gyengül -&#187; to waste<br>
+ gyengül -&#187; to waste away<br>
+ gyengül -&#187; to weaken<br>
+ gyengülés -&#187; impairment<br>
+ gyengülés -&#187; weakening<br>
+ gyengülő -&#187; failing<br>
+ gyengülő -&#187; weakening<br>
+ gyep -&#187; green<br>
+ gyep -&#187; lawn<br>
+ gyep -&#187; sod<br>
+ gyep -&#187; sward<br>
+ gyep -&#187; turf<br>
+ gyep -&#187; turf, turves<br>
+ gyepen fehérít -&#187; to croft<br>
+ gyepes -&#187; grassy<br>
+ gyepes -&#187; soddy<br>
+ gyepes -&#187; swardy<br>
+ gyepesít -&#187; to sod<br>
+ gyepesít -&#187; to sward<br>
+ gyepesít -&#187; to turf<br>
+ gyepet felszed -&#187; to pare a field<br>
+ gyephengerlő -&#187; garden roller<br>
+ gyeplő -&#187; leading rein<br>
+ gyeplő -&#187; leading-rein<br>
+ gyeplő -&#187; rein<br>
+ gyeplő -&#187; ribbons<br>
+ gyepmester -&#187; flayer<br>
+ gyepmester -&#187; skinner<br>
+ gyepmesteri telep -&#187; flaying-house<br>
+ gyepszínvágó -&#187; skimmer<br>
+ gyeptégla -&#187; sod<br>
+ gyeptégla -&#187; turf<br>
+ gyeptégla -&#187; turf, turves<br>
+ gyeptéglából rakott kunyhó -&#187; soddy<br>
+ gyeptéglával kirak -&#187; to sod<br>
+ gyér -&#187; scant<br>
+ gyér -&#187; scanty<br>
+ gyér -&#187; thin<br>
+ gyere el és látogass meg -&#187; come round and see me<br>
+ gyere el hozzám pénteken -&#187; come over and see me on Friday<br>
+ gyere el pénteken -&#187; come over and see me on Friday<br>
+ gyere és melegedj meg a tűznél! -&#187; come and get warm by the fire!<br>
+ gyere ide! -&#187; come here!<br>
+ gyerek -&#187; child, children<br>
+ gyerek -&#187; junior<br>
+ gyerek -&#187; kid<br>
+ gyerek -&#187; kiddiwink<br>
+ gyerek -&#187; kiddy<br>
+ gyerekarcú tisztecske -&#187; angel face<br>
+ gyerekcipőben jár -&#187; to be in one's infancy<br>
+ gyerekdal -&#187; nursery rhyme<br>
+ gyerekded -&#187; childlike<br>
+ gyereke születik -&#187; to be having a baby<br>
+ gyerekek -&#187; children<br>
+ gyerekek -&#187; chillun<br>
+ gyerekek -&#187; small fry<br>
+ gyerekes -&#187; childish<br>
+ gyerekes -&#187; childlike<br>
+ gyerekes gondolkodás -&#187; schoolboy logic<br>
+ gyerekesen -&#187; childishly<br>
+ gyerekesség -&#187; childishness<br>
+ gyereket meghintáztat -&#187; to give a child a swing<br>
+ gyereket meglök -&#187; to give a child a swing<br>
+ gyereket megszoptat -&#187; to give the breast to a child<br>
+ gyereket sarokba állít -&#187; to put a child in the corner<br>
+ gyereket szül -&#187; to bear a child<br>
+ gyereket szül -&#187; have a child<br>
+ gyereket vár -&#187; to be in the family way<br>
+ gyerekjáték -&#187; as easy as pie<br>
+ gyerekjáték -&#187; cake-walk<br>
+ gyerekjáték -&#187; child's play<br>
+ gyerekkor -&#187; childhood<br>
+ gyerekkori szerelem -&#187; puppy love<br>
+ gyerekszoba -&#187; children's room<br>
+ gyerektartás -&#187; maintenance<br>
+ gyerekvers -&#187; nursery rhyme<br>
+ gyéren -&#187; scantily<br>
+ gyéren -&#187; scantly<br>
+ gyéren -&#187; sparsely<br>
+ gyéren -&#187; thin<br>
+ gyéren -&#187; thinly<br>
+ gyerkőc -&#187; kiddie<br>
+ gyerkőc -&#187; kiddiwink<br>
+ gyerkőc -&#187; kiddy<br>
+ gyerkőc -&#187; shaver<br>
+ gyerkőc -&#187; stripling<br>
+ gyerkőc -&#187; stripling kid<br>
+ gyerkőc -&#187; stripling youth<br>
+ gyerkőc -&#187; youngster<br>
+ gyermek -&#187; child, children<br>
+ gyermek -&#187; chip<br>
+ gyermek- -&#187; toy<br>
+ gyermek módjára -&#187; childlike<br>
+ gyermek világrahozatala -&#187; bearing of a child<br>
+ gyermekágy -&#187; childbearing<br>
+ gyermekágyban fekszik -&#187; to be confined<br>
+ gyermekágyban fekszik -&#187; to lie in<br>
+ gyermekágyban meghal -&#187; to die in childbirth<br>
+ gyermekded -&#187; peevish<br>
+ gyermeke vkinek -&#187; to be borne by sy<br>
+ gyermekek -&#187; children<br>
+ gyermekeknek családoknál való elhelyezése -&#187; placing of children in foster-homes<br>
+ gyermekes -&#187; childlike<br>
+ gyermekes -&#187; infantile<br>
+ gyermekes -&#187; peevish<br>
+ gyermekes beszéd -&#187; baby-talk<br>
+ gyermekesen -&#187; childlike<br>
+ gyermeket cuclisüvegen nevel -&#187; to bring up a child by hand<br>
+ gyermeket cuclisüvegen nevel -&#187; to feed a child by hand<br>
+ gyermeket mesterségesen táplál -&#187; to bring up a child by hand<br>
+ gyermeket mesterségesen táplál -&#187; to feed a child by hand<br>
+ gyermeket ringató személy -&#187; rocker<br>
+ gyermeket vár -&#187; she is expecting<br>
+ gyermeket vélelmezett apjával elismertet -&#187; to affiliate a child on a putative father<br>
+ gyermekgondozó -&#187; nurse<br>
+ gyermekgondozónő -&#187; nursery governess<br>
+ gyermekgyilkos -&#187; infanticide<br>
+ gyermekgyilkosság -&#187; infanticide<br>
+ gyermekhordozó hátizsák -&#187; papoose<br>
+ gyermeki -&#187; childlike<br>
+ gyermeki -&#187; filial<br>
+ gyermeki -&#187; infantile<br>
+ gyermeki ártatlan mosoly -&#187; childlike smile<br>
+ gyermeki értelem -&#187; young idea<br>
+ gyermeki ész -&#187; young idea<br>
+ gyermeki lélek -&#187; young idea<br>
+ gyermeki mosoly -&#187; childlike smile<br>
+ gyermekies -&#187; childish<br>
+ gyermekies -&#187; childlike<br>
+ gyermek-kártyajáték fajtája -&#187; muggins<br>
+ gyermekkocsi -&#187; baby buggy<br>
+ gyermekkocsi -&#187; perambulator<br>
+ gyermekkocsi -&#187; pram<br>
+ gyermekkor -&#187; boyhood<br>
+ gyermekkor -&#187; childhood<br>
+ gyermekkor -&#187; infancy<br>
+ gyermekkora óta -&#187; from a child<br>
+ gyermekkorában sokszor volt beteg -&#187; she was often ill as a child<br>
+ gyermekkorától fogva -&#187; man and boy<br>
+ gyermekkorban -&#187; in early life<br>
+ gyermekkötény -&#187; pinny<br>
+ gyermekláncfű -&#187; dandelion<br>
+ gyermeklány -&#187; nursemaid<br>
+ gyermekszoba -&#187; nursery<br>
+ gyermekszülésben meghal -&#187; to die in childbirth<br>
+ gyermektartásra kötelezés -&#187; affiliation order<br>
+ gyermektelen -&#187; childless<br>
+ gyermektelen -&#187; issueless<br>
+ gyermektelen házasság -&#187; union of barren issue<br>
+ gyermeteg -&#187; childlike<br>
+ gyermeteg -&#187; naive<br>
+ gyermetegség -&#187; naiveté<br>
+ gyermetegség -&#187; naivety<br>
+ gyérség -&#187; tenuity<br>
+ gyérség -&#187; tenuousness<br>
+ gyertek egyszer el és látogassatok meg -&#187; you all come by and see us<br>
+ gyertya -&#187; candle<br>
+ gyertya -&#187; spark plug<br>
+ gyertya (autóé) -&#187; plug<br>
+ gyertya (futballban) -&#187; upright<br>
+ gyertya hamva -&#187; snuff<br>
+ gyertyabél -&#187; wick<br>
+ gyertyafény -&#187; candle-light<br>
+ gyertyafényes -&#187; candlelit<br>
+ gyertyakoppantó -&#187; extinguisher<br>
+ gyertyánfa -&#187; hornbeam<br>
+ gyertyaöntő -&#187; tallow-chandler<br>
+ gyertyaszentelő -&#187; groundhog day<br>
+ gyertyaszentelő -&#187; woodchuck day<br>
+ gyertyát elkoppant -&#187; to snuff<br>
+ gyertyát repül -&#187; to zoom<br>
+ gyertyatartó -&#187; candelabra<br>
+ gyertyatartó -&#187; candelabrum, candelabra<br>
+ gyertyatartó -&#187; candlestick<br>
+ gyérül -&#187; to thin<br>
+ gyerünk már! -&#187; make it snappy!<br>
+ gyerünk odébb! -&#187; move on!<br>
+ gyerünk vitorlázni! -&#187; let's go for a sail!<br>
+ gyerünk! -&#187; come along!<br>
+ gyerünk! -&#187; come on!<br>
+ gyerünk! -&#187; get a move on!<br>
+ gyerünk! -&#187; get on with you!<br>
+ gyerünk! -&#187; quick!<br>
+ gyerünk-gyerünk! -&#187; sharp's the word!<br>
+ gyí! -&#187; come up!<br>
+ gyí! -&#187; gee!<br>
+ gyík -&#187; lizard<br>
+ gyíkpohár -&#187; yellow wort<br>
+ gyilkol -&#187; to kill<br>
+ gyilkolás -&#187; killing<br>
+ gyilkos -&#187; bloody<br>
+ gyilkos -&#187; butcher<br>
+ gyilkos -&#187; carnal<br>
+ gyilkos -&#187; cutthroat<br>
+ gyilkos -&#187; devastating<br>
+ gyilkos -&#187; homicidal<br>
+ gyilkos -&#187; killer<br>
+ gyilkos -&#187; killing<br>
+ gyilkos -&#187; murderer<br>
+ gyilkos -&#187; murderous<br>
+ gyilkos -&#187; scathing<br>
+ gyilkos -&#187; slayer<br>
+ gyilkos bálna -&#187; orc<br>
+ gyilkos erő -&#187; juggernaut<br>
+ gyilkos fegyver -&#187; murderous weapon<br>
+ gyilkos galóca -&#187; death-cup<br>
+ gyilkos harc -&#187; cutthroat competition<br>
+ gyilkos konkurencia -&#187; cutthroat competition<br>
+ gyilkos konkurencia -&#187; cut-throat competition<br>
+ gyilkos pára -&#187; miasma, miasmata<br>
+ gyilkos pillantást vet vkire -&#187; to look daggers at sy<br>
+ gyilkos verseny -&#187; cutthroat competition<br>
+ gyilkos volta vminek -&#187; murderousness<br>
+ gyilkosság -&#187; hit<br>
+ gyilkosság -&#187; homicide<br>
+ gyilkosság -&#187; murder<br>
+ gyilkossági -&#187; homicidal<br>
+ gyilkossági szándékkal -&#187; with intent to kill<br>
+ gyilkosságon kívül mindenre kapható -&#187; short of murder he would do anything<br>
+ gyilkosságot követ el -&#187; to commit murder<br>
+ gyógy- -&#187; curative<br>
+ gyógy- -&#187; medicinal<br>
+ gyógyanyaggal telít -&#187; to medicate<br>
+ gyógyáru -&#187; drug<br>
+ gyógyászat -&#187; therapy<br>
+ gyógyászat tudománya -&#187; therapeutics<br>
+ gyógyászati -&#187; therapeutic<br>
+ gyógyászati -&#187; therapeutical<br>
+ gyógyászati segédeszközök -&#187; medical aids<br>
+ gyógyászati szakember -&#187; therapeuist<br>
+ gyógyászati szakember -&#187; therapeutist<br>
+ gyógycseppek -&#187; drops<br>
+ gyógydíj -&#187; non-resident tax<br>
+ gyógydíj -&#187; visitor's tax<br>
+ gyógyfőzet -&#187; infusion of herbs<br>
+ gyógyfűkereskedő -&#187; herbalist<br>
+ gyógyfürdő -&#187; hydrophatic establishment<br>
+ gyógyfürdő -&#187; hydropathic establishment<br>
+ gyógyfürdő -&#187; medical bath<br>
+ gyógyfürdő -&#187; medicinal bath<br>
+ gyógyfürdő -&#187; spa<br>
+ gyógyfürdő -&#187; thermal bath<br>
+ gyógyfürdő -&#187; watering-place<br>
+ gyógyfürdőket vesz -&#187; to take the waters<br>
+ gyógyfürdő-kezelés -&#187; spa therapy<br>
+ gyógyfürdőtan -&#187; balneology<br>
+ gyógyfüvek -&#187; medicinal herbs<br>
+ gyógyfűző -&#187; brace<br>
+ gyógyhatás -&#187; curative power<br>
+ gyógyhatású -&#187; curative<br>
+ gyógyhatású -&#187; health-giving<br>
+ gyógyhatású -&#187; medicinal<br>
+ gyógyhatású -&#187; physical<br>
+ gyógyhatású -&#187; virtuous<br>
+ gyógyír -&#187; balm<br>
+ gyógyír -&#187; fix<br>
+ gyógyír -&#187; salve<br>
+ gyógyírral kezel -&#187; to salve<br>
+ gyógyít -&#187; to cure<br>
+ gyógyít -&#187; to doctor<br>
+ gyógyít -&#187; to medicate<br>
+ gyógyít -&#187; to salve<br>
+ gyógyítás -&#187; curing<br>
+ gyógyítás -&#187; healing<br>
+ gyógyíthatatlan -&#187; to be past recovery<br>
+ gyógyíthatatlan -&#187; beyond recovery<br>
+ gyógyíthatatlan -&#187; incurable<br>
+ gyógyító -&#187; healer<br>
+ gyógyító -&#187; healing<br>
+ gyógyító -&#187; medicinal<br>
+ gyógyító -&#187; physical<br>
+ gyógyító -&#187; remedial<br>
+ gyógykenőccsel kezel -&#187; to salve<br>
+ gyógykenőcs -&#187; salve<br>
+ gyógykezel -&#187; to leech<br>
+ gyógykezel -&#187; to medicate<br>
+ gyógykezelés -&#187; medication<br>
+ gyógykezelés -&#187; therapy<br>
+ gyógymód -&#187; therapy<br>
+ gyógynövény -&#187; virtuous plant<br>
+ gyógynövény tea -&#187; infusion of herbs<br>
+ gyógyszer -&#187; drug<br>
+ gyógyszer -&#187; medicament<br>
+ gyógyszer -&#187; medication<br>
+ gyógyszer -&#187; medicine<br>
+ gyógyszer -&#187; remedy<br>
+ gyógyszer beadása -&#187; exhibition<br>
+ gyógyszeradag fecskendőben -&#187; syrette<br>
+ gyógyszer-alkalmazás -&#187; medication<br>
+ gyógyszerbevétel -&#187; medication<br>
+ gyógyszerek szinergizmusa -&#187; synergism<br>
+ gyógyszerel -&#187; to medicate<br>
+ gyógyszerelés -&#187; medication<br>
+ gyógyszereli önmagát -&#187; to dose oneself<br>
+ gyógyszeres kezelés -&#187; medication<br>
+ gyógyszerész -&#187; chemist<br>
+ gyógyszerész -&#187; dispenser<br>
+ gyógyszeríz-javító vivőanyag -&#187; guard<br>
+ gyógyszerkönyv -&#187; dispensary<br>
+ gyógyszerlevél -&#187; bubble package<br>
+ gyógyszeroldat -&#187; liquor<br>
+ gyógyszerszekrény -&#187; medicine cabinet<br>
+ gyógyszerszekrény -&#187; medicine cupboard<br>
+ gyógyszertár -&#187; chemist's<br>
+ gyógyszertár -&#187; dispensary<br>
+ gyógyszertár -&#187; pharmacy<br>
+ gyógyszertári laboratórium -&#187; dispensary<br>
+ gyógytea -&#187; herb beer<br>
+ gyógytea -&#187; infusion of herbs<br>
+ gyógyulás -&#187; convalescence<br>
+ gyógyulás -&#187; healing<br>
+ gyógyulás -&#187; recovery<br>
+ gyógyulás kezdődik -&#187; convalescence sets in<br>
+ gyógyult -&#187; whole<br>
+ gyógyüdülés -&#187; convalescence<br>
+ gyógyüdülő -&#187; convalescent hospital<br>
+ gyógyvíz -&#187; medicinal water<br>
+ gyógyvíz -&#187; medicinal waters<br>
+ gyógyvíz -&#187; mineral water<br>
+ gyógyvíz -&#187; water<br>
+ gyógyvizet iszik -&#187; to drink the waters<br>
+ gyógyvizet iszik -&#187; to take the waters<br>
+ gyom -&#187; weed<br>
+ gyomirtó -&#187; extirpator<br>
+ gyomirtó -&#187; weed-killer<br>
+ gyomirtó gép -&#187; extirpator<br>
+ gyomlál -&#187; to weed out<br>
+ gyomlálás -&#187; weeding<br>
+ gyomor- -&#187; gastric<br>
+ gyomor -&#187; insides<br>
+ gyomor -&#187; maw<br>
+ gyomor -&#187; stomach<br>
+ gyomor- -&#187; stomachal<br>
+ gyomor -&#187; stomachic<br>
+ gyomor -&#187; tripes<br>
+ gyomor -&#187; victualling-office<br>
+ gyomor- és bélhurut -&#187; gastro-enteritis<br>
+ gyomorégés -&#187; heartburn<br>
+ gyomorfájás -&#187; pain in the stomach<br>
+ gyomorfájás -&#187; stomach-ache<br>
+ gyomorfalrétegek -&#187; coat of the stomach<br>
+ gyomorfekély -&#187; gastric ulcer<br>
+ gyomorfekély -&#187; stomachic ulcer<br>
+ gyomorhurut -&#187; gastritis<br>
+ gyomorkeserű -&#187; bitters<br>
+ gyomormosás -&#187; gastric lavage<br>
+ gyomormosó készülék -&#187; stomach-pump<br>
+ gyomornedv -&#187; gastric juice<br>
+ gyomorrontás epeömléssel -&#187; bilious attack<br>
+ gyomorrontást okozó étel -&#187; food that sets up irritation<br>
+ gyomorsav -&#187; gastric juice<br>
+ gyomorsavtúltengés -&#187; sour stomach<br>
+ gyomorszáj -&#187; cardia<br>
+ gyomorszáj -&#187; pit of the stomach<br>
+ gyomorszájon üt vkit -&#187; to hit sy between wind and water<br>
+ gyomos -&#187; weedy<br>
+ gyomrocs -&#187; ventricle<br>
+ gyomrot izgató étel -&#187; food that sets up irritation<br>
+ gyomtalanít -&#187; to weed<br>
+ gyomtól megszabadít -&#187; to weed<br>
+ gyomtól megtisztít -&#187; to weed<br>
+ gyomverte kert -&#187; garden running to weeds<br>
+ gyón -&#187; to confess<br>
+ gyónás -&#187; confession<br>
+ gyónás és bűnbocsánat -&#187; shrift<br>
+ gyónás és feloldozás -&#187; shrift<br>
+ gyónási titok -&#187; seat of confession<br>
+ gyónató -&#187; penitentiary<br>
+ gyóntat -&#187; to confess<br>
+ gyóntat -&#187; to hear sy's confession<br>
+ gyóntató -&#187; confessor<br>
+ gyóntatószék -&#187; confessional<br>
+ gyors -&#187; agile<br>
+ gyors -&#187; expeditious<br>
+ gyors -&#187; expenditious<br>
+ gyors -&#187; expidite<br>
+ gyors -&#187; express<br>
+ gyors -&#187; facile<br>
+ gyors -&#187; fast<br>
+ gyors -&#187; fleet<br>
+ gyors -&#187; flighty<br>
+ gyors -&#187; flying<br>
+ gyors -&#187; hasty<br>
+ gyors -&#187; nimble<br>
+ gyors -&#187; nimble-footed<br>
+ gyors -&#187; nippy<br>
+ gyors -&#187; prompt<br>
+ gyors -&#187; quick<br>
+ gyors -&#187; rapid<br>
+ gyors -&#187; rash<br>
+ gyors -&#187; ready<br>
+ gyors -&#187; short<br>
+ gyors -&#187; slick<br>
+ gyors -&#187; smart<br>
+ gyors -&#187; spanking<br>
+ gyors -&#187; speedy<br>
+ gyors -&#187; sudden<br>
+ gyors -&#187; swift<br>
+ gyors -&#187; winged<br>
+ gyors -&#187; zippy<br>
+ gyors áruforgalom -&#187; rapid turnover of goods<br>
+ gyors bélműködés -&#187; laxity<br>
+ gyors csapatokból álló menetoszlop -&#187; flying column<br>
+ gyors dugás -&#187; quickie<br>
+ gyors duma -&#187; patter<br>
+ gyors érverés -&#187; flutter<br>
+ gyors érverés -&#187; frequent pulse<br>
+ gyors érverés -&#187; quick pulse<br>
+ gyors és felületes -&#187; facile<br>
+ gyors- és gépíró -&#187; shorthand typist<br>
+ gyors- és gépíró -&#187; shorthand-typist<br>
+ gyors- és gépírónő -&#187; shorthand typist<br>
+ gyors és találó -&#187; smart<br>
+ gyors ész -&#187; quick wits<br>
+ gyors ész -&#187; quick mind<br>
+ gyors észjárás -&#187; brightness<br>
+ gyors észjárás -&#187; quick wits<br>
+ gyors észjárás -&#187; quick mind<br>
+ gyors észjárás -&#187; readiness of thought<br>
+ gyors észjárás -&#187; wit<br>
+ gyors észjárású -&#187; nimble-minded<br>
+ gyors észjárású -&#187; nimble-witted<br>
+ gyors észjárású -&#187; quick-witted<br>
+ gyors észjárású -&#187; swift of wit<br>
+ gyors fegyver -&#187; express rifle<br>
+ gyors felfogás -&#187; acumen<br>
+ gyors felfogás -&#187; quick wits<br>
+ gyors felfogás -&#187; wit<br>
+ gyors felfogású -&#187; apt<br>
+ gyors felfogású -&#187; bright<br>
+ gyors felfogású -&#187; nimble<br>
+ gyors felfogású -&#187; nimble-minded<br>
+ gyors felfogású -&#187; nimble-witted<br>
+ gyors felfogású -&#187; quick of understanding<br>
+ gyors felfogású -&#187; smart<br>
+ gyors felfogású gyermek -&#187; quick child<br>
+ gyors folyás -&#187; sweep<br>
+ gyors folyású -&#187; rapid-flowing<br>
+ gyors futó -&#187; scud<br>
+ gyors hatású méreg -&#187; rank poison<br>
+ gyors hűtés -&#187; quenching<br>
+ gyors iramban -&#187; at a good pace<br>
+ gyors iramban -&#187; at a great pace<br>
+ gyors iramban -&#187; at a quick pace<br>
+ gyors iramban -&#187; to a smart pace<br>
+ gyors járású -&#187; high-stepping<br>
+ gyors járatú gép -&#187; high machine<br>
+ gyors kikapcsolás -&#187; snapping out<br>
+ gyors komikus dialógus -&#187; back-chat<br>
+ gyors küldönc -&#187; express<br>
+ gyors lábú -&#187; fleet of foot<br>
+ gyors látogatás -&#187; flying visit<br>
+ gyors lépés -&#187; double time<br>
+ gyors léptekkel -&#187; with rapid strides<br>
+ gyors ló -&#187; courser<br>
+ gyors megfutamodás -&#187; skedaddle<br>
+ gyors menekülés -&#187; scuttle<br>
+ gyors menetlépés -&#187; double time<br>
+ gyors, mint a gondolat -&#187; quick as thought<br>
+ gyors mozdulat -&#187; cock<br>
+ gyors növekedés -&#187; quick growth<br>
+ gyors numera -&#187; quickie<br>
+ gyors óceánjáró -&#187; greyhound<br>
+ gyors óceánjáró -&#187; ocean greyhound<br>
+ gyors önkiszolgáló büfé -&#187; quick luncheon counter<br>
+ gyors pulzus -&#187; quick pulse<br>
+ gyors puszi -&#187; quickie<br>
+ gyors puszi -&#187; quicky<br>
+ gyors szívdobogás -&#187; flutter<br>
+ gyors szócsatát folytat vkivel -&#187; to bandy words with sy<br>
+ gyors szökellés -&#187; scamper<br>
+ gyors ütemű foxtrott -&#187; quickstep<br>
+ gyors ütemű tánc -&#187; quickstep<br>
+ gyors ütés -&#187; sucker punch<br>
+ gyors váltakozás -&#187; play<br>
+ gyorsabb észjárású vkinél -&#187; to outthink, outthought<br>
+ gyorsabbá tétel -&#187; speed-up<br>
+ gyorsabban halad -&#187; to outrun, outran, outrun<br>
+ gyorsabban kapcsol vkinél -&#187; to outthink, outthought<br>
+ gyorsabban nő -&#187; to outgrow, outgrew, outgrown<br>
+ gyorsan -&#187; agily<br>
+ gyorsan -&#187; apace<br>
+ gyorsan -&#187; at a lively clip<br>
+ gyorsan -&#187; at a good pace<br>
+ gyorsan -&#187; at a great pace<br>
+ gyorsan -&#187; at a quick pace<br>
+ gyorsan -&#187; at the double<br>
+ gyorsan -&#187; fast<br>
+ gyorsan -&#187; hard<br>
+ gyorsan -&#187; headlong<br>
+ gyorsan -&#187; on the double<br>
+ gyorsan -&#187; presto<br>
+ gyorsan -&#187; quick<br>
+ gyorsan -&#187; quickly<br>
+ gyorsan -&#187; rapidly<br>
+ gyorsan -&#187; rashly<br>
+ gyorsan -&#187; short<br>
+ gyorsan -&#187; speedily<br>
+ gyorsan -&#187; swift<br>
+ gyorsan -&#187; swiftly<br>
+ gyorsan -&#187; to a smart pace<br>
+ gyorsan -&#187; with dispatch<br>
+ gyorsan a zsebébe nyúl -&#187; to dive into one's pocket<br>
+ gyorsan ágyba bújik -&#187; to pop into bed<br>
+ gyorsan átfut vmit -&#187; to cast one's eye over sg<br>
+ gyorsan átfut vmit -&#187; to run one's eye over sg<br>
+ gyorsan átlapoz -&#187; to riffle<br>
+ gyorsan átlapoz vmit -&#187; to cast one's eye over sg<br>
+ gyorsan átlapoz vmit -&#187; to run one's eye over sg<br>
+ gyorsan átnéz -&#187; to give sg the once-over<br>
+ gyorsan átnéz vmit -&#187; to give sg the once-over<br>
+ gyorsan bedug vmit vmibe -&#187; to pop sg into sg<br>
+ gyorsan befejez -&#187; to knock off<br>
+ gyorsan bekapja az ebédjét -&#187; to bolt one's dinner<br>
+ gyorsan bekapja az ételt -&#187; to snatch a meal<br>
+ gyorsan benyúl a zsebébe -&#187; to make a dive into one's pocket<br>
+ gyorsan betesz vmit vmibe -&#187; to pop sg into sg<br>
+ gyorsan bevon (vitorlát) -&#187; to douse<br>
+ gyorsan cselekvő -&#187; quick to act<br>
+ gyorsan csinál vmit -&#187; to be quick about sg<br>
+ gyorsan csinál vmit -&#187; to be quick over sg<br>
+ gyorsan csinálja -&#187; to make it snappy<br>
+ gyorsan dobog -&#187; to pant<br>
+ gyorsan dolgozik -&#187; to hustle<br>
+ gyorsan elfogyaszt vmit -&#187; to make a short work of sg<br>
+ gyorsan elindul egy irányban -&#187; to make tracks for a place<br>
+ gyorsan elindul vmilyen hely felé -&#187; to make tracks for a place<br>
+ gyorsan elintéz -&#187; to knock off<br>
+ gyorsan elintéz vmit -&#187; to make short work of sg<br>
+ gyorsan elkészít -&#187; to knock off<br>
+ gyorsan elkészít vmit -&#187; to whomp sg up<br>
+ gyorsan elkészíthető étel -&#187; convenience food<br>
+ gyorsan elmenekül -&#187; to scuttle<br>
+ gyorsan elolvas egy könyvet -&#187; to take a quick read at a book<br>
+ gyorsan elpusztít vmit -&#187; to make a short work of sg<br>
+ gyorsan elragad vmit -&#187; to nip away<br>
+ gyorsan elröppen (idő) -&#187; to fleet<br>
+ gyorsan elvégez -&#187; to knock off<br>
+ gyorsan elvégez -&#187; to toss off<br>
+ gyorsan elvégez vmit -&#187; to make short work of sg<br>
+ gyorsan elvesz vmit -&#187; to nip away<br>
+ gyorsan emelkedik -&#187; to rocket<br>
+ gyorsan érő növény -&#187; plant of quick growth<br>
+ gyorsan és egyenesen felszáll -&#187; to rocket<br>
+ gyorsan és felületesen csinál -&#187; to huddle<br>
+ gyorsan és jól végzett -&#187; smart<br>
+ gyorsan eszik -&#187; to tuck sg away<br>
+ gyorsan eszik vmit -&#187; to chow sg down<br>
+ gyorsan fegyverhez kap -&#187; to quick on the draw<br>
+ gyorsan felépít -&#187; to run up<br>
+ gyorsan felépít -&#187; to throw up<br>
+ gyorsan felkap vmit -&#187; to nip up<br>
+ gyorsan felmászik -&#187; to sling oneself up<br>
+ gyorsan feltörő személy -&#187; mushroom<br>
+ gyorsan forgó szem -&#187; swivel eye<br>
+ gyorsan fut -&#187; to race<br>
+ gyorsan fut -&#187; to race along<br>
+ gyorsan hajt -&#187; to ride hard<br>
+ gyorsan halad -&#187; to go at a spanking pace<br>
+ gyorsan halad -&#187; to spank along<br>
+ gyorsan ható -&#187; rapid acting<br>
+ gyorsan jár -&#187; to post<br>
+ gyorsan kapcsoló ész -&#187; quick wit<br>
+ gyorsan ledarálja az imáit -&#187; to rush through one's prayers<br>
+ gyorsan lehajtott ital -&#187; a quick one<br>
+ gyorsan lehörpintett ital -&#187; quickie<br>
+ gyorsan leír -&#187; to run off<br>
+ gyorsan lerajzol -&#187; to touch off<br>
+ gyorsan lovagol -&#187; to bucket<br>
+ gyorsan lovagol -&#187; to ride hard<br>
+ gyorsan megcsinál -&#187; to bat out<br>
+ gyorsan megcsinál vmit -&#187; to be quick about sg<br>
+ gyorsan megcsinál vmit -&#187; to be quick over sg<br>
+ gyorsan megcsinált dolog -&#187; quickie<br>
+ gyorsan megcsinált dolog -&#187; quicky<br>
+ gyorsan megfelel vkinek -&#187; to give sy a clincher<br>
+ gyorsan meggazdagodik -&#187; to make money hand over fist<br>
+ gyorsan megkötött házasság -&#187; speedily concluded marriage<br>
+ gyorsan megragad vmit -&#187; to nip up<br>
+ gyorsan megszagol -&#187; to sniff at<br>
+ gyorsan megtesz egy mérföldet -&#187; to do a quick mile<br>
+ gyorsan megy -&#187; to go fast<br>
+ gyorsan megy -&#187; to pop<br>
+ gyorsan megy -&#187; to spank along<br>
+ gyorsan mentőautót visz egy baleset színhelyére -&#187; to rush an ambulance to the scene of an accident<br>
+ gyorsan mozgó hajóraj -&#187; flying squadron<br>
+ gyorsan mozog -&#187; to hustle<br>
+ gyorsan nő -&#187; to mushroom<br>
+ gyorsan növő -&#187; of quick growth<br>
+ gyorsan növő növény -&#187; plant of quick growth<br>
+ gyorsan odafut vkihez -&#187; to snick across to sy<br>
+ gyorsan odafut vkihez -&#187; to snick along to sy<br>
+ gyorsan odaszalad vkihez -&#187; to snick across to sy<br>
+ gyorsan odaszalad vkihez -&#187; to snick along to sy<br>
+ gyorsan összeállít vmit -&#187; to whomp sg up<br>
+ gyorsan összecsap -&#187; to skimp<br>
+ gyorsan összetákol -&#187; to throw together<br>
+ gyorsan összetákolt dolog -&#187; lash-up<br>
+ gyorsan összeütött dolog -&#187; lash-up<br>
+ gyorsan összeütött dolog -&#187; quickie<br>
+ gyorsan összeütött dolog -&#187; quicky<br>
+ gyorsan párolgó -&#187; evanescent<br>
+ gyorsan száll -&#187; to wing<br>
+ gyorsan számol -&#187; to be quick at accounts<br>
+ gyorsan terjed -&#187; to mushroom<br>
+ gyorsan tesz -&#187; to pop<br>
+ gyorsan tesz vmit -&#187; to be quick about sg<br>
+ gyorsan tesz vmit -&#187; to be quick over sg<br>
+ gyorsan utazik -&#187; to post<br>
+ gyorsan üget -&#187; to spank along<br>
+ gyorsan üzembe helyezhető hadianyaggyár -&#187; shadow factory<br>
+ gyorsan válaszol vkinek -&#187; to give sy a clincher<br>
+ gyorsan váltakozó hangulatú -&#187; have moods<br>
+ gyorsan váltogatja a témákat -&#187; to skip from one subject to another<br>
+ gyorsan váltogatja a témákat -&#187; to skip from subject to subject<br>
+ gyorsan végez vmivel -&#187; to be quick about sg<br>
+ gyorsan végez vmivel -&#187; to be quick over sg<br>
+ gyorsan végez vmivel -&#187; to make a short work of sg<br>
+ gyorsan ver -&#187; to pant<br>
+ gyorsan ver -&#187; to race<br>
+ gyorsan visz -&#187; to wing<br>
+ gyorsan! -&#187; be quick!<br>
+ gyorsan! -&#187; quick!<br>
+ gyorsáru -&#187; through freight<br>
+ gyorsáru kocsi -&#187; express car<br>
+ gyorsáruk -&#187; express goods<br>
+ gyorsárut szállító teherkocsi -&#187; express freight car<br>
+ gyorsáru-teherhajó -&#187; express cargo boat<br>
+ gyorsaság -&#187; agility<br>
+ gyorsaság -&#187; celerity<br>
+ gyorsaság -&#187; dispatch<br>
+ gyorsaság -&#187; expedition<br>
+ gyorsaság -&#187; fastness<br>
+ gyorsaság -&#187; pace<br>
+ gyorsaság -&#187; promptitude<br>
+ gyorsaság -&#187; promptness<br>
+ gyorsaság -&#187; rapidity<br>
+ gyorsaság -&#187; rapidness<br>
+ gyorsaság -&#187; rate<br>
+ gyorsaság -&#187; readiness<br>
+ gyorsaság -&#187; speed<br>
+ gyorsaságmérő -&#187; patent log<br>
+ gyorsbüfé -&#187; fast food place<br>
+ gyorscsévél (magnón) -&#187; to fast-wind, fast-wound<br>
+ gyorsételek -&#187; fast food<br>
+ gyorsétkezés -&#187; snack<br>
+ gyorsétkező -&#187; fast food place<br>
+ gyorsforraló -&#187; chafing-dish<br>
+ gyorsforraló -&#187; chafing-pan<br>
+ gyorsfutár -&#187; express messenger<br>
+ gyorsgőzös -&#187; royal mail steamer<br>
+ gyorshajtó -&#187; scorcher<br>
+ gyorshír -&#187; news flash<br>
+ gyorshűtés -&#187; chilling<br>
+ gyorsírás -&#187; shorthand<br>
+ gyorsírás -&#187; stenography<br>
+ gyorsírással ír -&#187; to shorthand<br>
+ gyorsírással jegyzi a beszédet -&#187; to take a speech down in shorthand<br>
+ gyorsíró -&#187; shorthand-writer<br>
+ gyorsíró -&#187; stenographer<br>
+ gyorsírófüzet -&#187; shorthand pad<br>
+ gyorsírófüzet -&#187; steno pad<br>
+ gyorsírógép -&#187; shorthand typewriter<br>
+ gyorsít -&#187; to accelerate<br>
+ gyorsít -&#187; to speed, sped<br>
+ gyorsít -&#187; to speed<br>
+ gyorsítás -&#187; speed-up<br>
+ gyorsítja a tempót -&#187; to buck up<br>
+ gyorsító -&#187; accelerator<br>
+ gyorsító anód -&#187; accelerator<br>
+ gyorsító áttételt alkalmaz -&#187; to gear up<br>
+ gyorsító szelep -&#187; accelerator<br>
+ gyorsítórakéta -&#187; booster rocket<br>
+ gyorsított eljárás -&#187; summary proceedings<br>
+ gyorsított lépés -&#187; quick time<br>
+ gyorsított lépés -&#187; quickstep<br>
+ gyorsított menet -&#187; quick time<br>
+ gyorsított menet -&#187; quick march<br>
+ gyorsított menet -&#187; quickstep<br>
+ gyorsított tanfolyam -&#187; crash-course<br>
+ gyorsított ütemben menetel -&#187; to march in quick time<br>
+ gyorsjáratú postahajó -&#187; express liner<br>
+ gyorskazán -&#187; express boiler<br>
+ gyorskocsi -&#187; diligence<br>
+ gyorsküldönc -&#187; poster<br>
+ gyorsküldönc -&#187; postilion<br>
+ gyorsküldönc -&#187; postillion<br>
+ gyorslépésben -&#187; at the double<br>
+ gyorslépésben -&#187; on the double<br>
+ gyorsmérleg -&#187; roman balance<br>
+ gyorstalpaló tanfolyam -&#187; crash-course<br>
+ gyorstalpaló tanfolyam -&#187; quickie<br>
+ gyorstalpaló tanfolyam -&#187; quicky<br>
+ gyorstapasz -&#187; band aid<br>
+ gyorstapasz -&#187; elastoplast<br>
+ gyorsteherkocsi -&#187; line car<br>
+ gyorstüzelés -&#187; gunfire<br>
+ gyorstüzelés -&#187; rapid-firing<br>
+ gyorstüzelő -&#187; rapid-fire<br>
+ gyorstüzelő -&#187; rapid-firing<br>
+ gyorstüzelő ágyú -&#187; rapid-firer<br>
+ gyorstüzelő pisztoly -&#187; rapid-fire pistol<br>
+ gyorsul -&#187; to accelerate<br>
+ gyorsul -&#187; to gather pace<br>
+ gyorsul -&#187; to get a good speed on<br>
+ gyorsul -&#187; to pick up speed<br>
+ gyorsul -&#187; to pick up<br>
+ gyorsul -&#187; to put on speed<br>
+ gyorsulás -&#187; pickup<br>
+ gyorsulás -&#187; pick-up<br>
+ gyorsulás -&#187; speed-up<br>
+ gyorsúszás -&#187; crawl<br>
+ gyorsúszás -&#187; freestyle<br>
+ gyorsúszás -&#187; freestyle swimming<br>
+ gyorsúszás -&#187; the crawl<br>
+ gyorsúszás háton -&#187; back crawl<br>
+ gyorsvonat -&#187; express<br>
+ gyorsvonat -&#187; express train<br>
+ gyorsvonat -&#187; fast train<br>
+ gyorsvonat -&#187; non-stop train<br>
+ gyorsvonati mozdony -&#187; express locomotive<br>
+ gyorsvonatra nem érvényes jegy -&#187; ticket unavailable for express trains<br>
+ gyök -&#187; heel<br>
+ gyök -&#187; radical<br>
+ gyök -&#187; residuum, residua<br>
+ gyök -&#187; root<br>
+ gyökér -&#187; root<br>
+ gyökér -&#187; roots<br>
+ gyökér (kelésé) -&#187; kernel<br>
+ gyökérben gazdag -&#187; rooty<br>
+ gyökércsatorna-tisztító műszer -&#187; broach<br>
+ gyökérdús -&#187; rooty<br>
+ gyökerek -&#187; grassroots<br>
+ gyökereken élő indián -&#187; digger<br>
+ gyökerektől megtisztít -&#187; to grub<br>
+ gyökeres -&#187; radical<br>
+ gyökeres -&#187; rooted<br>
+ gyökeres -&#187; rooty<br>
+ gyökeres átalakulás -&#187; revolution<br>
+ gyökeres reform -&#187; sweeping reform<br>
+ gyökeres változások -&#187; sweeping changes<br>
+ gyökeresedik -&#187; to root<br>
+ gyökeresen -&#187; radically<br>
+ gyökeresen megváltoztat -&#187; to revolutionize<br>
+ gyökerestől kiirt -&#187; to extirpate<br>
+ gyökerestől kitép -&#187; to extirpate<br>
+ gyökerestül kiirt -&#187; to root out<br>
+ gyökerestül kiirt -&#187; to root up<br>
+ gyökerestül kiszakított -&#187; uprooted<br>
+ gyökerestül kitép -&#187; to eradicate<br>
+ gyökerestül kitép -&#187; to root out<br>
+ gyökerestül kitép -&#187; to root up<br>
+ gyökerestül kitép -&#187; to uproot<br>
+ gyökerestül kitépett -&#187; uprooted<br>
+ gyökeret ereszt -&#187; to strike root<br>
+ gyökeret ereszt -&#187; to take root<br>
+ gyökeret hajt -&#187; to push out<br>
+ gyökeret ver -&#187; to root<br>
+ gyökeret ver -&#187; to set, set<br>
+ gyökeret ver -&#187; to strike root<br>
+ gyökeret ver -&#187; to take root<br>
+ gyökeret ver a lába -&#187; to stop dead in one's tracks<br>
+ gyökerezik -&#187; to root<br>
+ gyökérfúró -&#187; broach<br>
+ gyökérhajtás -&#187; sucker<br>
+ gyökérhajtásoktól megtisztít -&#187; to sucker<br>
+ gyökérnyak -&#187; collar<br>
+ gyökérsarj -&#187; sucker<br>
+ gyökérsarjakat hajt -&#187; to sucker<br>
+ gyökérsarjakat hajt -&#187; to throw out suckers<br>
+ gyökérsarjaktól megtisztít -&#187; to sucker<br>
+ gyökérszerű -&#187; rooty<br>
+ gyökértelen -&#187; rootless<br>
+ gyökértelenség -&#187; rootlessness<br>
+ gyökérterpeszes -&#187; rooty<br>
+ gyökértősarjakat hajt -&#187; to throw out suckers<br>
+ gyökjel -&#187; radical<br>
+ gyökjel -&#187; root-sign<br>
+ gyököt von vmiből -&#187; to extract the root of sg<br>
+ gyökszó -&#187; root-word<br>
+ gyökvonás -&#187; evolution<br>
+ gyökvonás -&#187; extracting a root<br>
+ gyömbér -&#187; ginger<br>
+ gyömbérkenyér -&#187; gingerbread<br>
+ gyömbérsör -&#187; ginger ale<br>
+ gyömbérsör -&#187; ginger-ale<br>
+ gyömbérsör -&#187; ginger-beer<br>
+ gyönge -&#187; weak<br>
+ gyönge oldala vmi -&#187; have a failing for sg<br>
+ gyöngéden ápol -&#187; to nestle<br>
+ gyöngédség nélküli -&#187; unloving<br>
+ gyöngén -&#187; feebly<br>
+ gyöngeség -&#187; feebleness<br>
+ gyöngített -&#187; attenuate<br>
+ gyöngy -&#187; bead<br>
+ gyöngy -&#187; pearl<br>
+ gyöngydíszítés -&#187; bead<br>
+ gyöngydíszítés -&#187; beading<br>
+ gyöngyélete van -&#187; to be in clover<br>
+ gyöngyélete van -&#187; to live in clover<br>
+ gyöngyhalász -&#187; beach-comber<br>
+ gyöngyházból való -&#187; pearly<br>
+ gyöngyléc -&#187; bead<br>
+ gyöngymenta -&#187; catmint<br>
+ gyöngymenta -&#187; catnip<br>
+ gyöngynyakék -&#187; collar of pearls<br>
+ gyöngyökkel díszített -&#187; pearly<br>
+ gyöngyözés -&#187; weeping<br>
+ gyöngyözéssel díszít -&#187; to bead<br>
+ gyöngyözik -&#187; to bead<br>
+ gyöngyözik -&#187; to effervesce<br>
+ gyöngyözik -&#187; to froth<br>
+ gyöngyözik -&#187; to ooze<br>
+ gyöngyözik -&#187; to sparkle<br>
+ gyöngyöző -&#187; gassy<br>
+ gyöngyöző -&#187; lathery<br>
+ gyöngyöző -&#187; sparkling<br>
+ gyöngyöző -&#187; weeping<br>
+ gyöngyöző serleg -&#187; sparkling cup<br>
+ gyöngysor -&#187; collar of pearls<br>
+ gyöngysor -&#187; negligee<br>
+ gyöngysor -&#187; pearl necklace<br>
+ gyöngysor -&#187; rope<br>
+ gyöngyszem -&#187; bead<br>
+ gyöngyszem -&#187; gem<br>
+ gyöngyszerű -&#187; beady<br>
+ gyöngyszerű -&#187; pearly<br>
+ gyöngyvessző -&#187; meadow-sweet<br>
+ gyöngyvessző -&#187; queen of the meadows<br>
+ gyöngyvirág -&#187; lily of the valley<br>
+ gyönyör -&#187; gust<br>
+ gyönyör -&#187; pleasure<br>
+ gyönyör -&#187; rapture<br>
+ gyönyörködés -&#187; delectation<br>
+ gyönyörködtet -&#187; to delight<br>
+ gyönyörködtet -&#187; to feast<br>
+ gyönyörködtetés -&#187; delectation<br>
+ gyönyörű -&#187; beauteous<br>
+ gyönyörű -&#187; beautiful<br>
+ gyönyörűen -&#187; beautifully<br>
+ gyönyörűség -&#187; bliss<br>
+ gyönyörűség -&#187; delight<br>
+ gyönyörűség -&#187; pleasure<br>
+ gyönyörűséges -&#187; delightful<br>
+ György-tallér -&#187; george<br>
+ gyötör -&#187; to agonize<br>
+ gyötör -&#187; to bait<br>
+ gyötör -&#187; to gnaw, gnawed, gnawn<br>
+ gyötör -&#187; to gnaw<br>
+ gyötör -&#187; to lacerate<br>
+ gyötör -&#187; to maltreat<br>
+ gyötör -&#187; to nag at sy<br>
+ gyötör -&#187; to obsess<br>
+ gyötör -&#187; to pain<br>
+ gyötör -&#187; to persecute<br>
+ gyötör -&#187; to plague<br>
+ gyötör -&#187; to pull one's leg<br>
+ gyötör -&#187; to rack<br>
+ gyötör -&#187; to roil<br>
+ gyötör -&#187; to tease<br>
+ gyötör -&#187; to torment<br>
+ gyötör -&#187; to worry<br>
+ gyötör -&#187; to wring, wrung<br>
+ gyötrelem -&#187; anguish<br>
+ gyötrelem -&#187; distress<br>
+ gyötrelem -&#187; unease<br>
+ gyötrelmes -&#187; agonizing<br>
+ gyötrelmes -&#187; excruciating<br>
+ gyötrelmesen -&#187; excruciatingly<br>
+ gyötrés -&#187; laceration<br>
+ gyötrésre való hajlam -&#187; vampirism<br>
+ gyötri a félelem -&#187; to be devoured by fear<br>
+ gyötri a köhögés -&#187; have a racking cough<br>
+ gyötri az éhség -&#187; to be ravenously hungry<br>
+ gyötrő -&#187; excruciating<br>
+ gyötrő -&#187; nagging<br>
+ gyötrő -&#187; obsessive<br>
+ gyötrő -&#187; outrageous<br>
+ gyötrő -&#187; racking<br>
+ gyötrő -&#187; tormentor<br>
+ gyötrő -&#187; trying<br>
+ gyötrő köhögés -&#187; racking cough<br>
+ gyötrődés -&#187; agony<br>
+ gyötrődés -&#187; anguish<br>
+ gyötrődés -&#187; obsession<br>
+ gyötrődés -&#187; writhing<br>
+ gyötrődik -&#187; to agonize<br>
+ gyötrődik -&#187; to anguish<br>
+ gyötrődik -&#187; to be on the rack<br>
+ gyötrődik -&#187; to distress oneself<br>
+ gyötrődik -&#187; to writhe<br>
+ győz -&#187; to bear away the bell<br>
+ győz -&#187; to bear the palm<br>
+ győz -&#187; to bring home the bacon<br>
+ győz -&#187; to gain the day<br>
+ győz -&#187; have the best of it<br>
+ győz -&#187; to pull through<br>
+ győz -&#187; to ring the bell<br>
+ győz -&#187; to take scalps<br>
+ győz -&#187; to vanquish<br>
+ győz -&#187; to win out<br>
+ győz -&#187; to win, won<br>
+ győz vmit -&#187; to afford<br>
+ győzedelmes -&#187; victorious<br>
+ győzedelmesen -&#187; victoriously<br>
+ győzedelmeskedés -&#187; victoriousness<br>
+ győzedelmeskedik -&#187; to carry the day<br>
+ győzedelmeskedik -&#187; to prevail<br>
+ győzedelmeskedik -&#187; to vanquish<br>
+ győzedelmeskedik -&#187; to win the day<br>
+ győzedelmeskedik -&#187; to worst<br>
+ győzedelmeskedik vki felett -&#187; to be victorious over sy<br>
+ győzedelmeskedik vki felett -&#187; to exult over sy<br>
+ győzedelmeskedik vkin -&#187; to prevail over sy<br>
+ győzedelmeskedik vmi felett -&#187; to prevail against<br>
+ győzedelmeskedik vmi felett -&#187; to triumph over sg<br>
+ győzelem -&#187; payoff<br>
+ győzelem -&#187; pay-off<br>
+ győzelem -&#187; triumph<br>
+ győzelem -&#187; victory<br>
+ győzelem -&#187; win<br>
+ győzelem -&#187; winning<br>
+ győzelem hazai pályán -&#187; home win<br>
+ győzelem napja -&#187; victorious day<br>
+ győzelemtől ittas -&#187; exultant<br>
+ győzelemtől ittas -&#187; exulting<br>
+ győzelemtől mámoros -&#187; exultant<br>
+ győzelemtől mámoros -&#187; exulting<br>
+ győzelemtől mámoros -&#187; flushed with victory<br>
+ győzelemtől mámorosan -&#187; flushed with victory<br>
+ győzelmes -&#187; triumphant<br>
+ győzelmes -&#187; victorious<br>
+ győzelmesen -&#187; victoriously<br>
+ győzelmet arat -&#187; to take scalps<br>
+ győzelmet arat -&#187; to vanquish<br>
+ győzelmi -&#187; victorious<br>
+ győzelmi ének -&#187; paean<br>
+ győzelmi mámor -&#187; flush of victory<br>
+ győző -&#187; vanquisher<br>
+ győződjék meg róla, hogy -&#187; make sure that<br>
+ győztes -&#187; top dog<br>
+ győztes -&#187; vanquisher<br>
+ győztes -&#187; victorious<br>
+ győztes -&#187; victor<br>
+ győztes -&#187; winner<br>
+ győztes -&#187; winning<br>
+ győztesek -&#187; all the winners<br>
+ győztesen -&#187; victoriously<br>
+ győztesen -&#187; with flying colors<br>
+ győztesen érkezik a célba -&#187; to breast the tape<br>
+ győztesség -&#187; victoriousness<br>
+ gyufa -&#187; match<br>
+ gyufásdoboz -&#187; matchbox<br>
+ gyufaszál -&#187; a match<br>
+ gyufaszál -&#187; match-stick<br>
+ gyufát gyújt -&#187; to strike a light<br>
+ gyufát gyújt -&#187; to strike a match<br>
+ gyújt -&#187; to fire<br>
+ gyújt -&#187; to light<br>
+ gyújt -&#187; to spark<br>
+ gyújtás -&#187; firing<br>
+ gyújtás -&#187; ignition<br>
+ gyújtás -&#187; lighting<br>
+ gyújtás megszakadása -&#187; spark failure<br>
+ gyújtáselosztó -&#187; distributor<br>
+ gyújtáshiba -&#187; spark failure<br>
+ gyújtási elosztó -&#187; timer<br>
+ gyújtási sorrend -&#187; order of firing<br>
+ gyújtási ütem -&#187; order of firing<br>
+ gyújtási zavar -&#187; misfiring<br>
+ gyújtásidőzítő -&#187; timer<br>
+ gyújtáskihagyás -&#187; misfire<br>
+ gyújtáskihagyás -&#187; spark failure<br>
+ gyújtásszabályozó -&#187; timer<br>
+ gyújtásszabályozó kar -&#187; ignition advance-lever<br>
+ gyújtásszabályozó kar -&#187; ignition lever<br>
+ gyújtó -&#187; igniter<br>
+ gyújtó -&#187; incendiary<br>
+ gyújtó -&#187; inflammatory<br>
+ gyújtó -&#187; primer<br>
+ gyújtó hatású -&#187; inflammatory<br>
+ gyújtóbomba -&#187; incendiary<br>
+ gyújtóbomba -&#187; phosphorus bomb<br>
+ gyújtófej -&#187; warhead<br>
+ gyújtogatás -&#187; arson<br>
+ gyújtogatás -&#187; fire-raising<br>
+ gyújtogató -&#187; arsonist<br>
+ gyújtogató -&#187; firebug<br>
+ gyújtogató -&#187; fire-raiser<br>
+ gyújtogató -&#187; incendiary<br>
+ gyújtókészülék -&#187; lighter<br>
+ gyújtókészülék -&#187; primer<br>
+ gyújtókészülékkel ellát -&#187; to fuse<br>
+ gyújtókészülékkel ellát -&#187; to fuze<br>
+ gyújtókupak -&#187; primer<br>
+ gyújtóláng -&#187; by-pass<br>
+ gyújtólyuk -&#187; nipple<br>
+ gyújtólyuk -&#187; vent<br>
+ gyújtómágnes -&#187; mag<br>
+ gyújtómágnes -&#187; magneto<br>
+ gyújtónyílás -&#187; vent<br>
+ gyújtópont -&#187; focal point<br>
+ gyújtópont -&#187; focuse<br>
+ gyújtópontba állít -&#187; to focus<br>
+ gyújtóponti -&#187; focal<br>
+ gyújtós -&#187; firelighter<br>
+ gyújtós -&#187; kindlings<br>
+ gyújtós -&#187; spunk<br>
+ gyújtós -&#187; tinder<br>
+ gyújtós -&#187; touchwood<br>
+ gyújtószerkezet -&#187; detonator<br>
+ gyújtószerkezet -&#187; igniter<br>
+ gyújtószerkezet -&#187; ignition<br>
+ gyújtószerkezet élesítése -&#187; arming of a fuse<br>
+ gyújtótávolság -&#187; focal distance<br>
+ gyújtótávolság -&#187; focal length<br>
+ gyújtótekercs -&#187; ignition coil<br>
+ gyújtótöltet -&#187; primer charge<br>
+ gyújtózsinór -&#187; firing-tape<br>
+ gyújtózsinór -&#187; fuse<br>
+ gyújtózsinór -&#187; fuze<br>
+ gyújtózsinór -&#187; tinder<br>
+ gyúlékony -&#187; combustible<br>
+ gyúlékony -&#187; fiery<br>
+ gyúlékony -&#187; flammable<br>
+ gyúlékony -&#187; ignitable<br>
+ gyúlékony -&#187; inflammable<br>
+ gyúlékony -&#187; tinder-like<br>
+ gyúlékony -&#187; tindery<br>
+ gyúlékony tárgy -&#187; tinder-box<br>
+ gyúlékony tüzelőanyag -&#187; combustible<br>
+ gyúlékonyság -&#187; flammability<br>
+ gyúlékonyság -&#187; ignitability<br>
+ gyullad -&#187; to flare up<br>
+ gyulladás -&#187; burner<br>
+ gyulladás -&#187; combustion<br>
+ gyulladás -&#187; flagrancy<br>
+ gyulladás -&#187; ignition<br>
+ gyulladás -&#187; inflammation<br>
+ gyulladás -&#187; quencher<br>
+ gyulladás -&#187; quenching<br>
+ gyulladás -&#187; slagging n<br>
+ gyulladásba jön -&#187; to inflame<br>
+ gyulladásos -&#187; inflamed<br>
+ gyulladásos -&#187; sore<br>
+ gyulladásos körlet -&#187; halo<br>
+ gyulladásos szemű -&#187; red-eyed<br>
+ gyulladáspont -&#187; flash-point<br>
+ gyulladást okoz -&#187; to inflame<br>
+ gyulladást okozó -&#187; inflammatory<br>
+ gyulladt -&#187; flagrant<br>
+ gyulladt -&#187; inflamed<br>
+ gyulladtá válik -&#187; to act up<br>
+ gyúr -&#187; to knead<br>
+ gyúr -&#187; to massage<br>
+ gyúr -&#187; to pug<br>
+ gyúrás -&#187; massage<br>
+ gyúrja az ipart -&#187; to peg away at sg<br>
+ gyurma -&#187; plasticine<br>
+ gyúró -&#187; masseur<br>
+ gyutacs -&#187; detonator<br>
+ gyutacs -&#187; fuse<br>
+ gyutacs -&#187; fuze<br>
+ gyutacs -&#187; igniter<br>
+ gyutacs -&#187; primer<br>
+ gyutacs élesítése -&#187; arming of a fuse<br>
+ gyutacs leszálló része -&#187; plunger<br>
+ gyutacsot tartalmazó patron -&#187; primer<br>
+ gyűjt -&#187; to collect<br>
+ gyűjt -&#187; to glean<br>
+ gyűjt -&#187; to go round with the hat<br>
+ gyűjt -&#187; to hive<br>
+ gyűjt -&#187; to pass round the hat<br>
+ gyűjt -&#187; to realize<br>
+ gyűjt -&#187; to save<br>
+ gyűjt -&#187; to send round the hat<br>
+ gyűjt vmire -&#187; to save up for sg<br>
+ gyűjtemény -&#187; collection<br>
+ gyűjteményes kötet -&#187; omnibus<br>
+ gyűjteményes kötet -&#187; omnibus edition<br>
+ gyűjteményes kötet -&#187; omnibus volume<br>
+ gyűjtés -&#187; collection<br>
+ gyűjtést rendez -&#187; to go round with the hat<br>
+ gyűjtést rendez -&#187; to pass round the hat<br>
+ gyűjtést rendez -&#187; to send round the hat<br>
+ gyűjtő -&#187; accumulator<br>
+ gyűjtő -&#187; collector<br>
+ gyűjtő cső -&#187; header<br>
+ gyűjtő edény -&#187; receptacle<br>
+ gyűjtő medence -&#187; reservoir<br>
+ gyűjtőcsatorna -&#187; interceptor<br>
+ gyűjtőív -&#187; subscription list<br>
+ gyűjtőívet bocsát ki -&#187; to get up a subscription<br>
+ gyűjtőkocsi-szolgálat elosztó szerve -&#187; house of call<br>
+ gyűjtőkocsi-szolgálat irodája -&#187; house of call<br>
+ gyűjtőlencse -&#187; condenser<br>
+ gyűjtőlencse -&#187; convex lens<br>
+ gyűjtőlencse -&#187; convergent lens<br>
+ gyűjtőmedence -&#187; receptacle<br>
+ gyűjtőmedence -&#187; reservoir<br>
+ gyűjtőnév -&#187; collective noun<br>
+ gyűjtőtábor -&#187; relocation camp<br>
+ gyűjtőtábor -&#187; relocation centre<br>
+ gyülekezés -&#187; assemblage<br>
+ gyülekezés -&#187; rally<br>
+ gyülekezés -&#187; rendezvous, rendezvous<br>
+ gyülekezési csarnok -&#187; concourse<br>
+ gyülekezési hely -&#187; concourse<br>
+ gyülekezet -&#187; assemblage<br>
+ gyülekezet -&#187; assembly<br>
+ gyülekezet -&#187; congregation<br>
+ gyülekezet -&#187; muster<br>
+ gyülekezet -&#187; turnout<br>
+ gyülekezetet illető -&#187; conventional<br>
+ gyülekezik -&#187; to convene<br>
+ gyülekezik -&#187; to flock<br>
+ gyülekezik -&#187; to muster<br>
+ gyülekezik -&#187; to rally<br>
+ gyülekezőhely -&#187; receptacle<br>
+ gyülekezőhely -&#187; rendezvous, rendezvous<br>
+ gyülekszik -&#187; to gather<br>
+ gyűlés -&#187; assembly<br>
+ gyűlés -&#187; convention<br>
+ gyűlés -&#187; festering<br>
+ gyűlés -&#187; function<br>
+ gyűlés -&#187; pow-wow<br>
+ gyűlés -&#187; session<br>
+ gyűlés -&#187; sitting<br>
+ gyűlésen részt vesz -&#187; to attend a meeting<br>
+ gyűlésre jár -&#187; to attend a meeting<br>
+ gyűlésre vonatkozó -&#187; conventional<br>
+ gyülevész had -&#187; rabble<br>
+ gyülevész nép -&#187; rabble<br>
+ gyülevész népség -&#187; crowd<br>
+ gyűlik -&#187; to fester<br>
+ gyűlik (harag) -&#187; to fester<br>
+ gyűlöl -&#187; to abhor<br>
+ gyűlöl -&#187; to abominate<br>
+ gyűlöl -&#187; to hate<br>
+ gyűlöl -&#187; to loathe<br>
+ gyűlölet -&#187; animosity<br>
+ gyűlölet -&#187; animus<br>
+ gyűlölet -&#187; hate<br>
+ gyűlölet -&#187; hatred<br>
+ gyűlölet -&#187; loathing<br>
+ gyűlölet -&#187; odium<br>
+ gyűlölet -&#187; rancor<br>
+ gyűlölet -&#187; rancour<br>
+ gyűlöletes -&#187; abominable<br>
+ gyűlöletes -&#187; hateable<br>
+ gyűlöletes -&#187; hateful<br>
+ gyűlöletes -&#187; loathsome<br>
+ gyűlöletes -&#187; odious<br>
+ gyűlöletes -&#187; rank<br>
+ gyűlöletesen -&#187; hatefully<br>
+ gyűlöletesen -&#187; odiously<br>
+ gyűlöletesség -&#187; odium<br>
+ gyűlölettel tölt el -&#187; to imbue with hatred<br>
+ gyűlölködés -&#187; enmity<br>
+ gyűlölködés -&#187; rancor<br>
+ gyűlölködés -&#187; rancour<br>
+ gyűlölködés -&#187; spite<br>
+ gyűlölködő -&#187; malignant<br>
+ gyűlölködő -&#187; rancorous<br>
+ gyűlölködő -&#187; vindictive<br>
+ gyümölccsel töltött vajastészta-kosárka -&#187; flan<br>
+ gyümölcs -&#187; bearing<br>
+ gyümölcs -&#187; fructification<br>
+ gyümölcs -&#187; fruit<br>
+ gyümölcsárus -&#187; fruit seller<br>
+ gyümölcsárus -&#187; fruit vendor<br>
+ gyümölcsbeérés -&#187; setting<br>
+ gyümölcsevő denevér -&#187; fruit bat<br>
+ gyümölcsfa -&#187; fruit tree<br>
+ gyümölcsfa -&#187; fruit-tree<br>
+ gyümölcsfákat hálóval borít be -&#187; to net fruit trees<br>
+ gyümölcsfákat hálóval fed be -&#187; to net fruit trees<br>
+ gyümölcsíz -&#187; jam<br>
+ gyümölcsízes pite -&#187; turnover<br>
+ gyümölcsízes pite -&#187; turnover-pie<br>
+ gyümölcsjoghurt -&#187; junket<br>
+ gyümölcskenyér -&#187; fruitcake<br>
+ gyümölcskocsonya -&#187; cheese<br>
+ gyümölcskosár -&#187; fruit basket<br>
+ gyümölcskrém -&#187; fool<br>
+ gyümölcslé -&#187; squash<br>
+ gyümölcslégy -&#187; fruit-fly<br>
+ gyümölcslepény -&#187; tart<br>
+ gyümölcsmag -&#187; pip<br>
+ gyümölcsmoly -&#187; fruit-fly<br>
+ Gyümölcsoltó Boldogasszony -&#187; Annunciation<br>
+ gyümölcsös bódé -&#187; stand for fruit<br>
+ gyümölcsös habos fagylalt -&#187; sundae<br>
+ gyümölcsösből madarakat elriaszt -&#187; to scare birds from an orchard<br>
+ gyümölcsöskert -&#187; orchard<br>
+ gyümölcsöt szed -&#187; to pick fruit<br>
+ gyümölcsöt szed -&#187; to pull fruits<br>
+ gyümölcsöt terem -&#187; to fructify<br>
+ gyümölcsözés -&#187; fructification<br>
+ gyümölcsözik -&#187; to fructify<br>
+ gyümölcsöző -&#187; fruitful<br>
+ gyümölcsözteti a pénzét -&#187; to invest one's money to good account<br>
+ gyümölcspép -&#187; pulp<br>
+ gyümölcssajt -&#187; cheese<br>
+ gyümölcsszárító -&#187; fruit-drying rack<br>
+ gyümölcsszárító gyékényfonat -&#187; fruit-drying rack<br>
+ gyümölcsszedés -&#187; fruit picking<br>
+ gyümölcsszedő -&#187; fruit-picker<br>
+ gyümölcstest -&#187; receptacle<br>
+ gyümölcstorta -&#187; pie<br>
+ gyümölcstorta -&#187; short-cake<br>
+ gyümölcsvelő -&#187; dry juice<br>
+ gyűr -&#187; to crease<br>
+ gyűr -&#187; to crinkle<br>
+ gyűri az ipart -&#187; to peg away at sg<br>
+ gyűrődés -&#187; crease<br>
+ gyűrődés -&#187; fold<br>
+ gyűrődés -&#187; pucker<br>
+ gyűrődés -&#187; puckering<br>
+ gyűrődik -&#187; to crease<br>
+ gyűrődik -&#187; to crinkle<br>
+ gyűrődik -&#187; to crush<br>
+ gyűrődő -&#187; puckery<br>
+ gyűrődött -&#187; crinkly<br>
+ gyűrött -&#187; creased<br>
+ gyűrött -&#187; crinkled<br>
+ gyűrött -&#187; crinkly<br>
+ gyűrött -&#187; crumpled<br>
+ gyűrött -&#187; rumpled<br>
+ gyűrű- -&#187; annular<br>
+ gyűrű -&#187; band<br>
+ gyűrű -&#187; collar<br>
+ gyűrű -&#187; cup<br>
+ gyűrű -&#187; hoop<br>
+ gyűrű -&#187; ring<br>
+ gyűrű -&#187; rings<br>
+ gyűrű (tornaszer) -&#187; flying rings<br>
+ gyűrűbe teker -&#187; to fake<br>
+ gyűrűcske -&#187; dimple<br>
+ gyűrűcske -&#187; ringlet<br>
+ gyűrűs -&#187; annular<br>
+ gyűrűs -&#187; cyclic<br>
+ gyűrűs -&#187; cyclical<br>
+ gyűrűs kimetszés -&#187; ringing<br>
+ gyűrűs könyv -&#187; loose-leaf notebook<br>
+ gyűrűs könyv betétje -&#187; loose-leaf paper<br>
+ gyűrűs olajozó -&#187; ring oiler<br>
+ gyűrűs szélfeszítő -&#187; expansion<br>
+ gyűrűskönyv-betét -&#187; loose-leaf paper<br>
+ gyűrűsujj -&#187; ring finger<br>
+ gyűrűsujj -&#187; third finger<br>
+ gyűrűvel ellát -&#187; to collar<br>
+ gyűrűvel felszerel -&#187; to collar<br>
+ gyűrűz -&#187; to ring<br>
+ gyűrűzés -&#187; ringing<br>
+ gyűrűzik -&#187; to twist<br>
+ gyűrűző kés -&#187; ringing knife<br>
+ gyűrűző kés -&#187; ringing shears<br>
+ gyűszű -&#187; thimble<br>
+    <br>
+    <br>
+</CENTER>
+<script type="text/javascript"> var gemius_identifier = "nA5K38S_R6j5UvHZZUaBxcUFjzOBaptU.eLGPQLqtjX.r7"; function gemius_pending(i) { window[i] = window[i] || function() {var x = window[i+"_pdata"] = window[i+"_pdata"] || []; x[x.length]=arguments;};};gemius_pending("gemius_hit"); gemius_pending("gemius_event"); gemius_pending("pp_gemius_hit"); gemius_pending("pp_gemius_event");(function(d,t) {try {var gt=d.createElement(t),s=d.getElementsByTagName(t)[0],l="http"+((location.protocol=="https:")?"s":""); gt.setAttribute("async","async");gt.setAttribute("defer","defer"); gt.src=l+"://gthu.hit.gemius.pl/gemius.js"; s.parentNode.insertBefore(gt,s);} catch (e) {}})(document,"script"); </script> </body>
+</html>

@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+        <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=iso-8859-2">
+        <TITLE>Magyar-angol szótár</TITLE>
+
+<LINK href="/vmek2/vmek.php3" type="text/css" rel=STYLESHEET>
+</HEAD>
+<body text="#000000" bgcolor="#FFFFEE" link="#660000" vlink="#664422" alink="#444444" leftmargin=25 rightmargin=25>
+
+<center>
+
+  <a href=../index.htm>  <h1>Magyar-angol szótár</h1></a>
+<table align=center border=5 cellpadding=15 bgcolor="#FAFFEE"><tr><td>
+        <h2 align="center"> <a href=0-9.htm>0-9</a> &nbsp; <a href=a.htm>A-Á</a>
+          &nbsp; <a href=b.htm>B</a> &nbsp; <a href=c.htm>C-Cs</a> &nbsp; <a href=d.htm>D</a>
+          &nbsp; <a href=e.htm>E-É</a> &nbsp; <a href=f.htm>F</a> &nbsp; <a href=g.htm>G</a>
+          &nbsp; <a href=h.htm>H</a> &nbsp; <a href=i.htm>I-Í</a> &nbsp; <a href=j.htm>J</a>
+          &nbsp; <a href=k.htm>K</a> &nbsp; <a href=l.htm>L-Ly</a>
+          <br>
+          <a href=m.htm>M</a> &nbsp;  <a href=n.htm>N</a> &nbsp; <a href=o.htm>O-Ö</a>
+          &nbsp; <a href=p.htm>P</a>&nbsp; <a href=r.htm></a><a href=r.htm>R</a>
+          &nbsp; <a href=s.htm>S-Sz</a> &nbsp; <a href=t.htm>T-Ty</a> &nbsp; <a href=u.htm>U-Ü</a>
+          &nbsp; <a href=v.htm>V</a> &nbsp; <a href=w.htm>W</a> &nbsp; <a href="x.htm">X</a> &nbsp;
+          <a href=z.htm></a><a href=y.htm>Y</a> &nbsp; <a href=z.htm></a><a href=z.htm>Z-Zs</a>
+</td></tr></table><p><hr><p>
+</center>
+
+ x úr -&#187; Mr somebody<br>
+ x úr -&#187; Mr somebody or other<br>
+ x-edik -&#187; umpteen<br>
+ xeresi bor -&#187; sherry<br>
+ xerox-gép -&#187; xerox<br>
+ xeroxozik -&#187; to xerox<br>
+ xilofonszerű hangszer -&#187; marimba<br>
+ xilol -&#187; xylene<br>
+ X-nél vásárol -&#187; to get one's thing at X.<br>
+    <br>
+    <br>
+</CENTER>
+<script type="text/javascript"> var gemius_identifier = "nA5K38S_R6j5UvHZZUaBxcUFjzOBaptU.eLGPQLqtjX.r7"; function gemius_pending(i) { window[i] = window[i] || function() {var x = window[i+"_pdata"] = window[i+"_pdata"] || []; x[x.length]=arguments;};};gemius_pending("gemius_hit"); gemius_pending("gemius_event"); gemius_pending("pp_gemius_hit"); gemius_pending("pp_gemius_event");(function(d,t) {try {var gt=d.createElement(t),s=d.getElementsByTagName(t)[0],l="http"+((location.protocol=="https:")?"s":""); gt.setAttribute("async","async");gt.setAttribute("defer","defer"); gt.src=l+"://gthu.hit.gemius.pl/gemius.js"; s.parentNode.insertBefore(gt,s);} catch (e) {}})(document,"script"); </script> </body>
+</html>

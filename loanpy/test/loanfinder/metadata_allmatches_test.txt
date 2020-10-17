@@ -1,0 +1,50 @@
+
+    Number of matches: 5
+
+
+    Substitutes:
+
+    	Uniques: 5
+
+    	Structure distribution: [('CVCV', 5)]
+
+    	Consonant/Vowel Cluster distribution: [('æ', 4), ('e', 4), ('k', 3), ('s', 2), ('o', 2), ('ŋ', 2), ('l', 1), ('n', 1), ('j', 1)]
+
+    	Consonant/Vowel distribution: [('æ', 4), ('e', 4), ('k', 3), ('s', 2), ('o', 2), ('ŋ', 2), ('l', 1), ('n', 1), ('j', 1)]
+
+    	Distribution of word initial clusters: [('s', 2), ('k', 2), ('j', 1)]
+
+    	Distribution of word final clusters:  [('æ', 3), ('o', 1), ('e', 1)]
+
+    	Distribution of medial clusters:  [('e', 3), ('ŋ', 2), ('o', 1), ('l', 1), ('æ', 1), ('n', 1), ('k', 1)]
+
+    Hungarian words:
+
+    	Uniques: 5
+
+    	Distribution of matches (index in zaicz.csv : nr of matches): Counter({'agyag': 1, 'minta': 1, 'kazal': 1, 'hant': 1, 'jár': 1})
+
+    	Distribution of year of first appearance: Counter({1395: 2, 1772: 1, 1463: 1, 1200: 1})
+
+    	Distribution of part of speach (nltk-tags: n=noun,v=verb,a=adjective,r=other): Counter({'n': 4, 'v': 1})
+
+    	Distribution of origin: Counter({'G) WORDS OF UNKNOWN ORIGIN': 1, '1. Words created by conscious word formation in general': 1, 'c) Slovak newcomer words': 1, '1. Derivatives?': 1, '2. Ancient Finno-Ugric words': 1})
+
+    	Suffixes: Counter({nan: 1, nan: 1, nan: 1, nan: 1, nan: 1})
+
+   
+    Gothic words:
+
+    	Uniques: 3
+
+    	Distribution of matches: Counter({'hiuhma': 3, 'sauljō': 1, 'skaunei': 1})
+
+    	Uniques' part of speach (pos) distribution (nltk-tags: n=noun,v=verb,a=adjective,r=other): Counter({'n': 5})
+
+    	Uniques' occurences distribution: Counter({"['6']": 3, '[]': 2})
+
+    	Uniques' certainty distribution: Counter({'certain': 5})
+
+    	Uniques' reconstructedness distribution: Counter({nan: 3, 'word': 2})
+
+    

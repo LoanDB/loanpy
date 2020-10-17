@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+        <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=iso-8859-2">
+        <TITLE>Magyar-angol szótár</TITLE>
+
+<LINK href="/vmek2/vmek.php3" type="text/css" rel=STYLESHEET>
+</HEAD>
+<body text="#000000" bgcolor="#FFFFEE" link="#660000" vlink="#664422" alink="#444444" leftmargin=25 rightmargin=25>
+
+<center>
+
+  <a href=../index.htm>  <h1>Magyar-angol szótár</h1></a>
+<table align=center border=5 cellpadding=15 bgcolor="#FAFFEE"><tr><td>
+        <h2 align="center"> <a href=0-9.htm>0-9</a> &nbsp; <a href=a.htm>A-Á</a>
+          &nbsp; <a href=b.htm>B</a> &nbsp; <a href=c.htm>C-Cs</a> &nbsp; <a href=d.htm>D</a>
+          &nbsp; <a href=e.htm>E-É</a> &nbsp; <a href=f.htm>F</a> &nbsp; <a href=g.htm>G</a>
+          &nbsp; <a href=h.htm>H</a> &nbsp; <a href=i.htm>I-Í</a> &nbsp; <a href=j.htm>J</a>
+          &nbsp; <a href=k.htm>K</a> &nbsp; <a href=l.htm>L-Ly</a>
+          <br>
+          <a href=m.htm>M</a> &nbsp;  <a href=n.htm>N</a> &nbsp; <a href=o.htm>O-Ö</a>
+          &nbsp; <a href=p.htm>P</a>&nbsp; <a href=r.htm></a><a href=r.htm>R</a>
+          &nbsp; <a href=s.htm>S-Sz</a> &nbsp; <a href=t.htm>T-Ty</a> &nbsp; <a href=u.htm>U-Ü</a>
+          &nbsp; <a href=v.htm>V</a> &nbsp; <a href=w.htm>W</a> &nbsp; <a href="x.htm">X</a> &nbsp;
+          <a href=z.htm></a><a href=y.htm>Y</a> &nbsp; <a href=z.htm></a><a href=z.htm>Z-Zs</a>
+</td></tr></table><p><hr><p>
+</center>
+
+
+ 0 és 4 óra közötti őrség -&#187; midwatch<br>
+ 0 és 4 óra közötti őrszolgálat -&#187; midwatch<br>
+ 0.914 méter -&#187; yard<br>
+ 0,0648 g -&#187; grain<br>
+ 0,118 l (gb) -&#187; gill<br>
+ 0,142 l (us) -&#187; gill<br>
+ 0,473 l us -&#187; pint<br>
+ 0,568 l gb -&#187; pint<br>
+ 0,6 g -&#187; scruple<br>
+ 0,836 négyzetméter -&#187; super yard<br>
+ 0,914 méter -&#187; yard<br>
+ 0,946 liter (usa) -&#187; quart<br>
+ 1 tengeri mérföld óránként -&#187; knot<br>
+ 1/4 pint -&#187; gill<br>
+ 10 pontos betűnagyság -&#187; long primer<br>
+ 100 avoirdupois font -&#187; centner<br>
+ 100 kg -&#187; metric centner<br>
+ 1000 kcal -&#187; therm<br>
+ 1000 kg -&#187; metric ton<br>
+ 100-120 acre -&#187; ploughland<br>
+ 1016,6 kg -&#187; gross ton<br>
+ 108 köbláb -&#187; stack<br>
+ 11,34 kg (us) -&#187; quarter<br>
+ 1,136 liter (gb) -&#187; quart<br>
+ 114,30 cm -&#187; ell<br>
+ 11-es pont -&#187; penalty spot<br>
+ 12,7 kg (gb) -&#187; quarter<br>
+ 1,2-dioxi-antrakinon -&#187; alizarin<br>
+ 14 font -&#187; stone<br>
+ 144 darab -&#187; gross, gross<br>
+ 15 %-kal túlteljesített -&#187; he topped in 15 per cent<br>
+ 16 pontos betűnagyság -&#187; great primer<br>
+ 16 pontos betűnagyság -&#187; prime<br>
+ 1609,33 m -&#187; British mile<br>
+ 1609,33 m -&#187; statue mile<br>
+ 16-os vonal -&#187; penalty area<br>
+ 1728 darab -&#187; great gross<br>
+ 182,9 cm -&#187; fathom<br>
+ 1852 m -&#187; nautical mile<br>
+ 1852 m -&#187; sea mile<br>
+ 1852 m/óra -&#187; knot<br>
+ 1852,9 m -&#187; nautical mile<br>
+ 1905-ben született -&#187; he was born in 1905<br>
+ 1931-ben végzett évfolyam -&#187; class of 1931<br>
+ 1944-ben halt meg -&#187; he met his fate in 1944<br>
+ 19-es huszárezred -&#187; dumpies<br>
+ 2 fok 48 perc 45 másodperc -&#187; quarter<br>
+ 20 pontos betűnagyság -&#187; two-line long primer<br>
+ 200 milligramm -&#187; metric carat<br>
+ 201,16 méter -&#187; furlong<br>
+ 21 shilling -&#187; guinea<br>
+ 22 méteres lövés -&#187; drop-out<br>
+ 25 cent -&#187; quarter<br>
+ 25 cent -&#187; two bits<br>
+ 25 centes pénzdarab -&#187; quarter<br>
+ 25 font sterling -&#187; pony<br>
+ 25 g -&#187; quarter<br>
+ 25,3 négyzetméter -&#187; pole<br>
+ 2,54 cm -&#187; inch<br>
+ 25695 év -&#187; platonic period<br>
+ 25695 év -&#187; platonic year<br>
+ 259 ha -&#187; square mile<br>
+ 2,59 négyzetkilométer -&#187; square mile<br>
+ 2,9 hl -&#187; quarter<br>
+ 29 yard -&#187; mere<br>
+ 30,48 cm -&#187; foot, feet<br>
+ 31 yard -&#187; mere<br>
+ 3-4 pászmás sodrott kötél -&#187; hawser-laid rope<br>
+ 35,24 liter (us) -&#187; bushel<br>
+ 36,35 liter (gb) -&#187; bushel<br>
+ 373,24 gramm -&#187; troy<br>
+ 3,78 l -&#187; wine gallon<br>
+ 3,78 l us -&#187; gallon<br>
+ 3-alizarinszulfonsavas nátrium -&#187; alizarin red<br>
+ 4.8 km -&#187; league<br>
+ 440 yardos síkfutás -&#187; quarter<br>
+ 4,53 mázsa -&#187; kip<br>
+ 45,36 kg -&#187; centner<br>
+ 4,54 l -&#187; imperial gallon<br>
+ 4,54 l gb -&#187; gallon<br>
+ 457 mm -&#187; quarter<br>
+ 480 ív papír -&#187; ream<br>
+ 50 kg -&#187; centner<br>
+ 50 kg -&#187; metric hundredweight<br>
+ 50%-os us -&#187; proof spirit<br>
+ 500 dollár -&#187; monkey<br>
+ 500 font -&#187; monkey<br>
+ 500 lábnál alacsonyabban -&#187; at zero<br>
+ 500 méterrel a tengerszint felett -&#187; 500 m above sea level<br>
+ 5,03 méter -&#187; pole<br>
+ 5,5 yard -&#187; perch<br>
+ 57%-os gb -&#187; proof spirit<br>
+ 6,35 kg -&#187; stone<br>
+ 640 acre -&#187; section of land<br>
+ 8-11 éves lánycserkész -&#187; brownie<br>
+ 907,2 kg -&#187; short ton<br>
+ 9,08 liter -&#187; peck<br>
+ 9,10-diketoantracén -&#187; anthraquinone<br>
+    <br>
+    <br>
+</CENTER>
+<script type="text/javascript"> var gemius_identifier = "nA5K38S_R6j5UvHZZUaBxcUFjzOBaptU.eLGPQLqtjX.r7"; function gemius_pending(i) { window[i] = window[i] || function() {var x = window[i+"_pdata"] = window[i+"_pdata"] || []; x[x.length]=arguments;};};gemius_pending("gemius_hit"); gemius_pending("gemius_event"); gemius_pending("pp_gemius_hit"); gemius_pending("pp_gemius_event");(function(d,t) {try {var gt=d.createElement(t),s=d.getElementsByTagName(t)[0],l="http"+((location.protocol=="https:")?"s":""); gt.setAttribute("async","async");gt.setAttribute("defer","defer"); gt.src=l+"://gthu.hit.gemius.pl/gemius.js"; s.parentNode.insertBefore(gt,s);} catch (e) {}})(document,"script"); </script> </body>
+</html>

@@ -1,0 +1,11 @@
+webscraped from
+https://mek.oszk.hu/00000/00076/html/
+last access 05.10.2020, 17:47
+Self-description from website (in Hungarian):
+
+Az itt található szótár a Magyar Szabad Szoftver Alapítvány archívumából (ftp://almos.vein.hu/ssa/szotar) származik. Az eredeti szókészlet Vonyó Attila (vonyoa@almos.vein.hu) gyűjtése, melyet folyamatosan bővít és javít. Mivel az SSA csak némi késéssel veszi át a módosításokat, ezért az archívumukban található 1996. szeptemberi dátumú 0.0.2 verziót kiegészítettem az Attila homepage-én (http://almos.vein.hu/~vonyoa) levő szótárban talált új szavakkal (1997. decemberi állapot). A MEK változat így most 185,133 tételt tartalmaz, ez kb. 67 ezer különböző angol szóalakot jelent. A szókészlet semmilyen szempontból nem tekinthető teljesnek és nyelvi szempontból sincs ellenőrizve. A WinWord angol és magyar helyesírás-ellenőr programjával megpróbáltam a komolyabb íráshibákat kijavítani benne és töröltem a duplikátumokat. A szótár jelenlegi állapotában nem tartalmaz kiejtési útmutatót, a szavak használatára utaló megjegyzéseket, vagy részletes szómagyarázatokat.
+
+1998. január 5.
+
+Drótos László
+mekdl@iif.hu
