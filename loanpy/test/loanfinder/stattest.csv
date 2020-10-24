@@ -1,6 +1,0 @@
-﻿hun_idx,substi,got_idx,hun_en,got_en,semsim,hun_lemma,hun_year,hun_suffix,hun_orig_en,hun_pos,got_lemma,got_occurences,got_certainty,got_reconstructedness,got_pos
-890,solo,4063,"clay, loam","mud, muck, mire",1.0000001,agyag,1395,,G) WORDS OF UNKNOWN ORIGIN,n,sauljō,[],certain,word,n
-5948,sæne,4216,"cast, design, formula, formulae, model, motif, muster, paragon, pattern, prill, probe, sample, shape, standard","form, shape",1,minta,1772,,1. Words created by conscious word formation in general,n,skaunei,[],certain,word,n
-1638,kekæ,2541,stack,"crowd, mass, heap, multitude",1,kazal,1463,,c) Slovak newcomer words,n,hiuhma,['6'],certain,,n
-948,keŋæ,2541,mound,"crowd, mass, heap, multitude",1,hant,1395,,1. Derivatives?,n,hiuhma,['6'],certain,,n
-708,jeŋæ,2541,"gang, go, went, gone, run, ran, run, spook, step, travel, tread, trod, trodden, waggle, walk","crowd, mass, heap, multitude",1,jár,1200,,2. Ancient Finno-Ugric words,v,hiuhma,['6'],certain,,n
