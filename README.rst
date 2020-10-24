@@ -4,10 +4,7 @@ LOANPY
 | |loanpy|
 | |Build Status|
 
-loanpy is a tool for historical linguists. It extracts sound changes and
-constraints from an etymological dictionary, generates pseudo-roots for
-L1, pseudo- sound-substitutions for L2, searches for phonetically identical lexemes and
-ranks those according to semantic similarity.
+loanpy is a tool for historical linguists. It extracts sound changes and constraints from an etymological dictionary, generates pseudo-roots for L1, pseudo- sound-substitutions for L2, searches for phonetically identical lexeme-pairs and ranks them according to semantic similarity.
 
 Installation
 ~~~~~~~~~~~~
