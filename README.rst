@@ -31,7 +31,8 @@ vectors <https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit>`__. 
     >>> import os
     >>> print(os.path.dirname(lf.__file__)+r"\data")
 
-Following code will search for Gothic loanwords in the proto-Uralic stratum:
+Following code will compare a set of Gothic words (data/dfgot.csv) with Hungarian words (data/zaicz.csv) and evaluate which elements are the most likely candidates for loanwords.
+The result can be viewed in data/results/matches.csv:
 
 ::
 
