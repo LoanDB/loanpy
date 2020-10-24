@@ -113,7 +113,7 @@ def helpclean(filename,column):
         chars+=i
     return set(chars)
 
-#6.b cluean col "got_lemma"
+#6.b clean col "got_lemma"
 def clemma(entry):
     entry.replace("Pl.","")
     entry.lower()
