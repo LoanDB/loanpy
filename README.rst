@@ -52,7 +52,7 @@ License
 Academic Free License (AFL) (Creative Commons Attribution 4.0
 International)
 
-.. |loanpy| image:: https://github.com/martino-vic/Framework-for-computer-aided-borrowing-detection/blob/master/white_logo_dark_background.jpg
+.. |loanpy| image:: https://github.com/martino-vic/loanpy/blob/master/logo_resizeimage.svg
    :target: https://pypi.org/project/loanpy/
 .. |Build Status| image:: https://about.zenodo.org/static/img/logos/zenodo-gradient-square.svg
    :target: https://zenodo.org/record/4100594#.X5RgbIgzaUk
