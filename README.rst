@@ -54,4 +54,4 @@ International)
 .. |loanpy| image:: https://github.com/martino-vic/Framework-for-computer-aided-borrowing-detection/blob/master/white_logo_dark_background.jpg
    :target: https://pypi.org/project/loanpy/
 .. |Build Status| image:: https://about.zenodo.org/static/img/logos/zenodo-gradient-square.svg
-   :target: https://zenodo.org/record/4051875#.X2-EimgzaUk
+   :target: https://zenodo.org/record/4100594#.X5RgbIgzaUk
