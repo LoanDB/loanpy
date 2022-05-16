@@ -1,7 +1,7 @@
 et-xmlfile==1.0.1
 gensim==4.0.1
 ipatok==0.2.0
-numpy==1.20.2
+numpy==1.21.0
 openpyxl==3.0.7
 pandas==1.2.4
 python-dateutil==2.8.1
