@@ -1,0 +1,83 @@
+ID,Local_ID,Language_ID,Parameter_ID,Value,Form,Segments,Comment,Source,Cognacy,Loan,Graphemes,Profile
+H-0_carpenter-1,,H,0_carpenter,āč,āč,aː t͡ʃ,,wot,1,true,^ āč $,default
+EAH-0_carpenter-1,,EAH,0_carpenter,aγači,aγači,a ɣ a t͡ʃ i,,wot,1,true,^ aγači $,default
+WOT-0_carpenter-1,,WOT,0_carpenter,aγaččï,aγaččï,a ɣ a t͡ʃ t͡ʃ ɯ,,wot,1,true,^ aγaččï $,default
+H-1_cannoncatapult-1,,H,1_cannoncatapult,ādʹū,ādʹū,aː ɟ uː,,wot,2,true,^ ādʹū $,default
+OH-1_cannoncatapult-1,,OH,1_cannoncatapult,āldʹū,āldʹū,aː l ɟ uː,,wot,2,true,^ āldʹū $,default
+LAH-1_cannoncatapult-1,,LAH,1_cannoncatapult,aldau̯,aldau̯,a l d a w,,wot,2,true,^ aldau̯ $,default
+EAH-1_cannoncatapult-1,,EAH,1_cannoncatapult,aldaγ,aldaγ,a l d a ɣ,,wot,2,true,^ aldaγ $,default
+WOT-1_cannoncatapult-1,,WOT,1_cannoncatapult,aldaγ,aldaγ,a l d a ɣ,,wot,2,true,^ aldaγ $,default
+H-2_tofondlepetcaress-1,,H,2_tofondlepetcaress,åynāroz,åynāroz,ɒ j n aː r o z,,wot,3,true,^ åynāroz $,default
+EAH-2_tofondlepetcaress-1,,EAH,2_tofondlepetcaress,ayan,ayan,a j a n,,wot,3,true,^ ayan $,default
+WOT-2_tofondlepetcaress-1,,WOT,2_tofondlepetcaress,ayan,ayan,a j a n,,wot,3,true,^ ayan $,default
+H-6_streamcurrent-1,,H,6_streamcurrent,ākoš,ākoš,aː k o ʃ,,wot,4,true,^ ākoš $,default
+WOT-6_streamcurrent-1,,WOT,6_streamcurrent,akïš,akïš,a k ɯ ʃ,,wot,4,true,^ akïš $,default
+H-6_streamcurrent-2,,H,6_streamcurrent,ākoš,ākoš,aː k o ʃ,,wot,5,true,^ ākoš $,default
+WOT-6_streamcurrent-2,,WOT,6_streamcurrent,agïš,agïš,a ɡ ɯ ʃ,,wot,5,true,^ agïš $,default
+H-6_streamcurrent-3,,H,6_streamcurrent,āgoš,āgoš,aː ɡ o ʃ,,wot,6,true,^ āgoš $,default
+WOT-6_streamcurrent-3,,WOT,6_streamcurrent,akïš,akïš,a k ɯ ʃ,,wot,6,true,^ akïš $,default
+H-6_streamcurrent-4,,H,6_streamcurrent,āgoš,āgoš,aː ɡ o ʃ,,wot,7,true,^ āgoš $,default
+WOT-6_streamcurrent-4,,WOT,6_streamcurrent,agïš,agïš,a ɡ ɯ ʃ,,wot,7,true,^ agïš $,default
+H-7_falseimitation-1,,H,7_falseimitation,āl,āl,aː l,,wot,8,true,^ āl $,default
+EAH-7_falseimitation-1,,EAH,7_falseimitation,āl,āl,aː l,,wot,8,true,^ āl $,default
+WOT-7_falseimitation-1,,WOT,7_falseimitation,al,al,a l,,wot,8,true,^ al $,default
+H-11_piedofananimalscoat-1,,H,11_piedofananimalscoat,ålåč,ålåč,ɒ l ɒ t͡ʃ,,wot,9,true,^ ålåč $,default
+EAH-11_piedofananimalscoat-1,,EAH,11_piedofananimalscoat,alač,alač,a l a t͡ʃ,,wot,9,true,^ alač $,default
+WOT-11_piedofananimalscoat-1,,WOT,11_piedofananimalscoat,alačï,alačï,a l a t͡ʃ ɯ,,wot,9,true,^ alačï $,default
+H-11_piedofananimalscoat-2,,H,11_piedofananimalscoat,ålåč,ålåč,ɒ l ɒ t͡ʃ,,wot,10,true,^ ålåč $,default
+EAH-11_piedofananimalscoat-2,,EAH,11_piedofananimalscoat,alač,alač,a l a t͡ʃ,,wot,10,true,^ alač $,default
+WOT-11_piedofananimalscoat-2,,WOT,11_piedofananimalscoat,alaču,alaču,a l a t͡ʃ u,,wot,10,true,^ alaču $,default
+H-11_piedofananimalscoat-3,,H,11_piedofananimalscoat,ålåč,ålåč,ɒ l ɒ t͡ʃ,,wot,11,true,^ ålåč $,default
+EAH-11_piedofananimalscoat-3,,EAH,11_piedofananimalscoat,alač,alač,a l a t͡ʃ,,wot,11,true,^ alač $,default
+WOT-11_piedofananimalscoat-3,,WOT,11_piedofananimalscoat,alačo,alačo,a l a t͡ʃ o,,wot,11,true,^ alačo $,default
+H-11_piedofananimalscoat-4,,H,11_piedofananimalscoat,ålåč,ålåč,ɒ l ɒ t͡ʃ,,wot,12,true,^ ålåč $,default
+EAH-11_piedofananimalscoat-4,,EAH,11_piedofananimalscoat,alač,alač,a l a t͡ʃ,,wot,12,true,^ alač $,default
+WOT-11_piedofananimalscoat-4,,WOT,11_piedofananimalscoat,ålåč,ålåč,ɒ l ɒ t͡ʃ,,wot,12,true,^ ålåč $,default
+H-12_apple-1,,H,12_apple,ålmå,ålmå,ɒ l m ɒ,,wot,13,true,^ ålmå $,default
+EAH-12_apple-1,,EAH,12_apple,alma,alma,a l m a,,wot,13,true,^ alma $,default
+WOT-12_apple-1,,WOT,12_apple,alma,alma,a l m a,,wot,13,true,^ alma $,default
+H-14_barrelwoodencontainerandstandardquantity-1,,H,14_barrelwoodencontainerandstandardquantity,āltålåg,āltålåg,aː l t ɒ l ɒ ɡ,,wot,14,true,^ āltålåg $,default
+EAH-14_barrelwoodencontainerandstandardquantity-1,,EAH,14_barrelwoodencontainerandstandardquantity,altalag,altalag,a l t a l a ɡ,,wot,14,true,^ altalag $,default
+WOT-14_barrelwoodencontainerandstandardquantity-1,,WOT,14_barrelwoodencontainerandstandardquantity,altïlïg,altïlïg,a l t ɯ l ɯ ɡ,,wot,14,true,^ altïlïg $,default
+H-14_barrelwoodencontainerandstandardquantity-2,,H,14_barrelwoodencontainerandstandardquantity,ātålåg,ātålåg,aː t ɒ l ɒ ɡ,,wot,15,true,^ ātålåg $,default
+EAH-14_barrelwoodencontainerandstandardquantity-2,,EAH,14_barrelwoodencontainerandstandardquantity,altalag,altalag,a l t a l a ɡ,,wot,15,true,^ altalag $,default
+WOT-14_barrelwoodencontainerandstandardquantity-2,,WOT,14_barrelwoodencontainerandstandardquantity,altïlïg,altïlïg,a l t ɯ l ɯ ɡ,,wot,15,true,^ altïlïg $,default
+H-15_tonursetakecareof-1,,H,15_tonursetakecareof,āpol,āpol,aː p o l,,wot,16,true,^ āpol $,default
+OH-15_tonursetakecareof-1,,OH,15_tonursetakecareof,apol,apol,a p o l,,wot,16,true,^ apol $,default
+EAH-15_tonursetakecareof-1,,EAH,15_tonursetakecareof,op,op,o p,,wot,16,true,^ op $,default
+WOT-15_tonursetakecareof-1,,WOT,15_tonursetakecareof,op,op,o p,,wot,16,true,^ op $,default
+H-16_todecayputrifyturnstale-1,,H,16_todecayputrifyturnstale,āporodik,āporodik,aː p o r o d i k,,wot,17,true,^ āporodik $,default
+EAH-16_todecayputrifyturnstale-1,,EAH,16_todecayputrifyturnstale,oporo,oporo,o p o r o,,wot,17,true,^ oporo $,default
+WOT-16_todecayputrifyturnstale-1,,WOT,16_todecayputrifyturnstale,opura,opura,o p u r a,,wot,17,true,^ opura $,default
+H-17_smalltiny-1,,H,17_smalltiny,åprō,åprō,ɒ p r oː,,wot,18,true,^ åprō $,default
+OH-17_smalltiny-1,,OH,17_smalltiny,oprau̯,oprau̯,o p r a w,,wot,18,true,^ oprau̯ $,default
+EAH-17_smalltiny-1,,EAH,17_smalltiny,opuruγ,opuruγ,o p u r u ɣ,,wot,18,true,^ opuruγ $,default
+WOT-17_smalltiny-1,,WOT,17_smalltiny,opuruγ,opuruγ,o p u r u ɣ,,wot,18,true,^ opuruγ $,default
+H-19_tomow-1,,H,19_tomow,åråt,åråt,ɒ r ɒ t,,wot,19,true,^ åråt $,default
+EAH-19_tomow-1,,EAH,19_tomow,orat,orat,o r a t,,wot,19,true,^ orat $,default
+WOT-19_tomow-1,,WOT,19_tomow,orat,orat,o r a t,,wot,19,true,^ orat $,default
+H-19_tomow-2,,H,19_tomow,åråt,åråt,ɒ r ɒ t,,wot,20,true,^ åråt $,default
+EAH-19_tomow-2,,EAH,19_tomow,orat,orat,o r a t,,wot,20,true,^ orat $,default
+WOT-19_tomow-2,,WOT,19_tomow,or,or,o r,,wot,20,true,^ or $,default
+H-20_todecayputrefygobadoffoodwater-1,,H,20_todecayputrefygobadoffoodwater,ārik,ārik,aː r i k,,wot,21,true,^ ārik $,default
+EAH-20_todecayputrefygobadoffoodwater-1,,EAH,20_todecayputrefygobadoffoodwater,ār,ār,aː r,,wot,21,true,^ ār $,default
+WOT-20_todecayputrefygobadoffoodwater-1,,WOT,20_todecayputrefygobadoffoodwater,ar,ar,a r,,wot,21,true,^ ar $,default
+H-21_toharm-1,,H,21_toharm,ārt,ārt,aː r t,,wot,22,true,^ ārt $,default
+EAH-21_toharm-1,,EAH,21_toharm,ārtat,ārtat,aː r t a t,,wot,22,true,^ ārtat $,default
+WOT-21_toharm-1,,WOT,21_toharm,artat,artat,a r t a t,,wot,22,true,^ artat $,default
+H-22_atypeoflasso-1,,H,22_atypeoflasso,ārkāń,ārkāń,aː r k aː ɲ,,wot,23,true,^ ārkāń $,default
+EAH-22_atypeoflasso-1,,EAH,22_atypeoflasso,arkan,arkan,a r k a n,,wot,23,true,^ arkan $,default
+WOT-22_atypeoflasso-1,,WOT,22_atypeoflasso,arkan,arkan,a r k a n,,wot,23,true,^ arkan $,default
+H-23_ditchcanal-1,,H,23_ditchcanal,ārok,ārok,aː r o k,,wot,24,true,^ ārok $,default
+EAH-23_ditchcanal-1,,EAH,23_ditchcanal,āruk,āruk,aː r u k,,wot,24,true,^ āruk $,default
+WOT-23_ditchcanal-1,,WOT,23_ditchcanal,aruk,aruk,a r u k,,wot,24,true,^ aruk $,default
+H-24_barleyhordeum-1,,H,24_barleyhordeum,ārpå,ārpå,aː r p ɒ,,wot,25,true,^ ārpå $,default
+EAH-24_barleyhordeum-1,,EAH,24_barleyhordeum,arpa,arpa,a r p a,,wot,25,true,^ arpa $,default
+WOT-24_barleyhordeum-1,,WOT,24_barleyhordeum,arpa,arpa,a r p a,,wot,25,true,^ arpa $,default
+H-25_barrow-1,,H,25_barrow,ārtāń,ārtāń,aː r t aː ɲ,,wot,26,true,^ ārtāń $,default
+EAH-25_barrow-1,,EAH,25_barrow,aritan,aritan,a r i t a n,,wot,26,true,^ aritan $,default
+WOT-25_barrow-1,,WOT,25_barrow,arïtan,arïtan,a r ɯ t a n,,wot,26,true,^ arïtan $,default
+H-26_gauntrygantryforsupportingbarrels-1,,H,26_gauntrygantryforsupportingbarrels,āsok,āsok,aː s o k,,wot,27,true,^ āsok $,default
+OH-26_gauntrygantryforsupportingbarrels-1,,OH,26_gauntrygantryforsupportingbarrels,ask,ask,a s k,,wot,27,true,^ ask $,default
+EAH-26_gauntrygantryforsupportingbarrels-1,,EAH,26_gauntrygantryforsupportingbarrels,aski,aski,a s k i,,wot,27,true,^ aski $,default
+WOT-26_gauntrygantryforsupportingbarrels-1,,WOT,26_gauntrygantryforsupportingbarrels,askï,askï,a s k ɯ,,wot,27,true,^ askï $,default
