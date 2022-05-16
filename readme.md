@@ -1,4 +1,4 @@
-# Version 2.0 is on its way
+# Version 2.0 is on its way (for Python 3.9)
 
 Improvements since version 1.0:
 
