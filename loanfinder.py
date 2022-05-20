@@ -1,7 +1,7 @@
 """
-takes two wordlists as input, one in the tentative recipient language (recipdf) \
-and one in the tentative donor language (donordf) and returns \
-candidates for potential loanwords.
+Takes two lists of word-meaning pairs and returns a list of candidates for \
+(old) loanwords.
+
 """
 
 from ast import literal_eval
@@ -20,100 +20,221 @@ logger = getLogger(__name__)
 class NoPhonMatch(Exception):
     pass
 
-def read_data(path, colname, explosion): #explosion means explode
-    if path is None: return None
-    todrop = "wrong clusters|wrong phonotactics" if explosion is True else "not old|wrong phonotactics|wrong vowel harmony"
-    donordf = read_csv(path, encoding="utf-8", usecols=[colname]).fillna("")  # save RAM
-    donordf = donordf[~donordf[colname].str.contains(todrop)]
-    if explosion is True:
-        donordf[colname] = donordf[colname].str.split(", ")
-        donordf = donordf.explode(colname)  # one word per row
-    return donordf[colname]  # pd series
+def read_data(path2forms, adrc_col): #explosion means explode
+    """
+    Reads a column with adapted or reconstructed words in a forms.csv file, \
+drops empty elements, drops elements with certain keywords used by \
+loanpy.adrc.Adrc.adapt and \
+loanpy.adrc.Adrc.reconstruct, such as "not old", "wrong phonotactics", etc. \
+Splits elements by ", " and assigns every word its own spot in the \
+pandas Series which is returned. Called by loanpy.loanfinder.Search.__init__
+
+    :param path2forms: path to forms.csv
+    :type path2forms: pathlib.PosixPath | str | None
+
+    :param adrc_col: name of column containing predicted \
+adapted or reconstructed words
+    :type adrc_col: str
+
+    :return: Series object with one word per element. \
+Words can be regexes as well
+    :rtype: pandas.core.series.Series
+
+    :Example:
+
+    >>> from pathlib import Path
+    >>> from loanpy.loanfinder import __file__, read_data
+    >>> PATH2READ_DATA = Path(__file__).parent / "tests" / "integration" / \
+"input_files" / "ad_read_data.csv"
+    >>> read_data(PATH2READ_DATA, "col1")
+    0       a
+    1    blub
+    1    club
+    Name: col1, dtype: object
+
+    """
+    #so the class can be initiated even without path2forms
+    if path2forms is None: return None
+    #these red flags are returned by adapt() and reconstruct()
+    todrop = "wrong clusters|wrong phonotactics|not old|wrong phonotactics|wrong vowel harmony"
+    #reading only 1 column saves RAM. Expensive calculations ahead.
+    df_forms = read_csv(path2forms, encoding="utf-8", usecols=[adrc_col]).fillna("")
+    #drops columns with red flags
+    df_forms = df_forms[~df_forms[adrc_col].str.contains(todrop)]
+    #reconstructed words don't have ", " so nothing should happen there
+    df_forms[adrc_col] = df_forms[adrc_col].str.split(", ")
+    #explode is the pandas Series equivalent of flattening a nested list
+    df_forms = df_forms.explode(adrc_col)  # one word per row
+    return df_forms[adrc_col]  # a pandas Series object
 
 def gen(iterable1, iterable2, function, prefix="Calculating", *args):
-    """applies a function to two iteratbles, incl. progressbar with prefix"""
+    """
+    A generator that applies a function to two iterables, \
+incl. tqdm-progressbar with customisable prefix. \
+Called by loanpy.loanfinder.Search.loans to calculate phonological and \
+semantic distances.
+
+    :param iterable1: The first iterable, will be zipped with \
+iterable2 and and looped through.
+    :type iterable1: pathlib.PosixPath | list | ...
+
+    :param iterable2: The second iterable, will be zipped with \
+iterable1 and and looped through.
+    :type iterable2: pathlib.PosixPath | list | ...
+
+    :param function: The function that should be applied to the elements of \
+the tuples from the two zipped iterables.
+    :type function: function
+
+    :param prefix: The text that should be displayed by the progressbar
+    :type prefix: str, default="Calculating"
+
+    :param args: positional arguments that shall be passed to the function
+    :type args: any type
+
+    :return: the outputs of the function
+    :rtype: generator object
+
+    :Example:
+
+    >>> from loanpy.loanfinder import gen
+    >>> list(gen([1, 2, 3], [4, 5, 6], lambda x, y: x+y))
+    Calculating: 100%|███████████████████████████████████| 3/3 [00:00<00:00, 7639.90it/s]
+    [5, 7, 9]
+
+    >>> from loanpy.loanfinder import gen
+    >>> list(gen([1, 2, 3], [4, 5, 6], lambda x, y, z: x+y+z, "running 🏃", 1))
+    running 🏃: 100%|███████████████████████████████████| 3/3 [00:00<00:00, 7639.90it/s]
+    [6, 8, 10]
+    """
     for ele1, ele2 in zip(tqdm(iterable1, prefix), iterable2):
-        yield function(ele1, ele2, *args)
+        yield function(ele1, ele2, *args) # can't pass kwargs!
 
 class Search():
-    def __init__(self, path2donordf=None, path2recipdf=None, donorcol="ad", recipcol="rc",
+    """
+        Define the two word lists, the measurements to \
+calculate phonological distance and semantic similarity \
+and the thresholds below or above which to accept matches.
+
+        :param path2donordf: The path to forms.csv of the \
+donor language containing a column of predicted adaptations into \
+the recipient language.
+        :type path2donordf:  pathlib.PosixPath | str | None, \
+default=None
+
+        :param path2recipdf:  The path to forms.csv of the \
+recipient language, containing a column of \
+predicted backward-reconstructions stored as regular expressions.
+        :type path2recipdf: pathlib.PosixPath | str | None, \
+default=None
+
+        :param donorcol: The name of the column in the donor \
+language's forms.csv containing a column of predicted adaptations into \
+the tentative recipient language.
+        :type donorcol: str, default="ad"
+
+        :param recipcol: The name of the column in the recipient \
+language's forms.csv containing a column of words in that language. If we \
+are searching for old loanwords, this column can consist of regular expressions \
+that represent backward reconstructions of present-day words.
+        :type recipcol: str, default="rc"
+
+        :param phondist: The maximal phonological distance between two words. \
+By default, matches have to be identical.
+        :type phondist: int, default=0
+
+        :param phondist_msr: The name of the phonological distance measure. \
+Distance measures are methods of panphon.distance.Distance and can be read \
+by calling Python's inbuild help function, as shown in the first example.
+        :type phondist_msr: str, default="hamming_feature_edit_distance"
+
+        :param semsim: The minimal semantic similarity between the \
+meaning of words. By default, meaning have to be identical
+        :type semsim: int (float between -1 and 1 for gensim)
+
+        :param semsim_msr: The function with which to measure semantic \
+similarity.
+        :type semsim_msr: function of type func(a:str, b:str) -> int
+
+        :param scdictlist_ad: list of correspondence dictionaries between \
+tentative donor and recipient language generated with \
+loanpy.qfysc.get_sound_corresp. Not a dictionary, therefore sequence important.
+        :type scdictlist_ad: list of 6 dicts. Dicts 0, 1, 2 capture phonological \
+correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual \
+correspondences, dict1/dict4: How often they occur in the data, dict2/dict5: list of \
+cognates in which they occur.
+
+        :param scdictlist_rc: list of correspondence dictionaries between \
+present-day language and past stage of that language generated with \
+loanpy.qfysc.get_sound_corresp. Not a dictionary, therefore sequence important.
+        :type scdictlist_rc: list of 6 dicts. Dicts 0, 1, 2 capture phonological \
+correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual \
+correspondences, dict1/dict4: How often they occur in the data, dict2/dict5: list of \
+cognates in which they occur.
+
+        :Example:
+
+        >>> from panphon.distance import Distance
+        >>> help(Distance)
+
+        >>> from pathlib import Path
+        >>> from loanpy.loanfinder import Search, __file__
+        >>> path2rec = Path(__file__).parent / "tests" / "integration" \
+/ "input_files"/ "hun.csv"
+        >>> path2rec = Path(__file__).parent / "tests" / "integration" \
+/ "input_files"/ "got.csv"
+        >>> path2sc_ad = Path(__file__).parent / "input_files" / "sc_ad_3cogs.txt"
+        >>> path2sc_rc = Path(__file__).parent / "input_files" / "sc_rc_3cogs.txt"
+        >>> search_inst = Search(\
+path2donordf=path2don, \
+path2recipdf=path2rec, \
+donorcol="ad", \
+recipcol="rc", \
+scdictlist_ad=path2sc_ad, \
+scdictlist_rc=path2sc_rc)
+
+    """
+    def __init__(self, path2donordf=None, path2recipdf=None, donorcol="ad",
+                 recipcol="rc",
                  phondist=0, phondist_msr="hamming_feature_edit_distance",
                  semsim=1 , semsim_msr=gensim_multiword,
                  scdictlist_ad=None, scdictlist_rc=None):
-        """
-        Searches for phonetic matches in a wordlist.
 
-        :param donordf: The name of the dataframe containing the \
-        wordlist of the tentative donor language
-
-        :type donordf: str
-
-        :param donorcol: The name of the column in the dataframe containing the \
-        wordlist of the tentative recipient language
-
-        :type donordf: str
-
-        :param recipdf: The name of the input-csv that contains the input column for recipdf.
-        :type recipdf: str
-
-        # :param recipcol: The name of the input column that contains the input words for recipdf.
-        :type recipcol: str
-
-        :param donordf: The name of the input-csv that contains the input column for donordf.
-        :type donordf: str, default
-
-        :param donorcol: The name of the input column that contains the input words for donordf.
-        :type donorcol: str
-
-        :param sedict: Indicate the name of the file containing the sum of examples \
-        for each sound change in the etymological dictionary of recipdf. This file is \
-        generated by loanpy.reconstructor.dfetymology2dict
-        :type sedict: str, default="sedict.txt"
-
-        :param edict: Indicate the name of the file containing the examples for each sound \
-        change in the etymological dictionary of recipdf. This file is generated by \
-        loanpy.reconstructor.dfetymology2dict
-        :type edict: str, default="edict.txt"
-
-        :param sedict_ad: Indicate the name of the file containing the sum of examples \
-        for each substitution. This file is \
-        generated by loanpy.qfysc.Qfy().dfetymology2dict()
-        :type sedict_ad: str, default="sedict_ad.txt"
-
-        :param edict_ad: Indicate the name of the file containing the examples \
-        for each substitution. This file is \
-        generated by loanpy.qfysc.Qfy().dfetymology2dict()
-        :type edict_ad: str, default="edict_ad.txt"
-        """
-
-        self.search_in = read_data(path2donordf, donorcol, True)
-        self.search_for = read_data(path2recipdf, recipcol, False)
+        # pandas Series of predicted adapted donor words in which to search
+        self.search_in = read_data(path2donordf, donorcol)
+        # pd Series of regexes of reconstructed recipient words to search for
+        self.search_for = read_data(path2recipdf, recipcol)
+        # path to donor and recipient forms.csv to read extra infos later
         self.donpath, self.recpath = path2donordf, path2recipdf
-        self.doncol, self.reccol = donorcol, recipcol #has to be reused in postprocessing
+        # names of the columns containing adapted and reconstructed words
+        self.doncol, self.reccol = donorcol, recipcol # used in postprocessing
 
-        self.phondist = phondist
-        self.phondist_msr = getattr(Distance(), phondist_msr)
-        self.semsim = semsim
-        self.semsim_msr = semsim_msr
+        self.phondist = phondist # maximal phonological distance of a mtach
+        self.phondist_msr = getattr(Distance(), phondist_msr) #distance measure
+        self.semsim = semsim # minimal semantic similarity of a match
+        self.semsim_msr = semsim_msr # semantic similarity measuring function
 
+        # normalised sum of examples for adaptions and reconstructions
         self.get_nse_ad = Adrc(scdictlist=scdictlist_ad, mode="adapt").get_nse
         self.get_nse_rc = Adrc(scdictlist=scdictlist_rc, mode="reconstruct").get_nse
 
     def phonmatch(self, search_for, index, dropduplicates=True):
-
         """
         Check if a regular expression is contained \
-        in a wordlist and replace it with a number
+in a wordlist and replace it with a number. \
+The wordlist is a pandas Series object that gets initiated in \
+loanpy.loanfinder.Search. To pass a wordlist in through the parameter \
+of this function, use loanpy.loanfinder.Search.phonmatch_small
 
-        :param searchfor: The regular expression for which to search in the wordlist
-        :type searchfor: str
+        :param search_for: The regular expression for which to search in the \
+donor language.
+        :type search_for: str
 
         :param index: The number with which to replace a match. \
         (This number will be \
         used to merge the rest of the recipdf data frame, so it should represent \
-        the index in the recipdf data frame. Subtract 2 from the index that Excel shows \
-        because Python starts counting at zero and does not count headers.)
-        :type index: str
+        the index in the recipdf data frame.)
+        :type index: idx
 
         :param dropduplicates: If set to True, this will drop matches that have the same \
         index in the wordlist \
@@ -125,82 +246,75 @@ class Search():
         which of all possible matches are the most likely, set dropduplicates=False)
         :type dropduplicates: bool, default=True
 
-        :return: a pandas data frame containing phonetic matches. The index \
+        :return: a pandas data frame containing phonological matches. The index \
         indicates the position of the word in the donordf word list. \
         The column "L1_idx" indicates \
         the position of the word in the recipdf word list.
-        :rtype: pandas.core.frame.DataFrame
-
-        :Examples:
-
-        >>> import pandas as pd
-        >>> from loanpy import loanfinder as lf
-        >>> pho = lf.Phonetix("dfgot_wiktionary.csv", "L2_latin")
-        >>> pho.findphoneticmatches("^anna$", 5)
-        +---+----------------+-----------+
-        |   |L2_latin_match  |  L1_idx   |
-        +---+----------------+-----------+
-        |288| anna           |     5     |
-        +---+----------------+-----------+
-
-        >>> import pandas as pd
-        >>> from loanpy import loanfinder as lf
-        >>> pho = lf.Phonetix("dfgot_wiktionary.csv", "L2_latin")
-        >>> pho.findphoneticmatches("^abraham$|^anna$", 123)
-        +---+----------------+-----------+
-        |   |L2_latin_match  |  L1_idx   |
-        +---+----------------+-----------+
-        |6  |      abraham   |     123   |
-        +---+----------------+-----------+
-        |288|      anna      |     123   |
-        +---+----------------+-----------+
-
-        >>> import pandas as pd
-        >>> from loanpy import loanfinder as lf
-        >>> pho = lf.Phonetix("dfgot_wiktionary.csv", "L2_latin")
-        >>> pho.findphoneticmatches("^a(nn|br)a(ham)?$", 456)
-        +---+----------------+-----------+
-        |   |L2_latin_match  |  L1_idx   |
-        +---+----------------+-----------+
-        |6  |      abraham   |     456   |
-        +---+----------------+-----------+
-        |288|      anna      |     456   |
-        +---+----------------+-----------+
+        :rtype: pandas.core.series.Series
 
         """
-        if self.phondist == 0:
+        # maximal phonetic distance == 0 means only identical words are matches
+        if self.phondist == 0: # will drop all non-identical elements
             matched = self.search_in[self.search_in.str.match(search_for)]
-        else:
+        else: # will otherwise drop everything above the max distance
             self.phondist_msr = partial(self.phondist_msr, target=search_for)
             matched = self.search_in[self.search_in.apply(self.phondist_msr) <= self.phondist]
 
+        # creates new col "recipdf_idx" - keys to the input df
         dfphonmatch = DataFrame({"match": matched, "recipdf_idx": index})
 
+        # this makes things more economical. dropping redundancies
         if dropduplicates is True:
             dfphonmatch = dfphonmatch[~dfphonmatch.index.duplicated(keep='first')]
+
+        #returns a pandas data frame
         return dfphonmatch
 
     def loans(self, write_to=False, postprocess=False, merge_with_rest=False):
+        """
+        The main function of this module. Searches for phonological matches \
+and calculates their semantic similarity. Returns candidate list of loans.
 
-        #find phonetic matches
+        :param write_to: indicate if results should be written to file. \
+If yes, provide path.
+        :type write_to: pathlib.PosixPath | str | None | False, \
+default=False
+
+        :param postprocess: Indicate if results should be postprocessed. See \
+loanpy.loanfinder.Search.postprocess for more details
+        :type postprocess: bool, default=False
+
+        :param merge_with_rest: Indicate if additional info from input \
+data frame columns should be copied into the output data frame. \
+Helps with quick debugging sometimes. See \
+loanpy.loanfinder.Search.merge_with_rest for more details
+        :type merge_with_rest: bool, default=False
+
+        :returns: data frame with potential loanwords
+        :rtype: pandas.core.series.Series
+        """
+
+        #find phonological matches
         dfmatches = concat(gen(self.search_for, self.search_for.index, self.phonmatch,
-                               "searching for phonetic matches: "))
+                               "searching for phonological matches: "))
         #raise exception if no matches found
-        if len(dfmatches) == 0: raise NoPhonMatch("no phonetic matches found")
+        if len(dfmatches) == 0: raise NoPhonMatch("no phonological matches found")
 
         #add translations for semantic comparison
         dfmatches = dfmatches.merge(read_csv(self.recpath, encoding="utf-8", usecols=["Meaning"]).fillna(""), left_on="recipdf_idx", right_index=True)
         dfmatches = dfmatches.merge(read_csv(self.donpath, encoding="utf-8", usecols=["Meaning"]).fillna(""), left_index=True, right_index=True)
 
-        #calculate semantic similarity of phonetic matches
+        #calculate semantic similarity of phonological matches
         dfmatches[self.semsim_msr.__name__] = list(
         gen(dfmatches["Meaning_x"], dfmatches["Meaning_y"], self.semsim_msr,
-        "calculating semantic similarity of phonetic matches: "))
+        "calculating semantic similarity of phonological matches: "))
 
+        #sorting and cutting off words with too low semantic similarity
         logger.warning(f"cutting off by semsim ({self.semsim}) and ranking by semantic similarity, ...")
         dfmatches = dfmatches[dfmatches[self.semsim_msr.__name__] >= self.semsim]
         dfmatches = dfmatches.sort_values(by=self.semsim_msr.__name__, ascending=False)
 
+        # 3 optional extra steps indicated in params, skipped by default
         if postprocess: dfmatches = self.postprocess(dfmatches)
         if merge_with_rest: dfmatches = self.merge_with_rest(dfmatches)
         if write_to:
@@ -211,13 +325,26 @@ class Search():
         return dfmatches
 
     def postprocess(self, dfmatches):
+        """
+        Will replace every phonological match \
+in the output data frame with its most likely version.
+
+        :param dfmatches: The entire data frame with potential loanwords
+        :type dfmatch: pandas.core.series.Series
+
+        :returns: the same dataframe but with likelier adaptations of donor \
+words
+        :rtype: pandas.core.series.Series
+
+        """
         logger.warning(f"postprocessing...")
-        #read in data for likeliestphonmatch
+        #read in data for likeliestphonmatch, i.e. col Segments in both,
+        #donor and recipient dataframes
         dfmatches = dfmatches.merge(read_csv(self.recpath, encoding="utf-8", usecols=["Segments", self.reccol]).fillna(""),left_on="recipdf_idx", right_index=True)
         dfmatches = dfmatches.merge(read_csv(self.donpath, encoding="utf-8", usecols=["Segments", self.doncol]).fillna(""),left_index=True, right_index=True)
         dfmatches["Segments_x"] = [i.replace(" ", "") for i in dfmatches["Segments_x"]]
         dfmatches["Segments_y"] = [i.replace(" ", "") for i in dfmatches["Segments_y"]]
-        #calculate likeliest phonetic matches
+        #calculate likeliest phonological matches
         newcols = concat([
         self.likeliestphonmatch(ad, rc, segd, segr) for ad, rc, segd, segr
         in zip(dfmatches[self.doncol], dfmatches[self.reccol],
@@ -230,37 +357,43 @@ class Search():
         del (dfmatches["Segments_x"], dfmatches[self.reccol],
             dfmatches["Segments_y"], dfmatches[self.doncol])
 
-        return dfmatches
+        return dfmatches #same structure as input df
 
     def likeliestphonmatch(self, donor_ad, recip_rc, donor_segment, recip_segment):
         """
-        Calculates the nse of recip_rc-recip_orig and donor_ad-donor_orig, adds them together\
-        and picks the word pair with the highest sum.
+        Calculates the nse of recip_rc-recip_segment \
+and donor_ad-donor_segment, adds them together \
+and picks the word pair with the highest sum. Adds cols with bonus info.
 
-        :param recip_rc: a reconstructed recipdf-root
-        :type recip_rc: regular expression
+        :param recip_rc: a reconstructed word
+        :type recip_rc: str (regular expression)
 
-        :param donor_ad: adapted donordf-words, separated by ", "
-        :type donor_ad: str
+        :param donor_ad: adapted words in the donor data frame
+        :type donor_ad: str (not a regular expression, words separated by ", ")
 
-        :param recip_orig: a documented recipdf-reflex
-        :type recip_orig: str
-
-        :param donor_orig: the donor word
+        :param donor_segment: the original (non-adapted) donor word
         :type donor_orig: str
 
-        :return: The likeliest phonetic match
-        :rtype: pandas.core.frame.DataFrame
+        :param recip_segment: the original (non-reconstructed) recipient word
+        :type recip_segment: str
+
+        :returns: The likeliest phonological match
+        :rtype: pandas.core.series.Series
 
         """
+        # step 1: serach for phonological matches between
+        # reconstructed regex and list of predicted adaptations
         dfph = self.phonmatch_small(Series(donor_ad.split(", "), name="match"), recip_rc, dropduplicates=False)
+        #get the nse score between original and predictions
+        #and write to new columns
+        #cols se_rc, lst_rc, se_ad, lst_ad are just extra info for the user
         dfph = DataFrame([
         (wrd,)+self.get_nse_rc(recip_segment, wrd, True, True)+self.get_nse_ad(donor_segment, wrd, True, True)
         for wrd in dfph["match"]], columns=["match", "nse_rc", "se_rc", "lst_rc",
         "nse_ad", "se_ad", "lst_ad"])
         #add combined nse
         dfph["nse_combined"] = dfph["nse_rc"] + dfph["nse_ad"]
-        #get idx of max combined, keep only that idx
+        #get idx of max combined, keep only that idx (=likeliest match)
         dfph = dfph[dfph.index == dfph["nse_combined"].idxmax()]
         #add examples
         dfph["e_rc"] = [self.get_nse_rc(recip_segment, wrd, False, False) for wrd in dfph["match"]]
@@ -271,11 +404,42 @@ class Search():
     def phonmatch_small(self, search_in, search_for, index=None, dropduplicates=True):
 
         """
-        Same as phonmatch() but search_in has to be added as a parameter. Found this \
-        to be the most elegant solution b/c likeliestphonmatch() inputs lots of \
-        small and very different search_in-dfs, while loans() inputs one big df \
+        Same as loanpy.loanfinder.Serch.phonmatch but search_in \
+has to be added as a parameter. Found this \
+to be the most elegant solution b/c \
+loanpy.loanfinder.Search.likeliestphonmatch() inputs lots of \
+small and very different search_in-dfs, while loans() inputs one big df.
+
+        :param search_in: The iterable to search within
+        :type search_in: pandas Series
+
+        :param search_for: The regular expression for which to search in the wordlist
+        :type searchfor: str
+
+        :param index: The number with which to replace a match. \
+        (This number will be \
+        used to merge the rest of the recipdf data frame, so it should represent \
+        the index in the recipdf data frame.)
+        :type index: str
+
+        :param dropduplicates: If set to True, this will drop matches that have the same \
+        index in the wordlist \
+        (There's one adapted donordf-word per row, but its index \
+        is the same as the original donordf word's from which it was adapted. \
+        Therefore one recipdf word can match with the same donordf word through multiple \
+        adaptations. Since the semantics are the same for all of those matches, duplicates can be dropped. \
+        For a more precise search, e.g. to find out \
+        which of all possible matches are the most likely, set dropduplicates=False)
+        :type dropduplicates: bool, default=True
+
+        :returns: a pandas data frame containing phonological matches. The index \
+        indicates the position of the word in the donordf word list. \
+        The column "L1_idx" indicates \
+        the position of the word in the recipdf word list.
+        :rtype: pandas.core.series.Series
 
         """
+        #for inline comments see loanpy.loanfinder.Search.phonmatch
         if self.phondist == 0:
             matched = search_in[search_in.str.match(search_for)]
         else:
@@ -289,6 +453,17 @@ class Search():
         return dfphonmatch
 
     def merge_with_rest(self, dfmatches):
+        """
+        Merges the output data frame with the remaining columns \
+from both input data frames. This helps to inspect results quickly manually.
+
+        :param dfmatches: The output data frame
+        :type dfmatches: pandas.core.frame.DataFrame
+
+        :returns: same data frame with extra cols added from both \
+input forms.csv
+        :rtype: pandas.core.frame.DataFrame
+        """
         logger.warning(f"Merging with remaining columns from input data frames")
         dfmatches = dfmatches.drop(["Meaning_x", "Meaning_y"], axis=1)  # avoid duplicates
         dfmatches = dfmatches.merge(read_csv(self.donpath, encoding="utf-8").fillna(""),left_index=True, right_index=True)

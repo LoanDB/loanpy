@@ -1,4 +1,7 @@
-"""check how many guesses are needed to reconstruct the correct form, calculate the tpr and fpr, plot the ROC-curve"""
+"""
+Make sure our model is not crazy.
+
+"""
 
 from collections import OrderedDict
 from datetime import datetime
@@ -6,8 +9,9 @@ from math import ceil
 from re import search
 from time import gmtime, strftime, time
 
-from matplotlib.pyplot import (legend, plot, savefig, scatter, text, title,
-                               xlabel, ylabel)
+try: from matplotlib.pyplot import (legend, plot, savefig, scatter, text, title,
+                                   xlabel, ylabel)
+except KeyError: pass ##Sphinx needs this to generate the documentation
 from pandas import DataFrame, concat, read_csv
 from panphon.distance import Distance
 from tqdm import tqdm
@@ -25,13 +29,13 @@ class Missing_dfargscsv(Exception):
     pass
 
 def eval_all(
-opt_param_path,  # path to DIY cache (contains optimal parameters)
 formscsv, # name of df to evaluate (forms.csv in cldf)
 tgt_lg,  # target language in forms.csv (cldf format)
 src_lg,  # source language in forms.csv (cldf format)
-crossval,  # boolean: Should word to predict be isolated from training data?
+opt_param_path=None,  # path to DIY cache (contains optimal parameters)
+crossval=True,  # boolean: Should word to predict be isolated from training data?
 #the following 9 args go into adrc.adapt
-guesslist,  # list of input args for param "howmany"
+guesslist=[10, 50, 100, 500, 1000],  # list of input args for param "howmany"
 max_struc=1,  # ceiling for nr of repaired phonotactic structures
 max_paths=1,  # ceiling for nr of paths to repaired phonotactic strucs
 writesc=False,  # should soundchanges.txt be written to file (for debugging)
@@ -41,29 +45,153 @@ sort_by_nse=False,  # goes into adrc.adapt or reconstruct
 struc_filter=False,  # goes into adrc.adapt or reconstruct
 show_workflow=False,  # goes into adrc.adapt
 #should scdictbase be generated?
-scdictbase=False,
+scdictbase=None, # cannot be bool!
 mode="adapt", #should we adapt or reconstruct (two funcs in adrc.py)
 #the following args are part of post processing
 write_to=None,  # path name if df should be written to csv-file
 plot_to=None, # path name if curves should be drawn with matplotlib else None
 plotldnld=False):  # indicate if normalised levenshtein distance should be calculated
-    """The main function. Evaluates the quality of predictions, optimises params"""
+    """
+
+    Trains models, evaluates and visualises predictions.
+
+    Positional arguments:
+
+    :param formscsv: The path to cldf's forms.csv of the etymological \
+dictionary. Will be used to initiate loanpy.adrc.Adrc. For more details see \
+loanpy.helpers.read_forms.
+    :type formscsv: pathlib.PosixPath | str
+
+    :param tgt_lg: The computational target language. Will be used to \
+initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.Etym.
+    :type tgt_lg: str (options are listed in column "ID" in \
+cldf / etc / languages.tsv), default=None
+
+    :param src_lg: The computational source language. Will be used to \
+initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.Etym.
+    :type src_lg: str (options are listed in column "ID" in \
+cldf / etc / languages.tsv), default=None
+
+    Keyword arguments:
+
+    :param opt_param_path: The path to the csv-file in which information \
+about input-parameters and evaluated results is stored. If path points to \
+a non-existent file, the correct file will be created. \
+If set to None, it will be written to cldf's folder etc (concluded from \
+the path provided in parameter <formscsv>) and will be called f"opt_param_\
+{tgt_lg}_{src_lg}". \
+For more information \
+see loanpy.sanity.check_cache.
+    :type opt_param_path: pathlib.PosixPath | str
+
+    :param crossval: Indicate if results should be cross-validated. If true, \
+the model with which we predict an adaptation or a reconstruction \
+of a word will be trained without that word.
+    :type crossval: bool
+
+    :param guesslist: The list of number of guesses to be made. Will be \
+passed into loanpy.adrc.Adrc.adapt's or loanpy.adrc.Adrc.reconstruct's \
+parameter <howmany> in a loop. Loop breaks if prediction was correct.
+    :type guesslist: list of int
+
+    :param max_struc: The maximum number of phonotactic strucutres into which \
+the original string should be transformed. Will be passed into \
+loanpy.adrc.Adrc.adapt's parameter <max_struc>
+    :type max_struc: int, default=1
+
+    :param max_paths: The maximum number of cheapest paths through which a \
+phonotactic structure can be repaired. Will be passed into \
+loanpy.adrc.Adrc.adapt's parameter <max_paths>
+    :type max_paths: int, default=1
+
+    :param writesc: Indicate if loanpy.qfysc.Qfy.get_sound_corresp should \
+write its output to a file. If yes and if crossval is True, \
+provide a path to a *folder* (!). If yes and crossval is False, \
+provide a path to a file. \
+This is useful for debugging. \
+Careful: Since one file will be written in every \
+round of the cross-validation loop (as many iterations as there are \
+predictions to evaluate), the total storage room taken up by the files can \
+get large. E.g. if we want to evaluate 500 words and scdictbase is \
+1.6MB, the entire folder will take up 500*1.6MB. There are two ways to \
+avoid this: If writesc=True, make sure to set either crossval=False, this will \
+only write one soundchange.txt file. Or set scdictbase=None, since this is \
+the part that takes up the most storage. Predictions will be blurred in both \
+cases but for debugging this is usually enough.
+    :type writesc: bool, def=False
+
+    :param vowelharmony: Will be passed to loanpy.adrc.Adrc.adapt's or \
+loanpy.adrc.Adrc.reconstruct's parameter <vowelharmony>. \
+Indicate whether vowelharmony should be repaired \
+if passed on to adapt() or if results violating the constraint "front-back \
+vowelharmony" should be filtered out if passed on to reconstruct().
+    :type vowelharmony: bool, default=False
+
+    :param clusterised: Will be passed to loanpy.adrc.Adrc.adapt's or \
+loanpy.adrc.Adrc.reconstruct's parameter <clusterised>. \
+Indicate whether predictions that contain consonant or \
+vowel clusters that are not documented in the target language should be \
+filtered out if passed on to adapt() or if the tokeniser should \
+clusterise the input-word and look in the sound correspondence dictionary \
+for clusters as keys to predictions if passed on to reconstruct().
+    :type clusterised: bool, def=False
+
+    :param sort_by_nse: Indicate if predictions should be sorted by likelihood
+    :type sort_by_nse: bool, default=False
+
+    :param struc_filter: Indicate if predictions made by \
+loanpy.adrc.Adrc.adapt should be filtered out if they consist of a \
+phonotactic structure that is not contained in the language's \
+phonotactic inventory.
+    :type struc_filter: bool, default=False
+
+    :param show_workflow: Indicate whether the workflow should be \
+displayed in the output. Useful for debugging.
+    :type show_workflow: bool, default=False
+
+    :param scdictbase: Indicate whether sound correspondences based \
+on data should be combined with the (rather large) dictionary of \
+heuristic correspondences. For pitfalls see param <writesc>.
+    :type scdictbase: None | pathlib.PosixPath | dict
+
+    :param mode: Indicate whether predictions should be made with \
+loanpy.adrc.Adrc.reconstruct or loanpy.adrc.Adrc.adapt.
+    :type mode: "adapt" | "reconstruct", default="adapt"
+
+    :param write_to: Indicate whether results should be written to a \
+text file. If yes, provide the path. None means that no file will be written.
+    :type write_to: None | pathlib.PosixPath | str, default=None
+
+    :param plot_to: Indicate whether results should be plotted as an \
+ROC-curve to a jpg-ile. If yes, provide the path. \
+None means that no file will be written.
+    :type plot_to: None | pathlib.PosixPath | str, default=None
+
+    :param plotldnld: Indicate whether Levenshtein distances and normalised \
+Levenshtein distances should be plotted. Does currently not work.
+    :type plotldnld: bool, default=False
+
+    """
+
+    if opt_param_path is None: opt_param_path = formscsv.parent.parent / "\
+etc" / f"opt_params_{src_lg}_{tgt_lg}.csv"
 
     eval_all_args = locals()
     check_cache(opt_param_path, eval_all_args)
+
     adrc_obj, step7_fp, best_guess, workflow = Adrc(
-    src_lg, tgt_lg, formscsv=formscsv, mode=mode), [], [], OrderedDict({"target": [],
+    src_lg, tgt_lg, formscsv=formscsv, mode=mode, scdictbase=scdictbase
+    ), [], [], OrderedDict({"target": [],
     "source": [], "sol_idx_plus1": [], "tokenised": [], "adapted_struc": [],
     "adapted_vowelharmony": [], "before_combinatorics": [], "donor_struc": [],
     "pred_strucs": []})
-    if scdictbase: adrc_obj.get_scdictbase(write_to=writesc)
-    if crossval is False: adrc_obj.scdict, adrc_obj.sedict, _, adrc_obj.scdict_struc, _, _ = adrc_obj.get_sound_corresp(writesc / "sc.txt") #getsc
+
+    if crossval is False: adrc_obj.scdict, adrc_obj.sedict, _, adrc_obj.scdict_struc, _, _ = adrc_obj.get_sound_corresp(writesc) #getsc
 
     start = time()
     for idx,(srcwrd, tgtwrd) in tqdm(
     enumerate(zip(adrc_obj.dfety["Source_Form"], adrc_obj.dfety["Target_Form"]))):
         if crossval is True: adrc_obj = get_sc(adrc_obj, idx, writesc)
-
         solution = eval_one(adrc_obj, srcwrd, tgtwrd, guesslist,
         max_struc, max_paths, vowelharmony,
         clusterised, sort_by_nse, struc_filter, show_workflow, mode)
@@ -130,9 +258,8 @@ def eval_one(adrc_obj, srcwrd, tgtwrd, guesslist, max_struc, max_paths,
 vowelharmony, clusterised, sort_by_nse, struc_filter, show_workflow, mode): #11 args b/c + tgtwrd!
 
     sol_dict = {"sol_idx_plus1": float("inf"), "best_guess": ""}
-
-    for guess in guesslist:
-        if mode == "adapt":
+    if mode == "adapt":
+        for guess in guesslist:
             guess = get_howmany(guess, max_struc, max_paths)
             try: adapted = adrc_obj.adapt(srcwrd, guess[0], guess[1], guess[2], #9 args b/c no tgtwrd!
             vowelharmony, clusterised, sort_by_nse, struc_filter, show_workflow)
@@ -147,10 +274,11 @@ vowelharmony, clusterised, sort_by_nse, struc_filter, show_workflow, mode): #11 
                 sol_dict["best_guess"] = tgtwrd
                 break
 
-        elif mode == "reconstruct":
+    elif mode == "reconstruct":
+        for guess in guesslist:
             srcwrd, tgtwrd = tgtwrd, srcwrd
             try: reconstructed = adrc_obj.reconstruct(srcwrd, guess, clusterised, struc_filter,
-            vowelharmony,sort_by_nse)
+            vowelharmony, sort_by_nse)
             except KeyError:
                 sol_dict["best_guess"] = "KeyError"
                 break
@@ -165,7 +293,7 @@ vowelharmony, clusterised, sort_by_nse, struc_filter, show_workflow, mode): #11 
                 reconstructed = reconstructed[1:-1].split("$|^") #turn2list
                 sol_dict["best_guess"] = reconstructed[0]
                 if tgtwrd in reconstructed:
-                    sol_dict["sol_idx_plus1"] = reconstsructed.index(tgtwrd)+1
+                    sol_dict["sol_idx_plus1"] = reconstructed.index(tgtwrd)+1
                     sol_dict["best_guess"] = tgtwrd
                     break
 
