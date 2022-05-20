@@ -1,0 +1,53 @@
+loanpy package
+==============
+
+Submodules
+----------
+
+loanpy.adrc module
+------------------
+
+.. automodule:: loanpy.adrc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+loanpy.helpers module
+---------------------
+
+.. automodule:: loanpy.helpers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+loanpy.loanfinder module
+------------------------
+
+.. automodule:: loanpy.loanfinder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+loanpy.qfysc module
+-------------------
+
+.. automodule:: loanpy.qfysc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+loanpy.sanity module
+--------------------
+
+.. automodule:: loanpy.sanity
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: loanpy
+   :members:
+   :undoc-members:
+   :show-inheritance:

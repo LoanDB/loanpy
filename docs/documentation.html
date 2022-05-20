@@ -1,0 +1,1664 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Intro &#8212; loanpy 2.0 beta documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to loanpy’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to loanpy’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">loanpy 2.0 beta documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Intro</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-__init__">
+<span id="intro"></span><h1>Intro<a class="headerlink" href="#module-__init__" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://pypi.org/project/loanpy/"><img alt="_images/PyPI_logo.svg" src="_images/PyPI_logo.svg" /></a>
+<a class="reference external image-reference" href="https://zenodo.org/record/4127115#.YHCQwej7SLQ"><img alt="_images/zenodo-gradient-200.png" src="_images/zenodo-gradient-200.png" /></a>
+<a class="reference external image-reference" href="https://github.com/martino-vic/loanpy"><img alt="_images/Octocat.png" src="_images/Octocat.png" style="width: 280.0px; height: 232.74999999999997px;" /></a>
+<p>Loanpy is a toolkit for solving various linguistic tasks such as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>predicting loanword adaptation (lateral transfers)</p></li>
+<li><p>backward and forward reconstruction of words (horizontal transfers)</p></li>
+<li><p>searching for potential (old) loanwords between two languages.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="to-be-used">
+<h1>To be used<a class="headerlink" href="#to-be-used" title="Permalink to this headline">¶</a></h1>
+<section id="module-qfysc">
+<span id="qfysc-py"></span><h2>qfysc.py<a class="headerlink" href="#module-qfysc" title="Permalink to this headline">¶</a></h2>
+<p>Quantify sound correspondences from etymological data, and give etymologies a likelihood-score based on extracted data.</p>
+<section id="qfy">
+<h3>Qfy<a class="headerlink" href="#qfy" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="qfysc.Qfy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qfysc.</span></span><span class="sig-name descname"><span class="pre">Qfy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formscsv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srclg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgtlg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_most_frequent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adapt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictbase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vfb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qfysc.Qfy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read etymological data and customise the way in which it shall be quantified later.</p>
+<p>Inherit from loanpy.helpers.Etym:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formscsv</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em><em>, </em><em>default=None</em>) – The path to cldf’s forms.csv. For more details see loanpy.helpers.read_forms</p></li>
+<li><p><strong>srclg</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational source language (can differ from linguistic source). This is the data FROM which we make predictions. For more details see loanpy.helpers.Etym.</p></li>
+<li><p><strong>tgtlg</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational target language (can again differ from linguistic one). This is the language INTO which we make predictions. For more details see loanpy.helpers.Etym.</p></li>
+<li><p><strong>struc_most_frequent</strong> (<em>int</em><em>, </em><em>default=9999999</em>) – The n most frequent structures that we want to accept into the phonotactic inventory of the target language. Sometimes a good idea to omit rare ones.</p></li>
+<li><p><strong>struc_inv</strong> (<em>None</em><em> | </em><em>set</em><em> | </em><em>list</em><em>, </em><em>default=None</em>) – All possible phonotactic structures in the target language. Will be extracted from target language if set to None. See loanpy.helpers.Etym.read_strucinv for more details.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Define own attributes:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<em>&quot;adapt&quot;</em><em> | </em><em>&quot;reconstruct&quot;</em><em>, </em><em>default=&quot;adapt&quot;</em>) – The mode in which sound correspondences will be extracted. Differences between the two modes: Different connectors, source and target gets flipped, different alignment. No phonotactic correspondences extracted if mode == “reconstruct”. Flows into self.mode. For more details see loanpy.qfysc.read_mode.</p></li>
+<li><p><strong>connector</strong> (<em>tuple</em><em>, </em><em>default=None</em>) – The strings that connect the linguistic (!) source word with the target adapted or reconstructed one. Flows into self.connector. Set to None if default settings (“&lt;*” and “&lt;”) should be used. For more details see loanpy.qfysc.read_connector.</p></li>
+<li><p><strong>scdictbase</strong> (<em>None</em><em> | </em><em>dict</em><em> | </em><em>pathlib.PosixPath</em><em>, </em><em>default=None</em>) – The sound correspondence dictionary base, a heuristic approach for predicting sound substitutions. loanpy.qfysc.Qfy.get_sound_corresp will combine sound substitutions gathered from etymological data with this dictionary. If combination should be skipped, set to None or {}. Flows into self.scdictbase. For more details see loanpy.helpers.Etym.get_scdictbase.</p></li>
+<li><p><strong>vfb</strong> (<em>None</em><em> | </em><em>iterable</em><em>, </em><em>default=None</em><em>, </em><em>example: &quot;əœʌ&quot;</em>) – Placeholders for “any vowel”, “any front vowel”, “any back vowel”, as these can occur in etymological dictionaries. Tokeniser can only handle IPA-characters. Therefore placeholders have to be IPA-characters as well. Best is to choose IPA-characters that don’t occur in the phoneme inventory. By default, no placeholders are used. For a list of available ipa characters see ipa_all.csv’s column “ipa”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="get-sound-correspondences">
+<h3>get sound correspondences<a class="headerlink" href="#get-sound-correspondences" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="qfysc.Qfy.get_sound_corresp">
+<span class="sig-prename descclassname"><span class="pre">Qfy.</span></span><span class="sig-name descname"><span class="pre">get_sound_corresp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qfysc.Qfy.get_sound_corresp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an etymological dictionary to a dictionary of sound and phonotactic correspondences, their number of occurences, and IDs of cognate sets in which they occur.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>write_to</strong> (<em>None</em><em> | </em><em>pathlib.PosixPath</em><em> | </em><em>str</em><em>, </em><em>default=None</em>) – Indicate if results should be written to a text file. If yes, provide the path. None means that no file will be written.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of 6 dicts. Dicts 0, 1, 2 capture phonological correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual correspondences, dict1/dict4: How often each correspondence occurs in the data, dict2/dict5: list of cognates in which each correspondence occurs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[dict, dict, dict, dict, dict, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="module-sanity">
+<span id="sanity-py"></span><h2>sanity.py<a class="headerlink" href="#module-sanity" title="Permalink to this headline">¶</a></h2>
+<p>Make sure our model is not crazy.</p>
+<section id="evaluate-all">
+<h3>evaluate all<a class="headerlink" href="#evaluate-all" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="sanity.eval_all">
+<span class="sig-prename descclassname"><span class="pre">sanity.</span></span><span class="sig-name descname"><span class="pre">eval_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formscsv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgt_lg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_lg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_param_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crossval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guesslist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[10,</span> <span class="pre">50,</span> <span class="pre">100,</span> <span class="pre">500,</span> <span class="pre">1000]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_struc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writesc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vowelharmony</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusterised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by_nse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictbase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adapt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotldnld</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sanity.eval_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains models, evaluates and visualises predictions.</p>
+<p>Positional arguments:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formscsv</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em>) – The path to cldf’s forms.csv of the etymological dictionary. Will be used to initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.read_forms.</p></li>
+<li><p><strong>tgt_lg</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational target language. Will be used to initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.Etym.</p></li>
+<li><p><strong>src_lg</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational source language. Will be used to initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.Etym.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Keyword arguments:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opt_param_path</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em>) – The path to the csv-file in which information about input-parameters and evaluated results is stored. If path points to a non-existent file, the correct file will be created. If set to None, it will be written to cldf’s folder etc (concluded from the path provided in parameter &lt;formscsv&gt;) and will be called f”opt_param_{tgt_lg}_{src_lg}”. For more information see loanpy.sanity.check_cache.</p></li>
+<li><p><strong>crossval</strong> (<em>bool</em>) – Indicate if results should be cross-validated. If true, the model with which we predict an adaptation or a reconstruction of a word will be trained without that word.</p></li>
+<li><p><strong>guesslist</strong> (<em>list of int</em>) – The list of number of guesses to be made. Will be passed into loanpy.adrc.Adrc.adapt’s or loanpy.adrc.Adrc.reconstruct’s parameter &lt;howmany&gt; in a loop. Loop breaks if prediction was correct.</p></li>
+<li><p><strong>max_struc</strong> (<em>int</em><em>, </em><em>default=1</em>) – The maximum number of phonotactic strucutres into which the original string should be transformed. Will be passed into loanpy.adrc.Adrc.adapt’s parameter &lt;max_struc&gt;</p></li>
+<li><p><strong>max_paths</strong> (<em>int</em><em>, </em><em>default=1</em>) – The maximum number of cheapest paths through which a phonotactic structure can be repaired. Will be passed into loanpy.adrc.Adrc.adapt’s parameter &lt;max_paths&gt;</p></li>
+<li><p><strong>writesc</strong> (<em>bool</em><em>, </em><em>def=False</em>) – Indicate if loanpy.qfysc.Qfy.get_sound_corresp should write its output to a file. If yes provide a path to a <em>folder</em> (!). This is useful for debugging. Careful: Since one file will be written in every round of the cross-validation loop (as many iterations as there are predictions to evaluate), the total storage room taken up by the files can get large. E.g. if we want to evaluate 500 words and scdictbase is 1.6MB, the entire folder will take up 500*1.6MB. There are two ways to avoid this: If writesc=True, make sure to set either crossval=False, this will only write one soundchange.txt file. Or set scdictbase=None, since this is the part that takes up the most storage. Predictions will be blurred in both cases but for debugging this is usually enough.</p></li>
+<li><p><strong>vowelharmony</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Will be passed to loanpy.adrc.Adrc.adapt’s or loanpy.adrc.Adrc.reconstruct’s parameter &lt;vowelharmony&gt;. Indicate whether vowelharmony should be repaired if passed on to adapt() or if results violating the constraint “front-back vowelharmony” should be filtered out if passed on to reconstruct().</p></li>
+<li><p><strong>clusterised</strong> (<em>bool</em><em>, </em><em>def=False</em>) – Will be passed to loanpy.adrc.Adrc.adapt’s or loanpy.adrc.Adrc.reconstruct’s parameter &lt;clusterised&gt;. Indicate whether predictions that contain consonant or vowel clusters that are not documented in the target language should be filtered out if passed on to adapt() or if the tokeniser should clusterise the input-word and look in the sound correspondence dictionary for clusters as keys to predictions if passed on to reconstruct().</p></li>
+<li><p><strong>sort_by_nse</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if predictions should be sorted by likelihood</p></li>
+<li><p><strong>struc_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if predictions made by loanpy.adrc.Adrc.adapt should be filtered out if they consist of a phonotactic structure that is not contained in the language’s phonotactic inventory.</p></li>
+<li><p><strong>show_workflow</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether the workflow should be displayed in the output. Useful for debugging.</p></li>
+<li><p><strong>scdictbase</strong> (<em>None</em><em> | </em><em>pathlib.PosixPath</em><em> | </em><em>dict</em>) – Indicate whether sound correspondences based on data should be combined with the (rather large) dictionary of heuristic correspondences. For pitfalls see param &lt;writesc&gt;.</p></li>
+<li><p><strong>mode</strong> (<em>&quot;adapt&quot;</em><em> | </em><em>&quot;reconstruct&quot;</em><em>, </em><em>default=&quot;adapt&quot;</em>) – Indicate whether predictions should be made with loanpy.adrc.Adrc.reconstruct or loanpy.adrc.Adrc.adapt.</p></li>
+<li><p><strong>write_to</strong> (<em>None</em><em> | </em><em>pathlib.PosixPath</em><em> | </em><em>str</em><em>, </em><em>default=None</em>) – Indicate whether results should be written to a text file. If yes, provide the path. None means that no file will be written.</p></li>
+<li><p><strong>plot_to</strong> (<em>None</em><em> | </em><em>pathlib.PosixPath</em><em> | </em><em>str</em><em>, </em><em>default=None</em>) – Indicate whether results should be plotted as an ROC-curve to a jpg-ile. If yes, provide the path. None means that no file will be written.</p></li>
+<li><p><strong>plotldnld</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether Levenshtein distances and normalised Levenshtein distances should be plotted. Does currently not work.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="module-adrc">
+<span id="adrc-py"></span><h2>adrc.py<a class="headerlink" href="#module-adrc" title="Permalink to this headline">¶</a></h2>
+<p>Contains the Adrc class to adapt or reconstruct words</p>
+<section id="adrc">
+<h3>Adrc<a class="headerlink" href="#adrc" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="adrc.Adrc">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">adrc.</span></span><span class="sig-name descname"><span class="pre">Adrc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srclg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgtlg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictbase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formscsv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_most_frequent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adrc.Adrc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adapts or reconstructs words based on etymological and statistical data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>substi</strong> (<em>str</em><em>, </em><em>default=&quot;substi.txt&quot;</em>) – name of the dictionary containing the sound substitutions.     Generated by loanpy.qfysc.Qfy().dfetymology2dict()</p></li>
+<li><p><strong>photct</strong> (<em>str</em><em>, </em><em>default=&quot;phonotactics.txt&quot;</em>) – name of the file containing the list of allowed phonotactic structures</p></li>
+<li><p><strong>sndcng</strong> (<em>str</em><em>, </em><em>default=&quot;scdict.txt&quot;</em>) – name of the file containing sound changes</p></li>
+<li><p><strong>se_or_edict</strong> (<em>str</em><em>, </em><em>default=&quot;sedict.txt&quot;</em>) – name of the file containing the sum of examples, or examples</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="adapt">
+<h3>adapt<a class="headerlink" href="#adapt" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="adrc.Adrc.adapt">
+<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">adapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_struc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vowelharmony</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusterised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by_nse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adrc.Adrc.adapt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an L2 word and adapts it to the constraints of L1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipa_in</strong> (<em>str</em>) – An L2 word consisting of characters of the          International Phonetic Alphabet (IPA).</p></li>
+<li><p><strong>fp</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate how many adaptions to return.</p></li>
+<li><p><strong>struc</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Indicate whether words should be adapted to          phonotactic constraints.</p></li>
+<li><p><strong>vowelharmony</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Indicate whether words should be adapted          to vowelharmonic constraints</p></li>
+<li><p><strong>clusterised</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Indicate whether only those words should          be accepted that consist only of consonant or vowel clusters that are documented in          the etymological dictionary of L1.</p></li>
+<li><p><strong>sort_by_nse</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether adaptations should be sorted by          their likelihood.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The most likely adaptations into proto-L1</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">adrc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ad</span> <span class="o">=</span> <span class="n">adrc</span><span class="o">.</span><span class="n">Adrc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ad</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="s2">&quot;wulɸɪla&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">struc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vowelharmony</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clusterised</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;ulwilɑ&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">adrc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ad</span> <span class="o">=</span> <span class="n">adrc</span><span class="o">.</span><span class="n">Adrc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ad</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="s2">&quot;wulɸɪla&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">struc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">vowelharmony</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clusterised</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;wulilɑ&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">adrc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ad</span> <span class="o">=</span> <span class="n">adrc</span><span class="o">.</span><span class="n">Adrc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ad</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="s2">&quot;wulɸɪla&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">struc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vowelharmony</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clusterised</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;ulwɑlɑ, ulwVlɑ, Vlwɑlɑ, VlwVlɑ, wulwɑlɑ&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">adrc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ad</span> <span class="o">=</span> <span class="n">adrc</span><span class="o">.</span><span class="n">Adrc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ad</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="s2">&quot;wulɸɪla&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">struc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">vowelharmony</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clusterised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort_by_nse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;wulɑlɑ, wulɑlæ, wulVlɑ, wulVlæ, wVlɑlɑ, wVlɑlæ, wVlVlɑ, wVlVlæ, lɑlɑ, lɑlæ, lVlɑ, lVlæ&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="reconstruct">
+<h3>reconstruct<a class="headerlink" href="#reconstruct" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="adrc.Adrc.reconstruct">
+<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">reconstruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipastring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusterised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vowelharmony</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by_nse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adrc.Adrc.reconstruct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a modern-day L1 word as input and creates a list of possible         reconstructions into proto-L1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipastring</strong> (<em>str</em>) – A modern-day L1-word</p></li>
+<li><p><strong>fp</strong> (<em>int</em><em>, </em><em>default=1</em>) – The number of reconstructions to generate. Sound changes are          gradually added in decreasing order of likelihood.</p></li>
+<li><p><strong>struc</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether words should be filtered out that violate          phonotactic constraints.</p></li>
+<li><p><strong>vowelharmony</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether words should be filtered out that violate          vowelharmonic constraints.</p></li>
+<li><p><strong>clusterised</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Indicate whether words should be filtered out          if they containt consonant or vowel clusters that are undocumented in the etymological          dictionary.</p></li>
+<li><p><strong>sort_by_nse</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether reconstructions should be sorted by          their likelihood.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a regular expression</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">adrc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rc</span> <span class="o">=</span> <span class="n">adrc</span><span class="o">.</span><span class="n">Adrc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rc</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s1">&#39;mɒɟɒr&#39;</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">&#39;^(m)(ɑ|V|u|o|ȣ|e|æ)(nʲt͡ʃʲ|j|ðʲ|lj|l|n|t͡ʃʲ)(ɑ|V|u)(r)(V)$&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">adrc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rc</span> <span class="o">=</span> <span class="n">adrc</span><span class="o">.</span><span class="n">Adrc</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rc</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s1">&#39;mɒɟɒr&#39;</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">struc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">vowelharmony</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clusterised</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;^mɑjɑrV$|^mɑðʲɑrV$|^mɑlɑrV$&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="module-loanfinder">
+<span id="loanfinder-py"></span><h2>loanfinder.py<a class="headerlink" href="#module-loanfinder" title="Permalink to this headline">¶</a></h2>
+<p>Takes two lists of word-meaning pairs and returns a list of candidates for (old) loanwords.</p>
+<section id="search">
+<h3>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="loanfinder.Search">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loanfinder.</span></span><span class="sig-name descname"><span class="pre">Search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path2donordf=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path2recipdf=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">donorcol='ad'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipcol='rc'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phondist=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phondist_msr='hamming_feature_edit_distance'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semsim=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semsim_msr=&lt;function</span> <span class="pre">gensim_multiword&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictlist_ad=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictlist_rc=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanfinder.Search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the two word lists, the measurements to calculate phonological distance and semantic similarity and the thresholds below or above which to accept matches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path2donordf</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em><em>, </em><em>default=None</em>) – The path to forms.csv of the donor language containing a column of predicted adaptations into the recipient language.</p></li>
+<li><p><strong>path2recipdf</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em><em>, </em><em>default=None</em>) – The path to forms.csv of the recipient language, containing a column of predicted backward-reconstructions stored as regular expressions.</p></li>
+<li><p><strong>donorcol</strong> (<em>str</em><em>, </em><em>default=&quot;ad&quot;</em>) – The name of the column in the donor language’s forms.csv containing a column of predicted adaptations into the tentative recipient language.</p></li>
+<li><p><strong>recipcol</strong> (<em>str</em><em>, </em><em>default=&quot;rc&quot;</em>) – The name of the column in the recipient language’s forms.csv containing a column of words in that language. If we are searching for old loanwords, this column can consist of regular expressions that represent backward reconstructions of present-day words.</p></li>
+<li><p><strong>phondist</strong> (<em>int</em><em>, </em><em>default=0</em>) – The maximal phonological distance between two words. By default, matches have to be identical.</p></li>
+<li><p><strong>phondist_msr</strong> (<em>str</em><em>, </em><em>default=&quot;hamming_feature_edit_distance&quot;</em>) – The name of the phonological distance measure. Distance measures are methods of panphon.distance.Distance and can be read by calling Python’s inbuild help function, as shown in the first example.</p></li>
+<li><p><strong>semsim</strong> (<em>int</em><em> (</em><em>float between -1 and 1 for gensim</em><em>)</em>) – The minimal semantic similarity between the meaning of words. By default, meaning have to be identical</p></li>
+<li><p><strong>semsim_msr</strong> (<em>function of type func</em><em>(</em><em>a:str</em><em>, </em><em>b:str</em><em>) </em><em>-&gt; int</em>) – The function with which to measure semantic similarity.</p></li>
+<li><p><strong>scdictlist_ad</strong> (<em>list of 6 dicts. Dicts 0</em><em>, </em><em>1</em><em>, </em><em>2 capture phonological correspondences</em><em>, </em><em>dicts 3</em><em>, </em><em>4</em><em>, </em><em>5 phonotactical ones. dict0/dict3: the actual correspondences</em><em>, </em><em>dict1/dict4: How often they occur in the data</em><em>, </em><em>dict2/dict5: list of cognates in which they occur.</em>) – list of correspondence dictionaries between tentative donor and recipient language generated with loanpy.qfysc.get_sound_corresp. Not a dictionary, therefore sequence important.</p></li>
+<li><p><strong>scdictlist_rc</strong> (<em>list of 6 dicts. Dicts 0</em><em>, </em><em>1</em><em>, </em><em>2 capture phonological correspondences</em><em>, </em><em>dicts 3</em><em>, </em><em>4</em><em>, </em><em>5 phonotactical ones. dict0/dict3: the actual correspondences</em><em>, </em><em>dict1/dict4: How often they occur in the data</em><em>, </em><em>dict2/dict5: list of cognates in which they occur.</em>) – list of correspondence dictionaries between present-day language and past stage of that language generated with loanpy.qfysc.get_sound_corresp. Not a dictionary, therefore sequence important.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">panphon.distance</span> <span class="kn">import</span> <span class="n">Distance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">Distance</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.loanfinder</span> <span class="kn">import</span> <span class="n">Search</span><span class="p">,</span> <span class="vm">__file__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2rec</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span><span class="o">/</span> <span class="s2">&quot;hun.csv&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2rec</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span><span class="o">/</span> <span class="s2">&quot;got.csv&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc_ad</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;sc_ad_3cogs.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc_rc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;sc_rc_3cogs.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_inst</span> <span class="o">=</span> <span class="n">Search</span><span class="p">(</span><span class="n">path2donordf</span><span class="o">=</span><span class="n">path2don</span><span class="p">,</span> <span class="n">path2recipdf</span><span class="o">=</span><span class="n">path2rec</span><span class="p">,</span> <span class="n">donorcol</span><span class="o">=</span><span class="s2">&quot;ad&quot;</span><span class="p">,</span> <span class="n">recipcol</span><span class="o">=</span><span class="s2">&quot;rc&quot;</span><span class="p">,</span> <span class="n">scdictlist_ad</span><span class="o">=</span><span class="n">path2sc_ad</span><span class="p">,</span> <span class="n">scdictlist_rc</span><span class="o">=</span><span class="n">path2sc_rc</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="loans">
+<h3>loans<a class="headerlink" href="#loans" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanfinder.Search.loans">
+<span class="sig-prename descclassname"><span class="pre">Search.</span></span><span class="sig-name descname"><span class="pre">loans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postprocess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_with_rest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanfinder.Search.loans" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main function of this module. Searches for phonological matches and calculates their semantic similarity. Returns candidate list of loans.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>write_to</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em><em> | </em><em>False</em><em>, </em><em>default=False</em>) – indicate if results should be written to file. If yes, provide path.</p></li>
+<li><p><strong>postprocess</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if results should be postprocessed. See loanpy.loanfinder.Search.postprocess for more details</p></li>
+<li><p><strong>merge_with_rest</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if additional info from input data frame columns should be copied into the output data frame. Helps with quick debugging sometimes. See loanpy.loanfinder.Search.merge_with_rest for more details</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>data frame with potential loanwords</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.core.series.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+<section id="for-internal-calls">
+<h1>For internal calls<a class="headerlink" href="#for-internal-calls" title="Permalink to this headline">¶</a></h1>
+<section id="module-loanpy.helpers">
+<span id="helpers-py"></span><h2>helpers.py<a class="headerlink" href="#module-loanpy.helpers" title="Permalink to this headline">¶</a></h2>
+<p>Contains helper functions and class Etym, which are called by other modules.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">Etym</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formscsv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srclg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgtlg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_measure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'weighted_feature_edit_distance'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_most_frequent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that is based on 2 datasets: The first is static, and is ipa_all.csv from panphon, together with its “spinoff” cvfb.txt. The second has to be defined through the init args and will be data extracted from a forms.csv (cldf data standard, insert link here later). The class methods eventually all rely on panphon / data / “ipa_all.csv”. loanpy’s ipa_all.csv is slightly modified but I didn’t keep track of the modifications. I remember that I changed the status of the glottal stop at least. And added “C”, “V” to the bottom. Todo: Plug back in the original ipa_all.csv.Define consonants, vowels, front vowels, and back vowels based on David R. Mortensen, Patrick Littell, Akash Bharadwaj, Kartik Goyal, Chris Dyer, Lori Levin (2016). “PanPhon: A Resource for Mapping IPA Segments to Articulatory Feature Vectors.” Proceedings of COLING 2016, the 26th International Conference on Computational Linguistics: Technical Papers, pages 3475–3484, Osaka, Japan, December 11-17 2016. (Based on SPE by Chomsyk&amp;Halle). Turn forms.csv into a pandas data frame, and extract following information from it: phoneme inventory: a set of all phonemes that occur in the language’s words, clusters: a set of all consonant and vowel clusters occuring in the language, struc_inv: a list of phonotactic structures that occur in the language, sorted according to their frequency</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formscsv</strong> (<em>&lt;class 'pathlib.PosixPath'&gt;</em><em> | </em><em>str</em><em> | </em><em>None</em>) – a forms.csv of the cldf data standard (insert link)</p></li>
+<li><p><strong>srclg</strong> (<em>str</em>) – The technical source language as defined in cldf’s etc / “languages.tsv”. This can be confusing, as sometimes the technical source language for the predictions can be the linguistic target language, e.g. when we are backward reconstructing. But when we are adapting loanwords the technical and the linguistic source word are usually the same.</p></li>
+<li><p><strong>tgtlg</strong> (<em>str</em>) – The technical target language as defined in cldf’s etc / “languages.tsv”. For caveats see param srclg</p></li>
+<li><p><strong>inventory</strong> (<em>None</em><em> | </em><em>list</em><em> | </em><em>set</em>) – The phoneme inventory. If None, it will be extracted automatically from forms.csv</p></li>
+<li><p><strong>clusters</strong> (<em>None</em><em> | </em><em>list</em><em> | </em><em>set</em>) – All consonant and vowel clusters that occur in the language. If None, will be automatically extracted from forms.csv</p></li>
+<li><p><strong>struc_inv</strong> (<em>None</em><em> | </em><em>list</em><em> | </em><em>set</em>) – All phonetic structures (“CVCV”) that occur in the language</p></li>
+<li><p><strong>distance_measure</strong> (<em>function</em>) – The distance measure. See help(read_dst)</p></li>
+<li><p><strong>struc_most_frquent</strong> (<em>int</em>) – The how many most frequently occuring phonotactic structures should we allow to be part of the inventory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span><span class="p">,</span> <span class="vm">__file__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">(</span><span class="n">formscsv</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span><span class="p">,</span> <span class="n">srclg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tgtlg</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">phon2cv</span><span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">]</span>
+<span class="go">&#39;C&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">vow2fb</span><span class="p">[</span><span class="s2">&quot;e&quot;</span><span class="p">]</span>
+<span class="go">&#39;F&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">distance_measure</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="go">0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">dfety</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">phoneme_inventory</span>
+<span class="go">{&#39;y&#39;, &#39;z&#39;, &#39;x&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">clusters</span>
+<span class="go">{&#39;y&#39;, &#39;z&#39;, &#39;x&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">struc_inv</span>
+<span class="go">{&#39;CVC&#39;}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.adapt_harmony">
+<span class="sig-name descname"><span class="pre">adapt_harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.adapt_harmony" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adapts the vowel harmony of a word by replacing wrong vowels by a “F” for any front vowel or “B” for any back vowel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ipalist</strong> (<em>{list of str</em><em>, </em><em>str}</em>) – a list or a string of phonemes</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a tokenised word with repaired vowelharmony</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">(</span><span class="s1">&#39;kɛsthɛj&#39;</span><span class="p">)</span>
+<span class="go">[&#39;k&#39;, &#39;ɛ&#39;, &#39;s&#39;, &#39;t&#39;, &#39;h&#39;, &#39;ɛ&#39;, &#39;j&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;oː&#39;</span><span class="p">,</span> <span class="s1">&#39;ø&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">])</span>
+<span class="go">[&#39;ɒ&#39;, &#39;l&#39;, &#39;ʃ&#39;, &#39;oː&#39;, &#39;B&#39;, &#39;r&#39;, &#39;ʃ&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;eː&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">])</span>
+<span class="go">[&#39;b&#39;, &#39;eː&#39;, &#39;l&#39;, &#39;F&#39;, &#39;t&#39;, &#39;ɛ&#39;, &#39;l&#39;, &#39;ɛ&#39;, &#39;p&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">])</span>
+<span class="go">[[&#39;b&#39;, &#39;F&#39;, &#39;l&#39;, &#39;F&#39;, &#39;t&#39;, &#39;F&#39;, &#39;n&#39;, &#39;k&#39;, &#39;ɛ&#39;, &#39;n&#39;, &#39;ɛ&#39;, &#39;ʃ&#39;, &#39;ɛ&#39;], [&#39;b&#39;, &#39;ɒ&#39;, &#39;l&#39;, &#39;ɒ&#39;, &#39;t&#39;, &#39;o&#39;, &#39;n&#39;, &#39;k&#39;, &#39;B&#39;, &#39;n&#39;, &#39;B&#39;, &#39;ʃ&#39;, &#39;B&#39;]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.get_fb">
+<span class="sig-name descname"><span class="pre">get_fb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turnto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'F'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.get_fb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns front vowels to back ones if turnto=”B”, but turns back vowels to front ones if turnto=”F”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipalist</strong> (<em>list</em>) – a tokenised ipa-string</p></li>
+<li><p><strong>turnto</strong> (<em>{&quot;F&quot;</em><em>, </em><em>&quot;B&quot;}</em>) – turn back vowels to front ones or vice verse</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a tokenised word with some vowels replaced by “F” or “B”.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">get_fb</span><span class="p">([</span><span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;oː&#39;</span><span class="p">,</span> <span class="s1">&#39;ø&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">],</span> <span class="n">turnto</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<span class="go">[&#39;ɒ&#39;, &#39;l&#39;, &#39;ʃ&#39;, &#39;oː&#39;, &#39;B&#39;, &#39;r&#39;, &#39;ʃ&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.get_scdictbase">
+<span class="sig-name descname"><span class="pre">get_scdictbase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">most_common</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.get_scdictbase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loop through ipa_all.csv and rank most similar phonemes from inventory. Could also turn ipa_all.csv into a square of 6358*6358 phonemes and just use that file for all future cases but that would use an estimated 500MB per type of distance measure. So more economical to calculate it this way. Will still, depending on size of phoneme inventory, take up about 2MB. result is returned, assigned to self.scdictbase and optionally written. Usually there is very little data available on sound substitutions and the ones available give only very small instight into all possibilities. The idea here is therefore that any sound that is not contained in a language’s phoneme inventory will be replaced by the most similar available one(s). The available sound substitutions based on etymological data will be combined with this heuristics, if available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>write_to</strong> (<em>None</em><em> | </em><em>&lt;class 'pathlib.PosixPath'&gt;</em><em> | </em><em>str</em>) – If or where the output should be written.</p></li>
+<li><p><strong>most_common</strong> – Add only this many most similar phonemes to scdictbase. By default the entire phoneme inventory will be ranked.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A heuristic approach to sound substitution in loanword adaptation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span><span class="p">,</span> <span class="vm">__file__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">(</span><span class="n">formscsv</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span><span class="p">,</span> <span class="n">srclg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tgtlg</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">get_scdictbase</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">scdictbase</span><span class="p">[</span><span class="s2">&quot;i&quot;</span><span class="p">]</span>
+<span class="go">[&quot;y&quot;, &quot;x&quot;, &quot;z&quot;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.harmony">
+<span class="sig-name descname"><span class="pre">harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.harmony" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells if a word has front-back vowel harmony or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ipalist</strong> (<em>{list of str</em><em>, </em><em>str}</em>) – the word that should be analysed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Does the word have front-back vowelharmony?</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">harmony</span><span class="p">(</span><span class="s2">&quot;bot͡sibot͡si&quot;</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">harmony</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;ɒ&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;ɒ&quot;</span><span class="p">])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.rank_closest">
+<span class="sig-name descname"><span class="pre">rank_closest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.rank_closest" title="Permalink to this definition">¶</a></dt>
+<dd><p>sort self.phoneme_inventory by distance to input-phoneme</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ph</strong> (<em>str</em><em> (</em><em>valid chars: col &quot;ipa&quot; in ipa_all.csv</em><em>)</em>) – phoneme to which to rank the inventory</p></li>
+<li><p><strong>howmany</strong> (<em>{int</em><em>, </em><em>float</em><em>(</em><em>&quot;inf&quot;</em><em>)</em><em>}</em>) – howmany of the most similar to pick</p></li>
+<li><p><strong>inv</strong> (<em>list</em><em> | </em><em>set</em>) – To plug in phoneme inventory manually if necessary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the phoneme inventory ranked by similarity (most similar first)</p>
+</dd>
+<dt class="field-odd">Rytpe</dt>
+<dd class="field-odd"><p>str (elements separates by “, “)</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span><span class="p">,</span> <span class="vm">__file__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">rank_closest</span><span class="p">(</span><span class="n">ph</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">inv</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">],</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;t&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">(</span><span class="n">inventory</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">rank_closest</span><span class="p">(</span><span class="n">ph</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
+<span class="go">&#39;b, c, a&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.rank_closest_struc">
+<span class="sig-name descname"><span class="pre">rank_closest_struc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">struc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.rank_closest_struc" title="Permalink to this definition">¶</a></dt>
+<dd><p>sort self.struc_inv by distance to given phonotactic structure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>struc</strong> (<em>str</em><em> (</em><em>consisting of &quot;C&quot;s and &quot;V&quot;s only</em><em>)</em>) – The phonetic structure to which to rank the inventory</p></li>
+<li><p><strong>howmany</strong> (<em>{int</em><em>, </em><em>float</em><em>(</em><em>&quot;inf&quot;</em><em>)</em><em>}</em>) – Howmany of the most similar structures should be picked</p></li>
+<li><p><strong>inv</strong> (<em>list</em><em> | </em><em>set</em>) – To plug in the phonotactic structure inventory manually if necessary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the phonotactic inventory ranked by similarity (most similar first)</p>
+</dd>
+<dt class="field-odd">Rytpe</dt>
+<dd class="field-odd"><p>str (elements separates by “, “)</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span><span class="p">,</span> <span class="vm">__file__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">(</span><span class="n">struc_inv</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CVC&quot;</span><span class="p">,</span> <span class="s2">&quot;CVCVV&quot;</span><span class="p">,</span> <span class="s2">&quot;CCCC&quot;</span><span class="p">,</span> <span class="s2">&quot;VVVVVV&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">rank_closest_struc</span><span class="p">(</span><span class="n">struc</span><span class="o">=</span><span class="s2">&quot;CVCV&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;CVCVV&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">rank_closest_struc</span><span class="p">(</span><span class="n">struc</span><span class="o">=</span><span class="s2">&quot;CVCV&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="go">inv=[&quot;CVC&quot;, &quot;CVCVV&quot;, &quot;CCCC&quot;, &quot;VVVVVV&quot;])</span>
+<span class="go">&quot;CVCVV, CVC, CCCC&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.read_strucinv">
+<span class="sig-name descname"><span class="pre">read_strucinv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">struc_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.read_strucinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns inventory of the most frequent x phonotactic structures</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>struc_inv</strong> (<em>None</em><em> | </em><em>list</em><em> | </em><em>set</em><em> | </em><em>same type as input</em>) – Possibility to plug in the inventory manually.</p></li>
+<li><p><strong>forms</strong> (<em>list</em><em> | </em><em>None</em>) – a list of words in a language</p></li>
+<li><p><strong>howmany</strong> (<em>int</em>) – howmany most frequent structures should be added to inventory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>all possible phonotactic structures documented in the data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>The map function seems to swallow errors that would be otherwise triggered by Counter. E.g. if you use a float (including float(“inf”)) for param &lt;howmany&gt;, an empty string will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.word2struc">
+<span class="sig-name descname"><span class="pre">word2struc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.word2struc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the phonotactic profile of an ipa-string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ipa_in</strong> (<em>str</em><em> | </em><em>list</em><em> (</em><em>IPA chars</em><em>)</em>) – a string or list consisting of IPA-characters. if input is string, it will be tokenised.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the phonotactic profile of the word</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">word2struc</span><span class="p">(</span><span class="s2">&quot;lol&quot;</span><span class="p">)</span>
+<span class="go">&#39;CVC&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.word2struc_keepcv">
+<span class="sig-name descname"><span class="pre">word2struc_keepcv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.word2struc_keepcv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the phonotactic profile of an ipa-string while keeping Cs and Vs. Originally written for sanity.py but currently not used anywhere.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">word2struc_keepcv</span><span class="p">(</span><span class="s2">&quot;CloVl&quot;</span><span class="p">)</span>
+<span class="go">&#39;CCVVC&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="loanpy.helpers.InventoryMissingError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">InventoryMissingError</span></span><a class="headerlink" href="#loanpy.helpers.InventoryMissingError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Called by rank_closest() and rank_closest_struc() if neither forms.csv is defined nor the phonotactic/phoneme inventory plugged in.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.apply_edit">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">apply_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">editops</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.apply_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a list of (human readable) edit operations to a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>an iterable</em><em> (</em><em>e.g. list of phonemes</em><em>, or </em><em>string</em><em>)</em>) – The input word</p></li>
+<li><p><strong>editops</strong> (<em>list of strings</em>) – list of (human readable) edit operations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>transformed input word</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.cldf2pd">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">cldf2pd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dfforms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srclg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgtlg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.cldf2pd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a cldf-csv to a pandas data frame. Only called by Etym.__init__. Returns None if dfforms is None, so class can be initiated without args too. Runs through forms.csv and creates a new data frame the following way: Checks if a cognate set contains words from both, source and target language. If yes: word from source lg goes to column “Source_Form”, word from target lg goes to column “Target_Form” and the number of the cognate set goes to column “Cognacy”. Note that if a cognate set doesn’t contain words from src and tgt lg, that cognate set is skipped.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfforms</strong> (<em>&lt;class 'pandas.core.frame.DataFrame'&gt;</em><em> | </em><em>None</em>) – Takes the output of read_forms() as input</p></li>
+<li><p><strong>srclg</strong> (<em>&lt;str&gt;</em>) – The languages who’s cognates go to column “Source_Forms”</p></li>
+<li><p><strong>tgtlg</strong> (<em>&lt;str&gt;</em>) – The languages who’s cognates go to column “Target_Forms”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>forms.csv data frame with re-positioned information</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>&lt;class ‘pandas.core.frame.DataFrame’&gt; | None</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="vm">__file__</span><span class="p">,</span> <span class="n">cldf2pd</span><span class="p">,</span> <span class="n">read_forms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cldf2pd</span><span class="p">(</span><span class="n">read_forms</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span><span class="p">),</span> <span class="n">srclg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tgtlg</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.combine_ipalists">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">combine_ipalists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wrds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.combine_ipalists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine list of sound change lists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>wrds</strong> (<em>list of lists of lists</em>) – list of words consisting of sound change lists</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of words without empty strings as elements</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of strings</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">combine_ipalists</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">combine_ipalists</span><span class="p">([[[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">]],</span> <span class="p">[[</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;g&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]]])</span>
+<span class="go">[&#39;acd&#39;, &#39;bcd&#39;, &#39;egh&#39;, &#39;fgh&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.edit_distance_with2ops">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">edit_distance_with2ops</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_ins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.49</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_del</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.edit_distance_with2ops" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes two strings and calculates their similarity by only allowing two operations: insertion and deletion. In line with the “Threshold Principle” by Carole Paradis and Darlene LaCharité (1997) the distance is weighted in a way that two insertions are cheaper than one deletion: “The problem is really not very different from the dilemma of a landlord stuck with a limited budget for maintenance and a building which no longer meets municipal guidelines. Beyond a certain point, renovating is not viable (there are too many steps to be taken) and demolition is in order. Similarly, we posit that I) languages have a limited budget for adapting ill- formed phonological structures, and that 2) the limit for the budget is universally set at two steps, beyond which a repair by ‘demolition’ may apply. In other words, we predict that a segment is deleted if (but only if) its rescue is too costly in terms of the Threshold Principle” (p.385, Preservation and Minimality in Loanword Adaptation, Author(s): Carole Paradis and Darlene Lacharité, Source: Journal of Linguistics , Sep., 1997, Vol. 33, No. 2 (Sep., 1997), pp. 379-430, Published by: Cambridge University Press, Stable URL: <a class="reference external" href="http://www.jstor.com/stable/4176422">http://www.jstor.com/stable/4176422</a>). The code is based on a post by ita_c on <a class="reference external" href="https://www.geeksforgeeks.org/edit-distance-and-lcs-longest-common-subsequence">https://www.geeksforgeeks.org/edit-distance-and-lcs-longest-common-subsequence</a> (last access: 11.feb.2021)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string1</strong> (<em>str</em>) – The first of two strings to be compared to each other</p></li>
+<li><p><strong>string2</strong> (<em>str</em>) – The second of two strings to be compared to each other</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The distance between two input strings</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">edit_distance_with2ops</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edit_distance_with2ops</span><span class="p">(</span><span class="s2">&quot;hey&quot;</span><span class="p">,</span><span class="s2">&quot;hey&quot;</span><span class="p">)</span>
+<span class="go">0.0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">edit_distance_with2ops</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edit_distance_with2ops</span><span class="p">(</span><span class="s2">&quot;hey&quot;</span><span class="p">,</span><span class="s2">&quot;he&quot;</span><span class="p">)</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">edit_distance_with2ops</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edit_distance_with2ops</span><span class="p">(</span><span class="s2">&quot;hey&quot;</span><span class="p">,</span><span class="s2">&quot;heyy&quot;</span><span class="p">)</span>
+<span class="go">0.4</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.editops">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">editops</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_del</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_ins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">49</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.editops" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes two strings and returns the edit operations of all shortest paths between them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s1</strong> (<em>str</em>) – The first of two strings to be compared to each other</p></li>
+<li><p><strong>s2</strong> (<em>str</em>) – The second of two strings to be compared to each other</p></li>
+<li><p><strong>howmany_paths</strong> (<em>int</em>) – The number of shortest paths that should be returned.</p></li>
+<li><p><strong>w_del</strong> (<em>int</em>) – The weight (cost) of deletions</p></li>
+<li><p><strong>w_ins</strong> (<em>int</em>) – The weight (cost) of insertions</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.flatten">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nested_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flatten a nested list, discard empty strings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>list of lists</em>) – a nested list</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>flattened list without empty strings as elements</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.forms2list">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">forms2list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgtlg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.forms2list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of words of a language from a forms.csv. Only called by Etym.__init__</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dff</strong> (<em>&lt;class 'pandas.core.frame.DataFrame'&gt;</em>) – forms.csv data frame (cldf)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of words in the target language</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list | None</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span><span class="p">,</span> <span class="vm">__file__</span><span class="p">,</span> <span class="n">forms2list</span><span class="p">,</span> <span class="n">read_forms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">forms2list</span><span class="p">(</span><span class="n">read_forms</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span><span class="p">),</span> <span class="n">tgtlg</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">[&#39;xyz&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.gensim_multiword">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">gensim_multiword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recip_transl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">donor_transl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_wordpair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wordvectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'word2vec-google-news-300'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.gensim_multiword" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>recip_transl</strong> (<em>str</em><em>, </em><em>words are separated by &quot;</em><em>, </em><em>&quot;</em>) – translation of the recipient word</p></li>
+<li><p><strong>donor_transl</strong> (<em>str</em><em>, </em><em>words are separated by &quot;</em><em>, </em><em>&quot;</em>) – translations of the donor word</p></li>
+<li><p><strong>return_wordpair</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether the word pair itself should be returned too.</p></li>
+<li><p><strong>wordvectors</strong> (<em>str</em>) – The name of the pretrained wordvector model to use. For a complete list of loadable models see gensim’s documentation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The similarity score of the most similar word pair plus the word pair itself if return_wordpair was True.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int or (int, str, str)</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">gensim_multiword</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gensim_multiword</span><span class="p">(</span><span class="s2">&quot;hovercraft, full, eels&quot;</span><span class="p">,</span> <span class="s2">&quot;nipples, explode, delight&quot;</span><span class="p">,</span>
+<span class="go">                      return_wordpair=False)</span>
+<span class="go">0.21005636</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">gensim_multiword</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gensim_multiword</span><span class="p">(</span><span class="s2">&quot;drop, panties, William&quot;</span><span class="p">,</span> <span class="s2">&quot;cannot, wait, lunchtime&quot;</span><span class="p">,</span>
+<span class="go">                       return_wordpair=True)</span>
+<span class="go">(0.54949486, &#39;house&#39;, &#39;cottage&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.get_howmany">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">get_howmany</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hm_struc_ceiling</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hm_paths_ceiling</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.get_howmany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put marbles into three pots, one by one, with following conditions: the product of the number of marbles per pot can’t be higher than var step. Don’t put more marbles in pot 2 and 3 than the ceiling variables indicate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step</strong> (<em>int</em>) – the product of the three pots over which not to step</p></li>
+<li><p><strong>hm_struc_ceiling</strong> (<em>int</em>) – The max nr of marbles for pot 2</p></li>
+<li><p><strong>hm_struc_ceiling</strong> – The max nr of marbles for pot 3</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The way the marbles should be split</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(int, int, int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.get_mtx">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">get_mtx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.get_mtx" title="Permalink to this definition">¶</a></dt>
+<dd><p>From <a class="reference external" href="https://www.youtube.com/watch?v=AY2DZ4a9gyk">https://www.youtube.com/watch?v=AY2DZ4a9gyk</a>. Get the distance matrix of two strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> (<em>str</em>) – The target word</p></li>
+<li><p><strong>source</strong> (<em>str</em>) – The source word</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A distance matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.list2regex">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">list2regex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sclist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.list2regex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns a list of phonemes into a regular expression</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sclist</strong> (<em>list of str</em>) – a list of phonemes</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the same phonemes as a regular expression. “-” is removed and replaced with a question mark at the end.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">list2regex</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list2regex</span><span class="p">([</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">])</span>
+<span class="go">&quot;(b|k|v)&quot;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">list2regex</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list2regex</span><span class="p">([</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">])</span>
+<span class="go">&quot;(b|k|v)?&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.mtx2graph">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">mtx2graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_del</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_ins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">49</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.mtx2graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes two strings and turns them to a directed graph object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s1</strong> (<em>str</em>) – The first of two strings to be compared to each other</p></li>
+<li><p><strong>s2</strong> (<em>str</em>) – The second of two strings to be compared to each other</p></li>
+<li><p><strong>w_del</strong> (<em>int</em>) – The weight (cost) of deletions</p></li>
+<li><p><strong>w_ins</strong> (<em>int</em>) – The weight (cost) of insertions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The directed graph object, its hight and its width</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(networkx.classes.digraph.DiGraph, int, int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.pick_mins">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">pick_mins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inv_and_dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.pick_mins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pick only the n smallest numbers from a list. Should be cheaper than sorting the entire list and then taking only the slice we need.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inv_and_dist</strong> (<em>list of tuples</em>) – inventories and distances</p></li>
+<li><p><strong>howmany</strong> (<em>int</em>) – howmany minimums do we want to pick from input-list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The indicated number of minimal values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str (separated by “, “)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.plug_in_model">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">plug_in_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word2vec_model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.plug_in_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>allows to plug in a word2vec model into global variable &lt;model&gt;. This is useful if you want to use vectors that can’t be loaded with gensim’s api. Vectors could be plugged in without this function as well, but this way debugging is easier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word2vec_model</strong> – The word2vec model to use</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>global variable &lt;model&gt; gets defined</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None (global model = word2vec_model)</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span> <span class="k">as</span> <span class="n">hp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gensim.test.utils</span> <span class="kn">import</span> <span class="n">common_texts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">word2vec</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">plug_in_model</span><span class="p">(</span><span class="n">word2vec</span><span class="o">.</span><span class="n">Word2Vec</span><span class="p">(</span><span class="n">common_texts</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">wv</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">model</span>
+<span class="go">&lt;gensim.models.keyedvectors.KeyedVectors object at 0x7f85fe36d9d0&gt;</span>
+</pre></div>
+</div>
+<p>#this one has to be verified in practice first:
+&gt;&gt;&gt; from loanpy import helpers as hp
+&gt;&gt;&gt; from gensim.downloader import load
+&gt;&gt;&gt; hp.plug_in_model(load(“modelname”))
+&gt;&gt;&gt; hp.model
+&lt;gensim.models.keyedvectors.KeyedVectors object at 0x7f85fe36d9d0&gt;</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.read_cvfb">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">read_cvfb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.read_cvfb" title="Permalink to this definition">¶</a></dt>
+<dd><p>read file cvfb.txt that was generated based on ipa_all.csv. Its a tuple of two dictionaries. Keys are same as col “ipa” in ipa_all.csv. Vals of first dict are “C” if consonant and “V” if vowel (6358 keys). Vals of 2nd dict are “F” if front vowel and “B” if back vowel (1240 keys). Only called by Etym.__init__ to define self.phon2cv and self.vow2fb, which in turn is used by word2struc and many others. This file could be read directly when importing, but this way debugging is easier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>two dictionaries, the first defining consonants and vowels (cv), the second defining front and back vowels (fb).</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>(dict, dict)</p>
+</dd>
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">read_cvfb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">read_cvfb</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.read_dst">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">read_dst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst_msr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.read_dst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a function that calculates the phonetic distance between strings from panphon.distance.Distance. This will be used to calculate the most similar phonemes of the inventory compared to a given phoneme from ipa_all.csv</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dst_msr</strong> (<em>str</em><em> | </em><em>None</em>) – The name of the distance measure, for options see first example</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a function that calculates the phonological distance between ipa-strings</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>function | None</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">panphon.distance</span> <span class="kn">import</span> <span class="n">Distance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">Distance</span><span class="p">)</span>
+<span class="go">doglo_prime_distance, dolgo_prime_distance_div_maxlen, fast_levenshtein_distance, fast_levenshtein_distance_div_maxlen, feature_difference,  feature_edit_distance, feature_edit_distance_div_maxlen, hamming_feature_edit_distance, hamming_feature_edit_distance_div_maxlen, hamming_substitution_cost, jt_feature_edit_distance, ...</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">read_dst</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">read_dst</span><span class="p">(</span><span class="s2">&quot;fast_levenshtein_distance&quot;</span><span class="p">)</span>
+<span class="go">&lt;bound method Distance.fast_levenshtein_distance of &lt;panphon.distance.Distance object at 0x7f7f21fe95b0&gt;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.read_forms">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">read_forms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dff</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.read_forms" title="Permalink to this definition">¶</a></dt>
+<dd><p>reads forms.csv (cldf), keeps only columns Segement, Cognacy and Language ID, drops spaces in Segments to internally re-tokenise later. Only called by Etym.__init__ to create local variable dff (data frame forms). Returns None if dff is None. So that class can be initiated without args too.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dff</strong> (<em>&lt;class 'pathlib.PosixPath'&gt;</em><em> | </em><em>str</em><em> | </em><em>None</em>) – path to forms.csv</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a workable version of forms.csv as a pandas data frame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>&lt;class ‘pandas.core.frame.DataFrame’&gt; | None</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="vm">__file__</span><span class="p">,</span> <span class="n">read_forms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">read_forms</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.read_inventory">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">read_inventory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func=functools.partial(&lt;function</span> <span class="pre">tokenise&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace=True)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.read_inventory" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates and returns phoneme inventory from a list of words. Only called by Etym.__init__. Param &lt;inv&gt; is if inventory should not be calculated but manually plugged in.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inv</strong> (<em>set</em>) – a set of phonemes that occure in given language. if inv is None, inv will be calculated from forms else inv will be returned.</p></li>
+<li><p><strong>forms</strong> (<em>list of str</em>) – a list of words occuring in giving language</p></li>
+<li><p><strong>func</strong> (<em>function</em>) – the tokeniser to split words into phonemes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The phoneme inventory of the language</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>set | None | same as input type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.helpers.tuples2editops">
+<span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">tuples2editops</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.tuples2editops" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns numeric instructions of how to transform string1 to string2 into human readable ones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>op_list</strong> (<em>list of tuples of 2 int</em>) – The numeric list of edit operations</p></li>
+<li><p><strong>s1</strong> (<em>str</em>) – The first of two strings to be compared to each other</p></li>
+<li><p><strong>s2</strong> (<em>str</em>) – The second of two strings to be compared to each other</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of human readable edit operations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id1">
+<h2>qfysc.py<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<section id="read-mode">
+<h3>read mode<a class="headerlink" href="#read-mode" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.qfysc.read_mode">
+<span class="sig-prename descclassname"><span class="pre">loanpy.qfysc.</span></span><span class="sig-name descname"><span class="pre">read_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.qfysc.read_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="read-connector">
+<h3>read connector<a class="headerlink" href="#read-connector" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.qfysc.read_connector">
+<span class="sig-prename descclassname"><span class="pre">loanpy.qfysc.</span></span><span class="sig-name descname"><span class="pre">read_connector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.qfysc.read_connector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="read-sound-change-dictionary-base">
+<h3>read sound change dictionary base<a class="headerlink" href="#read-sound-change-dictionary-base" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.qfysc.read_scdictbase">
+<span class="sig-prename descclassname"><span class="pre">loanpy.qfysc.</span></span><span class="sig-name descname"><span class="pre">read_scdictbase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scdictbase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.qfysc.read_scdictbase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="align">
+<h3>align<a class="headerlink" href="#align" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.qfysc.Qfy.align">
+<span class="sig-prename descclassname"><span class="pre">Qfy.</span></span><span class="sig-name descname"><span class="pre">align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_vowels=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gop=-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale=0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode='global'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor=0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restricted_chars='T_'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model=&lt;class</span> <span class="pre">'lingpy.data.model.Model'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pprint=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.qfysc.Qfy.align" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="align-with-lingpy">
+<h3>align with lingpy<a class="headerlink" href="#align-with-lingpy" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.qfysc.Qfy.align_lingpy">
+<span class="sig-prename descclassname"><span class="pre">Qfy.</span></span><span class="sig-name descname"><span class="pre">align_lingpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merge_vowels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'global'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restricted_chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'T_'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.qfysc.Qfy.align_lingpy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="align-clusterwise">
+<h3>align clusterwise<a class="headerlink" href="#align-clusterwise" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.qfysc.Qfy.align_clusterwise">
+<span class="sig-prename descclassname"><span class="pre">Qfy.</span></span><span class="sig-name descname"><span class="pre">align_clusterwise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.qfysc.Qfy.align_clusterwise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="get-structure-correspondences">
+<h3>get structure correspondences<a class="headerlink" href="#get-structure-correspondences" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.qfysc.Qfy.get_struc_corresp">
+<span class="sig-prename descclassname"><span class="pre">Qfy.</span></span><span class="sig-name descname"><span class="pre">get_struc_corresp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.qfysc.Qfy.get_struc_corresp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an etymological dictionary to a dictionary of sound correspondences,         their number of occurences, and word pairs in which they occur.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfetymology</strong> (<em>str</em><em>, </em><em>default=&quot;dfuralonet.csv&quot;</em>) – The name of the etymological dictionary. Has to be         stored in a csv-file.</p></li>
+<li><p><strong>left</strong> (<em>str</em><em>, </em><em>default=&quot;New&quot;</em>) – The column containing the reflexes or donorwords</p></li>
+<li><p><strong>right</strong> (<em>str</em><em>, </em><em>default=&quot;Old&quot;</em>) – The column containing the roots or loanwords</p></li>
+<li><p><strong>layer</strong> (<em>str</em><em>, </em><em>e.g. {&quot;&quot;</em><em>, </em><em>&quot;U&quot;</em><em>, </em><em>&quot;FU&quot;</em><em>, </em><em>&quot;Ug&quot;}</em><em>, </em><em>default=&quot;&quot;</em>) – Indicate from which historical layer sound changes         should be extracted, Uralic (‘U’), Finno-Ugric (‘FU’), or Ugric (‘Ug’).         By default all three are taken into consideration simultaneously.</p></li>
+<li><p><strong>method</strong> (<em>{'uralonet'</em><em>, </em><em>'lingpy'}</em><em>, </em><em>default=&quot;uralonet&quot;</em>) – the type of methodment</p></li>
+<li><p><strong>defaultsc</strong> (<em>str</em><em>, </em><em>default=&quot;&quot;</em>) – Name of the file containing default sound-correspondences,         to fill out gaps that are missing in the etymological data.</p></li>
+<li><p><strong>substitute</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Set to True if wordpairs are in a donor-loanword relationship</p></li>
+<li><p><strong>write</strong> – If set to True, three dictionaries will be written to .txt-files and         None will be returned. Else a tuple of three dictionaries will be returned and no         files written.</p></li>
+<li><p><strong>name_soundchangedict</strong> (<em>str</em><em>, </em><em>default=&quot;edict&quot;</em>) – Name of sound correspondence dictionary, without         file-extension.</p></li>
+<li><p><strong>name_sumofexampledict</strong> – Name of dictionary counting occurences of         sound correspondences, without file-extension.</p></li>
+<li><p><strong>name_examplesdict</strong> – Name of dictionary counting all examples of         wordpairs exhibiting a sound correspondence, without file-extension.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>See parameter &lt;write&gt;</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>{None, tuple of 3 dictionaries}</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">qfysc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy</span> <span class="o">=</span> <span class="n">qfysc</span><span class="o">.</span><span class="n">Qfy</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy</span><span class="o">.</span><span class="n">dfetymology2dict</span><span class="p">(</span><span class="n">dfetymology</span><span class="o">=</span><span class="s2">&quot;dfpii_Holopainen2019.csv&quot;</span><span class="p">,</span>
+<span class="go">                         left=&quot;L2_ipa&quot;, right=&quot;L1_ipa&quot;,</span>
+<span class="go">                         layer=&quot;&quot;, method=&quot;lingpy&quot;,</span>
+<span class="go">                         defaultsc=&quot;substi_Dellert2017.csv&quot;,</span>
+<span class="go">                         substitute=True, write=True,</span>
+<span class="go">                         name_soundchangedict=&quot;substi&quot;,</span>
+<span class="go">                         name_sumofexamplesdict=&quot;sedict_ad&quot;,</span>
+<span class="go">                         name_examplesdict=&quot;edict_ad&quot;,)</span>
+<span class="go">view results in data\substi.txt, sedict_ad.txt and edict_ad.txt</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">qfysc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy</span> <span class="o">=</span> <span class="n">qfysc</span><span class="o">.</span><span class="n">Qfy</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy</span><span class="o">.</span><span class="n">dfetymology2dict</span><span class="p">(</span><span class="n">dfetymology</span><span class="o">=</span><span class="s2">&quot;dfuralonet.csv&quot;</span><span class="p">,</span>
+<span class="go">                         left=&quot;New&quot;, right=&quot;Old&quot;,</span>
+<span class="go">                         method=&quot;uralonet&quot;,</span>
+<span class="go">                          write=True,</span>
+<span class="go">                         name_soundchangedict=&quot;scdict&quot;,</span>
+<span class="go">                         name_sumofexamplesdict=&quot;sedict&quot;,</span>
+<span class="go">                         name_examplesdict=&quot;edict&quot;)</span>
+<span class="go">view results in data\scdict.txt, sedict.txt and edict.txt</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="id2">
+<h2>sanity.py<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<section id="check-cache">
+<h3>check cache<a class="headerlink" href="#check-cache" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.sanity.check_cache">
+<span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">check_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_param_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.check_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>create DIY cache</p>
+</dd></dl>
+
+</section>
+<section id="get-soundchanges">
+<h3>get soundchanges<a class="headerlink" href="#get-soundchanges" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.sanity.get_sc">
+<span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">get_sc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adrc_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writesc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.get_sc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="evaluate-one">
+<h3>evaluate one<a class="headerlink" href="#evaluate-one" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.sanity.eval_one">
+<span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">eval_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adrc_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srcwrd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgtwrd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guesslist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_struc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vowelharmony</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusterised</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by_nse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struc_filter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.eval_one" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="make-statistics">
+<h3>make statistics<a class="headerlink" href="#make-statistics" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.sanity.make_stat">
+<span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">make_stat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_tp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.make_stat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="get-true-positive-rate-and-false-positive-rate">
+<h3>get true positive rate and false positive rate<a class="headerlink" href="#get-true-positive-rate-and-false-positive-rate" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.sanity.gettprfpr">
+<span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">gettprfpr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step7_fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fplist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_step7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.gettprfpr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="write-to-cache">
+<h3>write to cache<a class="headerlink" href="#write-to-cache" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.sanity.write_to_cache">
+<span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">write_to_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_param_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.write_to_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>write to DIY cache</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="id3">
+<h2>adrc.py<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<section id="read-sound-change-dictionary-list">
+<h3>read sound change dictionary list<a class="headerlink" href="#read-sound-change-dictionary-list" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.adrc.read_scdictlist">
+<span class="sig-prename descclassname"><span class="pre">loanpy.adrc.</span></span><span class="sig-name descname"><span class="pre">read_scdictlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scdictlist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.read_scdictlist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="move-soundchanges">
+<h3>move soundchanges<a class="headerlink" href="#move-soundchanges" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.adrc.move_sc">
+<span class="sig-prename descclassname"><span class="pre">loanpy.adrc.</span></span><span class="sig-name descname"><span class="pre">move_sc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sclistlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whichsound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.move_sc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="get-difference">
+<h3>get difference<a class="headerlink" href="#get-difference" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.adrc.Adrc.get_diff">
+<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">get_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sclistlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.get_diff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="read-soundchanges">
+<h3>read soundchanges<a class="headerlink" href="#read-soundchanges" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.adrc.Adrc.read_sc">
+<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">read_sc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.read_sc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="adapt-structure">
+<h3>adapt structure<a class="headerlink" href="#adapt-structure" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.adrc.Adrc.adapt_struc">
+<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">adapt_struc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_struc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.adapt_struc" title="Permalink to this definition">¶</a></dt>
+<dd><p>adapt phonotactic structure of word</p>
+</dd></dl>
+
+</section>
+<section id="get-normalised-sum-of-examples">
+<h3>get normalised sum of examples<a class="headerlink" href="#get-normalised-sum-of-examples" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.adrc.Adrc.get_nse">
+<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">get_nse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">se</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.get_nse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+<section id="id4">
+<h2>loanfinder.py<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<section id="read-data">
+<h3>read data<a class="headerlink" href="#read-data" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.loanfinder.read_data">
+<span class="sig-prename descclassname"><span class="pre">loanpy.loanfinder.</span></span><span class="sig-name descname"><span class="pre">read_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path2forms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adrc_col</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.loanfinder.read_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a column with adapted or reconstructed words in a forms.csv file, drops empty elements, drops elements with certain keywords used by loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct, such as “not old”, “wrong phonotactics”, etc. Splits elements by “, ” and assigns every word its own spot in the pandas Series which is returned. Called by loanpy.loanfinder.Search.__init__</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path2forms</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em>) – path to forms.csv</p></li>
+<li><p><strong>adrc_col</strong> (<em>str</em>) – name of column containing predicted adapted or reconstructed words</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Series object with one word per element. Words can be regexes as well</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.core.series.Series</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.loanfinder</span> <span class="kn">import</span> <span class="vm">__file__</span><span class="p">,</span> <span class="n">read_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PATH2READ_DATA</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;ad_read_data.csv&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">read_data</span><span class="p">(</span><span class="n">PATH2READ_DATA</span><span class="p">,</span> <span class="s2">&quot;col1&quot;</span><span class="p">)</span>
+<span class="go">0       a</span>
+<span class="go">1    blub</span>
+<span class="go">1    club</span>
+<span class="go">Name: col1, dtype: object</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="generator">
+<h3>generator<a class="headerlink" href="#generator" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="loanpy.loanfinder.gen">
+<span class="sig-prename descclassname"><span class="pre">loanpy.loanfinder.</span></span><span class="sig-name descname"><span class="pre">gen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterable2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Calculating'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.loanfinder.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generator that applies a function to two iterables, incl. tqdm-progressbar with customisable prefix. Called by loanpy.loanfinder.Search.loans to calculate phonological and semantic distances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterable1</strong> (<em>pathlib.PosixPath</em><em> | </em><em>list</em><em> | </em><em>...</em>) – The first iterable, will be zipped with iterable2 and and looped through.</p></li>
+<li><p><strong>iterable2</strong> (<em>pathlib.PosixPath</em><em> | </em><em>list</em><em> | </em><em>...</em>) – The second iterable, will be zipped with iterable1 and and looped through.</p></li>
+<li><p><strong>function</strong> (<em>function</em>) – The function that should be applied to the elements of the tuples from the two zipped iterables.</p></li>
+<li><p><strong>prefix</strong> (<em>str</em><em>, </em><em>default=&quot;Calculating&quot;</em>) – The text that should be displayed by the progressbar</p></li>
+<li><p><strong>args</strong> (<em>any type</em>) – positional arguments that shall be passed to the function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the outputs of the function</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>generator object</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.loanfinder</span> <span class="kn">import</span> <span class="n">gen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">gen</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">))</span>
+<span class="go">Calculating: 100%|███████████████████████████████████| 3/3 [00:00&lt;00:00, 7639.90it/s]</span>
+<span class="go">[5, 7, 9]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.loanfinder</span> <span class="kn">import</span> <span class="n">gen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">gen</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">,</span> <span class="s2">&quot;running 🏃&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="go">running 🏃: 100%|███████████████████████████████████| 3/3 [00:00&lt;00:00, 7639.90it/s]</span>
+<span class="go">[6, 8, 10]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="phonmatch">
+<h3>phonmatch<a class="headerlink" href="#phonmatch" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.loanfinder.Search.phonmatch">
+<span class="sig-prename descclassname"><span class="pre">Search.</span></span><span class="sig-name descname"><span class="pre">phonmatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_for</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropduplicates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.loanfinder.Search.phonmatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a regular expression is contained in a wordlist and replace it with a number. The wordlist is a pandas Series object that gets initiated in loanpy.loanfinder.Search. To pass a wordlist in through the parameter of this function, use loanpy.loanfinder.Search.phonmatch_small</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>search_for</strong> (<em>str</em>) – The regular expression for which to search in the donor language.</p></li>
+<li><p><strong>index</strong> (<em>idx</em>) – The number with which to replace a match.         (This number will be         used to merge the rest of the recipdf data frame, so it should represent         the index in the recipdf data frame.)</p></li>
+<li><p><strong>dropduplicates</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If set to True, this will drop matches that have the same         index in the wordlist         (There’s one adapted donordf-word per row, but its index         is the same as the original donordf word’s from which it was adapted.         Therefore one recipdf word can match with the same donordf word through multiple         adaptations. Since the semantics are the same for all of those matches, duplicates can be dropped.         For a more precise search, e.g. to find out         which of all possible matches are the most likely, set dropduplicates=False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a pandas data frame containing phonological matches. The index         indicates the position of the word in the donordf word list.         The column “L1_idx” indicates         the position of the word in the recipdf word list.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.core.series.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="postprocess">
+<h3>postprocess<a class="headerlink" href="#postprocess" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.loanfinder.Search.postprocess">
+<span class="sig-prename descclassname"><span class="pre">Search.</span></span><span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dfmatches</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.loanfinder.Search.postprocess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will replace every phonological match in the output data frame with its most likely version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dfmatches</strong> – The entire data frame with potential loanwords</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the same dataframe but with likelier adaptations of donor words</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.core.series.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="likeliestphonmatch">
+<h3>likeliestphonmatch<a class="headerlink" href="#likeliestphonmatch" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.loanfinder.Search.likeliestphonmatch">
+<span class="sig-prename descclassname"><span class="pre">Search.</span></span><span class="sig-name descname"><span class="pre">likeliestphonmatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">donor_ad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recip_rc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">donor_segment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recip_segment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.loanfinder.Search.likeliestphonmatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the nse of recip_rc-recip_segment and donor_ad-donor_segment, adds them together and picks the word pair with the highest sum. Adds cols with bonus info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>recip_rc</strong> (<em>str</em><em> (</em><em>regular expression</em><em>)</em>) – a reconstructed word</p></li>
+<li><p><strong>donor_ad</strong> (<em>str</em><em> (</em><em>not a regular expression</em><em>, </em><em>words separated by &quot;</em><em>, </em><em>&quot;</em><em>)</em>) – adapted words in the donor data frame</p></li>
+<li><p><strong>donor_segment</strong> – the original (non-adapted) donor word</p></li>
+<li><p><strong>recip_segment</strong> (<em>str</em>) – the original (non-reconstructed) recipient word</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The likeliest phonological match</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.core.series.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="phonmatch-small">
+<h3>phonmatch_small<a class="headerlink" href="#phonmatch-small" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.loanfinder.Search.phonmatch_small">
+<span class="sig-prename descclassname"><span class="pre">Search.</span></span><span class="sig-name descname"><span class="pre">phonmatch_small</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_for</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropduplicates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.loanfinder.Search.phonmatch_small" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as loanpy.loanfinder.Serch.phonmatch but search_in has to be added as a parameter. Found this to be the most elegant solution b/c loanpy.loanfinder.Search.likeliestphonmatch() inputs lots of small and very different search_in-dfs, while loans() inputs one big df.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>search_in</strong> (<em>pandas Series</em>) – The iterable to search within</p></li>
+<li><p><strong>search_for</strong> – The regular expression for which to search in the wordlist</p></li>
+<li><p><strong>index</strong> (<em>str</em>) – The number with which to replace a match.         (This number will be         used to merge the rest of the recipdf data frame, so it should represent         the index in the recipdf data frame.)</p></li>
+<li><p><strong>dropduplicates</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If set to True, this will drop matches that have the same         index in the wordlist         (There’s one adapted donordf-word per row, but its index         is the same as the original donordf word’s from which it was adapted.         Therefore one recipdf word can match with the same donordf word through multiple         adaptations. Since the semantics are the same for all of those matches, duplicates can be dropped.         For a more precise search, e.g. to find out         which of all possible matches are the most likely, set dropduplicates=False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a pandas data frame containing phonological matches. The index         indicates the position of the word in the donordf word list.         The column “L1_idx” indicates         the position of the word in the recipdf word list.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.core.series.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="merge-with-rest">
+<h3>merge_with_rest<a class="headerlink" href="#merge-with-rest" title="Permalink to this headline">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.loanfinder.Search.merge_with_rest">
+<span class="sig-prename descclassname"><span class="pre">Search.</span></span><span class="sig-name descname"><span class="pre">merge_with_rest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dfmatches</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.loanfinder.Search.merge_with_rest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges the output data frame with the remaining columns from both input data frames. This helps to inspect results quickly manually.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dfmatches</strong> (<em>pandas.core.frame.DataFrame</em>) – The output data frame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>same data frame with extra cols added from both input forms.csv</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.core.frame.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Intro</a></li>
+<li><a class="reference internal" href="#to-be-used">To be used</a><ul>
+<li><a class="reference internal" href="#module-qfysc">qfysc.py</a><ul>
+<li><a class="reference internal" href="#qfy">Qfy</a></li>
+<li><a class="reference internal" href="#get-sound-correspondences">get sound correspondences</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-sanity">sanity.py</a><ul>
+<li><a class="reference internal" href="#evaluate-all">evaluate all</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-adrc">adrc.py</a><ul>
+<li><a class="reference internal" href="#adrc">Adrc</a></li>
+<li><a class="reference internal" href="#adapt">adapt</a></li>
+<li><a class="reference internal" href="#reconstruct">reconstruct</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-loanfinder">loanfinder.py</a><ul>
+<li><a class="reference internal" href="#search">Search</a></li>
+<li><a class="reference internal" href="#loans">loans</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#for-internal-calls">For internal calls</a><ul>
+<li><a class="reference internal" href="#module-loanpy.helpers">helpers.py</a></li>
+<li><a class="reference internal" href="#id1">qfysc.py</a><ul>
+<li><a class="reference internal" href="#read-mode">read mode</a></li>
+<li><a class="reference internal" href="#read-connector">read connector</a></li>
+<li><a class="reference internal" href="#read-sound-change-dictionary-base">read sound change dictionary base</a></li>
+<li><a class="reference internal" href="#align">align</a></li>
+<li><a class="reference internal" href="#align-with-lingpy">align with lingpy</a></li>
+<li><a class="reference internal" href="#align-clusterwise">align clusterwise</a></li>
+<li><a class="reference internal" href="#get-structure-correspondences">get structure correspondences</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">sanity.py</a><ul>
+<li><a class="reference internal" href="#check-cache">check cache</a></li>
+<li><a class="reference internal" href="#get-soundchanges">get soundchanges</a></li>
+<li><a class="reference internal" href="#evaluate-one">evaluate one</a></li>
+<li><a class="reference internal" href="#make-statistics">make statistics</a></li>
+<li><a class="reference internal" href="#get-true-positive-rate-and-false-positive-rate">get true positive rate and false positive rate</a></li>
+<li><a class="reference internal" href="#write-to-cache">write to cache</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">adrc.py</a><ul>
+<li><a class="reference internal" href="#read-sound-change-dictionary-list">read sound change dictionary list</a></li>
+<li><a class="reference internal" href="#move-soundchanges">move soundchanges</a></li>
+<li><a class="reference internal" href="#get-difference">get difference</a></li>
+<li><a class="reference internal" href="#read-soundchanges">read soundchanges</a></li>
+<li><a class="reference internal" href="#adapt-structure">adapt structure</a></li>
+<li><a class="reference internal" href="#get-normalised-sum-of-examples">get normalised sum of examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4">loanfinder.py</a><ul>
+<li><a class="reference internal" href="#read-data">read data</a></li>
+<li><a class="reference internal" href="#generator">generator</a></li>
+<li><a class="reference internal" href="#phonmatch">phonmatch</a></li>
+<li><a class="reference internal" href="#postprocess">postprocess</a></li>
+<li><a class="reference internal" href="#likeliestphonmatch">likeliestphonmatch</a></li>
+<li><a class="reference internal" href="#phonmatch-small">phonmatch_small</a></li>
+<li><a class="reference internal" href="#merge-with-rest">merge_with_rest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Welcome to loanpy’s documentation!</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/documentation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to loanpy’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">loanpy 2.0 beta documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Intro</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Viktor Martinović.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>

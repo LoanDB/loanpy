@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Welcome to loanpy’s documentation! &#8212; loanpy 2.0 beta documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Intro" href="documentation.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="documentation.html" title="Intro"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">loanpy 2.0 beta documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to loanpy’s documentation!</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="welcome-to-loanpy-s-documentation">
+<h1>Welcome to loanpy’s documentation!<a class="headerlink" href="#welcome-to-loanpy-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Intro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html#to-be-used">To be used</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#module-qfysc">qfysc.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#qfy">Qfy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#get-sound-correspondences">get sound correspondences</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#module-sanity">sanity.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#evaluate-all">evaluate all</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#module-adrc">adrc.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#adrc">Adrc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#adapt">adapt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#reconstruct">reconstruct</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#module-loanfinder">loanfinder.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#search">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#loans">loans</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html#for-internal-calls">For internal calls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#module-loanpy.helpers">helpers.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#id1">qfysc.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#read-mode">read mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#read-connector">read connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#read-sound-change-dictionary-base">read sound change dictionary base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#align">align</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#align-with-lingpy">align with lingpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#align-clusterwise">align clusterwise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#get-structure-correspondences">get structure correspondences</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#id2">sanity.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#check-cache">check cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#get-soundchanges">get soundchanges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#evaluate-one">evaluate one</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#make-statistics">make statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#get-true-positive-rate-and-false-positive-rate">get true positive rate and false positive rate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#write-to-cache">write to cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#id3">adrc.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#read-sound-change-dictionary-list">read sound change dictionary list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#move-soundchanges">move soundchanges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#get-difference">get difference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#read-soundchanges">read soundchanges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#adapt-structure">adapt structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#get-normalised-sum-of-examples">get normalised sum of examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#id4">loanfinder.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#read-data">read data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#generator">generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#phonmatch">phonmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#postprocess">postprocess</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#likeliestphonmatch">likeliestphonmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#phonmatch-small">phonmatch_small</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documentation.html#merge-with-rest">merge_with_rest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Welcome to loanpy’s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="documentation.html"
+                          title="next chapter">Intro</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="documentation.html" title="Intro"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">loanpy 2.0 beta documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to loanpy’s documentation!</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Viktor Martinović.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>
