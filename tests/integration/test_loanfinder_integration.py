@@ -23,21 +23,21 @@ def test_read_data():
     srsexp = Series(["a", "blub", "club"], name="col1", index=[0, 1, 1])
 
     # assert that the actual outcome equals the expected outcome for adapted
-    assert_series_equal(read_data(PATH2READ_DATA, "col1", True), srsexp)
+    assert_series_equal(read_data(PATH2READ_DATA, "col1"), srsexp)
 
 
     #overwrite data for reading reconstructed stuff
     srsexp = Series(["(a)?", "(b|c)"], name="col1", index=[1, 3])
     path = Path(__file__).parent / "input_files" / "rc_read_data.csv"
     #assert expected and actual outcome are the same pandas Series for reconstr
-    assert_series_equal(read_data(path, "col1", False), srsexp)
+    assert_series_equal(read_data(path, "col1"), srsexp)
 
     del path, srsexp
 
 def test_gen():
-    assert list(gen([1, 2, 3], [4, 5, 6], lambda x, y: x+y, "prefix"))  == [5, 7, 9]
+    assert list(gen([1, 2, 3], [4, 5, 6], lambda x, y: x+y))  == [5, 7, 9]
     #make sure *args after "prefix" are passed into the function (z=1)
-    assert list(gen([1, 2, 3], [4, 5, 6], lambda x, y, z: x+y+z, "prefix", 1))  == [6, 8, 10]
+    assert list(gen([1, 2, 3], [4, 5, 6], lambda x, y, z: x+y+z, "", 1))  == [6, 8, 10]
 
 def test_init():
     """test if class Search is initiated correctly"""
@@ -185,10 +185,10 @@ def test_loans():
 
     #test first break
     #assert that error is raised correctly
-    #b/c no phonetic matches were found
+    #b/c no phonological matches were found
     with raises(NoPhonMatch) as nophonmatch_mock:
         search_inst.loans()
-    assert str(nophonmatch_mock.value) == "no phonetic matches found"
+    assert str(nophonmatch_mock.value) == "no phonological matches found"
 
     # test with merge_with_rest=False, postprocess=False, write=True
     # these would be just some bonus parameters,

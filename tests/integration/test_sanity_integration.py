@@ -1,3 +1,5 @@
+#todo: write test for default setting of opt_param_path in eval_all
+
 from ast import literal_eval
 from collections import OrderedDict
 from datetime import datetime
@@ -9,6 +11,7 @@ from pandas.testing import assert_frame_equal
 from pytest import raises
 
 from loanpy.adrc import Adrc
+from loanpy.helpers import Etym
 from loanpy.sanity import (
 ArgumentsAlreadyTested,
 check_cache,
@@ -239,7 +242,7 @@ def test_eval_all():
      "Cognacy": [1, 2, 3],
     "guesses": [float("inf")]*3, "best_guess": ["KeyError"]*3})
 
-    #check based on those 3 cognates that it cant predict anything
+    #check based on those 3 cognates that it can't predict anything
     assert_frame_equal(eval_all(
     opt_param_path=MOCK_CACHE_PATH,
     formscsv=PATH2FORMS,
@@ -256,6 +259,9 @@ def test_eval_all():
     sort_by_nse=False,
     struc_filter=False,
     show_workflow=False,
+
+    scdictbase=None,
+    mode="adapt",
 
     write_to=None,
     plot_to=None,
@@ -325,6 +331,9 @@ def test_eval_all():
     struc_filter=False,
     show_workflow=False,
 
+    scdictbase=None,
+    mode="adapt",
+
     write_to=None,
     plot_to=None,
     plotldnld=False
@@ -334,6 +343,10 @@ def test_eval_all():
 
     #now go wild with params and see what happens
     path2test_out_eval_all = Path(__file__).parent / "test_out_eval_all.csv"
+
+    #generate scdictbase
+    scb = Etym(formscsv=PATH2FORMS, tgtlg="EAH"
+    ).get_scdictbase() # takes up 1.6MB. Better to generate and throw out
 
     df_exp = DataFrame(
     {"Target_Form": ['aɣat͡ʃi', 'aldaɣ', 'ajan', 'aːl', 'alat͡ʃ', 'alat͡ʃ', 'alat͡ʃ', 'alat͡ʃ', 'alma', 'altalaɡ', 'altalaɡ', 'op', 'oporo', 'opuruɣ', 'orat', 'orat', 'aːr', 'aːrtat', 'arkan', 'aːruk', 'arpa', 'aritan', 'aski'],
@@ -358,7 +371,7 @@ def test_eval_all():
     struc_filter=True,
     show_workflow=True,
 
-    scdictbase=True, #rankclosest ranks equally similar sounds randomly!
+    scdictbase=scb, #rankclosest ranks equally similar sounds randomly!
     #causing the results in fp and best_guess to be random as well
     write_to=path2test_out_eval_all,
     plot_to=None,
@@ -406,7 +419,8 @@ def test_eval_all():
     struc_filter=True,
     show_workflow=False,
 
-    scdictbase=False, #rankclosest ranks equally similar sounds randomly!
+    mode="adapt",
+    scdictbase=None, #rankclosest ranks equally similar sounds randomly!
     #causing the results in fp and best_guess to be random as well
     write_to=None,
     plot_to=None,
@@ -420,6 +434,49 @@ def test_eval_all():
         remove(PATH2OUT / f"sc{i}isolated.txt")
 
     remove(MOCK_CACHE_PATH)
+
+    del scb
+
+    #assert crossval=False works correctly by checking the written file
+    path2noncrossval = PATH2OUT / "test_noncrossval_sc_eval_all_integration.txt"
+    path2exp = Path(__file__).parent / "expected_files" / "\
+test_noncrossval_sc_eval_all_integration.txt"
+
+    sol = eval_all(
+    opt_param_path=MOCK_CACHE_PATH,
+    formscsv=path2cog27,
+    tgt_lg="EAH",
+    src_lg="WOT",
+    crossval=False,
+
+    guesslist=[1, 5, 10, 100, 1000],
+    max_struc=2,
+    max_paths=3,
+    writesc=path2noncrossval,
+    vowelharmony=True,
+    clusterised=True,
+    sort_by_nse=True,
+    struc_filter=True,
+    show_workflow=False,
+
+    mode="adapt",
+    scdictbase=None, #rankclosest ranks equally similar sounds randomly!
+    #causing the results in fp and best_guess to be random as well
+    write_to=None,
+    plot_to=None,
+    plotldnld=False)
+
+    out = literal_eval(open(path2noncrossval).read())
+    out3 = out.pop(3)
+    exp = literal_eval(open(path2exp).read())
+    exp3 = exp.pop(3)
+    assert out == exp
+    assert set(out3) == set(exp3) #phonotactic inventory has randomness
+
+
+    remove(MOCK_CACHE_PATH)
+
+    del out
 
 def test_plot_roc():
 
