@@ -6,10 +6,6 @@
 Welcome to loanpy's documentation!
 ==================================
 
-.. image:: white_logo_dark_background.jpg
-    :width: 400
-    :height: 160
-
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
