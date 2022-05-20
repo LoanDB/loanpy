@@ -24,7 +24,7 @@ def test_read_data():
         read_csv_mock.return_value = dfin
 
         # assert that the actual outcome equals the expected outcome
-        assert_series_equal(read_data(path, "col1", True), srsexp)
+        assert_series_equal(read_data(path, "col1"), srsexp)
 
     # assert mock call to read_csv_mock was correct
     assert read_csv_mock.call_args_list[0] == call(
@@ -41,7 +41,7 @@ def test_read_data():
         read_csv_mock.return_value = dfin
 
         #assert expected and actual outcome are the same pandas Series
-        assert_series_equal(read_data(path, "col1", False), srsexp)
+        assert_series_equal(read_data(path, "col1"), srsexp)
 
     #assert mock was called with correct input
     assert read_csv_mock.call_args_list[0] == call(
@@ -160,8 +160,8 @@ def test_init():
 
     # assert calls
     read_data_mock.assert_has_calls(
-    [call("got.csv", "adapted", True),
-     call("hun.csv", "reconstructed", False)])
+    [call("got.csv", "adapted"),
+     call("hun.csv", "reconstructed")])
     Distance_mock.assert_called_with()
     Adrc_mock.assert_has_calls(
     [call(scdictlist="scad.txt", mode='adapt'),
@@ -216,7 +216,7 @@ def test_init():
 
     # assert calls
     read_data_mock.assert_has_calls([
-    call(None, 'ad', True), call(None, 'rc', False)])
+    call(None, 'ad'), call(None, 'rc')])
     Distance_mock.assert_called_with()
     Adrc_mock.assert_has_calls([call(scdictlist=None, mode='adapt'),
     call(scdictlist=None, mode='reconstruct')])
@@ -522,10 +522,10 @@ def test_loans():
             concat_mock.return_value = DataFrame({})
 
             #assert that error is raised correctly
-            #b/c no phonetic matches were found
+            #b/c no phonological matches were found
             with raises(NoPhonMatch) as nophonmatch_mock:
                 Search.loans(self=mocksearch)
-            assert str(nophonmatch_mock.value) == "no phonetic matches found"
+            assert str(nophonmatch_mock.value) == "no phonological matches found"
 
     #assert that the mock generator was called with the correct args:
     #the input data frame, list of values to search for,

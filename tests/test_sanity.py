@@ -1,4 +1,4 @@
-#todo: test plot_ld_nld
+#todo: write test for default setting of opt_param_path in eval_all
 
 from collections import OrderedDict
 from datetime import datetime
@@ -248,12 +248,12 @@ def test_eval_all():
     init_args_mock = {"opt_param_path": "mockpath",
     "formscsv": "forms.csv", "tgt_lg": "EAH",
     "src_lg": "WOT", "crossval": True,
-     "guesslist": [1, 2, 3],
+     "guesslist": [10, 50, 100, 500, 1000],
     "max_struc": 1, "max_paths": 1, "writesc": False,
     "vowelharmony": False,
     "clusterised": False, "sort_by_nse": False,
     "struc_filter": False, "show_workflow": False,
-    "scdictbase": False,
+    "scdictbase": {"foo": "bar"},
     "mode": "adapt",
     "write_to": None,
     "plot_to": None, "plotldnld": False}
@@ -315,25 +315,11 @@ def test_eval_all():
 
                                     #assert evaluation runs correctly
                                     assert_frame_equal(eval_all(
-                                    opt_param_path="mockpath",
                                     formscsv="forms.csv",
                                     tgt_lg="EAH",
                                     src_lg="WOT",
-                                    crossval=True,
-
-                                    guesslist=[1,2,3],
-                                    max_struc=1,
-                                    max_paths=1,
-                                    writesc=False,
-                                    vowelharmony=False,
-                                    clusterised=False,
-                                    sort_by_nse=False,
-                                    struc_filter=False,
-                                    show_workflow=False,
-
-                                    write_to=None,
-                                    plot_to=None,
-                                    plotldnld=False
+                                    opt_param_path="mockpath",
+                                    scdictbase={"foo": "bar"},
                                     ), df_exp)
 
     #assert calls
@@ -357,33 +343,27 @@ def test_eval_all():
     #first call
     assert type(eval_one_mock.call_args_list[0][0][0]) == type(GetMonkeySc())
     assert eval_one_mock.call_args_list[0][0][1:] == (
-    ('kiki', 'hehe', [1, 2, 3], 1, 1, False, False, False, False, False, "adapt"))  # kwargs!
+    ('kiki', 'hehe', [10, 50, 100, 500, 1000], 1, 1, False, False, False, False, False, "adapt"))  # kwargs!
     assert eval_one_mock.call_args_list[0][1] == {}  # args!
     #2nd call eval_mock
     assert type(eval_one_mock.call_args_list[1][0][0]) == type(GetMonkeySc())
     assert eval_one_mock.call_args_list[1][0][1:] == (
-    'buba', 'pupa', [1, 2, 3], 1, 1, False, False, False, False, False, "adapt") # kwargs!
+    'buba', 'pupa', [10, 50, 100, 500, 1000], 1, 1, False, False, False, False, False, "adapt") # kwargs!
     assert eval_one_mock.call_args_list[1][1] == {}  # args!
     #3rd call eval mock
     assert type(eval_one_mock.call_args_list[2][0][0]) == type(GetMonkeySc())
     assert eval_one_mock.call_args_list[2][0][1:] == (
-    "kaba", "hapa", [1, 2, 3], 1, 1, False, False, False, False, False, "adapt")  # kwargs!
+    "kaba", "hapa", [10, 50, 100, 500, 1000], 1, 1, False, False, False, False, False, "adapt")  # kwargs!
     assert eval_one_mock.call_args_list[2][1] == {}  # args!
 
     #assert 6th mock call was correct
-    gettprfpr_mock.assert_called_with([1, None, 3], [0, 1, 2], 3)
+    gettprfpr_mock.assert_called_with([1, None, 3], [9, 49, 99, 499, 999], 3)
 
     #assert 7th mock call went correctly
-    make_stat_mock.assert_called_with(0.099, 0.6, 2, 3)  # opt_tp, opt_fp, guesslist[-1], len_df
+    make_stat_mock.assert_called_with(0.099, 0.6, 999, 3)  # opt_tp, opt_fp, guesslist[-1], len_df
 
     #assert 8th mock call went correctly
-    write_to_cache_mock.assert_called_with((1, '2/3', '60%'), {
-    'opt_param_path': 'mockpath', 'formscsv': 'forms.csv', 'tgt_lg': 'EAH',
-    'src_lg': 'WOT', 'crossval': True, 'guesslist': [1, 2, 3], 'max_struc': 1,
-    'max_paths': 1, 'writesc': False, 'vowelharmony': False, 'clusterised': False,
-    'sort_by_nse': False, 'struc_filter': False, 'show_workflow': False,
-    'scdictbase': False, 'mode': "adapt",
-    'write_to': None, 'plot_to': None, 'plotldnld': False},
+    write_to_cache_mock.assert_called_with((1, '2/3', '60%'), init_args_mock,
     'mockpath', 20, 22)
 
     #assert 9th mock call went correctly
@@ -391,21 +371,30 @@ def test_eval_all():
 
     del df_exp, df_mock_read, init_args_mock, GetMonkeySc
 
-    #same as before but mode= "reconstruct"
+    #same as before but mode= "reconstruct" opt_param_path is None, and
+    # scdictbase is None
 
     #set up mock init_args (mocks locals())
-    init_args_mock = {"opt_param_path": "mockpath",
-    "formscsv": "forms.csv", "tgt_lg": "EAH",
-    "src_lg": "H", "crossval": True,
-     "guesslist": [1, 2, 3],
-    "max_struc": 1, "max_paths": 1, "writesc": False,
-    "vowelharmony": False,
-    "clusterised": False, "sort_by_nse": False,
-    "struc_filter": False, "show_workflow": False,
-    "scdictbase": False,
-    "mode": "reconstruct",
-    "write_to": None,
-    "plot_to": None, "plotldnld": False}
+    init_args_mock = {
+    'formscsv': Path('forms.csv'),
+    'tgt_lg': 'EAH',
+    'src_lg': 'H',
+    'opt_param_path': Path('etc/opt_params_H_EAH.csv'),
+    'crossval': True,
+    'guesslist': [1, 2, 3],
+    'max_struc': 1,
+    'max_paths': 1,
+    'writesc': False,
+    'vowelharmony': False,
+    'clusterised': False,
+    'sort_by_nse': False,
+    'struc_filter': False,
+    'show_workflow': False,
+    'scdictbase': None,
+    'mode': 'reconstruct',
+    'write_to': None,
+    'plot_to': None,
+    'plotldnld': False}
 
     #set up mock df for both cldf2pd AND read_csv
     df_mock_read = DataFrame(
@@ -464,33 +453,18 @@ def test_eval_all():
 
                                     #assert evaluation runs correctly
                                     assert_frame_equal(eval_all(
-                                    opt_param_path="mockpath",
-                                    formscsv="forms.csv",
+                                    formscsv=Path("forms.csv"),
                                     tgt_lg="EAH",
                                     src_lg="H",
-                                    crossval=True,
-
                                     guesslist=[1,2,3],
-                                    max_struc=1,
-                                    max_paths=1,
-                                    writesc=False,
-                                    vowelharmony=False,
-                                    clusterised=False,
-                                    sort_by_nse=False,
-                                    struc_filter=False,
-                                    show_workflow=False,
                                     mode="reconstruct",
-
-                                    write_to=None,
-                                    plot_to=None,
-                                    plotldnld=False
                                     ), df_exp)
 
     #assert calls
 
     #assert first mock (check_cache) called correctly
     check_cache_mock.assert_called_with(
-    "mockpath", init_args_mock)
+    Path("etc/opt_params_H_EAH.csv"), init_args_mock)
 
     #assert 4th mock (get_sc) called correctly
     #first call get_sc
@@ -527,19 +501,161 @@ def test_eval_all():
     make_stat_mock.assert_called_with(0.099, 0.6, 2, 3)  # opt_tp, opt_fp, guesslist[-1], len_df
 
     #assert 8th mock call went correctly
-    write_to_cache_mock.assert_called_with((1, '2/3', '60%'), {
-    'opt_param_path': 'mockpath', 'formscsv': 'forms.csv', 'tgt_lg': 'EAH',
-    'src_lg': 'H', 'crossval': True, 'guesslist': [1, 2, 3], 'max_struc': 1,
-    'max_paths': 1, 'writesc': False, 'vowelharmony': False, 'clusterised': False,
-    'sort_by_nse': False, 'struc_filter': False, 'show_workflow': False,
-    'scdictbase': False, 'mode': "reconstruct",
-    'write_to': None, 'plot_to': None, 'plotldnld': False},
-    'mockpath', 20, 22)
+    write_to_cache_mock.assert_called_with((1, '2/3', '60%'),
+    init_args_mock, Path('etc/opt_params_H_EAH.csv'), 20, 22)
 
     #assert 9th mock call went correctly
     time_mock.assert_called_with()
 
     del df_exp, df_mock_read, init_args_mock, GetMonkeySc
+
+    #same as first one but different params
+
+    #set up mock init_args (mocks locals())
+    init_args_mock = {
+    'formscsv': 'forms.csv',
+    'tgt_lg': 'EAH',
+    'src_lg': 'WOT',
+    'opt_param_path': Path('mockpath'),
+    'crossval': False,
+    'guesslist': [10, 50, 100, 500, 1000],
+    'max_struc': 2,
+    'max_paths': 3,
+    'writesc': Path(__file__).parent / 'eval_all_test_sc.txt',
+    'vowelharmony': True,
+    'clusterised': True,
+    'sort_by_nse': True,
+    'struc_filter': True,
+    'show_workflow': True,
+    'scdictbase': None,
+    'mode': 'adapt',
+    'write_to': Path(__file__).parent / 'eval_all_test_output.csv',
+    'plot_to': Path(__file__).parent / 'eval_all_plot.jpg',
+    'plotldnld': False}
+
+    #set up mock df for both cldf2pd AND read_csv
+    df_mock_read = DataFrame(
+    {"Source_Form": ["kiki", "buba", "kaba"],
+    "Target_Form": ["hehe", "pupa", "hapa"]})
+
+    #set up expected output data frame
+    df_exp = df_mock_read.assign(guesses=[1, None, 3], best_guess=["hehe", "pupa", "hapa"])
+
+    #set up mock class for var "self", get_sc will return these
+    class GetMonkeySc:
+        def __init__(self, scdict=None, scdict_struc=None):
+            self.scdict = scdict
+            self.scdict_struc = scdict_struc
+            self.dfety = df_mock_read
+            self.get_sound_corresp_called_with = []
+
+        def get_sound_corresp(self, *args):
+            self.get_sound_corresp_called_with.append([*args])
+            return [{"k": ["h"], "b": ["p"], "i": ["e"],
+                     "u": ["u"], "a": ["a"]}, {}, {},
+                     {"CVCV": ["CVCV"]}, {}, {}]
+    #create 3 instances of mock class, to be returned by get_sc (sdie eff.)
+    #one for each element of guesslist
+    #simulate the sound changes that would have been extracted from
+    #each crossvalidated data frame
+    mockgetsc1 = GetMonkeySc(scdict={"k": ["h"], "b": ["p"],  # "i" missing b/c "kiki" isolated
+                                   "u": ["u"], "a": ["a"]}, scdict_struc={"CVCV": ["CVCV"]})
+    mockgetsc2 = GetMonkeySc(scdict={"k": ["h"], "b": ["p"],  # "u" missing b/c "buba" isolated
+                                   "i": ["e"], "a": ["a"]}, scdict_struc={"CVCV": ["CVCV"]})
+    mockgetsc3 = GetMonkeySc(scdict={"k": ["h"], "b": ["p"], "i": ["e"],  # nothing missing b/c sc in "kaba" are captured in "kiki" and "buba"
+                                   "u": ["u"], "a": ["a"]}, scdict_struc={"CVCV": ["CVCV"]})
+
+    #set up: mock 9 functions: check_cache, cldf2pd, read_forms, get_sc, eval_one,
+    #gettprfpr, make_stat, write_to_cache, time
+    with patch("loanpy.sanity.check_cache") as check_cache_mock:
+        check_cache_mock.return_value = None
+        #with patch("loanpy.sanity.cldf2pd") as cldf2pd_mock:
+        #    cldf2pd_mock.return_value = df_mock_read
+        #    with patch("loanpy.sanity.read_forms") as read_forms_mock:
+        #        read_forms_mock.return_value = df_mock_read
+        with patch("loanpy.sanity.Adrc") as Adrc_mock:
+            Adrc_mock.return_value = GetMonkeySc()
+            with patch("loanpy.sanity.get_sc") as get_sc_mock:
+                with patch("loanpy.sanity.eval_one",
+                side_effect=[{"sol_idx_plus1": 1, "best_guess": "hehe",
+                              "workflow": {"stepX": "whathappened"}},
+                             {"sol_idx_plus1": None, "best_guess": "pupa",
+                              "workflow": {"stepX": "whathappened"}},
+                             {"sol_idx_plus1": 3, "best_guess": "hapa",
+                              "workflow": {"stepX": "whathappened"}}]) as eval_one_mock:
+                    with patch("loanpy.sanity.gettprfpr") as gettprfpr_mock:
+                        gettprfpr_mock.return_value = (
+                        [0.0, 0.6, 0.7],
+                        [0.001, 0.099, 1.0],
+                        (0.501, 0.6, 0.099))
+                        with patch("loanpy.sanity.make_stat") as make_stat_mock:
+                            make_stat_mock.return_value = (1, '2/3', '60%')
+                            with patch("loanpy.sanity.time", side_effect=[
+                            20, 22]) as time_mock:
+                                with patch("loanpy.sanity.write_to_cache") as write_to_cache_mock:
+                                    write_to_cache_mock.return_value = ""
+
+                                    #assert evaluation runs correctly
+                                    assert_frame_equal(eval_all(
+                                    formscsv="forms.csv",
+                                    tgt_lg="EAH",
+                                    src_lg="WOT",
+                                    opt_param_path=Path("mockpath"),
+                                    crossval=False,
+                                    max_struc=2,
+                                    max_paths=3,
+                                    writesc=Path(__file__).parent / "eval_all_test_sc.txt",
+                                    vowelharmony=True,
+                                    clusterised=True,
+                                    sort_by_nse=True,
+                                    struc_filter=True,
+                                    show_workflow=True,
+                                    write_to=Path(__file__).parent / "eval_all_test_output.csv",
+                                    plot_to=Path(__file__).parent / "eval_all_plot.jpg"
+                                    ), df_exp)
+
+    #assert calls
+
+    #assert first mock (check_cache) called correctly
+    check_cache_mock.assert_called_with(
+    Path("mockpath"), init_args_mock)
+
+    #assert get_sound_corresp called correctly
+    #assert get_sc_mock was not called
+    get_sc_mock.assert_not_called()
+
+    #assert 5th mock (eval_one) called correctly
+    #first call
+    assert type(eval_one_mock.call_args_list[0][0][0]) == type(GetMonkeySc())
+    assert eval_one_mock.call_args_list[0][0][1:] == (
+    ('kiki', 'hehe', [10, 50, 100, 500, 1000], 2, 3, True, True, True, True, True, "adapt"))  # kwargs!
+    assert eval_one_mock.call_args_list[0][1] == {}  # args!
+    #2nd call eval_mock
+    assert type(eval_one_mock.call_args_list[1][0][0]) == type(GetMonkeySc())
+    assert eval_one_mock.call_args_list[1][0][1:] == (
+    'buba', 'pupa', [10, 50, 100, 500, 1000], 2, 3, True, True, True, True, True, "adapt") # kwargs!
+    assert eval_one_mock.call_args_list[1][1] == {}  # args!
+    #3rd call eval mock
+    assert type(eval_one_mock.call_args_list[2][0][0]) == type(GetMonkeySc())
+    assert eval_one_mock.call_args_list[2][0][1:] == (
+    "kaba", "hapa", [10, 50, 100, 500, 1000], 2, 3, True, True, True, True, True, "adapt")  # kwargs!
+    assert eval_one_mock.call_args_list[2][1] == {}  # args!
+
+    #assert 6th mock call was correct
+    gettprfpr_mock.assert_called_with([1, None, 3], [9, 49, 99, 499, 999], 3)
+
+    #assert 7th mock call went correctly
+    make_stat_mock.assert_called_with(0.099, 0.6, 999, 3)  # opt_tp, opt_fp, guesslist[-1], len_df
+
+    #assert 8th mock call went correctly
+    write_to_cache_mock.assert_called_with((1, '2/3', '60%'), init_args_mock,
+    Path('mockpath'), 20, 22)
+
+    #assert 9th mock call went correctly
+    time_mock.assert_called_with()
+
+    del df_exp, df_mock_read, init_args_mock, GetMonkeySc
+
 
 def test_plotroc():
     #set up path to mock plot

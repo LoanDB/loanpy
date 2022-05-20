@@ -82,7 +82,7 @@ def test_init():
 
     #assert calls
     super_method_mock.assert_called_with(formscsv=None, srclg=None, tgtlg=None,
-    mode=None, struc_most_frequent=9999999, struc_inv=None)
+    mode=None, struc_most_frequent=9999999, struc_inv=None, scdictbase=None)
     assert read_scdictlist_mock.call_args_list == [call(None)]
 
     # set up: mock super() method and read_scdictlist
@@ -121,7 +121,8 @@ def test_init():
         formscsv="forms.csv", srclg=None, tgtlg=None,
         mode="reconstruct",
         struc_most_frequent=2,
-        struc_inv=None)
+        struc_inv=None,
+        scdictbase=None)
     assert read_scdictlist_mock.call_args_list == [call("soundchanges.txt")]
 
     # tear down

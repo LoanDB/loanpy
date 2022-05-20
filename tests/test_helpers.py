@@ -2,6 +2,7 @@
 
 # todo:
 # autopep8
+# test "if item" in flotten, also integration test for that
 
 from unittest.mock import call, patch
 from pathlib import Path
@@ -195,8 +196,10 @@ def test_read_dst():
 
 
 def test_flatten():
-    """check if nested lists are flattened correctly"""
+    """check if nested lists are flattened and "" thrown out"""
     assert flatten([["a", "b"], ["c"]]) == ["a", "b", "c"]
+    assert flatten([["wrd1", "wrd2", ""], ["wrd3", "", ""]]) == ["wrd1",
+    "wrd2", "wrd3"]
 
 
 def test_combine_ipalists():
