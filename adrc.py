@@ -44,12 +44,13 @@ class Adrc(Qfy):
     :type se_or_edict: str, default="sedict.txt"
 
     """
-    def __init__(self, srclg=None, tgtlg=None, scdictlist=None,
+    def __init__(self, srclg=None, tgtlg=None, scdictlist=None, scdictbase=None,
                  formscsv=None, mode=None, struc_most_frequent=9999999, struc_inv=None):
         """inits Adrc with allowed phonotactics, dictionaries of sound substitution and sound changes """
 
         super().__init__(formscsv=formscsv, srclg=srclg, tgtlg=tgtlg, mode=mode,
-                         struc_most_frequent=struc_most_frequent, struc_inv=struc_inv)
+                         struc_most_frequent=struc_most_frequent, struc_inv=struc_inv,
+                         scdictbase=scdictbase)
 
         self.scdict, self.sedict, self.edict, self.scdict_struc = read_scdictlist(scdictlist)
 
@@ -264,6 +265,7 @@ class Adrc(Qfy):
             if show_workflow: self.workflow["adapted_vowelharmony"] = [out]
 
         out = [self.read_sc(ipalist, max_phon) for ipalist in out]
+
         if show_workflow: self.workflow["before_combinatorics"] = [out]
 
         out = combine_ipalists(out)

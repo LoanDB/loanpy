@@ -1,10 +1,5 @@
-#rename params so that they are longer and clearer to the outside
-#rename vars so that they are shorter and less bulky in the inside
-#write more inline comments
-#stylecheck
-
 """
-Functions and class Etym, which are called by the other modules.
+Contains helper functions and class Etym, which are called by other modules.
 
 """
 
@@ -30,18 +25,23 @@ tokenise = partial(tokenise, replace=True)
 clusterise = partial(clusterise, replace=True)
 
 class InventoryMissingError(Exception):
+    """
+    Called by rank_closest() and rank_closest_struc() if neither forms.csv \
+is defined nor the phonotactic/phoneme inventory plugged in.
+    """
     pass
 
 def plug_in_model(word2vec_model):
     """
     allows to plug in a word2vec model into global variable <model>. \
 This is useful if you want to use vectors that can't be loaded with gensim's \
-api. Vectors could be plugged in without this function as well, but this way
+api. Vectors could be plugged in without this function as well, but this way \
 debugging is easier.
 
     :param word2vec_model: The word2vec model to use
     :type word2vec: {<class 'gensim.models.keyedvectors.KeyedVectors'>)
 
+    :returns: global variable <model> gets defined
     :rtype: None (global model = word2vec_model)
 
     :Example:
@@ -60,8 +60,6 @@ debugging is easier.
     >>> hp.model
     <gensim.models.keyedvectors.KeyedVectors object at 0x7f85fe36d9d0>
 
-    #todo:
-    #how to plug in German vectors from 3rd party
     """
 
     global model
@@ -78,6 +76,8 @@ which in turn is used by word2struc and many others. \
 This file could be read directly when importing, but this way debugging is \
 easier.
 
+    :returns: two dictionaries, the first defining consonants and vowels (cv), \
+the second defining front and back vowels (fb).
     :rtype: (dict, dict)
 
     :Example:
@@ -102,6 +102,7 @@ Returns None if dff is None. So that class can be initiated without args too.
     :param dff: path to forms.csv
     :type dff: <class 'pathlib.PosixPath'> | str | None
 
+    :returns: a workable version of forms.csv as a pandas data frame
     :rtype: <class 'pandas.core.frame.DataFrame'> | None
 
     :Example:
@@ -110,13 +111,6 @@ Returns None if dff is None. So that class can be initiated without args too.
     >>> from loanpy.helpers import __file__, read_forms
     >>> read_forms(Path(__file__).parent / "tests" / "integration" / "input_files" / "forms.csv")
 
-     +------------+--------+---------+
-     |Language_ID |Segments| Cognacy |
-     +------------+--------+---------+
-0    |     1      |  abc   |    1    |
-     +------------+--------+---------+
-1    |     2      |  xyz   |    1    |
-     +------------+--------+---------+
     """
 
     if not dff: return None
@@ -146,6 +140,7 @@ that cognate set is skipped.
     :param tgtlg: The languages who's cognates go to column "Target_Forms"
     :type tgtlg: <str>
 
+    :returns: forms.csv data frame with re-positioned information
     :rtype: <class 'pandas.core.frame.DataFrame'> | None
 
     :Example:
@@ -153,24 +148,6 @@ that cognate set is skipped.
     >>> from pathlib import Path
     >>> from loanpy.helpers import __file__, cldf2pd, read_forms
     >>> cldf2pd(read_forms(Path(__file__).parent / "tests" / "integration" / "input_files" / "forms.csv"), srclg=1, tgtlg=2)
-
-     +------------+-------------+---------+
-     |Target_Form | Source_Form | Cognacy |
-     +------------+-------------+---------+
-0    |     xyz    |   abc       |    1    |
-     +------------+-------------+---------+
-
-     :Note:
-
-     read_forms() returned:
-
-      +------------+--------+---------+
-      |Language_ID |Segments| Cognacy |
-      +------------+--------+---------+
- 0    |     1      |  abc   |    1    |
-      +------------+--------+---------+
- 1    |     2      |  xyz   |    1    |
-      +------------+--------+---------+
 
     """
 
@@ -211,6 +188,7 @@ if inv is None, inv will be calculated from forms else inv will be returned.
     :param func: the tokeniser to split words into phonemes
     :type func: function
 
+    :returns: The phoneme inventory of the language
     :rtype: set | None | same as input type
 
     """
@@ -226,6 +204,8 @@ similar phonemes of the inventory compared to a given phoneme from ipa_all.csv
 example
     :type dst_msr: str | None
 
+    :returns: a function that calculates the phonological distance between \
+ipa-strings
     :rtype: function | None
 
     :Example:
@@ -246,16 +226,20 @@ hamming_substitution_cost, jt_feature_edit_distance, ...\
     """
     return None if not dst_msr else getattr(Distance(), dst_msr)
 
-def flatten(t):
+def flatten(nested_list):
     """
-    Flatten a nested list.
+    Flatten a nested list, discard empty strings
 
     :param t: a nested list
     :type t: list of lists
 
+    :return: flattened list without empty strings as elements
     :rtype: list
     """
-    return [item for sublist in t for item in sublist]
+    #empty strings would trigger an error in the tokeniser
+    # sometimes both phonemes of a 2-phoneme-word can be replaced with "".
+    # so some entire words can be substituted by "". Discard those.
+    return [item for sublist in nested_list for item in sublist if item]
 
 def combine_ipalists(wrds):
     """
@@ -264,6 +248,7 @@ def combine_ipalists(wrds):
     :param wrds: list of words consisting of sound change lists
     :type wrds: list of lists of lists
 
+    :returns: a list of words without empty strings as elements
     :rtype: list of strings
 
     :Example:
@@ -283,6 +268,7 @@ Only called by Etym.__init__
     :param dff: forms.csv data frame (cldf)
     :type dff: <class 'pandas.core.frame.DataFrame'>
 
+    :returns: a list of words in the target language
     :rtype: list | None
 
     :Example:
@@ -302,33 +288,26 @@ from panphon, together with its "spinoff" cvfb.txt. The second has to be \
 defined through the init args and will be data extracted from a forms.csv \
 (cldf data standard, insert link here later). \
 The class methods eventually all rely on panphon / data / "ipa_all.csv". \
-loanpy's ipa_all.csv is slightly modified but I didn't keep track of the modifications.
+loanpy's ipa_all.csv is slightly modified but I didn't keep track of the modifications. \
 I remember that I changed the status of the glottal stop at least. \
-And added "C", "V" to the bottom. Todo: Plug back in the original ipa_all.csv
-
-    """
-    def __init__(self, formscsv=None, srclg=None, tgtlg=None,
-                 inventory=None, clusters=None, struc_inv=None,
-                 distance_measure="weighted_feature_edit_distance",
-                 struc_most_frequent=9999999):
-        """
-        Define consonants, vowels, front vowels, and back vowels \
+And added "C", "V" to the bottom. Todo: Plug back in the original ipa_all.csv.\
+Define consonants, vowels, front vowels, and back vowels \
 based on David R. Mortensen, Patrick Littell, Akash Bharadwaj, Kartik Goyal, Chris Dyer, \
 Lori Levin (2016). "PanPhon: A Resource for Mapping IPA Segments to Articulatory Feature \
 Vectors." Proceedings of COLING 2016, the 26th International Conference on Computational \
 Linguistics: Technical Papers, pages 3475–3484, Osaka, Japan, December 11-17 2016. \
-(Oiriginally based on a Chomsyk&Halle paper from the 60s iirc). \
+(Based on SPE by Chomsyk&Halle). \
 Turn forms.csv into a pandas data frame, \
 and extract following information from it: \
 phoneme inventory: a set of all phonemes that occur in the language's words, \
-clusters: a set of all consonant and vowel clusters occuring in the language,
+clusters: a set of all consonant and vowel clusters occuring in the language, \
 struc_inv: a list of phonotactic structures that occur in the language, \
 sorted according to their frequency
 
     :param formscsv: a forms.csv of the cldf data standard (insert link)
     :type formscsv: <class 'pathlib.PosixPath'> | str | None
 
-    :param srclg: The source language as defined in \
+    :param srclg: The technical source language as defined in \
 cldf's etc / "languages.tsv". \
 This can be confusing, as sometimes \
 the technical source language for the predictions can be the linguistic \
@@ -337,7 +316,7 @@ adapting loanwords the technical and the linguistic source word are usually \
 the same.
     :type srclg: str
 
-    :param tgtlg: The target language as defined in \
+    :param tgtlg: The technical target language as defined in \
 cldf's etc / "languages.tsv". For caveats see param srclg
     :type tgtlg: str
 
@@ -364,7 +343,7 @@ structures should we allow to be part of the inventory.
 
     >>> from pathlib import Path
     >>> from loanpy.helpers import Etym, __file__
-    >>> etym_obj = Etym(formscsv=Path(__file__).parent / "tests" /
+    >>> etym_obj = Etym(formscsv=Path(__file__).parent / "tests" / \
 "integration" / "input_files" / "forms.csv", srclg=1, tgtlg=2)
     >>> etym_obj.phon2cv["k"]
     'C'
@@ -373,19 +352,19 @@ structures should we allow to be part of the inventory.
     >>> etym_obj.distance_measure("p", "b")
     0.25
     >>> etym_obj.dfety
-     +------------+-------------+---------+
-     |Target_Form | Source_Form | Cognacy |
-     +------------+-------------+---------+
-0    |     xyz    |   abc       |    1    |
-     +------------+-------------+---------+
+
     >>> etym_obj.phoneme_inventory
     {'y', 'z', 'x'}
     >>> etym_obj.clusters
     {'y', 'z', 'x'}
     >>> etym_obj.struc_inv
     {'CVC'}
-        """
 
+    """
+    def __init__(self, formscsv=None, srclg=None, tgtlg=None,
+                 inventory=None, clusters=None, struc_inv=None,
+                 distance_measure="weighted_feature_edit_distance",
+                 struc_most_frequent=9999999):
         #local vars
         dff = read_forms(formscsv)
         forms = forms2list(dff, tgtlg)
@@ -414,6 +393,7 @@ structures should we allow to be part of the inventory.
 inventory
         :type howmany: int
 
+        :returns: all possible phonotactic structures documented in the data
         :rtype: list
 
         :Note:
@@ -434,6 +414,13 @@ will be returned.
     def word2struc(self, ipa_in):
         """
         Returns the phonotactic profile of an ipa-string.
+
+        :param ipa_in: a string or list consisting of IPA-characters. \
+if input is string, it will be tokenised.
+        :type ipa_in: str | list (IPA chars)
+
+        :returns: the phonotactic profile of the word
+        :rtype: str
 
         :Example:
 
@@ -471,6 +458,7 @@ Cs and Vs. Originally written for sanity.py but currently not used anywhere.
         :param ipalist: the word that should be analysed
         :type ipalist: {list of str, str}
 
+        :returns: Does the word have front-back vowelharmony?
         :rtype: bool
 
         :Example:
@@ -499,6 +487,7 @@ Cs and Vs. Originally written for sanity.py but currently not used anywhere.
         :param ipalist: a list or a string of phonemes
         :type ipalist: {list of str, str}
 
+        :returns: a tokenised word with repaired vowelharmony
         :rtype: list of str
 
         :Example:
@@ -550,11 +539,13 @@ but turns back vowels to front ones if turnto="F"
         :type ipalist: list
 
         :param turnto: turn back vowels to front ones or vice verse
-        :type turnto: {"F", "B
+        :type turnto: {"F", "B"}
 
+        :returns: a tokenised word with some vowels replaced by "F" or "B".
         :rtype: list
 
         :Example:
+
         >>> from loanpy import helpers
         >>> hp = helpers.Etym()
         >>> hp.get_fb(['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'], turnto="B")
@@ -573,13 +564,24 @@ Could also turn ipa_all.csv into a square of 6358*6358 phonemes and just use \
 that file for all future cases but that would use an estimated 500MB per \
 type of distance measure. So more economical to calculate it this way. \
 Will still, depending on size of phoneme inventory, take up about 2MB. \
-result is returned, assigned to self.scdictbase and optionally written.
+result is returned, assigned to self.scdictbase and optionally written. \
+Usually there is very little data available \
+on sound substitutions and the ones available give only very small instight \
+into all possibilities. \
+The idea here is therefore that any sound \
+that is not contained in a language's phoneme inventory will be replaced by \
+the most similar available one(s). The available sound substitutions \
+based on etymological data will be combined with \
+this heuristics, if available.
 
         :param write_to: If or where the output should be written.
         :type write_to: None | <class 'pathlib.PosixPath'> | str
 
-        :param most_common:
+        :param most_common: Add only this many most similar phonemes to \
+scdictbase. By default the entire phoneme inventory will be ranked.
 
+        :returns: A heuristic approach to sound substitution in loanword \
+adaptation
         :rtype: dict
 
         :Example:
@@ -587,7 +589,7 @@ result is returned, assigned to self.scdictbase and optionally written.
         >>> from pathlib import Path
         >>> from loanpy.helpers import Etym, __file__
         >>> etym_obj = Etym(formscsv=Path(__file__).parent / "tests" / \
-    "integration" / "input_files" / "forms.csv", srclg=1, tgtlg=2)
+"integration" / "input_files" / "forms.csv", srclg=1, tgtlg=2)
         >>> etym_obj.get_scdictbase()
         >>> etym_obj.scdictbase["i"]
         ["y", "x", "z"]
@@ -625,7 +627,9 @@ result is returned, assigned to self.scdictbase and optionally written.
         :param inv: To plug in phoneme inventory manually if necessary
         :type inv: list | set
 
-        :rytpe: str
+        :returns: the phoneme inventory ranked by similarity (most similar \
+first)
+        :rytpe: str (elements separates by ", ")
 
         :Example:
 
@@ -661,6 +665,10 @@ result is returned, assigned to self.scdictbase and optionally written.
 manually if necessary
         :type inv: list | set
 
+        :returns: the phonotactic inventory ranked by similarity (most similar \
+first)
+        :rytpe: str (elements separates by ", ")
+
         >>> from pathlib import Path
         >>> from loanpy.helpers import Etym, __file__
         >>> etym_obj = Etym(struc_inv=["CVC", "CVCVV", "CCCC", "VVVVVV"])
@@ -682,32 +690,35 @@ manually if necessary
 def gensim_multiword(recip_transl, donor_transl, return_wordpair=False, wordvectors= "word2vec-google-news-300"):
     """
 
-    :param L1_en: English translations of L1-word
-    :type L1_en: str, words are separated by ", "
+    :param recip_transl: translation of the recipient word
+    :type recip_transl: str, words are separated by ", "
 
-    :param L2_en: English translations of L2-word
-    :type L2_en: str, words are separated by ", "
+    :param donor_transl: translations of the donor word
+    :type donor_transl: str, words are separated by ", "
 
     :param return_wordpair: Indicate whether the word pair itself should be \
-     returned too.
+returned too.
     :type return_wordpair: bool, default=False
 
-    :return: The most similar word pair of the two lists
-    :rtype: int or tuple of (int and tuple of two str)
+    :param wordvectors: The name of the pretrained wordvector model to use. \
+For a complete list of loadable models see gensim's documentation.
+    :type wordvectors: str
+
+    :returns: The similarity score of the most similar word pair plus \
+the word pair itself if return_wordpair was True.
+    :rtype: int or (int, str, str)
 
     :Example:
 
-    >>> from loanpy import helpers
-    >>> hp = helpers.Help_sem()
-    >>> hp.gensim_similarity("hovercraft, full, eels", "nipples, explode, delight",
-                           return_wordpair=False)
+    >>> from loanpy import gensim_multiword
+    >>> gensim_multiword("hovercraft, full, eels", "nipples, explode, delight",
+                          return_wordpair=False)
     0.21005636
 
-    >>> from loanpy import helpers
-    >>> hp = helpers.Help_sem()
-    >>> hp.gensim_similarity("drop, panties, William", "cannot, wait, lunchtime",
+    >>> from loanpy import gensim_multiword
+    >>> gensim_multiword("drop, panties, William", "cannot, wait, lunchtime",
                            return_wordpair=True)
-    (0.54949486, ('house', 'cottage'))
+    (0.54949486, 'house', 'cottage')
 
     """
 
@@ -739,7 +750,7 @@ def list2regex(sclist):
     :param sclist: a list of phonemes
     :type sclist: list of str
 
-    :return: the same phonemes as a regular expression. "-" is \
+    :returns: the same phonemes as a regular expression. "-" is \
 removed and replaced with a question mark at the end.
     :rtype: str
 
@@ -786,7 +797,13 @@ The code is based on a post by ita_c on \
 https://www.geeksforgeeks.org/edit-distance-and-lcs-longest-common-subsequence\
  (last access: 11.feb.2021)
 
-    :return: The distance between two input strings
+    :param string1: The first of two strings to be compared to each other
+    :type string1: str
+
+    :param string2: The second of two strings to be compared to each other
+    :type string2: str
+
+    :returns: The distance between two input strings
     :rtype: int
 
     :Example:
@@ -824,7 +841,20 @@ https://www.geeksforgeeks.org/edit-distance-and-lcs-longest-common-subsequence\
     return (m - lcs) * w_del + (n - lcs) * w_ins #costs (=distance) are lower for insertions
 
 def get_mtx(target, source):
-    """from https://www.youtube.com/watch?v=AY2DZ4a9gyk"""
+    """
+    From https://www.youtube.com/watch?v=AY2DZ4a9gyk. \
+Get the distance matrix of two strings.
+
+    :param target: The target word
+    :type target: str
+
+    :param source: The source word
+    :type source: str
+
+    :returns: A distance matrix
+    :rtype: numpy.ndarray
+
+    """
     target = ['#']+[k for k in target]
     source = ['#']+[k for k in source]
     sol = zeros((len(source), len(target)))
@@ -845,6 +875,25 @@ def get_mtx(target, source):
     return sol
 
 def mtx2graph(s1, s2, w_del=100, w_ins=49):
+    """
+    Takes two strings and turns them to a directed graph object
+
+    :param s1: The first of two strings to be compared to each other
+    :type s1: str
+
+    :param s2: The second of two strings to be compared to each other
+    :type s2: str
+
+    :param w_del: The weight (cost) of deletions
+    :type w_del: int
+
+    :param w_ins: The weight (cost) of insertions
+    :type w_ins: int
+
+    :returns: The directed graph object, its hight and its width
+    :rtype: (networkx.classes.digraph.DiGraph, int, int)
+
+    """
     mtx = get_mtx(s1, s2)
     s1,s2="#"+s1,"#"+s2
     G = DiGraph()
@@ -867,6 +916,23 @@ def mtx2graph(s1, s2, w_del=100, w_ins=49):
     return G, h, w
 
 def tuples2editops(op_list, s1, s2):
+    """
+    Turns numeric instructions of how to transform string1 to string2 \
+into human readable ones.
+
+    :param op_list: The numeric list of edit operations
+    :type op_list: list of tuples of 2 int
+
+    :param s1: The first of two strings to be compared to each other
+    :type s1: str
+
+    :param s2: The second of two strings to be compared to each other
+    :type s2: str
+
+    :returns: list of human readable edit operations
+    :rtype: list of strings
+
+    """
     s1, s2 = "#"+s1, "#"+s2
     out = []
     for i, todo in enumerate(op_list):
@@ -894,12 +960,44 @@ def tuples2editops(op_list, s1, s2):
     return out
 
 def editops(s1, s2, howmany_paths=1, w_del=100, w_ins=49):
+    """
+    Takes two strings and returns \
+the edit operations of all shortest paths between them.
+
+    :param s1: The first of two strings to be compared to each other
+    :type s1: str
+
+    :param s2: The second of two strings to be compared to each other
+    :type s2: str
+
+    :param howmany_paths: The number of shortest paths that should be returned.
+    :type howmany_paths: int
+
+    :param w_del: The weight (cost) of deletions
+    :type w_del: int
+
+    :param w_ins: The weight (cost) of insertions
+    :type w_ins: int
+
+    """
     G, h, w = mtx2graph(s1, s2, w_del, w_ins)
     paths = [shortest_path(G, (h-1,w-1), (0, 0), weight='weight')] if howmany_paths==1 else all_shortest_paths(G, (h-1,w-1), (0, 0), weight='weight')
     out = [tuples2editops(list(reversed(i)), s1, s2) for i in paths]
     return list(dict.fromkeys(map(tuple,out)))[:howmany_paths]
 
 def apply_edit(word, editops):
+    """
+    Applies a list of (human readable) edit operations to a string.
+
+    :param word: The input word
+    :type word: an iterable (e.g. list of phonemes, or string)
+
+    :param editops: list of (human readable) edit operations
+    :type editops: list of strings
+
+    :returns: transformed input word
+    :rtype: list of str
+    """
     out, letter = [], iter(word)
     for i, op in enumerate(editops):
         if i != len(editops): #to avoid stopiteration
@@ -912,6 +1010,24 @@ def apply_edit(word, editops):
     return out
 
 def get_howmany(step, hm_struc_ceiling, hm_paths_ceiling):
+    """
+    Put marbles into three pots, one by one, with following conditions: \
+the product of the number of marbles per pot can't be higher than var step. \
+Don't put more marbles in pot 2 and 3 than the ceiling variables indicate.
+
+    :param step: the product of the three pots over which not to step
+    :type step: int
+
+    :param hm_struc_ceiling: The max nr of marbles for pot 2
+    :type hm_struc_ceiling: int
+
+    :param hm_struc_ceiling: The max nr of marbles for pot 3
+    :type hm_struc_ceiling: int
+
+    :returns: The way the marbles should be split
+    :rtype: (int, int, int)
+
+    """
     x, y, z = 1, 1, 1
     while x*y*z < step:
         x+=1
@@ -926,10 +1042,27 @@ def get_howmany(step, hm_struc_ceiling, hm_paths_ceiling):
     return x, y, z
 
 def pick_mins(inv_and_dist, howmany):
+    """
+    Pick only the n smallest numbers from a list. Should be cheaper than \
+sorting the entire list and then taking only the slice we need.
+
+    :param inv_and_dist: inventories and distances
+    :type inv_and_dist: list of tuples
+
+    :param howmany: howmany minimums do we want to pick from input-list
+    :type howmany: int
+
+    :returns: The indicated number of minimal values
+    :rtype: str (separated by ", ")
+    """
+
+    #if we want to have at least as many elements as the list is long
+    #then we will just have to sort the entire list
     if howmany >= len(inv_and_dist):
         return ", ".join([i[0] for i in sorted(inv_and_dist, key=lambda tup: tup[1])])
     out = []
-    for i in range(howmany):
+    #but if we just want a handful of min values
+    for i in range(howmany): #just pick that number of mins thru loop.
         mindisttup = min(inv_and_dist, key=lambda tup: tup[1])
         out.append(inv_and_dist.pop(inv_and_dist.index(mindisttup))[0])
     return ", ".join(out)
