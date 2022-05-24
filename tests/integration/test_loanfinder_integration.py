@@ -165,13 +165,13 @@ def test_likeliestphonmatch():
             DataFrame({"match": ["blub"],
                        "nse_rc": [10],
                        "se_rc": [50],
-                       "lst_rc": [[10] * 5],
+                       "distr_rc": str([10] * 5),
+                       "align_rc": "['#-<*-', '#dl<*bl', 'u<*u', 'b#<*b', '-#<*-']",
                        "nse_ad": [4],
                        "se_ad": [20],
-                       "lst_ad": [[0, 0, 10, 10, 0]],
-                       "nse_combined": [14],
-                       "e_rc": [[[22, 23], 0, [22, 25], [23, 25], 0]],
-                       "e_ad": [[0, 0, [25, 26], [23, 25], [22, 26]]]}),
+                       "distr_ad": "[0, 0, 10, 10, 0]",
+                       "align_ad": "['e<V', 'C<b', 'l<l', 'u<u', 'b<b']",
+                       "nse_combined": [14]}),
     check_dtype=False)
 
     #tear down
@@ -243,13 +243,13 @@ def test_loans():
     'match':["blub"],
     'nse_rc': [10],
     'se_rc': [50],
-    'lst_rc': [str([10]*5)],
+    'distr_rc': [str([10]*5)],
+    'align_rc': "['#-<*-', '#dl<*bl', 'u<*u', 'b#<*b', '-#<*-']",
     'nse_ad': [5],
     'se_ad': [20],
-    'lst_ad': [str([0, 10, 10, 0])],
+    'distr_ad': [str([0, 10, 10, 0])],
+    'align_ad': "['b<b', 'l<l', 'u<u', 'b<b']",
     'nse_combined': [15],
-    'e_rc': [str([[22, 23], 0, [22, 25], [23, 25], 0])],
-    'e_ad': [str([[22, 26], [25, 26], [23, 25], [22, 26]])],
     "Segments_x": ["b l u b"],
     "Meaning_x": ["human"],
     "ad": ["blub, club"],
@@ -279,13 +279,13 @@ def test_postprocess():
                        "match": ["blub"],
                        "nse_rc": [10],
                        "se_rc": [50],
-                       "lst_rc": [[10] * 5],
+                       "distr_rc": str([10] * 5),
+                       "align_rc": "['#-<*-', '#dl<*bl', 'u<*u', 'b#<*b', '-#<*-']",
                        "nse_ad": [5],
                        "se_ad": [20],
-                       "lst_ad": [[0, 10, 10, 0]],
-                       "nse_combined": [15],
-                       "e_rc": [[[22, 23], 0, [22, 25], [23, 25], 0]],
-                       "e_ad": [[[22, 26], [25, 26], [23, 25], [22, 26]]]})
+                       "distr_ad": "[0, 10, 10, 0]",
+                       "align_ad": "['b<b', 'l<l', 'u<u', 'b<b']",
+                       "nse_combined": [15]})
 
     #create instance of class
     search_inst = Search(

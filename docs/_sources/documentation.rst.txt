@@ -3,7 +3,7 @@ Intro
 
 .. automodule:: __init__
 
-To be used
+For usage
 =================================
 
 qfysc.py
@@ -17,14 +17,6 @@ Qfy
 get sound correspondences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: Qfy.get_sound_corresp
-
-sanity.py
------------
-.. automodule:: sanity
-
-evaluate all
-~~~~~~~~~~~~~~~~
-.. autofunction:: eval_all
 
 adrc.py
 --------------
@@ -42,9 +34,16 @@ reconstruct
 ~~~~~~~~~~~~~
 .. automethod:: Adrc.reconstruct
 
+sanity.py
+-----------
+.. automodule:: sanity
+
+evaluate all
+~~~~~~~~~~~~~~~~
+.. autofunction:: eval_all
+
 loanfinder.py
 ---------------------------------
-
 .. automodule:: loanfinder
 
 Search
@@ -77,8 +76,8 @@ read connector
 ~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.qfysc.read_connector
 
-read sound change dictionary base
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+read sound correspondence dictionary base
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.qfysc.read_scdictbase
 
 align
@@ -97,6 +96,33 @@ get structure correspondences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: loanpy.qfysc.Qfy.get_struc_corresp
 
+adrc.py
+---------
+
+read sound correspondence dictionary list
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.adrc.read_scdictlist
+
+move sound correspondences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.adrc.move_sc
+
+get difference
+~~~~~~~~~~~~~~~~~
+.. automethod:: loanpy.adrc.Adrc.get_diff
+
+read sound correspondences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. automethod:: loanpy.adrc.Adrc.read_sc
+
+adapt structure
+~~~~~~~~~~~~~~~~~
+.. automethod:: loanpy.adrc.Adrc.adapt_struc
+
+get normalised sum of examples
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. automethod:: loanpy.adrc.Adrc.get_nse
+
 sanity.py
 -----------
 
@@ -104,9 +130,9 @@ check cache
 ~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.check_cache
 
-get soundchanges
-~~~~~~~~~~~~~~~~~~
-.. autofunction:: loanpy.sanity.get_sc
+get sound correspondences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.get_crossval_sc
 
 evaluate one
 ~~~~~~~~~~~~~~~~~~
@@ -123,33 +149,6 @@ get true positive rate and false positive rate
 write to cache
 ~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.write_to_cache
-
-adrc.py
----------
-
-read sound change dictionary list
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. autofunction:: loanpy.adrc.read_scdictlist
-
-move soundchanges
-~~~~~~~~~~~~~~~~~~
-.. autofunction:: loanpy.adrc.move_sc
-
-get difference
-~~~~~~~~~~~~~~~~~
-.. automethod:: loanpy.adrc.Adrc.get_diff
-
-read soundchanges
-~~~~~~~~~~~~~~~~~
-.. automethod:: loanpy.adrc.Adrc.read_sc
-
-adapt structure
-~~~~~~~~~~~~~~~~~
-.. automethod:: loanpy.adrc.Adrc.adapt_struc
-
-get normalised sum of examples
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. automethod:: loanpy.adrc.Adrc.get_nse
 
 loanfinder.py
 -------------------

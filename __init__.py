@@ -7,7 +7,7 @@
    :scale: 35%
    :target: https://github.com/martino-vic/loanpy
 
-Loanpy is a toolkit for solving various linguistic tasks such as:
+loanpy is a toolkit for solving various linguistic tasks such as:
 
     - predicting loanword adaptation (lateral transfers)
     - backward and forward reconstruction of words (horizontal transfers)

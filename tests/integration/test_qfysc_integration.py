@@ -51,10 +51,9 @@ def test_init():
     assert qfy.struc_inv is None
     ismethod(qfy.distance_measure)
 
-    #5 attributes initiated in Qfy
+    #4 attributes initiated in Qfy
     assert qfy.mode == "adapt"
     assert qfy.connector == "<"
-    #assert qfy.nsedict == {}
     assert qfy.scdictbase == {}
     assert qfy.vfb is None
 
@@ -96,13 +95,46 @@ def test_align_lingpy():
     del qfy
 
 def test_align_clusterwise():
-    """basically same as 2 tests earlier"""
+    """check if our own alignment function works correctly"""
     #set up
     qfy = Qfy(mode="reconstruct")
     #assert
     assert_frame_equal(qfy.align(left="ɟɒloɡ", right="jɑlkɑ"),
     DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
-                    "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']}))
+               "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']}))
+
+    assert_frame_equal(qfy.align(left="kiki", right="hihi"),
+    DataFrame({"keys": ['#-', '#k', 'i', 'k', 'i#', '-#'],
+                "vals": ['-', 'h', 'i', 'h', 'i', '-']}))
+    assert_frame_equal(qfy.align(left="kiki", right="ihi"),
+    DataFrame({"keys": ['#k', 'i', 'k', 'i#', '-#'],
+               "vals": ['-', 'i', 'h', 'i', '-']}))
+
+    assert_frame_equal(qfy.align(left="iki", right="hihi"),
+    DataFrame({"keys": ['#-', '#i', 'k', 'i#', '-#'],
+               "vals": ['h', 'i', 'h', 'i', '-']}))
+
+    assert_frame_equal(qfy.align(left="uoaeia", right="brrrzierrrrr"),
+    DataFrame({"keys": ['#-', 'uoaeia#', '-#'],
+               "vals": ['brrrz', 'ie', 'rrrrr']}))
+
+    assert_frame_equal(qfy.align(left="uoaeia", right="brrrzi"),
+    DataFrame({"keys": ['#-', 'uoaeia#', '-#'],
+               "vals": ['brrrz', 'i', '-']}))
+
+    assert_frame_equal(qfy.align(left="uoaeia", right="brrrz"),
+    DataFrame({"keys": ['#-', 'uoaeia#'],
+               "vals": ['brrrz', '-']}))
+
+    assert_frame_equal(qfy.align(left="budapestttt", right="uadast"),
+    DataFrame({"keys": ['#b', 'u', 'd', 'a', 'p', 'estttt#'],
+               "vals": ['-', 'ua', 'd', 'a', 'st', '-']}))
+
+    # the only example in ronatasbertawot where one starts with C, the other with V
+    assert_frame_equal(qfy.align(left="imad", right="vimad"),
+    DataFrame({"keys": ['#-', '#i', 'm', 'a', 'd#', '-#'],
+               "vals": ['v', 'i', 'm', 'a', 'd', '-']}))
+
     #tear down
     del qfy
 
@@ -233,7 +265,11 @@ del out, path2test_sc, qfy,
 
 def test_get_struc_corresp():
     #assert frst test runs but with write_to and struc=True
-    exp = [{'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],  'VCVC': ['VCVC', 'VCVCV', 'VCCVC'],  'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']}, {'VCCVC<VCCVC': 1, 'VCVC<VCVC': 1, 'VCVCV<VCVCV': 1}, {'VCCVC<VCCVC': [2], 'VCVC<VCVC': [3], 'VCVCV<VCVCV': [1]}]
+    exp = [{'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],
+    'VCVC': ['VCVC', 'VCVCV', 'VCCVC'],
+    'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']},
+    {'VCCVC<VCCVC': 1, 'VCVC<VCVC': 1, 'VCVCV<VCVCV': 1},
+    {'VCCVC<VCCVC': [2], 'VCVC<VCVC': [3], 'VCVCV<VCVCV': [1]}]
 
     qfy = Qfy(formscsv=PATH2FORMS, srclg="WOT", tgtlg="EAH")
     path2test_sc = Path(__file__).parent / "test_sc.txt"

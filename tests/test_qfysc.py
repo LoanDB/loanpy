@@ -29,19 +29,8 @@ class PairwiseMonkey:
     def __init__(self, *args):
         self.align_called_with = []
 
-    def align(
-            self,
-            gop=-1,
-            scale=0.5,
-            mode="global",
-            factor=0.3,
-            restricted_chars="T_",
-            distance=False,
-            model=qs.LingpyModel,
-            pprint=False):
-        self.align_called_with.append(
-            [gop, scale, mode, factor, restricted_chars,
-             distance, model, pprint])
+    def align(self, *args):
+        self.align_called_with.append([*args])
 
     def __str__(self): return 'k\ta\tl\ta\nh\ta\tl\t-\n13.7'
 
@@ -80,18 +69,7 @@ class QfyMonkeyGetSoundCorresp:
             "e": "V"}
         self.vow2fb = {"i": "F", "e": "F", "u": "B", "a": "B"}
 
-    def align(
-            self,
-            left,
-            right,
-            gop=-1,
-            scale=0.5,
-            mode="global",
-            factor=0.3,
-            restricted_chars="T_",
-            distance=False,
-            model=qs.LingpyModel,
-            pprint=False):
+    def align(self, left, right):
         self.align_called_with.append((left, right))
         return next(self.align_returns)
 
@@ -181,7 +159,6 @@ def test_init():
                     # assert
                     assert mockqfy.mode == "adapt"
                     assert mockqfy.connector == "<"
-                    #assert mockqfy.nsedict == {}
                     assert mockqfy.scdictbase == {}
                     assert mockqfy.vfb is None
 
@@ -190,7 +167,6 @@ def test_init():
                     assert mockqfy.__dict__ == {
                         'connector': '<',
                         'mode': 'adapt',
-                        #'nsedict': {},
                         'scdictbase': {},
                         'vfb': None}
 
@@ -215,22 +191,8 @@ def test_align():
             self.align_lingpy_called_with = []
             self.align_clusterwise_called_with = []
 
-        def align_lingpy(
-                self,
-                left,
-                right,
-                merge_vowels=False,
-                gop=-1,
-                scale=0.5,
-                mode="global",
-                factor=0.3,
-                restricted_chars="T_",
-                distance=False,
-                model=qs.LingpyModel,
-                pprint=False):
-            self.align_lingpy_called_with.append(
-                [left, right, merge_vowels, gop, scale, mode, factor,
-                 restricted_chars, distance, model, pprint])
+        def align_lingpy(self, *args):
+            self.align_lingpy_called_with.append([*args])
             return "lingpyaligned"
 
         def align_clusterwise(self, *args):
@@ -246,19 +208,7 @@ def test_align():
         left="leftstr",
         right="rightstr") == "lingpyaligned"
     #assert call
-    assert mockqfy.align_lingpy_called_with == [
-        ["leftstr", "rightstr", False, -1, 0.5, "global", 0.3,
-         "T_", False, qs.LingpyModel, False]]
-
-    # set up mock class, plug in mode
-    mockqfy = QfyMonkeyAlign()
-    mockqfy.mode = "adapt"
-    # assert that function works with additional *args
-    assert Qfy.align(mockqfy, "leftstr", "rightstr", gop=-2) == "lingpyaligned"
-    # assert that parameters are passed on correctly to lingpy
-    assert mockqfy.align_lingpy_called_with == [
-        ["leftstr", "rightstr", False, -2, 0.5, "global", 0.3,
-         "T_", False, qs.LingpyModel, False]]
+    assert mockqfy.align_lingpy_called_with == [['leftstr', 'rightstr']]
 
     # set up mock class, plug in mode
     mockqfy = QfyMonkeyAlign()
@@ -296,27 +246,12 @@ def test_align_lingpy():
                     left="kala",
                     right="hal"),
                 DataFrame(exp))
-            # assert args are correctly passed on to lingpy's pw_align()
-            assert_frame_equal(
-                Qfy.align_lingpy(
-                    self=mockqfy,
-                    left="kala",
-                    right="hal",
-                    gop=2,
-                    scale=0.7,
-                    mode="dialign",
-                    factor=0.2,
-                    restricted_chars="²",
-                    distance=True),
-                DataFrame(exp))
 
     #assert calls
-    Pairwise_mock.assert_has_calls([call(seqs='kala', seqB='hal', merge_vowels=False), call(
-        seqs='kala', seqB='hal', merge_vowels=False)])  # Pairwise always initiated by 3 args
-    assert DataFrame_Monkey.call_args_list == [call(exp), call(exp)]
-    assert mockpairwise.align_called_with == [
-    [-1, 0.5, 'global', 0.3, 'T_', False, qs.LingpyModel, False],
-    [2, 0.7, "dialign", 0.2, "²", True, qs.LingpyModel, False]]
+    Pairwise_mock.assert_has_calls([call(
+    seqs='kala', seqB='hal', merge_vowels=False)])  # Pairwise always initiated by 3 args
+    assert DataFrame_Monkey.call_args_list == [call(exp)]
+    assert mockpairwise.align_called_with == [[]]
 
     # tear down
     del mockqfy, exp
@@ -327,7 +262,7 @@ def test_align_clusterwise():
 
     # set up basic mock class, plug in phon2cv, create expected output var
     mockqfy = QfyMonkey()
-    mockqfy.phon2cv = {"ɟ": "C", "ɒ": "V", "l": "C", "o": "V", "ɡ": "C"}
+    mockqfy.phon2cv = {"ɟ": "C", "ɒ": "V", "l": "C", "o": "V", "ɡ": "C", "j": "C"}
     exp = DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
                     "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']})
 
