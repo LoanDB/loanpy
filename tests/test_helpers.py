@@ -840,6 +840,7 @@ def test_gensim_multiword():
     class GensimMonkey:
         def __init__(self): pass
         def similarity(self, word1, word2): return 0
+        def has_index_for(self, w): return True
     # set up: mock gensim.api.load:
     with patch("loanpy.helpers.load") as load_mock:
         mockgensim = GensimMonkey()
@@ -903,11 +904,17 @@ def test_gensim_multiword():
 
     # assert missing words result in similarity score of -1
     assert gensim_multiword("human, computer", "missingword") == float32(-1)
-    assert gensim_multiword("human, computer",
-                            "missingword",
-                            return_wordpair=True) == (float32(-1),
-                                                      '',
-                                                      '')
+
+    #assert missing src word shows right warning if wordpairs are returned
+    assert gensim_multiword("human, computer", "missingword",
+    return_wordpair=True) == (float32(-1), '', 'source word not in model')
+    #assert missing tgt word shows right warning if wordpairs are returned
+    assert gensim_multiword("missingword", "human, computer",
+    return_wordpair=True) == (float32(-1), 'target word not in model', '')
+    #assert right warning if both words are missing
+    assert gensim_multiword("missing1", "missing2",
+    return_wordpair=True) == (float32(-1),
+    'target word not in model', 'source word not in model')
 
     # assert loop is interrupted as soon as similarity score == 1
     # loop is certainly broken because "1" is not a numpy.float32
@@ -939,18 +946,36 @@ def test_list2regex():
 def test_edit_distance_with2ops():
     """test if editdistances are calculated correctly"""
 
-    # default weight is 1 per deletion and 0.49 per insertion
-    assert edit_distance_with2ops("ajka", "Rajka") == 0.49
-    assert edit_distance_with2ops("Rajka", "ajka") == 1
-    assert edit_distance_with2ops("Debrecen", "Mosonmagyaróvár") == 13.86
+    # default weight is 100 per deletion and 49 per insertion
+    # in 80 tests around the world
+    assert edit_distance_with2ops("ajka", "Rajka") == 49
+    assert edit_distance_with2ops("Rajka", "ajka") == 100
+    assert edit_distance_with2ops("Debrecen", "Mosonmagyaróvár") == 1386
+    assert edit_distance_with2ops("Bécs", "Hegyeshalom") == 790
+    assert edit_distance_with2ops("Hegyeshalom", "Mosonmagyaróvár") == 1388
+    assert edit_distance_with2ops("Mosonmagyaróvár", "Győr") == 1398
+    assert edit_distance_with2ops("Győr", "Tata") == 596  # 4 del + 4 ins = 4*49+4*100
+    assert edit_distance_with2ops("Tata", "Tatabánya") == 245  # 5 ins: 5*49
+    assert edit_distance_with2ops("Tatabánya", "Budapest") == 994
+    assert edit_distance_with2ops("Budapest", "Komárom") == 1143
+    assert edit_distance_with2ops("Komárom", "Révkomárom") == 296  # 4 ins + 1 del: 4*49+100
+    assert edit_distance_with2ops("Révkomárom", "Komárom") == 449  # 4 del + 1 ins: 4*100+49
+    assert edit_distance_with2ops("Komárom", "Budapest") == 1092
+    assert edit_distance_with2ops("Budapest", "Debrecen") == 1043
+    assert edit_distance_with2ops("Debrecen", "Beregszász") == 843
+    assert edit_distance_with2ops("Beregszász", "Kiev") == 1047
+    assert edit_distance_with2ops("Kiev", "Moszkva") == 594
+    assert edit_distance_with2ops("Moszkva", "Szenpétervár") == 990
+    assert edit_distance_with2ops("Szentpétervár", "Vlagyivosztok") == 1639
+    assert edit_distance_with2ops("Vlagyivosztok", "Tokió") == 1247
+    assert edit_distance_with2ops("Tokió", "New York") == 594
+    assert edit_distance_with2ops("New York", "Bécs") == 996
 
     # check if custom weights for insertion work. deletion always costs 1.
-    assert edit_distance_with2ops("ajka", "Rajka", w_ins=0.9) == 0.9
-    assert edit_distance_with2ops("Rajka", "ajka", w_ins=0.9) == 1
+    assert edit_distance_with2ops("ajka", "Rajka", w_ins=90) == 90
+    assert edit_distance_with2ops("Rajka", "ajka", w_ins=90) == 100
     assert edit_distance_with2ops(
-        "Debrecen",
-        "Mosonmagyaróvár",
-        w_ins=0.9) == 19.6
+    "Debrecen", "Mosonmagyaróvár", w_ins=90) == 1960
 
 
 def test_get_mtx():
@@ -1013,6 +1038,42 @@ def test_mtx2graph():
         exp = [(e, datadict["weight"]) for e, datadict in expG.edges.items()]
 
         outtuple = mtx2graph("ló", "hó")
+        out = [(e, datadict["weight"])
+               for e, datadict in outtuple[0].edges.items()]
+
+        # assert expected and actual output is the same
+        assert len(outtuple) == 3
+        assert isinstance(outtuple, tuple)
+        assert set(out) == set(exp)
+        # the height. always 1 longer than the word bc + "#" (#ló)
+        assert outtuple[1] == 3
+        assert outtuple[2] == 3  # the width.
+
+    #assert call
+    get_mtx_mock.assert_called_with("ló", "hó")
+
+    #set up2: assert weights are passed on correctly
+    with patch("loanpy.helpers.get_mtx") as get_mtx_mock:
+        get_mtx_mock.return_value = array([[0., 1., 2.],
+                                           [1., 2., 3.],
+                                           [2., 3., 2.]])
+        expG = DiGraph()
+        expG.add_weighted_edges_from([((2, 2), (2, 1), 11),
+                                      ((2, 2), (1, 2), 7),
+                                      ((2, 2), (1, 1), 0),
+                                      ((2, 1), (2, 0), 11),
+                                      ((2, 1), (1, 1), 7),
+                                      ((2, 0), (1, 0), 7),
+                                      ((1, 2), (1, 1), 11),
+                                      ((1, 2), (0, 2), 7),
+                                      ((1, 1), (1, 0), 11),
+                                      ((1, 1), (0, 1), 7),
+                                      ((1, 0), (0, 0), 7),
+                                      ((0, 2), (0, 1), 11),
+                                      ((0, 1), (0, 0), 11)])
+        exp = [(e, datadict["weight"]) for e, datadict in expG.edges.items()]
+
+        outtuple = mtx2graph("ló", "hó", w_del=11, w_ins=7)
         out = [(e, datadict["weight"])
                for e, datadict in outtuple[0].edges.items()]
 
@@ -1131,6 +1192,31 @@ def test_editops():
 
     #assert calls
     mtx2graph_mock2.assert_called_with("CCV", "CV", 100, 49)
+    all_shortest_paths_mock.assert_called_with(
+        G, (2, 3), (0, 0), weight="weight")
+    tuples2editops_mock.assert_has_calls([
+    call([(0, 0), (0, 1), (1, 2), (2, 3)], "CCV", "CV"),
+    call([(0, 0), (1, 1), (1, 2), (2, 3)], "CCV", "CV")])
+
+    # set up3: assert weights are passed on correctly
+    with patch("loanpy.helpers.mtx2graph") as mtx2graph_mock2:
+        mtx2graph_mock2.return_value = (G, 3, 4)
+        with patch("loanpy.helpers.all_shortest_paths"
+        ) as all_shortest_paths_mock:
+            all_shortest_paths_mock.return_value = [
+            [(2, 3), (1, 2), (0, 1), (0, 0)], [(2, 3), (1, 2), (1, 1), (0, 0)]]
+            with patch("loanpy.helpers.tuples2editops", side_effect=[
+            ['delete C', 'keep C', 'keep V'], ['keep C', 'delete C', 'keep V']]
+            ) as tuples2editops_mock:
+
+                # assert that both paths are extracted
+                assert editops("CCV", "CV", howmany_paths=2,
+                w_del=4, w_ins=35) == [
+                    ('delete C', 'keep C', 'keep V'),
+                    ('keep C', 'delete C', 'keep V')]
+
+    #assert calls
+    mtx2graph_mock2.assert_called_with("CCV", "CV", 4, 35)
     all_shortest_paths_mock.assert_called_with(
         G, (2, 3), (0, 0), weight="weight")
     tuples2editops_mock.assert_has_calls([

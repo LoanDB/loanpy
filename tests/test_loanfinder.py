@@ -400,10 +400,9 @@ def test_likeliestphonmatch():
             self.get_nse_ad_called_with = []
             self.get_nse_rc_called_with = []
             self.get_nse_ad_returns = iter(
-                [(8, 32, [7, 9, 15, 2]), (7, 21, [9, 3, 4, 5]),
-                [[123], [456], [789], [908]]])
-            self.get_nse_rc_returns = iter([(10, 40, [10, 10, 10, 10]),
-            (5, 20, [4, 4, 4, 4]), [[123], [456], [789], [908]]])
+            [(8, 32, "[7, 9, 15, 2]", "['bla']"), (7, 21, [9, 3, 4, 5], "['bli']")])
+            self.get_nse_rc_returns = iter(
+            [(10, 40, "[10, 10, 10, 10]", "['blo']"), (5, 20, "[4, 4, 4, 4]", "['blu']")])
             self.doncol = "ad"
 
         def phonmatch_small(self, *args, dropduplicates):
@@ -426,13 +425,13 @@ def test_likeliestphonmatch():
     dfexp = DataFrame({"match": ["blub"],
                        "nse_rc": [10],
                        "se_rc": [40],
-                       "lst_rc": [[10] * 4],
+                       "distr_rc": str([10] * 4),
+                       "align_rc": "['blo']",
                        "nse_ad": [8],
                        "se_ad": [32],
-                       "lst_ad": [[7, 9, 15, 2]],
-                       "nse_combined": [18],
-                       "e_rc": [[[123], [456], [789], [908]]],
-                       "e_ad": [[[123], [456], [789], [908]]]})
+                       "distr_ad": "[7, 9, 15, 2]",
+                       "align_ad": "['bla']",
+                       "nse_combined": [18]})
 
     #set up: initiate instance of mock class
     mocksearch = SearchMonkey()
@@ -442,6 +441,8 @@ def test_likeliestphonmatch():
 
         #assert that the expected and actual results
         #are identical pandas data frames
+    #    print(Search.likeliestphonmatch(
+    #        mocksearch, "a, blub, plub", "(b|p)?lub", "glub", "flub"))
         assert_frame_equal(Search.likeliestphonmatch(
             mocksearch, "a, blub, plub", "(b|p)?lub", "glub", "flub"), dfexp)
 
@@ -458,11 +459,9 @@ def test_likeliestphonmatch():
     assert mocksearch.phonmatch_small_called_with[0][2] is False
     #assert the other 2 functions where called with the corrects args
     assert mocksearch.get_nse_rc_called_with == [
-    ["flub", "blub", True, True], ["flub", "plub", True, True],
-    ["flub", "blub", False, False]]
+    ["flub", "blub", True], ["flub", "plub", True]]
     assert mocksearch.get_nse_ad_called_with == [
-    ["glub", "blub", True, True], ["glub", "plub", True, True],
-    ["glub", "blub", False, False]]
+    ["glub", "blub", True], ["glub", "plub", True]]
 
     #tear down
     del dfexp, mocksearch, srs, SearchMonkey

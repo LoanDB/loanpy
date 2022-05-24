@@ -45,13 +45,24 @@ def test_read_scdictlist():
 def test_move_sc():
     """test if sound correspondences are moved correctly"""
     # no setup, teardown, or patch needed here
-    assert move_sc(sclistlist=[["x", "x"], ["y", "y"], ["z"]], whichsound=1,
-                   out=[["a"], ["b"], ["c"]]) == ([["x", "x"], ["y"], ["z"]],
-                                                  [["a"], ["b", "y"], ["c"]])
+    assert move_sc(sclistlist=[["x", "x"]], whichsound=0,
+                   out=[[]]) == ([["x"]], [["x"]])
+
     assert move_sc(sclistlist=[["x", "x"], ["y", "y"], ["z"]], whichsound=0,
                    out=[["a"], ["b"], ["c"]]) == ([["x"], ["y", "y"], ["z"]],
                                                   [["a", "x"], ["b"], ["c"]])
 
+    assert move_sc(sclistlist=[["x", "x"], ["y", "y"], ["z"]], whichsound=1,
+                   out=[["a"], ["b"], ["c"]]) == ([["x", "x"], ["y"], ["z"]],
+                                                  [["a"], ["b", "y"], ["c"]])
+
+    assert move_sc(sclistlist=[["", "x", "$"], ["", "y", "$"], ["", "$"]],
+    whichsound=1, out=[["a"], ["b"], ["c"]]) == (
+    [["", "x", "$"], ["y", "$"], ["", "$"]], [["a"], ["b", "y"], ["c"]])
+
+    assert move_sc(sclistlist=[["", "$"], ["", "$"], ["Z", "2", "$"]],
+    whichsound=2, out=[["o"], ["r"], ["f"]]) == (
+    [["", "$"], ["", "$"], ["2", "$"]], [["o"], ["r"], ["f", "2"]])
 
 def test_init():
     """test if the Adrc-class is initiated properly"""
@@ -82,7 +93,8 @@ def test_init():
 
     #assert calls
     super_method_mock.assert_called_with(formscsv=None, srclg=None, tgtlg=None,
-    mode=None, struc_most_frequent=9999999, struc_inv=None, scdictbase=None)
+    struc_most_frequent=9999999, struc_inv=None, mode=None, connector=None,
+    scdictbase=None, vfb=None)
     assert read_scdictlist_mock.call_args_list == [call(None)]
 
     # set up: mock super() method and read_scdictlist
@@ -118,11 +130,9 @@ def test_init():
 
     #assert calls
     super_method_mock.assert_called_with(
-        formscsv="forms.csv", srclg=None, tgtlg=None,
-        mode="reconstruct",
-        struc_most_frequent=2,
-        struc_inv=None,
-        scdictbase=None)
+        formscsv='forms.csv', srclg=None, tgtlg=None, struc_most_frequent=2,
+        struc_inv=None, mode='reconstruct', connector=None,
+        scdictbase=None, vfb=None)
     assert read_scdictlist_mock.call_args_list == [call("soundchanges.txt")]
 
     # tear down
@@ -653,7 +663,7 @@ def test_adapt_struc():
         [["k", "i", "k", "i"]]]
     assert monkey_adrc.rank_closest_struc_called_with == []
     editops_mock.assert_has_calls(
-        [call("CVCV", "CVC", 1), call("CVCV", "CVCCV", 1)])
+        [call("CVCV", "CVC", 1, 100, 49), call("CVCV", "CVCCV", 1, 100, 49)])
     apply_edit_mock.assert_has_calls(
         [call(['k', 'i', 'k', 'i'], ops1),
         call(['k', 'i', 'k', 'i'], ops2)])
@@ -689,9 +699,9 @@ def test_adapt_struc():
         [["k", "i", "k", "i"]]]
     assert monkey_adrc.rank_closest_struc_called_with == [["CVCV", 2]]
     assert monkey_adrc.workflow == OrderedDict(
-    [('donor_struc', ['CVCV']), ('pred_strucs', [['CVC', 'CVCCV']])])
+    [('donor_struc', 'CVCV'), ('pred_strucs', "['CVC', 'CVCCV']")])
     editops_mock.assert_has_calls(
-        [call("CVCV", "CVC", 1), call("CVCV", "CVCCV", 1)])
+        [call("CVCV", "CVC", 1, 100, 49), call("CVCV", "CVCCV", 1, 100, 49)])
     apply_edit_mock.assert_has_calls(
         [call(['k', 'i', 'k', 'i'], ops1),
          call(['k', 'i', 'k', 'i'], ops2)])
@@ -725,8 +735,8 @@ def test_adapt():
 
         def adapt_struc(self, *args):
             self.adapt_struc_called_with = [*args]
-            self.workflow["donor_struc"] = ["CVCV"]
-            self.workflow["pred_strucs"] = [["CVC", "CVCCV"]]
+            self.workflow["donor_struc"] = "CVCV"
+            self.workflow["pred_strucs"] = "['CVC', 'CVCCV']"
             return [['kik'], ['kiCki']]
 
         def read_sc(self, *args):
@@ -768,7 +778,7 @@ def test_adapt():
     tokenise_mock.assert_called_with("kiki")
     get_howmany_mock.assert_called_with(8, 1, 1)
     assert monkey_adrc.adapt_struc_called_with == [
-        ["k", "i", "k", "i"], 1, 1, False]
+        ["k", "i", "k", "i"], 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
     [['kik'], 8], [['kiCki'], 8]]
     assert monkey_adrc.adapt_harmony_called_with == []
@@ -815,7 +825,7 @@ def test_adapt():
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
     assert monkey_adrc.adapt_struc_called_with == [
-        ["k", "i", "k", "i"], 2, 2, True]
+        ["k", "i", "k", "i"], 2, 2, 100, 49, True]
     assert monkey_adrc.read_sc_called_with == [
         [["k", "B", "k"], 2], [["k", "i", "C", "k", "i"], 2]]
     assert monkey_adrc.adapt_harmony_called_with == [
@@ -823,15 +833,15 @@ def test_adapt():
     assert monkey_adrc.get_nse_called_with == [
     ['kiki', 'kotke'], ['kiki', 'kutke']]
     assert monkey_adrc.workflow == OrderedDict(
-    [('tokenised', [['k', 'i', 'k', 'i']]),
-    ('donor_struc', ['CVCV']), ('pred_strucs',
-    [['CVC', 'CVCCV']]),
-    ('adapted_struc', [[['kik'], ['kiCki']]]),
+    [('tokenised', "['k', 'i', 'k', 'i']"),
+    ('donor_struc', 'CVCV'), ('pred_strucs',
+    "['CVC', 'CVCCV']"),
+    ('adapted_struc', "[['kik'], ['kiCki']]"),
     ('adapted_vowelharmony',
-    [[['k', 'B', 'k'], ['k', 'i', 'C', 'k', 'i']]]),
+    "[['k', 'B', 'k'], ['k', 'i', 'C', 'k', 'i']]"),
     ('before_combinatorics',
-    [[[['k', 'h', 'c'], ['o', 'u'], ['k']],
-    [['k'], ['o', 'u'], ['t', 'd'], ['k'], ['e']]]])])
+    "[[['k', 'h', 'c'], ['o', 'u'], ['k']], \
+[['k'], ['o', 'u'], ['t', 'd'], ['k'], ['e']]]")])
 
     # struc_filter empty
 
@@ -861,7 +871,7 @@ def test_adapt():
         [["k", "h"], ["e", "o"], ["k"]], [["k", "h"],
         ["e", "o"], ["t"], ["k"], ["e"]]])
     assert monkey_adrc.adapt_struc_called_with == [
-        ["k", "i", "k", "i"], 1, 1, False]
+        ["k", "i", "k", "i"], 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
     [['kik'], 1], [['kiCki'], 1]]
 
@@ -892,7 +902,7 @@ def test_adapt():
         [["k", "h"], ["e", "o"], ["k"]], [["k", "h"],
         ["e", "o"], ["t"], ["k"], ["e"]]])
     assert monkey_adrc.adapt_struc_called_with == [
-        ["k", "i", "k", "i"], 1, 1, False]
+        ["k", "i", "k", "i"], 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
     [['kik'], 1], [['kiCki'], 1]]
 
@@ -931,16 +941,7 @@ def test_get_nse():
     monkey_adrc = AdrcMonkeyget_nse()
     # assert
     assert Adrc.get_nse(
-        self=monkey_adrc, left="ɟɒloɡ", right="jɑlkɑ") == 6.666666666666667
-    #assert call
-    assert monkey_adrc.align_called_with == [["ɟɒloɡ", "jɑlkɑ"]]
-
-    # test se=False
-    # set up by overwriting mock class instance
-    monkey_adrc = AdrcMonkeyget_nse()
-    # assert
-    assert Adrc.get_nse(self=monkey_adrc, left="ɟɒloɡ",
-    right="jɑlkɑ", se=False) == [[1, 2], [3, 4], [5], [6, 7, 8], [9], 0]
+        self=monkey_adrc, left="ɟɒloɡ", right="jɑlkɑ") == 6.67
     #assert call
     assert monkey_adrc.align_called_with == [["ɟɒloɡ", "jɑlkɑ"]]
 
@@ -950,17 +951,7 @@ def test_get_nse():
     # assert
     assert Adrc.get_nse(
         self=monkey_adrc, left="ɟɒloɡ", right="jɑlkɑ", show_workflow=True) == (
-        6.666666666666667, 40, [10, 9, 8, 7, 6, 0])
-    #assert call
-    assert monkey_adrc.align_called_with == [["ɟɒloɡ", "jɑlkɑ"]]
-
-    # test se=False, show_workflow=True (same as se=False)
-    # set up by overwriting mock class instance
-    monkey_adrc = AdrcMonkeyget_nse()
-    # assert
-    assert Adrc.get_nse(self=monkey_adrc, left="ɟɒloɡ",
-    right="jɑlkɑ", se=False) == [
-        [1, 2], [3, 4], [5], [6, 7, 8], [9], 0]
+        6.67, 40, "[10, 9, 8, 7, 6, 0]", "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*lk', 'o<*ɑ', 'ɡ#<*-']")
     #assert call
     assert monkey_adrc.align_called_with == [["ɟɒloɡ", "jɑlkɑ"]]
 

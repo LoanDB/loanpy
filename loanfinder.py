@@ -1,6 +1,5 @@
 """
-Takes two lists of word-meaning pairs and returns a list of candidates for \
-(old) loanwords.
+Find (old) loanwords between two languages
 
 """
 
@@ -56,7 +55,7 @@ Words can be regexes as well
     #so the class can be initiated even without path2forms
     if path2forms is None: return None
     #these red flags are returned by adapt() and reconstruct()
-    todrop = "wrong clusters|wrong phonotactics|not old|wrong phonotactics|wrong vowel harmony"
+    todrop = "wrong clusters|wrong phonotactics|not old|wrong vowel harmony"
     #reading only 1 column saves RAM. Expensive calculations ahead.
     df_forms = read_csv(path2forms, encoding="utf-8", usecols=[adrc_col]).fillna("")
     #drops columns with red flags
@@ -143,10 +142,25 @@ that represent backward reconstructions of present-day words.
 By default, matches have to be identical.
         :type phondist: int, default=0
 
-        :param phondist_msr: The name of the phonological distance measure. \
-Distance measures are methods of panphon.distance.Distance and can be read \
-by calling Python's inbuild help function, as shown in the first example.
-        :type phondist_msr: str, default="hamming_feature_edit_distance"
+        :param phondist_msr: The name of the phonological distance measure, \
+which has to be a method of panphon.distance.Distance
+        :type phondist_msr: "doglo_prime_distance" | \
+            "dolgo_prime_distance_div_maxlen" | \
+"fast_levenshtein_distance" | \
+"fast_levenshtein_distance_div_maxlen" | \
+"feature_difference" | \
+"feature_edit_distance" | \
+"feature_edit_distance_div_maxlen" | \
+"hamming_feature_edit_distance" | \
+"hamming_feature_edit_distance_div_maxlen" | \
+"hamming_substitution_cost" | \
+"jt_feature_edit_distance" | \
+"jt_feature_edit_distance_div_maxlen" | \
+"jt_hamming_feature_edit_distance" | \
+"jt_hamming_feature_edit_distance_div_maxlen" | \
+"jt_weighted_feature_edit_distance" | \
+"jt_weighted_feature_edit_distance_div_maxlen" | \
+"levenshtein_distance", default="hamming_feature_edit_distance"
 
         :param semsim: The minimal semantic similarity between the \
 meaning of words. By default, meaning have to be identical
@@ -158,7 +172,9 @@ similarity.
 
         :param scdictlist_ad: list of correspondence dictionaries between \
 tentative donor and recipient language generated with \
-loanpy.qfysc.get_sound_corresp. Not a dictionary, therefore sequence important.
+loanpy.qfysc.get_sound_corresp. Not a dictionary, therefore sequence important. \
+Will be used in loanpy.loanfinder.Search.likeliestphonmatch to calculate likelihood \
+(nse) from predicted adaptation vs source word.
         :type scdictlist_ad: list of 6 dicts. Dicts 0, 1, 2 capture phonological \
 correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual \
 correspondences, dict1/dict4: How often they occur in the data, dict2/dict5: list of \
@@ -166,16 +182,15 @@ cognates in which they occur.
 
         :param scdictlist_rc: list of correspondence dictionaries between \
 present-day language and past stage of that language generated with \
-loanpy.qfysc.get_sound_corresp. Not a dictionary, therefore sequence important.
+loanpy.qfysc.get_sound_corresp. Not a dictionary, therefore sequence important. \
+Will be used in loanpy.loanfinder.Search.likeliestphonmatch to calculate likelihood \
+(nse) from predicted reconstruction vs source word.
         :type scdictlist_rc: list of 6 dicts. Dicts 0, 1, 2 capture phonological \
 correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual \
 correspondences, dict1/dict4: How often they occur in the data, dict2/dict5: list of \
 cognates in which they occur.
 
         :Example:
-
-        >>> from panphon.distance import Distance
-        >>> help(Distance)
 
         >>> from pathlib import Path
         >>> from loanpy.loanfinder import Search, __file__
@@ -272,7 +287,7 @@ donor language.
 
     def loans(self, write_to=False, postprocess=False, merge_with_rest=False):
         """
-        The main function of this module. Searches for phonological matches \
+        Searches for phonological matches \
 and calculates their semantic similarity. Returns candidate list of loans.
 
         :param write_to: indicate if results should be written to file. \
@@ -387,18 +402,15 @@ and picks the word pair with the highest sum. Adds cols with bonus info.
         #get the nse score between original and predictions
         #and write to new columns
         #cols se_rc, lst_rc, se_ad, lst_ad are just extra info for the user
-        dfph = DataFrame([
-        (wrd,)+self.get_nse_rc(recip_segment, wrd, True, True)+self.get_nse_ad(donor_segment, wrd, True, True)
-        for wrd in dfph["match"]], columns=["match", "nse_rc", "se_rc", "lst_rc",
-        "nse_ad", "se_ad", "lst_ad"])
+        dfph = DataFrame([(wrd,) + self.get_nse_rc(recip_segment, wrd, True)
+                                 + self.get_nse_ad(donor_segment, wrd, True)
+        for wrd in dfph["match"]], columns=["match", "nse_rc", "se_rc",
+        "distr_rc", "align_rc", "nse_ad", "se_ad", "distr_ad", "align_ad"])
         #add combined nse
         dfph["nse_combined"] = dfph["nse_rc"] + dfph["nse_ad"]
         #get idx of max combined, keep only that idx (=likeliest match)
         dfph = dfph[dfph.index == dfph["nse_combined"].idxmax()]
-        #add examples
-        dfph["e_rc"] = [self.get_nse_rc(recip_segment, wrd, False, False) for wrd in dfph["match"]]
-        dfph["e_ad"] = [self.get_nse_ad(donor_segment, wrd, False, False) for wrd in dfph["match"]]
-
+        
         return dfph
 
     def phonmatch_small(self, search_in, search_for, index=None, dropduplicates=True):
