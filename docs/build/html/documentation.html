@@ -50,7 +50,7 @@
 <blockquote>
 <div><ul class="simple">
 <li><p>predicting loanword adaptation (lateral transfers)</p></li>
-<li><p>backward and forward reconstruction of words (horizontal transfers)</p></li>
+<li><p>backward and forward reconstruction of words (vertical transfers)</p></li>
 <li><p>searching for potential (old) loanwords between two languages.</p></li>
 </ul>
 </div></blockquote>
@@ -1935,7 +1935,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <h3>get normalised sum of examples<a class="headerlink" href="#get-normalised-sum-of-examples" title="Permalink to this headline">¶</a></h3>
 <dl class="py method">
 <dt class="sig sig-object py" id="loanpy.adrc.Adrc.get_nse">
-<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">get_nse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">se</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.get_nse" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">get_nse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.get_nse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Called by loanpy.adrc.Adrc.adapt, loanpy.adrc.Adrc.reconstruct, loanpy.loanfinder.Search, loanpy.loanfinder.likeliestphonmatch. Returns 0 if one of the sound correspondences is not documented in the sound correspondence dictionary. By default we are calculating the nse: Check in the sound correspondence dictionary how often each sound correspondence occured, add them together, divide by number of phonemes in the word. If show_workflow is set to True, a tuple will be returned with (normalised sum of examples, sum of examples, list of number of examples for each phoneme). If se=False, instead of the number of examples, the list of cognate sets in which each sound correspondence occurs will be accessed. The return value then is a list of lists. show_workflow does not do anything if se=False.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

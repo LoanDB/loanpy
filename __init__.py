@@ -10,7 +10,7 @@
 loanpy is a toolkit for solving various linguistic tasks such as:
 
     - predicting loanword adaptation (lateral transfers)
-    - backward and forward reconstruction of words (horizontal transfers)
+    - backward and forward reconstruction of words (vertical transfers)
     - searching for potential (old) loanwords between two languages.
 
 """
