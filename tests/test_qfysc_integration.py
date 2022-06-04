@@ -38,18 +38,19 @@ def test_init():
     qfy = Qfy()
 
     # assert number of attributes (super() + rest)
-    assert len(qfy.__dict__) == 11
+    assert len(qfy.__dict__) == 12
 
-    #7 attributes inherited from Etym
+    #8 attributes inherited from Etym
     assert isinstance(qfy.phon2cv, dict)
     assert len(qfy.phon2cv) == 6358
     assert isinstance(qfy.vow2fb, dict)
     assert len(qfy.vow2fb) == 1240
     assert qfy.dfety is None
     assert qfy.phoneme_inventory is None
-    assert qfy.clusters is None
-    assert qfy.struc_inv is None
+    assert qfy.cluster_inventory is None
+    assert qfy.phonotactic_inventory is None
     ismethod(qfy.distance_measure)
+    assert qfy.forms_target_language == None
 
     #4 attributes initiated in Qfy
     assert qfy.mode == "adapt"
@@ -83,10 +84,12 @@ def test_align_lingpy():
     DataFrame({"keys": ["h", "a", "l", "V"], "vals": ["k", "a", "l", "a"]}))
 
     assert_frame_equal(qfy.align(left="aɣat͡ʃi", right="aɣat͡ʃːɯ"),
-    DataFrame({"keys": ["a", "ɣ", "a", "t͡ʃː", "ɯ"], "vals": ["a", "ɣ", "a", "t͡ʃ", "i"]}))
+    DataFrame({"keys": ["a", "ɣ", "a", "t͡ʃː", "ɯ"],
+    "vals": ["a", "ɣ", "a", "t͡ʃ", "i"]}))
 
     assert_frame_equal(qfy.align(left="aldaɣ", right="aldaɣ"),
-    DataFrame({"keys": ["a", "l", "d", "a", "ɣ"], "vals": ["a", "l", "d", "a", "ɣ"]}))
+    DataFrame({"keys": ["a", "l", "d", "a", "ɣ"],
+    "vals": ["a", "l", "d", "a", "ɣ"]}))
 
     assert_frame_equal(qfy.align(left="ajan", right="ajan"),
     DataFrame({"keys": ["a", "j", "a", "n"], "vals": ["a", "j", "a", "n"]}))
@@ -130,7 +133,8 @@ def test_align_clusterwise():
     DataFrame({"keys": ['#b', 'u', 'd', 'a', 'p', 'estttt#'],
                "vals": ['-', 'ua', 'd', 'a', 'st', '-']}))
 
-    # the only example in ronatasbertawot where one starts with C, the other with V
+    # the only example in ronatasbertawot
+    #where one starts with C, the other with V
     assert_frame_equal(qfy.align(left="imad", right="vimad"),
     DataFrame({"keys": ['#-', '#i', 'm', 'a', 'd#', '-#'],
                "vals": ['v', 'i', 'm', 'a', 'd', '-']}))
@@ -140,12 +144,14 @@ def test_align_clusterwise():
 
 def test_get_sound_corresp():
     #assert adapt mode works well
-    qfy = Qfy(formscsv=PATH2FORMS, srclg="WOT", tgtlg="EAH")
+    qfy = Qfy(forms_csv=PATH2FORMS, source_language="WOT",
+    target_language="EAH")
 #    print(qfy.left, qfy.dfety) # qfy.dfety[qfy.left]
     out = qfy.get_sound_corresp(write_to=None)
-    for s_out, s_exp in zip(out.pop(3), {'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],
-                                         'VCVC': ['VCVC', 'VCVCV', 'VCCVC'],
-                                         'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']}):
+    for s_out, s_exp in zip(out.pop(3),
+    {'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],
+     'VCVC': ['VCVC', 'VCVCV', 'VCCVC'],
+     'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']}):
         assert set(s_out) == set(s_exp)
     assert out == [
 {'a': ['a'],
@@ -184,7 +190,8 @@ def test_get_sound_corresp():
             ]
 
 #make sure reconstruction works
-    qfy = Qfy(formscsv=PATH2FORMS, srclg="EAH", tgtlg="H", mode="reconstruct")
+    qfy = Qfy(forms_csv=PATH2FORMS, source_language="EAH",
+    target_language="H", mode="reconstruct")
 #    print(qfy.left, qfy.dfety) # qfy.dfety[qfy.left]
     assert qfy.get_sound_corresp(write_to=None) == [
 {'#-': ['-'],
@@ -238,7 +245,7 @@ exp = [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'],
 {'VCCVC<VCCVC': 1, 'VCVC<VCVC': 1, 'VCVCV<VCVCV': 1},
 {'VCCVC<VCCVC': [2], 'VCVC<VCVC': [3], 'VCVCV<VCVCV': [1]}]
 
-qfy = Qfy(formscsv=PATH2FORMS, srclg="WOT", tgtlg="EAH")
+qfy = Qfy(forms_csv=PATH2FORMS, source_language="WOT", target_language="EAH")
 path2test_sc = Path(__file__).parent / "test_sc.txt"
 
 # dict nr. 3 (struc) has randomness (bc rankcclosest) so pop and use set!
@@ -263,7 +270,7 @@ assert out == exp
 remove(path2test_sc)
 del out, path2test_sc, qfy,
 
-def test_get_struc_corresp():
+def test_get_phonotactics_corresp():
     #assert frst test runs but with write_to and struc=True
     exp = [{'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],
     'VCVC': ['VCVC', 'VCVCV', 'VCCVC'],
@@ -271,11 +278,12 @@ def test_get_struc_corresp():
     {'VCCVC<VCCVC': 1, 'VCVC<VCVC': 1, 'VCVCV<VCVCV': 1},
     {'VCCVC<VCCVC': [2], 'VCVC<VCVC': [3], 'VCVCV<VCVCV': [1]}]
 
-    qfy = Qfy(formscsv=PATH2FORMS, srclg="WOT", tgtlg="EAH")
+    qfy = Qfy(forms_csv=PATH2FORMS, source_language="WOT",
+    target_language="EAH")
     path2test_sc = Path(__file__).parent / "test_sc.txt"
 
     #assert return value is as expected. lists in 1st dict are random so set.
-    out = qfy.get_struc_corresp(write_to=path2test_sc)
+    out = qfy.get_phonotactics_corresp(write_to=path2test_sc)
     for s_out, s_exp in zip(out[0], exp[0]):
         assert set(out[0][s_out]) == set(exp[0][s_exp])
     assert out[1:] == exp[1:]

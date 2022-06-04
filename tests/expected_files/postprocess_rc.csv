@@ -1,0 +1,4 @@
+Target_Form,Source_Form,Cognacy,best_guess,NSE_Source_Target_Form,SE_Source_Target_Form,E_distr_Source_Target_Form,align_Source_Target_Form,NSE_Source_best_guess,SE_Source_best_guess,E_distr_Source_best_guess,align_Source_best_guess,fast_levenshtein_distance_best_guess_Target_Form,fast_levenshtein_distance_div_maxlen_best_guess_Target_Form
+aɣat͡ʃi,aːt͡ʃ,1,aːt͡ʃ,1.75,7,"[3, 2, 1, 1]","['#-<*-', '#aː<*a', 't͡ʃ#<*ɣ', '-#<*at͡ʃi']",0.75,3,"[3, 0, 0, 0]","['#-<*-', '#aː<*aː', 't͡ʃ#<*t͡ʃ', '-#<*-']",3,0.43
+aldaɣ,aːɟuː,2,bla,1.6,8,"[3, 2, 1, 1, 1]","['#-<*-', '#aː<*a', 'ɟ<*ld', 'uː#<*a', '-#<*ɣ']",0.67,2,"[0, 2, 0]","['#-<*bl', '#aː<*a', 'ɟuː#<*-']",3,0.6
+ajan,ɒjnaːroz,3,ɒjnaːr,1.33,8,"[3, 1, 1, 1, 1, 1]","['#-<*-', '#ɒ<*a', 'jn<*j', 'aː<*a', 'r<*n', 'oz#<*-']",0.67,4,"[3, 0, 0, 0, 0, 1]","['#-<*-', '#ɒ<*ɒ', 'jn<*jn', 'aː<*aː', 'r<*r', 'oz#<*-']",4,0.67

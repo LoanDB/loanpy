@@ -10,9 +10,12 @@ from loanpy.adrc import Adrc, read_scdictlist
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms_3cogs_wot.csv"
 PATH2SC_TEST = Path(__file__).parent / "input_files" / "sc_ad_3cogs.txt"
-PATH2SC_HANDMADE = Path(__file__).parent / "input_files" / "sc_ad_handmade.txt"
-PATH2SC_HANDMADE2 = Path(__file__).parent / "input_files" / "sc_ad_handmade2.txt"
-PATH2SC_HANDMADE3 = Path(__file__).parent / "input_files" / "sc_rc_handmade.txt"
+PATH2SC_HANDMADE = Path(__file__
+).parent / "input_files" / "sc_ad_handmade.txt"
+PATH2SC_HANDMADE2 = Path(__file__
+).parent / "input_files" / "sc_ad_handmade2.txt"
+PATH2SC_HANDMADE3 = Path(__file__
+).parent / "input_files" / "sc_rc_handmade.txt"
 
 def test_read_scdictlist():
     """test if list of sound correspondence dictionaries is read correctly"""
@@ -40,13 +43,13 @@ def test_init():
 
     #check if initiation without args works fine
     adrc_inst = Adrc()
-    assert len(adrc_inst.__dict__) == 16
+    assert len(adrc_inst.__dict__) == 17
 
     # 5 attributes initiated in Adrc, rest inherited
     assert adrc_inst.scdict is None
     assert adrc_inst.sedict is None
     assert adrc_inst.edict is None
-    assert adrc_inst.scdict_struc is None
+    assert adrc_inst.scdict_phonotactics is None
     assert adrc_inst.workflow == OrderedDict()
 
     #4 attributes inherited from Qfy
@@ -55,16 +58,17 @@ def test_init():
     assert adrc_inst.scdictbase == {}
     assert adrc_inst.vfb is None
 
-    #7 attributes inherited from Etym via Qfy
+    #8 attributes inherited from Etym via Qfy
     assert isinstance(adrc_inst.phon2cv, dict)
     assert len(adrc_inst.phon2cv) == 6358
     assert isinstance(adrc_inst.vow2fb, dict)
     assert len(adrc_inst.vow2fb) == 1240
     assert adrc_inst.dfety is None
     assert adrc_inst.phoneme_inventory is None
-    assert adrc_inst.clusters is None
-    assert adrc_inst.struc_inv is None
+    assert adrc_inst.cluster_inventory is None
+    assert adrc_inst.phonotactic_inventory is None
     ismethod(adrc_inst.distance_measure)
+    assert adrc_inst.forms_target_language == None
 
     #assert initiation runs correctly with non-empty params as well
 
@@ -80,18 +84,18 @@ def test_init():
 
     adrc_inst = Adrc(
         scdictlist=PATH2SC_TEST,
-        formscsv=PATH2FORMS,
-        srclg="WOT", tgtlg="EAH",
+        forms_csv=PATH2FORMS,
+        source_language="WOT", target_language="EAH",
         mode="reconstruct",
-        struc_most_frequent=2)
+        most_frequent_phonotactics=2)
 
-    assert len(adrc_inst.__dict__) == 16
+    assert len(adrc_inst.__dict__) == 17
 
     # assert initiation went correctly
     assert adrc_inst.scdict == d0
     assert adrc_inst.sedict == d1
     assert adrc_inst.edict == d2
-    assert adrc_inst.scdict_struc == d3
+    assert adrc_inst.scdict_phonotactics == d3
     assert adrc_inst.workflow == OrderedDict()
 
     #4 attributes inherited from Qfy
@@ -100,7 +104,7 @@ def test_init():
     assert adrc_inst.scdictbase == {}
     assert adrc_inst.vfb is None
 
-    #7 attributes inherited from Etym via Qfy
+    #8 attributes inherited from Etym via Qfy
     assert isinstance(adrc_inst.phon2cv, dict)
     assert len(adrc_inst.phon2cv) == 6358
     assert isinstance(adrc_inst.vow2fb, dict)
@@ -110,9 +114,11 @@ def test_init():
     "Source_Form": ["aɣat͡ʃːɯ", "aldaɣ", "ajan"],  "Cognacy": [1, 2, 3]}))
     assert adrc_inst.phoneme_inventory == {
     'a', 'd', 'i', 'j', 'l', 'n', 't͡ʃ', 'ɣ'}
-    assert adrc_inst.clusters == {'a', 'ia', 'j', 'ld', 'n', 't͡ʃ', 'ɣ'}
-    assert adrc_inst.struc_inv == ['VCVCV', 'VCCVC']
+    assert adrc_inst.cluster_inventory == {
+    'a', 'ia', 'j', 'ld', 'n', 't͡ʃ', 'ɣ'}
+    assert adrc_inst.phonotactic_inventory == ['VCVCV', 'VCCVC']
     ismethod(adrc_inst.distance_measure)
+    assert adrc_inst.forms_target_language == ['aɣat͡ʃi', 'aldaɣ', 'ajan']
 
     #don't remove yet,
     #remove("test_soundchanges.txt")
@@ -124,8 +130,8 @@ def test_get_diff():
     # create instance
     adrc_inst = Adrc(
         scdictlist=PATH2SC_TEST,
-        formscsv=PATH2FORMS,
-        srclg="WOT", tgtlg="EAH")
+        forms_csv=PATH2FORMS,
+        source_language="WOT", target_language="EAH")
 
     # assert
     assert adrc_inst.get_diff(
@@ -211,112 +217,138 @@ def test_reconstruct():
     # set up adrc instance
     adrc_inst = Adrc(mode="reconstruct",
         scdictlist=Path(__file__).parent / "input_files" / "sc_rc_3cogs.txt")
-#
-#    # assert reconstruct works when sound changes are missing from data
-    assert adrc_inst.reconstruct(
-        ipastring="kiki") == "#k, i, k, i# not old"
 
-#    # assert it's actually clusterising by default
+    # assert reconstruct works when sound changes are missing from data
     assert adrc_inst.reconstruct(
-        ipastring="kriekrie") == "#kr, ie, kr, ie# not old"
+        ipastr="kiki") == "#k, i, k, i# not old"
 
-#    # try clusterised=False, r can be old!
+    # assert it's actually clusterising by default
+    assert adrc_inst.reconstruct(
+        ipastr="kriekrie") == "#kr, ie, kr, ie# not old"
+
+    # try clusterised=False, r can be old!
     assert adrc_inst.reconstruct(clusterised=False,
-        ipastring="kriekrie") == "#k, i, e, k, i, e# not old"
-#
-#    # test 2nd break: struc and vowelharmony are False
+        ipastr="kriekrie") == "#k, i, e, k, i, e# not old"
+
+    # test 2nd break: phonotactics_filter and vowelharmony_filter are False
     assert adrc_inst.reconstruct(
-        ipastring="aːruː", clusterised=False) == "^(a)(n)(a)(at͡ʃi)$"
-#
-#    # test same break again but param <howmany> is greater than 1 now
-    assert adrc_inst.reconstruct(ipastring="aːruː", clusterised=False,
+        ipastr="aːruː", clusterised=False) == "^(a)(n)(a)(at͡ʃi)$"
+
+    # test same break again but param <howmany> is greater than 1 now
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=False,
     howmany=2) == "^(a)(n)(a)(at͡ʃi|ɣ)$"
 
-    # overwrite adrc instance, now with formscsv, so struc_inv is read.
-    adrc_inst = Adrc(mode="reconstruct", formscsv=PATH2FORMS,
-    srclg="H", tgtlg="EAH",
+    # overwrite adrc_inst, now with forms_csv, to read phonotactic_inventory.
+    adrc_inst = Adrc(mode="reconstruct", forms_csv=PATH2FORMS,
+    source_language="H", target_language="EAH",
         scdictlist=Path(__file__).parent / "input_files" / "sc_rc_3cogs.txt")
 
-#    #test with struc=True (a filter)
-    assert adrc_inst.reconstruct(ipastring="aːruː", clusterised=False,
-    howmany=2, struc=True) == "^anaɣ$"
-#
-#    # assert reconstruct works with struc=True and result being empty
-    assert adrc_inst.reconstruct(ipastring="aːruː", clusterised=False,
-    howmany=1, struc=True) == "wrong phonotactics"
+    #test with phonotactics_filter=True (a filter)
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=False,
+    howmany=2, phonotactics_filter=True) == "^anaɣ$"
 
-#    # same as previous one but with clusterised=True
-    assert adrc_inst.reconstruct(ipastring="aːruː", clusterised=True,
-    howmany=1, struc=True) == "wrong phonotactics"
+    # assert reconstruct works with phonotactics_filter=True and result being empty
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=False,
+    howmany=1, phonotactics_filter=True) == "wrong phonotactics"
 
-    # assert filter vowelharmony works
-    assert adrc_inst.reconstruct(ipastring="aːruː", clusterised=True,
-    howmany=2, struc=False, vowelharmony=True) == "^anaat͡ʃi$|^anaɣ$"
+    # same as previous one but with clusterised=True
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=1, phonotactics_filter=True) == "wrong phonotactics"
+
+    # assert vowelharmony_filter works
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=2, phonotactics_filter=False,
+    vowelharmony_filter=True) == "^anaat͡ʃi$|^anaɣ$"
 
     #let's assume "i" was a back vowel
     adrc_inst.vow2fb["i"] = "B"
     #then it would would filter ^anaat͡ʃi$ out, since it has back and front vow
-    assert adrc_inst.reconstruct(ipastring="aːruː", clusterised=True,
-    howmany=2, struc=False, vowelharmony=True) == "^anaɣ$"
-    # test vowelharmony=True, result is empty
-    assert adrc_inst.reconstruct(ipastring="aːruː", clusterised=True,
-    howmany=1, struc=False, vowelharmony=True) == "wrong vowel harmony"
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=2, phonotactics_filter=False, vowelharmony_filter=True) == "^anaɣ$"
+    # test vowelharmony_filter=True, result is empty
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=1, phonotactics_filter=False,
+    vowelharmony_filter=True) == "wrong vowel harmony"
     #tear down
     adrc_inst.vow2fb["i"] = "F"
 
     #test sort_by_nse=True assert reconstruct works and sorts the result by nse
-    assert adrc_inst.reconstruct(ipastring="aːruː", clusterised=True,
-    howmany=2, struc=False, vowelharmony=False,
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=2, phonotactics_filter=False, vowelharmony_filter=False,
     sort_by_nse=True) == "^anaɣ$|^anaat͡ʃi$"
+
+    #test if sort_by_nse=1 works
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=2, phonotactics_filter=False, vowelharmony_filter=False,
+    sort_by_nse=1) == "^anaɣ$|^anaat͡ʃi$"
+
+    #test if sort_by_nse=2 works
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=2, phonotactics_filter=False, vowelharmony_filter=False,
+    sort_by_nse=2) == "^anaɣ$|^anaat͡ʃi$"
+
+    #test if sort_by_nse=float("inf") works
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=2, phonotactics_filter=False, vowelharmony_filter=False,
+    sort_by_nse=float("inf")) == "^anaɣ$|^anaat͡ʃi$"
+
+    #test if sort_by_nse=0 works
+    assert adrc_inst.reconstruct(ipastr="aːruː", clusterised=True,
+    howmany=2, phonotactics_filter=False, vowelharmony_filter=False,
+    sort_by_nse=0) == '^(a)(n)(a)(at͡ʃi|ɣ)$'
+    #since last 3 params are all False or 0, combinatorics is not triggered.
 
     del adrc_inst
 
-def test_adapt_struc():
+def test_adapt_phonotactics():
     """test if phonotactic structures are adapted correctly"""
 
     # create instance
     adrc_inst = Adrc(
-        scdictlist=PATH2SC_HANDMADE,  # CVC and CVCCV are hard-coded data in this file
-        formscsv=PATH2FORMS,  # from here VCVCV, VCCVC, VCVC is extracted for heuristics
-        srclg="WOT", tgtlg="EAH")
+        scdictlist=PATH2SC_HANDMADE,  # CVC and CVCCV: hard-coded in this file!
+        forms_csv=PATH2FORMS,  # to extract VCVCV, VCCVC, VCVC for heuristics
+        source_language="WOT", target_language="EAH")
 
-    # assert adapt_struc works with max_struc=1
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=1) == [
+    # assert adapt_phonotactics works with max_repaired_phonotactics=1
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=0) == [
     ['k', 'i', 'k', 'i']]
-    #but also with max_struc=2
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=2) == [
+    #but also with max_repaired_phonotactics=2
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2) == [
     ['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i']]
 
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=3,
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=3,
     show_workflow=True) == [
     ['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i']]  # only 2 strucs available
-    assert adrc_inst.workflow == OrderedDict([('donor_struc',
-    'CVCV'), ('pred_strucs', "['CVC', 'CVCCV']")])
+    assert adrc_inst.workflow == OrderedDict([('donor_phonotactics',
+    'CVCV'), ('predicted_phonotactics', "['CVC', 'CVCCV']")])
 
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=2,
-    max_paths=2) == [['k', 'i', 'k'],  # C can be inserted before or after k
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2,
+    max_paths2repaired_phonotactics=2) == [['k', 'i', 'k'],
+    # C can be inserted before or after k
     ['k', 'i', 'C', 'k', 'i'], ['k', 'i', 'k', 'C', 'i']]
 
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=2,
-    max_paths=3, show_workflow=True) == [['k', 'i', 'k'],
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2,
+    max_paths2repaired_phonotactics=3, show_workflow=True) == [['k', 'i', 'k'],
     ['k', 'i', 'C', 'k', 'i'], ['k', 'i', 'k', 'C', 'i']]
-    assert adrc_inst.workflow == OrderedDict([('donor_struc',
-    'CVCV'), ('pred_strucs', "['CVC', 'CVCCV']")])
+    assert adrc_inst.workflow == OrderedDict([('donor_phonotactics',
+    'CVCV'), ('predicted_phonotactics', "['CVC', 'CVCCV']")])
 
     #can't squeeze out more from this example, this was the max.
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=9999999,
-    max_paths=9999999) == [['k', 'i', 'k'],  # C can be inserted before or after k
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=9999999,
+    # C can be inserted before or after k
+    max_paths2repaired_phonotactics=9999999) == [['k', 'i', 'k'],
     ['k', 'i', 'C', 'k', 'i'], ['k', 'i', 'k', 'C', 'i']]
 
     # test with different input strings now
-    assert adrc_inst.adapt_struc(ipa_in="alkjpqf", max_struc=5,
+    assert adrc_inst.adapt_phonotactics(ipastr="alkjpqf", max_repaired_phonotactics=5,
     show_workflow=True) == [
     ['a', 'l', 'k', 'V', 'j'], ['a', 'l', 'V', 'f'], ['a', 'l', 'V', 'f', 'V']]
-    assert adrc_inst.workflow == OrderedDict([('donor_struc',
-    'VCCCCCC'), ('pred_strucs', "['VCCVC', 'VCVC', 'VCVCV']")])
+    assert adrc_inst.workflow == OrderedDict([('donor_phonotactics',
+    'VCCCCCC'), ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
-    assert adrc_inst.adapt_struc(ipa_in="alkjpqf",
-    max_struc=10, max_paths=10, show_workflow=True) == [
+    assert adrc_inst.adapt_phonotactics(ipastr="alkjpqf",
+    max_repaired_phonotactics=10, max_paths2repaired_phonotactics=10,
+    show_workflow=True) == [
     ['a', 'p', 'q', 'V', 'f'], ['a', 'j', 'q', 'V', 'f'],
     ['a', 'j', 'p', 'V', 'f'], ['a', 'j', 'p', 'V', 'q'],
     ['a', 'k', 'q', 'V', 'f'], ['a', 'k', 'p', 'V', 'f'],
@@ -330,65 +362,69 @@ def test_adapt_struc():
     ['a', 'j', 'V', 'q', 'V'], ['a', 'j', 'V', 'q', 'V'],
     ['a', 'j', 'V', 'f', 'V'], ['a', 'j', 'V', 'p', 'V'],
     ['a', 'j', 'V', 'p', 'V'], ['a', 'j', 'V', 'p', 'V']]
-    assert adrc_inst.workflow == OrderedDict([('donor_struc',
-    'VCCCCCC'), ('pred_strucs', "['VCCVC', 'VCVC', 'VCVCV']")])
+    assert adrc_inst.workflow == OrderedDict([('donor_phonotactics',
+    'VCCCCCC'), ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
-    assert adrc_inst.adapt_struc(ipa_in="aaa",
-    max_struc=10, max_paths=10, show_workflow=True) == [
+    assert adrc_inst.adapt_phonotactics(ipastr="aaa",
+    max_repaired_phonotactics=10, max_paths2repaired_phonotactics=10,
+    show_workflow=True) == [
     ['a', 'C', 'a', 'C', 'a'], ['a', 'C', 'a', 'C'], ['a', 'C', 'a', 'C'],
     ['a', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C'],
     ['a', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C']]
-    assert adrc_inst.workflow == OrderedDict([('donor_struc',
-    'VVV'), ('pred_strucs', "['VCVCV', 'VCVC', 'VCCVC']")])
+    assert adrc_inst.workflow == OrderedDict([('donor_phonotactics',
+    'VVV'), ('predicted_phonotactics', "['VCVCV', 'VCVC', 'VCCVC']")])
 
-    assert adrc_inst.adapt_struc(ipa_in="zrrr", max_struc=12, max_paths=2,
+    assert adrc_inst.adapt_phonotactics(ipastr="zrrr", max_repaired_phonotactics=12,
+    max_paths2repaired_phonotactics=2,
     show_workflow=True) == [
     ['V', 'r', 'r', 'V', 'r'], ['V', 'z', 'r', 'V', 'r'], ['V', 'r', 'V', 'r'],
     ['V', 'r', 'V', 'r'], ['V', 'r', 'V', 'r', 'V'], ['V', 'r', 'V', 'r', 'V']]
-    assert adrc_inst.workflow == OrderedDict([('donor_struc',
-    'CCCC'), ('pred_strucs', "['VCCVC', 'VCVC', 'VCVCV']")])
+    assert adrc_inst.workflow == OrderedDict([('donor_phonotactics',
+    'CCCC'), ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
 #    # test struc missing from dict and rank_closest instead, test show_workflow
-     # pretend scdict_struc is empty:
-    adrc_inst.scdict_struc = {}
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=2,
+     # pretend scdict_phonotactics is empty:
+    adrc_inst.scdict_phonotactics = {}
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2,
                         show_workflow=True) == [['V', 'k', 'i', 'k', 'i'],
                         ['i', 'k', 'i', 'C']]
-    assert adrc_inst.workflow == OrderedDict([('donor_struc',
-    'CVCV'), ('pred_strucs', "['VCVCV', 'VCVC']")])
+    assert adrc_inst.workflow == OrderedDict([('donor_phonotactics',
+    'CVCV'), ('predicted_phonotactics', "['VCVCV', 'VCVC']")])
 
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=3) == [
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=3) == [
 ['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C'], ['V', 'k', 'k', 'i', 'C']]
     # first i gets deleted: kiki-kki-Vkki-VkkiC to get VCCVC
 
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=4) == [
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=4) == [
 ['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C'], ['V', 'k', 'k', 'i', 'C']]
 
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=2,
-    max_paths=2) == [['V', 'k', 'i', 'k', 'i'],
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2,
+    max_paths2repaired_phonotactics=2) == [['V', 'k', 'i', 'k', 'i'],
     ['i', 'k', 'i', 'C'], ['V', 'k', 'i', 'k']]
 
     #no change
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=2,
-    max_paths=3) == [['V', 'k', 'i', 'k', 'i'],
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2,
+    max_paths2repaired_phonotactics=3) == [['V', 'k', 'i', 'k', 'i'],
     ['i', 'k', 'i', 'C'], ['V', 'k', 'i', 'k']]
 
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=3,
-    max_paths=2) == [['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C'],
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=3,
+    max_paths2repaired_phonotactics=2) == [['V', 'k', 'i', 'k', 'i'],
+    ['i', 'k', 'i', 'C'],
     ['V', 'k', 'i', 'k'], ['i', 'C', 'k', 'i', 'C'], ['i', 'k', 'C', 'i', 'C']]
 
-    assert adrc_inst.adapt_struc(ipa_in="kiki", max_struc=999,
-    max_paths=999) == [['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C'],
+    assert adrc_inst.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=999,
+    max_paths2repaired_phonotactics=999) == [['V', 'k', 'i', 'k', 'i'],
+    ['i', 'k', 'i', 'C'],
     ['V', 'k', 'i', 'k'], ['i', 'C', 'k', 'i', 'C'], ['i', 'k', 'C', 'i', 'C'],
     ['V', 'C', 'k', 'i', 'k'], ['V', 'k', 'k', 'i', 'C'],
     ['V', 'k', 'C', 'i', 'k']]
 
     # test with different input strings now
-    assert adrc_inst.adapt_struc(ipa_in="alkjpqf", max_struc=5) == [
+    assert adrc_inst.adapt_phonotactics(ipastr="alkjpqf", max_repaired_phonotactics=5) == [
     ['a', 'l', 'k', 'V', 'j'], ['a', 'l', 'V', 'f'], ['a', 'l', 'V', 'f', 'V']]
 
-    assert adrc_inst.adapt_struc(ipa_in="alkjpqf",
-    max_struc=10, max_paths=10) == [
+    assert adrc_inst.adapt_phonotactics(ipastr="alkjpqf",
+    max_repaired_phonotactics=10, max_paths2repaired_phonotactics=10) == [
     ['a', 'p', 'q', 'V', 'f'], ['a', 'j', 'q', 'V', 'f'],
     ['a', 'j', 'p', 'V', 'f'], ['a', 'j', 'p', 'V', 'q'],
     ['a', 'k', 'q', 'V', 'f'], ['a', 'k', 'p', 'V', 'f'],
@@ -403,13 +439,14 @@ def test_adapt_struc():
     ['a', 'j', 'V', 'f', 'V'], ['a', 'j', 'V', 'p', 'V'],
     ['a', 'j', 'V', 'p', 'V'], ['a', 'j', 'V', 'p', 'V']]
 
-    assert adrc_inst.adapt_struc(ipa_in="aaa",
-    max_struc=10, max_paths=10) == [
+    assert adrc_inst.adapt_phonotactics(ipastr="aaa",
+    max_repaired_phonotactics=10, max_paths2repaired_phonotactics=10) == [
     ['a', 'C', 'a', 'C', 'a'], ['a', 'C', 'a', 'C'], ['a', 'C', 'a', 'C'],
     ['a', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C'],
     ['a', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C']]
 
-    assert adrc_inst.adapt_struc(ipa_in="zrrr", max_struc=12, max_paths=2) == [
+    assert adrc_inst.adapt_phonotactics(ipastr="zrrr", max_repaired_phonotactics=12,
+    max_paths2repaired_phonotactics=2) == [
     ['V', 'r', 'r', 'V', 'r'], ['V', 'z', 'r', 'V', 'r'], ['V', 'r', 'V', 'r'],
     ['V', 'r', 'V', 'r'], ['V', 'r', 'V', 'r', 'V'], ['V', 'r', 'V', 'r', 'V']]
 
@@ -422,117 +459,123 @@ def test_adapt():
     # create instance
     adrc_inst = Adrc(
         scdictlist=PATH2SC_HANDMADE,
-        formscsv=PATH2FORMS,
-        srclg="WOT", tgtlg="EAH")
+        forms_csv=PATH2FORMS,
+        source_language="WOT", target_language="EAH")
 
     #assert adapt is working
-    assert adrc_inst.adapt(ipa_in="dade",
-    howmany=5) == "dady, datʰy, dedy, detʰy, tʰady"
+    assert adrc_inst.adapt(ipastr="dade",
+    howmany=5, max_repaired_phonotactics=0) == "dady, datʰy, dedy, detʰy, tʰady"
 
-    # change max_struc to 2 from 1.
+    # change max_repaired_phonotactics to 2 from 1.
     assert adrc_inst.adapt(
-                    ipa_in="dade",
+                    ipastr="dade",
                     howmany=6,
-                    max_struc=2) == "dad, ded, tʰad, tʰed, dajdy, dejdy"
+                    max_repaired_phonotactics=2
+                    ) == "dad, ded, tʰad, tʰed, dajdy, dejdy"
 
-    # change max_paths to 2 from 1.
+    # change max_paths2repaired_phonotactics to 2 from 1.
     assert adrc_inst.adapt(
-                    ipa_in="dade",
+                    ipastr="dade",
                     howmany=6,
-                    max_struc=2,
-                    max_paths=2) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
+                    max_repaired_phonotactics=2,
+                    max_paths2repaired_phonotactics=2
+                    ) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
 
     # assert nothing changes if weights stay same relative to each other
     assert adrc_inst.adapt(
-                    ipa_in="dade",
+                    ipastr="dade",
                     howmany=6,
-                    max_struc=2,
-                    max_paths=2,
+                    max_repaired_phonotactics=2,
+                    max_paths2repaired_phonotactics=2,
                     deletion_cost=1,
-                    insertion_cost=0.49) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
+                    insertion_cost=0.49
+                    ) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
 
     # assert nothing changes if weights stay same relative to each other
     assert adrc_inst.adapt(
-                    ipa_in="dade",
+                    ipastr="dade",
                     howmany=6,
-                    max_struc=2,
-                    max_paths=2,
+                    max_repaired_phonotactics=2,
+                    max_paths2repaired_phonotactics=2,
                     deletion_cost=2,
-                    insertion_cost=0.98) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
+                    insertion_cost=0.98
+                    ) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
 
     # let's assume e is a back vowel and repair vowel harmony
     adrc_inst.vow2fb["e"] = "B"
     assert adrc_inst.adapt(
-                ipa_in="dade",
+                ipastr="dade",
                 howmany=6,
-                max_struc=2,
-                max_paths=2,
-                vowelharmony=True) == "dad, tʰad, dajdæ, tʰajdæ, dujdy, tʰujdy"
+                max_repaired_phonotactics=2,
+                max_paths2repaired_phonotactics=2,
+                repair_vowelharmony=True
+                ) == "dad, tʰad, dajdæ, tʰajdæ, dujdy, tʰujdy"
 
     #let's assume 'CVCCV' was an allowed structure
-    adrc_inst.struc_inv.add('CVCCV')
+    adrc_inst.phonotactic_inventory.add('CVCCV')
     #apply filter where unallowed structures are filtered out
     assert adrc_inst.adapt(
-            ipa_in="dade",
+            ipastr="dade",
             howmany=6,
-            max_struc=2,
-            max_paths=2,
-            vowelharmony=True,
-            struc_filter=True) == "dajdæ, tʰajdæ, dujdy, tʰujdy, dadjæ, tʰadjæ"
+            max_repaired_phonotactics=2,
+            max_paths2repaired_phonotactics=2,
+            repair_vowelharmony=True,
+            phonotactics_filter=True) == "dajdæ, tʰajdæ, dujdy, tʰujdy, dadjæ, tʰadjæ"
 
-    #test with clusterised=True
+    #test with cluster_filter=True
     adrc_inst = Adrc(
         scdictlist=PATH2SC_HANDMADE2, #different scdictlist
-        formscsv=PATH2FORMS,
-        srclg="WOT", tgtlg="EAH")
-    adrc_inst.struc_inv.add('CVCCV') #add this so struc_filter won't be empty
+        forms_csv=PATH2FORMS,
+        source_language="WOT", target_language="EAH")
+    # add this so phonotactics_filter won't be empty
+    adrc_inst.phonotactic_inventory.add('CVCCV')
     assert adrc_inst.adapt(
-                    ipa_in="dade",
+                    ipastr="dade",
                     howmany=1000,
-                    max_struc=2,
-                    max_paths=2,
-                    vowelharmony=True,
-                    struc_filter=True,
-                    clusterised=True) == "t͡ʃalda"
+                    max_repaired_phonotactics=2,
+                    max_paths2repaired_phonotactics=2,
+                    repair_vowelharmony=True,
+                    phonotactics_filter=True,
+                    cluster_filter=True) == "t͡ʃalda"
 
-    #let more things go through filter clusterised:
-    adrc_inst.clusters.add("d")
+    #let more things go through filter cluster_filter:
+    adrc_inst.cluster_inventory.add("d")
     assert adrc_inst.adapt(
-                    ipa_in="dade",
+                    ipastr="dade",
                     howmany=1000,
-                    max_struc=2,
-                    max_paths=2,
-                    vowelharmony=True,
-                    struc_filter=True,
-                    clusterised=True) == "dalda, t͡ʃalda"
+                    max_repaired_phonotactics=2,
+                    max_paths2repaired_phonotactics=2,
+                    repair_vowelharmony=True,
+                    phonotactics_filter=True,
+                    cluster_filter=True) == "dalda, t͡ʃalda"
 
     #sort result by nse (likelihood of reconstruction)
-    adrc_inst.clusters.add("d")
+    adrc_inst.cluster_inventory.add("d")
     assert adrc_inst.adapt(
-                    ipa_in="dade",
+                    ipastr="dade",
                     howmany=1000,
-                    max_struc=2,
-                    max_paths=2,
-                    vowelharmony=True,
-                    struc_filter=True,
-                    clusterised=True,
+                    max_repaired_phonotactics=2,
+                    max_paths2repaired_phonotactics=2,
+                    repair_vowelharmony=True,
+                    phonotactics_filter=True,
+                    cluster_filter=True,
                     sort_by_nse=True) == "t͡ʃalda, dalda"
 
     #test show_workflow - run adapt first, then check workflow
     assert adrc_inst.adapt(
-                    ipa_in="dade",
+                    ipastr="dade",
                     howmany=1000,
-                    max_struc=2,
-                    max_paths=2,
-                    vowelharmony=True,
-                    struc_filter=True,
-                    clusterised=True,
+                    max_repaired_phonotactics=2,
+                    max_paths2repaired_phonotactics=2,
+                    repair_vowelharmony=True,
+                    phonotactics_filter=True,
+                    cluster_filter=True,
                     sort_by_nse=True,
                     show_workflow=True) == "t͡ʃalda, dalda"
 
     assert adrc_inst.workflow == OrderedDict([('tokenised',
-"['d', 'a', 'd', 'e']"), ('donor_struc', 'CVCV'), ('pred_strucs',
-"['CVC', 'CVCCV']"), ('adapted_struc', "[['d', 'a', 'd'], \
+"['d', 'a', 'd', 'e']"), ('donor_phonotactics', 'CVCV'), ('predicted_phonotactics',
+"['CVC', 'CVCCV']"), ('adapted_phonotactics', "[['d', 'a', 'd'], \
 ['d', 'a', 'C', 'd', 'e'], ['d', 'a', 'd', 'C', 'e']]"),
 ('adapted_vowelharmony',
 "[['d', 'a', 'd'], ['d', 'a', 'C', 'd', 'e'], \
@@ -549,28 +592,23 @@ def test_get_nse():
     #assert with mode=="adapt" (default)
     adrc_inst = Adrc(
         scdictlist=PATH2SC_HANDMADE,
-        formscsv=PATH2FORMS,
-        srclg="WOT", tgtlg="EAH")
+        forms_csv=PATH2FORMS,
+        source_language="WOT", target_language="EAH")
 
-    #assert with basic setting
-    assert adrc_inst.get_nse("dade", "dady") == 33.25
     #assert with show_workflow=True
-    assert adrc_inst.get_nse("dade", "dady", show_workflow=True) == (
-    33.25, 133, "[1, 6, 1, 125]", "['d<d', 'a<a', 'd<d', 'e<y']"
-    )
+    assert adrc_inst.get_nse("dade", "dady") == (
+    33.25, 133, "[1, 6, 1, 125]", "['d<d', 'a<a', 'd<d', 'e<y']")
 
     #assert with mode=="reconstruct"
     adrc_inst = Adrc(
         scdictlist=PATH2SC_HANDMADE3,
-        formscsv=PATH2FORMS,
-        srclg="H", tgtlg="EAH",
+        forms_csv=PATH2FORMS,
+        source_language="H", target_language="EAH",
         mode="reconstruct")
 
-    #assert with basic setting
-    assert adrc_inst.get_nse("ɟɒloɡ", "jɑlkɑ") == 6.67
-    #assert with show_workflow=True
-    assert adrc_inst.get_nse("ɟɒloɡ", "jɑlkɑ", show_workflow=True) == (
-    6.67, 40, "[10, 9, 8, 7, 6, 0]", "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*lk', 'o<*ɑ', 'ɡ#<*-']")
+    assert adrc_inst.get_nse("ɟɒloɡ", "jɑlkɑ") == (
+    6.67, 40, "[10, 9, 8, 7, 6, 0]",
+    "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*lk', 'o<*ɑ', 'ɡ#<*-']")
 
     #tear down
     del adrc_inst

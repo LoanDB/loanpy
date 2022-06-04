@@ -103,7 +103,7 @@ def test_init():
     def mock_gensim_mw():
         return "sthsth"
 
-    #set up vars for exped outcome, set up mock instance of DistanceMonkey class
+    #set up vars 4 exped outcome, set up mock instance of DistanceMonkey class
     srsad = Series(["a", "b", "c"], name="adapted", index=[0, 1, 1])
     srsrc = Series(["a", "b", "c"], name="adapted", index=[0, 1, 1])
     dist_mockinstance = DistanceMonkey()
@@ -147,8 +147,10 @@ def test_init():
                         assert_series_equal(msdict[i], expsrs)
                     if i == "doncol": assert msdict[i] == "adapted"
                     if i == "donpath": assert msdict[i] == "got.csv"
-                    if i == "get_nse_ad": assert msdict[i] == AdrcMonkey.get_nse
-                    if i == "get_nse_rc": assert msdict[i] == AdrcMonkey.get_nse
+                    if i == "get_nse_ad": assert msdict[i
+                    ] == AdrcMonkey.get_nse
+                    if i == "get_nse_rc": assert msdict[i
+                    ] == AdrcMonkey.get_nse
                     if i == "phondist": assert msdict[i] == 0
                     if i == "phondist_msr": assert msdict[
                     i] == dist_mockinstance.hamming_feature_edit_distance
@@ -190,7 +192,8 @@ def test_init():
                 assert mocksearch.doncol == "ad"
                 assert mocksearch.reccol == "rc"
                 assert mocksearch.semsim == 1
-                assert mocksearch.semsim_msr.__name__ == "gensim_multiword" #sic
+                # sic!
+                assert mocksearch.semsim_msr.__name__ == "gensim_multiword"
                 #not "mock_gensim_mw" even though mock func is plugged in!
                 assert mocksearch.get_nse_ad == AdrcMonkey.get_nse
                 assert mocksearch.get_nse_rc == AdrcMonkey.get_nse
@@ -222,7 +225,8 @@ def test_init():
     call(scdictlist=None, mode='reconstruct')])
 
     #tear down
-    del srsad, srsrc, mocksearch, msdict, DistanceMonkey, AdrcMonkey, mock_gensim_mw
+    del (srsad, srsrc, mocksearch, msdict, DistanceMonkey,
+    AdrcMonkey, mock_gensim_mw)
 
 def test_phonmatch_small():
     """test if closest phonemes are picked from inventory,
@@ -400,9 +404,11 @@ def test_likeliestphonmatch():
             self.get_nse_ad_called_with = []
             self.get_nse_rc_called_with = []
             self.get_nse_ad_returns = iter(
-            [(8, 32, "[7, 9, 15, 2]", "['bla']"), (7, 21, [9, 3, 4, 5], "['bli']")])
+            [(8, 32, "[7, 9, 15, 2]", "['bla']"),
+            (7, 21, [9, 3, 4, 5], "['bli']")])
             self.get_nse_rc_returns = iter(
-            [(10, 40, "[10, 10, 10, 10]", "['blo']"), (5, 20, "[4, 4, 4, 4]", "['blu']")])
+            [(10, 40, "[10, 10, 10, 10]", "['blo']"),
+            (5, 20, "[4, 4, 4, 4]", "['blu']")])
             self.doncol = "ad"
 
         def phonmatch_small(self, *args, dropduplicates):
@@ -459,9 +465,9 @@ def test_likeliestphonmatch():
     assert mocksearch.phonmatch_small_called_with[0][2] is False
     #assert the other 2 functions where called with the corrects args
     assert mocksearch.get_nse_rc_called_with == [
-    ["flub", "blub", True], ["flub", "plub", True]]
+    ["flub", "blub"], ["flub", "plub"]]
     assert mocksearch.get_nse_ad_called_with == [
-    ["glub", "blub", True], ["glub", "plub", True]]
+    ["glub", "blub"], ["glub", "plub"]]
 
     #tear down
     del dfexp, mocksearch, srs, SearchMonkey
@@ -524,7 +530,8 @@ def test_loans():
             #b/c no phonological matches were found
             with raises(NoPhonMatch) as nophonmatch_mock:
                 Search.loans(self=mocksearch)
-            assert str(nophonmatch_mock.value) == "no phonological matches found"
+            assert str(nophonmatch_mock.value
+            ) == "no phonological matches found"
 
     #assert that the mock generator was called with the correct args:
     #the input data frame, list of values to search for,
@@ -577,7 +584,8 @@ def test_loans():
     exp_read = 'ph_match,recipdf_idx,Meaning_x,Meaning_y,semsim_msr,\
 postprocessed,mwr\nkiki,99,edge,sharp,0.8,postprobla,mwrbla\n'
 
-    #set up: mock generator function, first side eff. for phon. match, 2nd for semantic
+    #set up: mock generator function,
+    #first side eff. for phon. match, 2nd for semantic
     #double the side-effect for second assertion
     with patch("loanpy.loanfinder.gen", side_effect=[
     phon_match_res, sem_match_res,
@@ -588,10 +596,13 @@ postprocessed,mwr\nkiki,99,edge,sharp,0.8,postprobla,mwrbla\n'
             #set up: mock pandas read_csv, double side-effect for 2nd assertion
             with patch("loanpy.loanfinder.read_csv", side_effect=[
             dfenrec, dfendon]*2) as read_csv_mock:
-                #assert expected and actual return values are identical padas data frames
-                #postprocess, write_to, merge_with_rest all ==False (default settings)
+                #assert expected and actual
+                #return values are identical padas data frames
+                #postprocess, write_to, merge_with_rest all
+                #==False (default settings)
                 assert_frame_equal(Search.loans(mocksearch), exp)
-                #assert written result and expected written result are identical pandas data frames
+                #assert written result and expected written
+                #result are identical pandas data frames
                 try: #make sure no file was written
                     remove(path)
                     assert 1==2 # this line should never be activated
@@ -618,7 +629,8 @@ call(mocksearch.donpath, encoding="utf-8", usecols=["Meaning"])]*2
 
     #assert mock generator was called with the right args, namely:
     #the input Series with the words to search for
-    #the values with which to replace the results (=the index of the Series with the word we search for)
+    #the values with which to replace the results (=the index of
+    #the Series with the word we search for)
     #and the phonetic similarity measuring function
     #assert the first call
     assert_series_equal(gen_mock.call_args_list[0][0][0], srsin)

@@ -49,10 +49,10 @@ class QfyMonkeyGetSoundCorresp:
         self.df2 = alignreturns2
         self.align_returns = iter([self.df1, self.df2])
         self.align_called_with = []
-        self.word2struc_called_with = []
-        self.rank_closest_struc_called_with = []
-        self.dfety = DataFrame({"Target_Form": ["kiki", "buba"], "Source_Form": [
-                                "hehe", "pupa"], "Cognacy": [12, 13]})
+        self.word2phonotactics_called_with = []
+        self.rank_closest_phonotactics_called_with = []
+        self.dfety = DataFrame({"Target_Form": ["kiki", "buba"],
+        "Source_Form": ["hehe", "pupa"], "Cognacy": [12, 13]})
         self.left = "Target_Form"
         self.right = "Source_Form"
         self.mode = mode
@@ -74,14 +74,14 @@ class QfyMonkeyGetSoundCorresp:
         return next(self.align_returns)
 
     def word2struc(self, word):
-        self.word2struc_called_with.append(word)
+        self.word2phonotactics_called_with.append(word)
         return "CVCV"
 
-    def rank_closest_struc(self, struc):
-        self.rank_closest_struc_called_with.append(struc)
+    def rank_closest_phonotactics(self, struc):
+        self.rank_closest_phonotactics_called_with.append(struc)
         return "CVC, CVCCC"
 
-    def get_struc_corresp(self, *args):
+    def get_phonotactics_corresp(self, *args):
         return [{"d1": 0}, {"d2": 0}, {"d3": 0}]
 
 
@@ -172,7 +172,10 @@ def test_init():
 
                     #assert calls
                     super_method_mock.assert_called_with(
-                        formscsv=None, srclg=None, tgtlg=None, struc_most_frequent=9999999, struc_inv=None)
+                        forms_csv=None, source_language=None,
+                        target_language=None,
+                        most_frequent_phonotactics=9999999,
+                        phonotactic_inventory=None)
                     read_mode_mock.assert_called_with("adapt")
                     read_connector_mock.assert_called_with(None, "adapt")
                     #read_nsedict_mock.assert_called_with(None)
@@ -249,7 +252,8 @@ def test_align_lingpy():
 
     #assert calls
     Pairwise_mock.assert_has_calls([call(
-    seqs='kala', seqB='hal', merge_vowels=False)])  # Pairwise always initiated by 3 args
+    seqs='kala', seqB='hal', merge_vowels=False)])
+    # Pairwise always initiated by 3 args
     assert DataFrame_Monkey.call_args_list == [call(exp)]
     assert mockpairwise.align_called_with == [[]]
 
@@ -262,7 +266,8 @@ def test_align_clusterwise():
 
     # set up basic mock class, plug in phon2cv, create expected output var
     mockqfy = QfyMonkey()
-    mockqfy.phon2cv = {"ɟ": "C", "ɒ": "V", "l": "C", "o": "V", "ɡ": "C", "j": "C"}
+    mockqfy.phon2cv = {
+    "ɟ": "C", "ɒ": "V", "l": "C", "o": "V", "ɡ": "C", "j": "C"}
     exp = DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
                     "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']})
 
@@ -346,8 +351,8 @@ def test_get_sound_corresp():
         # assert calls from assert while mode == "adapt"
         assert mockqfy.align_called_with == [
             ("kiki", "hehe"), ("buba", "pupa")]
-        assert mockqfy.word2struc_called_with == []  # not called
-        assert mockqfy.rank_closest_struc_called_with == []  # not called
+        assert mockqfy.word2phonotactics_called_with == []  # not called
+        assert mockqfy.rank_closest_phonotactics_called_with == []  # not called
         for act, exp in zip(
             concat_mock.call_args_list[0][0][0], [
                 mockqfy.df1, mockqfy.df2]):
@@ -360,8 +365,8 @@ def test_get_sound_corresp():
     # assert calls of assert while mode == "reconstruct"
     assert mockqfy2.align_called_with == [
         ("kiki", "hehe"), ("buba", "pupa")]
-    assert mockqfy2.word2struc_called_with == []  # not called
-    assert mockqfy2.rank_closest_struc_called_with == []  # not called
+    assert mockqfy2.word2phonotactics_called_with == []  # not called
+    assert mockqfy2.rank_closest_phonotactics_called_with == []  # not called
     for act, exp in zip(
         concat_mock.call_args_list[1][0][0], [
             mockqfy2.df1, mockqfy2.df2]):
@@ -376,7 +381,7 @@ def test_get_sound_corresp():
     del mockqfy, dfconcat, exp, path2test_get_sound_corresp
 
 
-def test_get_struc_corresp():
+def test_get_phonotactics_corresp():
     """test if phonotactic correspondences are extracted correctly from data"""
 
     # set up instance of mock class, plug in attributes
@@ -389,8 +394,8 @@ def test_get_struc_corresp():
         alignreturns1=None,
         alignreturns2=None)
 
-    mockqfy.dfety = DataFrame({"Target_Form": ["kiki", "buba"], "Source_Form": [
-                              "hehe", "pupa"], "Cognacy": [12, 13]})
+    mockqfy.dfety = DataFrame({"Target_Form": ["kiki", "buba"],
+    "Source_Form": ["hehe", "pupa"], "Cognacy": [12, 13]})
     mockqfy.left = "Target_Form"
     mockqfy.right = "Source_Form"
     mockqfy.connector = "<"
@@ -400,26 +405,26 @@ def test_get_struc_corresp():
     exp_call1 = list(zip(["CVCV", "CVCV"], ["CVCV", "CVCV"], [12, 13]))
     exp_call2 = {"columns": ["keys", "vals", "wordchange"]}
 
-    path2test_get_struc_corresp = Path(__file__).parent / "phonotctchange.txt"
+    path2test_get_phonotactics_corresp = Path(__file__).parent / "phonotctchange.txt"
 
     with patch("loanpy.qfysc.DataFrame") as DataFrame_mock:
         DataFrame_mock.return_value = DataFrame(
             {"keys": ["CVCV"]*2, "vals": ["CVCV"]*2, "wordchange": [12, 13]})
 
         # assert
-        assert Qfy.get_struc_corresp(self=mockqfy,
-        write_to=path2test_get_struc_corresp) == exp
+        assert Qfy.get_phonotactics_corresp(self=mockqfy,
+        write_to=path2test_get_phonotactics_corresp) == exp
         # assert file was written
-        with open(path2test_get_struc_corresp, "r") as f:
+        with open(path2test_get_phonotactics_corresp, "r") as f:
             assert literal_eval(f.read()) == exp
 
     #assert calls
     assert list(DataFrame_mock.call_args_list[0][0][0]) == exp_call1
     assert DataFrame_mock.call_args_list[0][1] == exp_call2
-    assert mockqfy.word2struc_called_with == [
+    assert mockqfy.word2phonotactics_called_with == [
         'hehe', 'pupa', 'kiki', 'buba']
-    assert mockqfy.rank_closest_struc_called_with == ["CVCV"]
+    assert mockqfy.rank_closest_phonotactics_called_with == ["CVCV"]
 
     # tear down
-    remove(path2test_get_struc_corresp)
-    del mockqfy, exp, path2test_get_struc_corresp
+    remove(path2test_get_phonotactics_corresp)
+    del mockqfy, exp, path2test_get_phonotactics_corresp
