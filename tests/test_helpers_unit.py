@@ -1,9 +1,5 @@
 # Testing the module hp.py with pytest 7.1.1
 
-# todo:
-# autopep8
-# test "if item" in flotten, also integration test for that
-
 from unittest.mock import call, patch
 from pathlib import Path
 from os import remove
@@ -36,12 +32,11 @@ from loanpy.helpers import (
     list2regex,
     model,
     mtx2graph,
-    pick_mins,
+    pick_minmax,
     plug_in_model,
     read_cvfb,
     read_dst,
     read_forms,
-    read_inventory,
     tuples2editops)
 
 
@@ -116,53 +111,15 @@ def test_cldf2pd():
                        "Source_Form": ["a", "e"],
                        "Cognacy": [1, 3]})
     # only cognates are taken, where source and target language occur
-    dfout = cldf2pd(dfin, srclg="lg1", tgtlg="lg2")
+    dfout = cldf2pd(dfin, source_language="lg1", target_language="lg2")
 
     # assert
-    assert cldf2pd(None, srclg="whatever", tgtlg="wtvr2") is None
+    assert cldf2pd(None, source_language="whatever",
+    target_language="wtvr2") is None
     assert_frame_equal(dfout, dfexp)
 
     # tear down
     del dfout, dfexp, dfin
-
-
-def test_read_inventory():
-    """check if phoneme inventory is extracted correctly"""
-
-    # assert where no setup needed
-    assert read_inventory("whatever", "whatever2") == "whatever"
-    assert read_inventory("whatever", None) == "whatever"
-    assert read_inventory(None, None) is None
-
-    # set up
-    inlist = ["a", "aab", "bc"]  # this is the vocabulary of the language
-    with patch("loanpy.helpers.tokenise") as tokenise_mock:
-        # these are all letters of the language
-        tokenise_mock.return_value = ['a', 'a', 'a', 'b', 'b', 'c']
-
-        # assert
-        assert read_inventory(
-            None, inlist, tokenise_mock) == set(['a', 'b', 'c'])
-
-    #assert calls
-    tokenise_mock.assert_called_with("aaabbc")
-
-    # set up2: for clusterise
-    inlist = ["a", "ab", "baac"]
-    with patch("loanpy.helpers.clusterise") as clusterise_mock:
-        clusterise_mock.return_value = [
-            'aa', 'bb', 'aa', 'c']  # clusterised vocab
-
-        # assert
-        assert read_inventory(
-            None, inlist, clusterise_mock) == set(['aa', 'bb', 'c'])
-
-    #assert calls
-    # all words are pulled together to one string
-    clusterise_mock.assert_called_with("aabbaac")
-
-    # tear down
-    del inlist
 
 
 def test_read_dst():
@@ -250,41 +207,36 @@ def test_init():
                 read_cvfb_mock.return_value = ({"d1": 123}, {"d2": 456})
                 with patch("loanpy.helpers.cldf2pd") as cldf2pd_mock:
                     cldf2pd_mock.return_value = None
-                    with patch("loanpy.helpers.read_inventory"
-                    ) as read_inventory_mock:
-                        read_inventory_mock.return_value = None
-                        with patch("loanpy.helpers.read_inventory"
-                        ) as read_inventory_mock:
-                            read_inventory_mock.return_value = None
-                            with patch("loanpy.helpers.Etym.read_strucinv"
-                            ) as read_strucinv_mock:
-                                read_strucinv_mock.return_value = None
-                                with patch("loanpy.helpers.read_dst"
-                                ) as read_dst_mock:
-                                    read_dst_mock.return_value = "distfunc"
+                    with patch("loanpy.helpers.Etym.get_inventories"
+                    ) as get_inventories_mock:
+                        get_inventories_mock.return_value = (None, None, None)
+                        with patch("loanpy.helpers.read_dst"
+                        ) as read_dst_mock:
+                            read_dst_mock.return_value = "distfunc"
 
-                                    # initiate without args
-                                    mocketym = Etym()
+                            # initiate without args
+                            mocketym = Etym()
 
-                                    # assert if initiation went correctly
-                                    assert mocketym.phon2cv == {"d1": 123}
-                                    assert mocketym.vow2fb == {"d2": 456}
-                                    assert mocketym.dfety is None
-                                    assert mocketym.phoneme_inventory is None
-                                    assert mocketym.clusters is None
-                                    assert mocketym.struc_inv is None
-                                    assert mocketym.distance_measure == "distfunc"
+                            # assert if initiation went correctly
+                            assert mocketym.phon2cv == {"d1": 123}
+                            assert mocketym.vow2fb == {"d2": 456}
+                            assert mocketym.dfety is None
+                            assert mocketym.phoneme_inventory is None
+                            assert mocketym.cluster_inventory is None
+                            assert mocketym.phonotactic_inventory is None
+                            assert mocketym.distance_measure == "distfunc"
 
-                                    # double check with __dict__
-                                    assert len(mocketym.__dict__) == 7
-                                    assert mocketym.__dict__ == {
-                                        'clusters': None,
-                                        'phoneme_inventory': None,
-                                        'dfety': None,
-                                        'distance_measure': 'distfunc',
-                                        'phon2cv': {'d1': 123},
-                                        'struc_inv': None,
-                                        'vow2fb': {'d2': 456}}
+                            # double check with __dict__
+                            assert len(mocketym.__dict__) == 8
+                            assert mocketym.__dict__ == {
+                                'cluster_inventory': None,
+                                'phoneme_inventory': None,
+                                'dfety': None,
+                                'distance_measure': 'distfunc',
+                                'forms_target_language': None,
+                                'phon2cv': {'d1': 123},
+                                'phonotactic_inventory': None,
+                                'vow2fb': {'d2': 456}}
 
     #assert calls
     read_forms_mock.assert_called_with(None)
@@ -292,11 +244,7 @@ def test_init():
     read_cvfb_mock.assert_called_with()
     cldf2pd_mock.assert_called_with(
         None, None, None)
-    read_inventory_mock.assert_has_calls([
-        call(None, None), call(None, None,
-        hp.clusterise)])
-    read_strucinv_mock.assert_called_with(
-        None, None, 9999999)
+    get_inventories_mock.assert_called_with(None, None, None, 9999999)
     read_dst_mock.assert_called_with(
         "weighted_feature_edit_distance")
 
@@ -315,89 +263,173 @@ def test_init():
                 read_cvfb_mock.return_value = ("sth1", "sth2")
                 with patch("loanpy.helpers.cldf2pd") as cldf2pd_mock:
                     cldf2pd_mock.return_value = "sth3"
-                    with patch("loanpy.helpers.read_inventory",
-                    side_effect=["sth4", "sth5"]) as read_inventory_mock:
-                        with patch("loanpy.helpers.Etym.read_strucinv"
-                        ) as read_strucinv_mock:
-                            read_strucinv_mock.return_value = "sth6"
-                            with patch("loanpy.helpers.read_dst") as read_dst_mock:
-                                read_dst_mock.return_value = "sth7"
+                    with patch("loanpy.helpers.Etym.get_inventories"
+                    ) as get_inventories_mock:
+                        get_inventories_mock.return_value = (
+                        "sth4", "sth5", "sth6")
+                        with patch("loanpy.helpers.read_dst") as read_dst_mock:
+                            read_dst_mock.return_value = "sth7"
 
-                                # initiate with pseudo arguments
-                                mocketym = Etym(
-                                    formscsv="path", srclg="lg1", tgtlg="lg2")
+                            # initiate with pseudo arguments
+                            mocketym = Etym(
+                                forms_csv="path", source_language="lg1",
+                                target_language="lg2")
 
-                                # assert if initiation went right
-                                assert mocketym.phon2cv == "sth1"
-                                assert mocketym.vow2fb == "sth2"
-                                assert mocketym.dfety == "sth3"
-                                assert mocketym.phoneme_inventory == "sth4"
-                                assert mocketym.clusters == "sth5"
-                                assert mocketym.struc_inv == "sth6"
-                                assert mocketym.distance_measure == "sth7"
+                            # assert if initiation went right
+                            assert mocketym.phon2cv == "sth1"
+                            assert mocketym.vow2fb == "sth2"
+                            assert mocketym.dfety == "sth3"
+                            assert mocketym.phoneme_inventory == "sth4"
+                            assert mocketym.cluster_inventory == "sth5"
+                            assert mocketym.phonotactic_inventory == "sth6"
+                            assert mocketym.distance_measure == "sth7"
 
-                                # double check with __dict__
-                                assert len(mocketym.__dict__) == 7
-                                assert mocketym.__dict__ == {
-                                    'clusters': "sth5",
-                                    'phoneme_inventory': "sth4",
-                                    'dfety': "sth3",
-                                    'distance_measure': 'sth7',
-                                    'phon2cv': "sth1",
-                                    'struc_inv': "sth6",
-                                    'vow2fb': "sth2"}
+                            # double check with __dict__
+                            assert len(mocketym.__dict__) == 8
+                            assert mocketym.__dict__ == {
+                                'cluster_inventory': "sth5",
+                                'phoneme_inventory': "sth4",
+                                'dfety': "sth3",
+                                'distance_measure': 'sth7',
+                                'forms_target_language': ['abc', 'pou'],
+                                'phon2cv': "sth1",
+                                'phonotactic_inventory': "sth6",
+                                'vow2fb': "sth2"}
 
     #assert calls
     read_forms_mock.assert_called_with("path")
     forms2list_mock.assert_called_with(dfmk, "lg2")
     read_cvfb_mock.assert_called_with()
     cldf2pd_mock.assert_called_with(dfmk, "lg1", "lg2")
-    read_inventory_mock.assert_has_calls([
-        call(None, ["abc", "pou"]),
-        call(None, ["abc", "pou"],
-        hp.clusterise)])
-    read_strucinv_mock.assert_called_with(
-        None, ["abc", "pou"], 9999999)
+    get_inventories_mock.assert_called_with(None, None, None, 9999999)
     read_dst_mock.assert_called_with(
         "weighted_feature_edit_distance")
 
     # tear down
     del mocketym, dfmk
 
+def test_read_inventory():
+    """check if phoneme inventory is extracted correctly"""
 
-def test_read_strucinv():
+    class EtymMonkey:
+        pass
+    etym_monkey = EtymMonkey()
+    # assert where no setup needed
+    etym_monkey.forms_target_language = "whatever"
+    assert Etym.read_inventory(etym_monkey, "whatever2") == "whatever2"
+    etym_monkey.forms_target_language = None
+    assert Etym.read_inventory(etym_monkey, None) is None
+
+    # set up
+     # this is the vocabulary of the language
+    etym_monkey.forms_target_language = ["a", "aab", "bc"]
+    with patch("loanpy.helpers.tokenise") as tokenise_mock:
+        # these are all letters of the language
+        tokenise_mock.return_value = ['a', 'a', 'a', 'b', 'b', 'c']
+
+        # assert
+        assert Etym.read_inventory(etym_monkey,
+            None, tokenise_mock) == set(['a', 'b', 'c'])
+
+    #assert calls
+    tokenise_mock.assert_called_with("aaabbc")
+
+    # set up2: for clusterise
+    etym_monkey.forms_target_language = ["a", "ab", "baac"]
+    with patch("loanpy.helpers.clusterise") as clusterise_mock:
+        clusterise_mock.return_value = [
+            'aa', 'bb', 'aa', 'c']  # clusterised vocab
+
+        # assert
+        assert Etym.read_inventory(etym_monkey,
+            None, clusterise_mock) == set(['aa', 'bb', 'c'])
+
+    #assert calls
+    # all words are pulled together to one string
+    clusterise_mock.assert_called_with("aabbaac")
+
+    # tear down
+    del etym_monkey, EtymMonkey
+
+def test_get_inventories():
+    #set up
+    class EtymMonkey():
+        def __init__(self):
+            self.read_inventory_called_with = []
+            self.read_phonotacticsinv_called_with = []
+        def read_inventory(self, *args):
+            self.read_inventory_called_with.append([*args])
+            return "read_inventory_returned_this"
+        def read_phonotacticsinv(self, *args):
+            self.read_phonotacticsinv_called_with.append([*args])
+            return "read_phonotacticsinv_returned_this"
+
+    #create instancce
+    etym_monkey = EtymMonkey()
+    #run func
+    assert Etym.get_inventories(self=etym_monkey) == (
+    "read_inventory_returned_this",
+    "read_inventory_returned_this",
+    "read_phonotacticsinv_returned_this"
+    )
+
+    #assert calls
+    assert etym_monkey.read_inventory_called_with == [
+    [None], [None, hp.clusterise]]
+    assert etym_monkey.read_phonotacticsinv_called_with == [[None, 9999999]]
+
+    #run func without default parameters
+
+    #create instancce
+    etym_monkey = EtymMonkey()
+    #assert assigned attributes
+    assert Etym.get_inventories(etym_monkey, "param1", "param2", "param3", 4
+    ) == ("read_inventory_returned_this",
+    "read_inventory_returned_this",
+    "read_phonotacticsinv_returned_this")
+    #assert calls
+    assert etym_monkey.read_inventory_called_with == [["param1"], [
+    "param2", hp.clusterise]]
+    assert etym_monkey.read_phonotacticsinv_called_with == [["param3", 4]]
+
+    #tear down
+    del etym_monkey, EtymMonkey
+
+def test_read_phonotacticsinv():
     """test if inventory of phonotactic structures is extracted correctly"""
 
     # set up custom class
     class EtymMonkeyReadstrucinv:
         def __init__(self):
-            self.struc_readstrucinv = iter(
+            self.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
+            self.phonotactics_readstrucinv = iter(
                 ["VV", "VC", "VC", "CC", "CC", "CC"])
             self.called_with = []
 
         def word2struc(self, word):
             self.called_with.append(word)
-            return next(self.struc_readstrucinv)
+            return next(self.phonotactics_readstrucinv)
 
     # set up rest
-    forms = ["ab", "ab", "aa", "bb", "bb", "bb"]  # from forms.csv in cldf
     mocketym = EtymMonkeyReadstrucinv()
 
     # assert with different parameter combinations
-    assert Etym.read_strucinv(self=None, struc_inv=["a", "b", "c"],
-                              forms=None) == ["a", "b", "c"]
-    assert Etym.read_strucinv(self=None, struc_inv=None,
-                              forms=None) is None
+    assert Etym.read_phonotacticsinv(self=mocketym, phonotactic_inventory=[
+    "a", "b", "c"]) == ["a", "b", "c"]
+    mocketym.forms_target_language = None
+    assert Etym.read_phonotacticsinv(self=mocketym, phonotactic_inventory=None,
+                              ) is None
+    mocketym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
     # now just read the most frquent 2 structures. VV is the 3rd frquent. so
     # not in the output.
-    assert Etym.read_strucinv(self=mocketym, struc_inv=None,
-                              forms=forms, howmany=2) == ["CC", "VC"]
+    assert Etym.read_phonotacticsinv(self=mocketym, phonotactic_inventory=None,
+                              howmany=2) == ["CC", "VC"]
 
     #assert calls
-    assert mocketym.called_with == forms
+    assert mocketym.called_with == mocketym.forms_target_language
 
     # tear down
-    del mocketym, forms, EtymMonkeyReadstrucinv
+    del mocketym, EtymMonkeyReadstrucinv
 
 
 def test_word2struc():
@@ -425,7 +457,7 @@ def test_word2struc():
     del mocketym
 
 
-def test_word2struc_keepcv():
+def test_word2phonotactics_keepcv():
     """test if phonotactic structure is returned while C and V stay the same"""
 
     # set up
@@ -433,7 +465,7 @@ def test_word2struc_keepcv():
     mocketym.phon2cv = {"a": "V", "b": "C"}
 
     # assert
-    assert Etym.word2struc_keepcv(
+    assert Etym.word2phonotactics_keepcv(
         self=mocketym, ipa_in=[
             'a', 'b', 'c', 'C', 'V']) == "VCCV"
     # the "c" is ignored bc it's not in phon2cv
@@ -687,7 +719,7 @@ def test_get_scdictbase():
 
         # assert correct output with howmany=1 instead of inf
         assert Etym.get_scdictbase(
-            self=mocketym, write_to=path2test_scdictbase, most_common=1) == exp2
+        self=mocketym, write_to=path2test_scdictbase, most_common=1) == exp2
         assert mocketym.scdictbase == exp2
         with open(path2test_scdictbase, "r", encoding="utf-8") as f:
             assert literal_eval(f.read()) == exp2
@@ -734,9 +766,9 @@ def test_rank_closest():
     assert str(inventorymissingerror_mock.value
     ) == "define phoneme inventory or forms.csv"
 
-    # set up2: mock pick_mins
-    with patch("loanpy.helpers.pick_mins") as pick_mins_mock:
-        pick_mins_mock.return_value = "b, a, c"
+    # set up2: mock pick_minmax
+    with patch("loanpy.helpers.pick_minmax") as pick_minmax_mock:
+        pick_minmax_mock.return_value = ["b", "a", "c"]
 
         # assert
         assert Etym.rank_closest(
@@ -745,30 +777,30 @@ def test_rank_closest():
 
     #assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
-    pick_mins_mock.assert_called_with(
+    pick_minmax_mock.assert_called_with(
         [('a', 1), ('b', 0), ('c', 2)], float("inf"))
 
-    # set up3: overwrite mock class instance, mock pick_mins anew
+    # set up3: overwrite mock class instance, mock pick_minmax anew
     mocketym = EtymMonkeyrank_closest()
-    with patch("loanpy.helpers.pick_mins") as pick_mins_mock:
-        pick_mins_mock.return_value = "b, a"
+    with patch("loanpy.helpers.pick_minmax") as pick_minmax_mock:
+        pick_minmax_mock.return_value = ["b", "a"]
 
-        # assert pick_mins picks mins correctly again
+        # assert pick_minmax picks mins correctly again
         assert Etym.rank_closest(
             self=mocketym, ph="d", inv=[
                 "a", "b", "c"], howmany=2) == "b, a"
 
     #assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
-    pick_mins_mock.assert_called_with([('a', 1), ('b', 0), ('c', 2)], 2)
+    pick_minmax_mock.assert_called_with([('a', 1), ('b', 0), ('c', 2)], 2)
 
     # set up4: check if phoneme inventory can be accessed through self
     mocketym = EtymMonkeyrank_closest()
     mocketym.phoneme_inventory = ["a", "b", "c"]
-    with patch("loanpy.helpers.pick_mins") as pick_mins_mock:
-        pick_mins_mock.return_value = "b"
+    with patch("loanpy.helpers.pick_minmax") as pick_minmax_mock:
+        pick_minmax_mock.return_value = "b"
 
-        # assert pick_mins picks mins correctly again
+        # assert pick_minmax picks mins correctly again
         assert Etym.rank_closest(
             self=mocketym,
             ph="d",
@@ -777,21 +809,21 @@ def test_rank_closest():
 
     #assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
-    pick_mins_mock.assert_called_with([('a', 1), ('b', 0), ('c', 2)], 1)
+    pick_minmax_mock.assert_called_with([('a', 1), ('b', 0), ('c', 2)], 1)
 
     # tear down
     del mocketym, EtymMonkeyrank_closest
 
 
-def test_rank_closest_struc():
+def test_rank_closest_phonotactics():
     """test if getting the distance between to phonotactic structures works"""
 
     # set up
     mocketym = EtymMonkey()
-    mocketym.struc_inv = None
+    mocketym.phonotactic_inventory = None
     with raises(InventoryMissingError) as inventorymissingerror_mock:
         #assert error is raised
-        Etym.rank_closest_struc(
+        Etym.rank_closest_phonotactics(
             self=mocketym,
             struc="CV",
             howmany=float("inf"))
@@ -802,22 +834,22 @@ def test_rank_closest_struc():
 
     # set up: create instance of empty mock class,
     #  plug in inventory of phonotactic structures,
-    # mock edit_distance_with2ops and pick_mins
+    # mock edit_distance_with2ops and pick_minmax
     mocketym = EtymMonkey()
-    mocketym.struc_inv = ["CVC", "CVCVCC"]
+    mocketym.phonotactic_inventory = ["CVC", "CVCVCC"]
     with patch("loanpy.helpers.edit_distance_with2ops", side_effect=[
     1, 0.98]) as edit_distance_with2ops_mock:
-        with patch("loanpy.helpers.pick_mins") as pick_mins_mock:
-            pick_mins_mock.return_value = "CVCVCC, CVC"
+        with patch("loanpy.helpers.pick_minmax") as pick_minmax_mock:
+            pick_minmax_mock.return_value = ["CVCVCC", "CVC"]
 
             # assert the correct closest string is picked
-            assert Etym.rank_closest_struc(
+            assert Etym.rank_closest_phonotactics(
                 self=mocketym, struc="CVCV") == "CVCVCC, CVC"
 
     #assert calls
     edit_distance_with2ops_mock.assert_has_calls(
         [call("CVCV", "CVC"), call("CVCV", "CVCVCC")])
-    pick_mins_mock.assert_called_with(
+    pick_minmax_mock.assert_called_with(
         [('CVC', 1), ('CVCVCC', 0.98)], 9999999)
 
     # tear down
@@ -954,12 +986,15 @@ def test_edit_distance_with2ops():
     assert edit_distance_with2ops("Bécs", "Hegyeshalom") == 790
     assert edit_distance_with2ops("Hegyeshalom", "Mosonmagyaróvár") == 1388
     assert edit_distance_with2ops("Mosonmagyaróvár", "Győr") == 1398
-    assert edit_distance_with2ops("Győr", "Tata") == 596  # 4 del + 4 ins = 4*49+4*100
+    # 4 del + 4 ins = 4*49+4*100
+    assert edit_distance_with2ops("Győr", "Tata") == 596
     assert edit_distance_with2ops("Tata", "Tatabánya") == 245  # 5 ins: 5*49
     assert edit_distance_with2ops("Tatabánya", "Budapest") == 994
     assert edit_distance_with2ops("Budapest", "Komárom") == 1143
-    assert edit_distance_with2ops("Komárom", "Révkomárom") == 296  # 4 ins + 1 del: 4*49+100
-    assert edit_distance_with2ops("Révkomárom", "Komárom") == 449  # 4 del + 1 ins: 4*100+49
+    # 4 ins + 1 del: 4*49+100
+    assert edit_distance_with2ops("Komárom", "Révkomárom") == 296
+    # 4 del + 1 ins: 4*100+49
+    assert edit_distance_with2ops("Révkomárom", "Komárom") == 449
     assert edit_distance_with2ops("Komárom", "Budapest") == 1092
     assert edit_distance_with2ops("Budapest", "Debrecen") == 1043
     assert edit_distance_with2ops("Debrecen", "Beregszász") == 843
@@ -1230,14 +1265,9 @@ def test_editops():
 def test_apply_edit():
     """test if editoperations are correctly applied to words"""
     assert apply_edit("ló", ('substitute l by h', 'keep ó')) == ['h', 'ó']
-    assert apply_edit(["l", "ó"], ('substitute l by h', 'keep ó')) == ['h', 'ó']
-    assert apply_edit(['f',
-                       'ɛ',
-                       'r',
-                       'i',
-                       'h',
-                       'ɛ',
-                       'ɟ'],
+    assert apply_edit(["l", "ó"],
+    ('substitute l by h', 'keep ó')) == ['h', 'ó']
+    assert apply_edit(['f', 'ɛ', 'r', 'i', 'h', 'ɛ', 'ɟ'],
                       ('insert d',
                        'insert u',
                        'insert n',
@@ -1249,27 +1279,57 @@ def test_apply_edit():
                        'delete i',
                        'delete h',
                        'delete ɛ',
-                       'substitute ɟ by t')) == ['d', 'u', 'n', 'ɒ', 'p', 'ɒ', 'r', 't']
+                       'substitute ɟ by t')
+                       ) == ['d', 'u', 'n', 'ɒ', 'p', 'ɒ', 'r', 't']
     assert apply_edit(['t͡ʃ', 'ø', 't͡ʃ'], ("substitute t͡ʃ by f", "insert r",
     "keep ø", "substitute t͡ʃ by t͡ʃː")) == ['f', 'r', 'ø', 't͡ʃː']
 
 
 def test_get_howmany():
-    """test if gethowmany correctly returns a tuple whose product is as close as possible,
-    but not less than the first number of the input tuple, while the two last elements of the
-    output tuple are not higher than the two last numbers of the input tuple"""
+    """test if gethowmany correctly returns a tuple whose product is \
+as close as possible, but not less than the first number of the input tuple, \
+while the two last elements of the \
+output tuple are not higher than the two last numbers of the input tuple"""
     assert get_howmany(10, 2, 2) == (3, 2, 2)
     assert get_howmany(100, 2, 2) == (25, 2, 2)
     assert get_howmany(100, 9, 2) == (8, 7, 2)
     assert get_howmany(1000, 9, 2) == (56, 9, 2)
     assert get_howmany(1000, 3, 2) == (167, 3, 2)
-    assert get_howmany(0, 0, 0) == (1, 1, 1)
+    assert get_howmany(0, 0, 0) == (0, 0, 0)
     assert get_howmany(1000, 1000, 1000) == (10, 10, 10)
+    assert get_howmany(500, 0, 2) == (500, 0, 2)
 
 
-def test_pick_mins():
-    """test if correct number of minima is picked correctly"""
-    assert pick_mins([("a", 5), ("b", 7), ("c", 3)], float("inf")) == "c, a, b"
-    assert pick_mins([("a", 5), ("b", 7), ("c", 3)], 1) == "c"
-    assert pick_mins([("a", 5), ("b", 7), ("c", 3)], 2) == "c, a"
-    assert pick_mins([("a", 5), ("b", 7), ("c", 3)], 3) == "c, a, b"
+def test_pick_minmax():
+    """test if correct number of mins/maxs is picked"""
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf")
+    ) == ["c", "a", "b"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1) == ["c"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2) == ["c", "a"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3) == ["c", "a", "b"]
+    #test with max
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"),
+    max) == ["b", "a", "c"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, max) == ["b"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, max) == ["b", "a"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3,
+    max) == ["b", "a", "c"]
+
+    #test with return_all=True
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"), True
+    ) == ["c", "a", "b"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, min, True
+    ) == ["c", "a", "b"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, min, True
+    ) == ["c", "a", "b"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3, min, True
+    ) == ["c", "a", "b"]
+    #test with max
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"),
+    max, True) == ["b", "a", "c"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, max, True
+    ) == ["b", "a", "c"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, max, True
+    ) == ["b", "a", "c"]
+    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3,
+    max, True) == ["b", "a", "c"]

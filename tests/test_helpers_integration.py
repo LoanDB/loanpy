@@ -10,10 +10,20 @@ from pandas import DataFrame, Index, read_csv
 from pandas.testing import assert_frame_equal
 from pytest import raises
 
-from loanpy.helpers import (Etym, InventoryMissingError, cldf2pd, editops,
-gensim_multiword, get_mtx,
-combine_ipalists, clusterise, mtx2graph,
-read_cvfb, read_dst, read_forms, read_inventory, tuples2editops)
+from loanpy.helpers import (
+Etym,
+InventoryMissingError,
+cldf2pd,
+editops,
+gensim_multiword,
+get_mtx,
+combine_ipalists,
+clusterise,
+mtx2graph,
+read_cvfb,
+read_dst,
+read_forms,
+tuples2editops)
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms.csv"
 
@@ -25,16 +35,18 @@ def test_read_cvfb():
     cvfb = read_cvfb()
     assert isinstance(cvfb, tuple)
     assert len(cvfb) == 2
-    assert isinstance(cvfb[0], dict) # extremely long dictionary, so just type is checked
+    # extremely long dictionary, so just type is checked
+    assert isinstance(cvfb[0], dict)
     assert isinstance(cvfb[1], dict)
-    assert len(cvfb[0]) == 6358 # extremely long dictionary, so just type is checked
+    # extremely long dictionary, here's how long
+    assert len(cvfb[0]) == 6358
     assert len(cvfb[1]) == 1240
     assert all(cvfb[0][val] in ["C", "V"] for val in cvfb[0])
     assert all(cvfb[1][val] in ["F", "B", "V"] for val in cvfb[1])
 
     #verify that the dict is actually based on ipa_all.csv
     #and that "C" corresponds to "+" and "V" "-" in col "ipa".
-    dfipa = read_csv(Path(__file__).parent.parent.parent / "ipa_all.csv")
+    dfipa = read_csv(Path(__file__).parent.parent / "ipa_all.csv")
     for i, c in zip(dfipa.ipa, dfipa.cons):
         if c == "+":
             assert cvfb[0][i] == "C"
@@ -55,7 +67,7 @@ def test_read_forms():
                        "Cognacy": [1, 1]})
 
     assert read_forms(None) is None
-    assert_frame_equal(read_forms(PATH2FORMS), dfexp, check_dtype=False)
+    assert_frame_equal(read_forms(PATH2FORMS), dfexp)
 
     #tear down
     del dfexp
@@ -70,21 +82,13 @@ def test_cldf2pd():
                        "Cognacy": [1]})
 
     # assert
-    assert cldf2pd(None, srclg="whatever", tgtlg="wtvr2") is None
-    assert_frame_equal(cldf2pd(dfin, srclg=1, tgtlg=2), dfexp)
+    assert cldf2pd(None, source_language="whatever",
+    target_language="wtvr2") is None
+    assert_frame_equal(cldf2pd(dfin, source_language=1,
+    target_language=2), dfexp)
 
     # tear down
     del dfexp, dfin
-
-def test_read_inventory():
-    #assert first two exceptions: inv is not None and inv and forms are None
-    assert read_inventory("some_inv", "some_formscsv") == "some_inv"
-    assert read_inventory(None, None) is None
-
-    #assert calculations
-    assert read_inventory(None,  ["a", "aab", "bc"]) == set(['a', 'b', 'c'])
-    assert read_inventory(None, ["a", "ab", "baac"], clusterise
-    ) == set(['aa', 'bb', 'c'])
 
 def test_read_dst():
     out = read_dst("weighted_feature_edit_distance")
@@ -108,7 +112,7 @@ def test_init():
     mocketym = Etym()
 
     #assert that the right number of class attributes were instanciated
-    assert len(mocketym.__dict__) == 7
+    assert len(mocketym.__dict__) == 8
 
     # assert phon2cv was read correctly
     assert isinstance(mocketym.phon2cv, dict)
@@ -135,8 +139,8 @@ def test_init():
     #assert the other 5 attributes were read correctly
     assert mocketym.dfety is None
     assert mocketym.phoneme_inventory is None
-    assert mocketym.clusters is None
-    assert mocketym.struc_inv is None
+    assert mocketym.cluster_inventory is None
+    assert mocketym.phonotactic_inventory is None
     ismethod(mocketym.distance_measure)
 
     #tear down
@@ -144,10 +148,10 @@ def test_init():
 
     #set up2: run with advanced parameters
     #input vars for init params
-    mocketym = Etym(formscsv=PATH2FORMS, srclg=1, tgtlg=2)
+    mocketym = Etym(forms_csv=PATH2FORMS, source_language=1, target_language=2)
 
     #assert right number of attributes was initiated (7)
-    assert len(mocketym.__dict__) == 7
+    assert len(mocketym.__dict__) == 8
 
     # (1) assert phon2cv was read correctly
     assert isinstance(mocketym.phon2cv, dict)
@@ -177,46 +181,93 @@ def test_init():
 
     #assert the other 4 attributes were read correctly
     assert mocketym.phoneme_inventory == {'x', 'y', 'z'}
-    assert mocketym.clusters == {'x', 'y', 'z'}
-    assert mocketym.struc_inv == {"CVC"}
+    assert mocketym.cluster_inventory == {'x', 'y', 'z'}
+    assert mocketym.phonotactic_inventory == {"CVC"}
     ismethod(mocketym.distance_measure)
 
     #tear down
     del mocketym
 
-def test_read_strucinv():
-    # set up rest
-    forms = ["ab", "ab", "aa", "bb", "bb", "bb"]  # from forms.csv in cldf
+def test_read_inventory():
+    #assert first two exceptions: inv is not None and inv and forms are None
     etym = Etym()
-    # assert with different parameter combinations
-    assert etym.read_strucinv(struc_inv=["a", "b", "c"],
-                              forms=None) == ["a", "b", "c"]
-    assert etym.read_strucinv(struc_inv=None,
-                              forms=None) is None
-    # now just read the most frquent 2 structures. VV is the 3rd frquent. so
-    # not in the output.
-    assert etym.read_strucinv(struc_inv=None,
-                              forms=forms, howmany=2) == ["CC", "VC"]
+    etym.forms_target_language = "some_inv"
+    assert etym.read_inventory("some_formscsv") == "some_formscsv"
+    assert etym.read_inventory(None) == set("someinv") #tokeniser drops "_"
+    etym.forms_target_language = None
+    assert etym.read_inventory(None, None) is None
+
+    #assert calculations
+    etym.forms_target_language = ["a", "aab", "bc"]
+    assert etym.read_inventory(None) == set(['a', 'b', 'c'])
+    etym.forms_target_language = ["a", "ab", "baac"]
+    assert etym.read_inventory(None, clusterise
+    ) == set(['aa', 'bb', 'c'])
+
+def test_get_inventories():
+    #set up instancce
+    etym = Etym()
+    #run func, assert output
+    etym.get_inventories() == (None, None, None)
+
+    #rerun with non-default args
+    #create instancce
+    etym = Etym()
+    #run func, assert output
+    etym.get_inventories("param1", "param2", "param3", 4) == (
+    "param1", "param2", "param3")
+
+    #rerun with real etym instnace
+    etym = Etym(PATH2FORMS, source_language=1, target_language=2)
+    #run func
+    etym.get_inventories()
+    #assert assigned attributes
+    assert etym.phoneme_inventory == {'x', 'y', 'z'}
+    assert etym.cluster_inventory == {'x', 'y', 'z'}
+    assert etym.phonotactic_inventory == {'CVC'}
 
     #tear down
-    del forms, etym
+    del etym
+
+def test_read_phonotacticsinv():
+    # set up rest
+    etym = Etym()
+     # from forms.csv in cldf
+    etym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
+    # assert with different parameter combinations
+    assert etym.read_phonotacticsinv(phonotactic_inventory=["a", "b", "c"],
+                              ) == ["a", "b", "c"]
+    etym.forms_target_language = None
+    assert etym.read_phonotacticsinv(phonotactic_inventory=None,
+                              ) is None
+    etym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
+    # now just read the most frquent 2 structures. VV is the 3rd frquent. so
+    # not in the output.
+    assert etym.read_phonotacticsinv(phonotactic_inventory=None,
+                              howmany=2) == ["CC", "VC"]
+
+    #tear down
+    del etym
 
 def test_word2struc():
     etym = Etym()
     assert etym.word2struc("t͡ʃɒlːoːkøz") == "CVCVCVC"
     assert etym.word2struc("hortobaːɟ") == "CVCCVCVC"
-    assert etym.word2struc("lɒk#sɒkaːlːɒʃ") == "CVCCVCVCVC" # hashtag is ignored
+    # hashtag is ignored
+    assert etym.word2struc("lɒk#sɒkaːlːɒʃ") == "CVCCVCVCVC"
     assert etym.word2struc("boɟ!ɒ") == "CVCV" # exclam. mark is ignored
     assert etym.word2struc("ɡɛlːeːr") == "CVCVC"
 
     #tear down
     del etym
 
-def test_word2struc_keepcv():
+def test_word2phonotactics_keepcv():
     etym = Etym()
     assert etym.word2struc(['C', 'V', 'C', 'V', 'k', 'ø', 'z']) == "CVCVCVC"
-    assert etym.word2struc(['h', 'o', 'r', 'C', 'V', 'C', 'V', 'ɟ']) == "CVCCVCVC"
-    assert etym.word2struc(['l', 'V', 'k', 's', 'ɒ', 'k', 'V', 'C', 'V', 'ʃ']) == "CVCCVCVCVC"
+    assert etym.word2struc(['h', 'o', 'r', 'C', 'V', 'C', 'V', 'ɟ'
+    ]) == "CVCCVCVC"
+    assert etym.word2struc(['l', 'V', 'k', 's', 'ɒ', 'k', 'V', 'C', 'V', 'ʃ'
+    ]) == "CVCCVCVCVC"
     assert etym.word2struc(['C', 'o', '!', 'ɟ', 'V']) == "CVCV"
     assert etym.word2struc(["C", "V", "lː", "eː", "r"]) == "CVCVC"
     del etym
@@ -259,8 +310,8 @@ def test_get_fb():
     del etym
 
 def test_get_scdictbase():
-    #test with inventory manually plugged in
-    etym = Etym(inventory=["a", "b", "c"])
+    #test with phoneme_inventory manually plugged in
+    etym = Etym(phoneme_inventory=["a", "b", "c"])
     scdictbase = etym.get_scdictbase(write_to=False)
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
@@ -274,7 +325,7 @@ def test_get_scdictbase():
     del etym, scdictbase
 
     #test with invetory extracted from forms.csv
-    etym = Etym(PATH2FORMS, srclg=1, tgtlg=2)
+    etym = Etym(PATH2FORMS, source_language=1, target_language=2)
     scdictbase = etym.get_scdictbase(write_to=False)
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
@@ -290,7 +341,7 @@ def test_get_scdictbase():
     #test if written correctly and if param most_common works
 
     #set up
-    etym = Etym(inventory=["a", "b", "c"])
+    etym = Etym(phoneme_inventory=["a", "b", "c"])
     path2scdict_integr_test = Path(__file__).parent / "integr_test_scdict.txt"
     etym.get_scdictbase(write_to=path2scdict_integr_test, most_common=2)
     with open(path2scdict_integr_test, "r", encoding="utf-8") as f:
@@ -322,26 +373,27 @@ def test_rankclosest():
     del etym
 
     #assert phonemes are ranked correctly
-    etym = Etym(inventory=["a", "b", "c"])
+    etym = Etym(phoneme_inventory=["a", "b", "c"])
     assert etym.rank_closest(ph="d") == "b, c, a"
     assert etym.rank_closest(ph="d", howmany=2) == "b, c"
     assert etym.rank_closest(ph="d", inv=["r", "t", "l"], howmany=1) == "t"
     del etym
 
-def test_rankclosest_struc():
-    #assert error is raised correctly if inventory is missing
+def test_rankclosest_phonotactics():
+    #assert error is raised correctly if phoneme_inventory is missing
     etym = Etym()
     with raises(InventoryMissingError) as inventorymissingerror_mock:
         #assert error is raised
-        etym.rank_closest_struc(struc="CV", howmany=float("inf"))
+        etym.rank_closest_phonotactics(struc="CV", howmany=float("inf"))
         assert str(inventorymissingerror_mock.value
-            ) == "define phonotactic inventory or forms.csv"
+            ) == "define phonotactic phoneme_inventory or forms.csv"
     del etym
 
     #assert structures are ranked correctly
-    etym = Etym(PATH2FORMS, srclg=1, tgtlg=2)
-    assert etym.rank_closest_struc(struc="CVCV") == "CVC" #struc_inv is only lg2 aka "xyz"
-    assert etym.rank_closest_struc(struc="CVCV", howmany=3,
+    etym = Etym(PATH2FORMS, source_language=1, target_language=2)
+    # phonotactic_inventory is only lg2 aka "xyz"
+    assert etym.rank_closest_phonotactics(struc="CVCV") == "CVC"
+    assert etym.rank_closest_phonotactics(struc="CVCV", howmany=3,
     inv=["CVC", "CVCVV", "CCCC", "VVVVVV"]) == "CVCVV, CVC, CCCC"
     del etym
 
@@ -471,7 +523,8 @@ array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13.],
        [10., 11., 10., 11., 12., 13., 14., 15., 16., 17., 18., 19., 20., 21.],
        [11., 12., 11., 12., 13., 12., 13., 14., 15., 16., 17., 18., 19., 20.],
        [12., 13., 12., 13., 14., 13., 14., 15., 16., 17., 18., 19., 20., 21.],
-       [13., 14., 13., 14., 15., 14., 15., 16., 17., 18., 19., 20., 21., 22.]]))
+       [13., 14., 13., 14., 15., 14., 15., 16., 17., 18., 19., 20., 21., 22.]]
+       ))
 
     assert_array_equal(get_mtx("Vlagyivosztok", "az óperenciás tengeren túl"),
 array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13.],
@@ -500,7 +553,8 @@ array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13.],
        [23., 24., 25., 24., 23., 24., 25., 26., 27., 26., 27., 26., 27., 28.],
        [24., 25., 26., 25., 24., 25., 26., 27., 28., 27., 28., 27., 28., 29.],
        [25., 26., 27., 26., 25., 26., 27., 28., 29., 28., 29., 28., 29., 30.],
-       [26., 27., 26., 27., 26., 27., 28., 29., 30., 29., 30., 29., 30., 31.]]))
+       [26., 27., 26., 27., 26., 27., 28., 29., 30., 29., 30., 29., 30., 31.]]
+       ))
 
 def test_mtx2graph():
     #similar to unittest, but 1 patch missing
@@ -577,7 +631,7 @@ def test_apply_edit():
 def test_get_howmany():
     pass # unit == integration tests (no patches)
 
-def test_pick_mins():
+def test_pick_minmax():
     pass # unit == integration tests (no patches)
 
 

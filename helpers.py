@@ -29,8 +29,8 @@ clusterise = partial(clusterise, replace=True)
 class InventoryMissingError(Exception):
     """
     Called by lonapy.helpers.Etym.rank_closest and \
-loanpy.helpers.Etym.rank_closest_struc if neither forms.csv \
-is defined nor the phonotactic/phoneme inventory is plugged in.
+loanpy.helpers.Etym.rank_closest_phonotactics if neither forms.csv \
+is defined nor the phonotactic/phoneme phoneme_inventory is plugged in.
     """
     pass
 
@@ -78,7 +78,8 @@ call help(gensim.downloader.load)
 def read_cvfb():
     """
     Called by loanpy.helpers.Etym.__init__;\
-Reads file cvfb.txt that was generated based on ipa_all.csv. \
+Reads file cvfb.txt that was generated based on ipa_all.csv \
+by loanpy.helpers.make_cvfb. \
 Its a tuple of two dictionaries. Keys are same as col "ipa" in ipa_all.csv. \
 Vals of first dict are "C" if consonant and "V" if vowel (6358 keys). \
 Vals of 2nd dict are "F" if front vowel and "B" if back vowel (1240 keys). \
@@ -87,7 +88,8 @@ which in turn is used by word2struc and many others. \
 This file could be read directly when importing, but this way debugging is \
 easier.
 
-    :returns: two dictionaries, the first defining consonants and vowels (cv), \
+    :returns: two dictionaries, the first defining consonants \
+and vowels (cv), \
 the second defining front and back vowels (fb).
     :rtype: (dict, dict)
 
@@ -98,7 +100,8 @@ the second defining front and back vowels (fb).
     (two dictionaries of length 6358 and 1240)
 
     """
-    #todo: document the changes from this ipa_all.csv to the original in panphon.
+    #todo: document the changes from this ipa_all.csv
+    #to the original in panphon.
     path = Path(__file__).parent / "cvfb.txt"
     with open(path, "r", encoding="utf-8") as f:
         cvfb = literal_eval(f.read())
@@ -113,7 +116,7 @@ Only called by Etym.__init__ to create local variable dff (data frame forms). \
 Returns None if dff is None. So that class can be initiated without args too.
 
     :param dff: path to forms.csv
-    :type dff: <class 'pathlib.PosixPath'> | str | None
+    :type dff: pathlib.PosixPath | str | None
 
     :returns: a workable version of forms.csv as a pandas data frame
     :rtype: <class 'pandas.core.frame.DataFrame'> | None
@@ -122,7 +125,8 @@ Returns None if dff is None. So that class can be initiated without args too.
 
     >>> from pathlib import Path
     >>> from loanpy.helpers import __file__, read_forms
-    >>> path2file = Path(__file__).parent / "tests" / "integration" / "input_files" / "forms.csv"
+    >>> path2file = Path(__file__).parent / "tests" / \
+"integration" / "input_files" / "forms.csv"
     >>> read_forms(path2file)
            Language_ID Segments  Cognacy
     0            1      abc        1
@@ -135,7 +139,7 @@ Returns None if dff is None. So that class can be initiated without args too.
     dff["Segments"] = [i.replace(" ", "") for i in dff.Segments]
     return dff
 
-def cldf2pd(dfforms, srclg=None, tgtlg=None):
+def cldf2pd(dfforms, source_language=None, target_language=None):
     """
     Called by loanpy.helpers.Etym.__init__; \
 Converts a cldf-csv to a pandas data frame. \
@@ -151,11 +155,13 @@ that cognate set is skipped.
     :param dfforms: Takes the output of read_forms() as input
     :type dfforms: <class 'pandas.core.frame.DataFrame'> | None
 
-    :param srclg: The languages who's cognates go to column "Source_Forms"
-    :type srclg: <str>
+:param source_language: The languages who's cognates go to \
+column "Source_Forms"
+    :type source_language: <str>
 
-    :param tgtlg: The languages who's cognates go to column "Target_Forms"
-    :type tgtlg: <str>
+    :param target_language: The languages who's cognates go to \
+column "Target_Forms"
+    :type target_language: <str>
 
     :returns: forms.csv data frame with re-positioned information
     :rtype: <class 'pandas.core.frame.DataFrame'> | None
@@ -164,9 +170,10 @@ that cognate set is skipped.
 
     >>> from pathlib import Path
     >>> from loanpy.helpers import __file__, cldf2pd, read_forms
-    >>> path2forms = Path(__file__).parent / "tests" / "integration" / "input_files" / "forms.csv"
+    >>> path2forms = Path(__file__).parent / "tests" \
+/ "input_files" / "forms.csv"
     >>> forms = read_forms(path2forms)
-    >>> cldf2pd(forms, srclg=1, tgtlg=2)
+    >>> cldf2pd(forms, source_language=1, target_language=2)
           Target_Form Source_Form  Cognacy
     0         xyz         abc        1
 
@@ -176,16 +183,18 @@ that cognate set is skipped.
     target_form, source_form, cognacy, dfetymology = [], [], [], DataFrame()
 
     #bugfix: col Cognacy is sometimes empty. if so, fill it
-    if all(isnan(i) for i in dfforms.Cognacy): dfforms["Cognacy"] = list(range(len(dfforms)))
+    if all(isnan(i) for i in dfforms.Cognacy):
+        dfforms["Cognacy"] = list(range(len(dfforms)))
 
     for cog in range(1, int(list(dfforms["Cognacy"])[-1])+1):
         dfformsdrop = dfforms[dfforms["Cognacy"] == cog]
-        if all(lg in list(dfformsdrop["Language_ID"]) for lg in [tgtlg, srclg]):
+        if all(lg in list(dfformsdrop["Language_ID"]) for lg in [
+        target_language, source_language]):
             cognacy.append(cog)
             for idx, row in dfformsdrop.iterrows():
-                if row["Language_ID"] == tgtlg:
+                if row["Language_ID"] == target_language:
                     target_form.append(row["Segments"])
-                if row["Language_ID"] == srclg:
+                if row["Language_ID"] == source_language:
                     source_form.append(row["Segments"])
 
     dfetymology["Target_Form"] = target_form
@@ -193,46 +202,16 @@ that cognate set is skipped.
     dfetymology["Cognacy"] = cognacy
     return dfetymology
 
-def read_inventory(inv, forms, func=tokenise):
-    """
-    Called by loanpy.helpers.Etym.__init__; \
-Calculates and returns phoneme inventory from a list of words. \
-Param <inv> is if inventory should not be calculated but manually plugged in.
-
-    :param inv: a set of phonemes that occure in given language. \
-if inv is None, inv will be calculated from forms else inv will be returned.
-    :type inv: set
-
-    :param forms: a list of words occuring in giving language
-    :type forms: list of str
-
-    :param func: the tokeniser to split words into phonemes
-    :type func: function
-
-    :returns: The phoneme inventory of the language
-    :rtype: set | None | same as input type
-
-    :Example:
-
-    >>> from loanpy.helpers import read_inventory
-    >>> read_inventory(None,  ["fdedaeda", "badea", "fdddedab"])
-    {'b', 'd', 'f', 'a', 'e'}
-
-    >>> from loanpy.helpers import read_inventory, clusterise
-    >>> read_inventory(None,  ["fdedaeda", "badea", "fdddedab"], clusterise)
-    {'b', 'ea', 'd', 'fd', 'a', 'ae', 'fddd', 'e'}
-
-    """
-    return inv if inv else set(func("".join(forms))) if forms else None
-
 def read_dst(dst_msr):
     """
     Called by loanpy.helpers.Etym.__init__; \
 Returns a function that calculates the phonetic distance between strings \
 from panphon.distance.Distance. This will be used to calculate the most \
-similar phonemes of the inventory compared to a given phoneme from ipa_all.csv
+similar phonemes of the phoneme_inventory compared to \
+a given phoneme from ipa_all.csv
 
-    :param dst_msr: The name of the distance measure, which has to be a method \
+    :param dst_msr: The name of the distance measure, which has to be \
+a method \
 of panphon.distance.Distance
     :type dst_msr: None, \
 "doglo_prime_distance" | \
@@ -274,7 +253,7 @@ ipa-strings
 
 def flatten(nested_list):
     """
-    Called by loanpy.adrc.Adrc.adapt_struc and loanpy.adrc.Adrc.adapt.
+    Called by loanpy.adrc.Adrc.adapt_phonotactics and loanpy.adrc.Adrc.adapt.
     Flatten a nested list and discard empty strings (to prevent feeding \
 empty strings to loanpy.adrc.Adrc.reconstruct, which would throw an Error)
 
@@ -309,13 +288,14 @@ Combines and flattens a list of lists of sound change lists.
     :Example:
 
     >>> from loanpy.helpers import combine_ipalists
-    >>> combine_ipalists([[["a", "b"], ["c"], ["d"]], [["e", "f"], ["g"], ["h"]]])
+    >>> combine_ipalists([[["a", "b"], ["c"], ["d"]], [["e", "f"], \
+["g"], ["h"]]])
     ['acd', 'bcd', 'egh', 'fgh']
     """
 
     return flatten([list(map("".join, product(*wrd))) for wrd in wrds])
 
-def forms2list(dff, tgtlg):
+def forms2list(dff, target_language):
     """
     Called by loanpy.helpers.Etym.__init__; \
 Get a list of words of a language from a forms.csv file.
@@ -330,71 +310,86 @@ Get a list of words of a language from a forms.csv file.
 
     >>> from pathlib import Path
     >>> from loanpy.helpers import __file__, forms2list, read_forms
-    >>> path2forms = Path(__file__).parent / "tests" / "integration" / "input_files" / "forms.csv"
+    >>> path2forms = Path(__file__).parent / "tests" \
+/ "input_files" / "forms.csv"
     >>> forms = read_forms(path2forms)
-    >>> forms2list(forms, tgtlg=2)
+    >>> forms2list(forms, target_language=2)
     ['xyz']
     """
 
-    return None if dff is None else list(dff[dff["Language_ID"]==tgtlg]["Segments"])
+    return None if dff is None else list(
+    dff[dff["Language_ID"]==target_language]["Segments"])
 
 class Etym():
     """
-    Class that is based on 2 datasets: The first is static, and is ipa_all.csv \
+    Class that is based on 2 datasets: The first is static, and \
+is ipa_all.csv \
 from panphon, together with its "spinoff" cvfb.txt. The second has to be \
 defined through the init args and will be data extracted from a forms.csv \
 (cldf data standard, insert link here later). \
 The class methods eventually all rely on panphon / data / "ipa_all.csv". \
-loanpy's ipa_all.csv is slightly modified but I didn't keep track of the modifications. \
+loanpy's ipa_all.csv is slightly modified but I didn't keep track of \
+the modifications. \
 I remember that I changed the status of the glottal stop at least. \
 And added "C", "V" to the bottom. Todo: Plug back in the original ipa_all.csv.\
 Define consonants, vowels, front vowels, and back vowels \
-based on David R. Mortensen, Patrick Littell, Akash Bharadwaj, Kartik Goyal, Chris Dyer, \
-Lori Levin (2016). "PanPhon: A Resource for Mapping IPA Segments to Articulatory Feature \
-Vectors." Proceedings of COLING 2016, the 26th International Conference on Computational \
-Linguistics: Technical Papers, pages 3475–3484, Osaka, Japan, December 11-17 2016. \
+based on David R. Mortensen, Patrick Littell, Akash Bharadwaj, Kartik Goyal, \
+Chris Dyer, \
+Lori Levin (2016). "PanPhon: A Resource for Mapping IPA Segments to \
+Articulatory Feature \
+Vectors." Proceedings of COLING 2016, the 26th International \
+Conference on Computational \
+Linguistics: Technical Papers, pages 3475–3484, Osaka, Japan, \
+December 11-17 2016. \
 (Based on SPE by Chomsyk&Halle). \
 Turn forms.csv into a pandas data frame, \
 and extract following information from it: \
-phoneme inventory: a set of all phonemes that occur in the language's words, \
-clusters: a set of all consonant and vowel clusters occuring in the language, \
-struc_inv: a list of phonotactic structures that occur in the language, \
+phoneme phoneme_inventory: a set of all phonemes that occur in the \
+language's words, \
+cluster_inventory: a set of all consonant and vowel cluster_inventory \
+occuring in the language, \
+phonotactic_inventory: a list of phonotactic structures that occur \
+in the language, \
 sorted according to their frequency
 
-    :param formscsv: a forms.csv of the cldf data standard (https://cldf.clld.org/)
-    :type formscsv: pathlib.PosixPath | str | None
+    :param forms_csv: a forms.csv of the cldf data standard \
+(https://cldf.clld.org/)
+    :type forms_csv: pathlib.PosixPath | str | None
 
-    :param srclg: The technical source language as defined in \
+    :param source_language: The technical source language as defined in \
 cldf's etc / "languages.tsv". \
 This can be confusing, as sometimes \
 the technical source language for the predictions can be the linguistic \
 target language, e.g. when we are backward reconstructing. But when we are \
 adapting loanwords the technical and the linguistic source word are usually \
 the same.
-    :type srclg: str
+    :type source_language: str
 
-    :param tgtlg: The technical target language as defined in \
-cldf's etc / "languages.tsv". For caveats see param srclg
-    :type tgtlg: str
+    :param target_language: The technical target language as defined in \
+cldf's etc / "languages.tsv". For caveats see param source_language
+    :type target_language: str
 
-    :param inventory: The phoneme inventory. If None, it will be extracted \
+    :param phoneme_inventory: The phoneme phoneme_inventory. If None, \
+it will be extracted \
 automatically from forms.csv
-    :type inventory: None | list | set
+    :type phoneme_inventory: None | list | set
 
-    :param clusters: All consonant and vowel clusters that occur \
+    :param cluster_inventory: All consonant and vowel cluster_inventory that occur \
 in the language. If None, will be automatically extracted from forms.csv
-    :type clusters: None | list | set
+    :type cluster_inventory: None | list | set
 
-    :param struc_inv: All phonetic structures ("CVCV") that occur in the \
+    :param phonotactic_inventory: All phonetic structures ("CVCV") \
+that occur in the \
 language
-    :type struc_inv: None | list | set
+    :type phonotactic_inventory: None | list | set
 
     :param distance_measure: The distance measure. See help(read_dst)
     :type distance_measure: function
 
-    :param struc_most_frquent: The how many most frequently occuring phonotactic \
-structures should we allow to be part of the inventory.
-    :type struc_most_frquent: int
+    :param phonotactics_most_frquent: The how many most frequently \
+occuring phonotactic \
+structures should we allow to be part of the phoneme_inventory.
+    :type phonotactics_most_frquent: int
 
     :Example:
 
@@ -402,7 +397,8 @@ structures should we allow to be part of the inventory.
     >>> from loanpy.helpers import Etym, __file__
     >>> path2forms = Path(__file__).parent / "tests" / \
 "integration" / "input_files" / "forms.csv"
-    >>> etym_obj = Etym(formscsv=path2forms, srclg=1, tgtlg=2)
+    >>> etym_obj = Etym(forms_csv=path2forms, source_language=1, \
+target_language=2)
     >>> etym_obj.phon2cv["k"]
     'C'
     >>> etym_obj.vow2fb["e"]
@@ -414,49 +410,106 @@ structures should we allow to be part of the inventory.
     0         xyz         abc        1
     >>> etym_obj.phoneme_inventory
     {'y', 'z', 'x'}
-    >>> etym_obj.clusters
+    >>> etym_obj.cluster_inventory
     {'y', 'z', 'x'}
-    >>> etym_obj.struc_inv
+    >>> etym_obj.phonotactic_inventory
     {'CVC'}
     >>> len(etym_obj.__dict__)
     7
     """
 
-    def __init__(self, formscsv=None, srclg=None, tgtlg=None,
-                 inventory=None, clusters=None, struc_inv=None,
+    def __init__(self,
+                 forms_csv=None,
+                 source_language=None,
+                 target_language=None,
+                 phoneme_inventory=None,
+                 cluster_inventory=None,
+                 phonotactic_inventory=None,
                  distance_measure="weighted_feature_edit_distance",
-                 struc_most_frequent=9999999):
-        #local vars
-        dff = read_forms(formscsv)
-        forms = forms2list(dff, tgtlg)
+                 most_frequent_phonotactics=9999999):
 
-        #based on no local vars
+        #independent of other attributes
         self.phon2cv, self.vow2fb = read_cvfb()
         self.distance_measure = read_dst(distance_measure)
-        #based on local var dff
-        self.dfety = cldf2pd(dff, srclg, tgtlg)
-        #based on local var forms
-        self.phoneme_inventory = read_inventory(inventory, forms)
-        self.clusters = read_inventory(clusters, forms, clusterise)  #needed in adrc.py for only_allowed_clusters
-        self.struc_inv = self.read_strucinv(struc_inv, forms, struc_most_frequent)
+        #read data frame forms, turn words of target language to list
+        dff = read_forms(forms_csv)
+        #conclude dfety from dff
+        self.dfety = cldf2pd(dff, source_language, target_language)
+        #conclude 3 inventories from forms_target_language
+        self.forms_target_language = forms2list(dff, target_language)
+        (self.phoneme_inventory, self.cluster_inventory,
+        self.phonotactic_inventory) = self.get_inventories(
+        phoneme_inventory,
+        cluster_inventory,
+        phonotactic_inventory,
+        most_frequent_phonotactics
+        )
 
-    def read_strucinv(self, struc_inv=None, forms=None, howmany=9999999):
+    def get_inventories(self,
+            phoneme_inventory=None,
+            cluster_inventory=None,
+            phonotactic_inventory=None,
+            most_frequent_phonotactics=9999999):
+        #conclude phoneme inventory
+
+        return (self.read_inventory(phoneme_inventory),
+        self.read_inventory(cluster_inventory, clusterise),
+        self.read_phonotacticsinv(phonotactic_inventory, most_frequent_phonotactics))
+
+    def read_inventory(self, inv, func=tokenise):
         """
-        Called by loanpy.helpers.Etym.__init__; Returns inventory of the \
+        Called by loanpy.helpers.Etym.__init__; \
+    Calculates and returns phoneme phoneme_inventory from a list of words. \
+    Param <inv> is if phoneme_inventory should not be calculated but \
+manually plugged in.
+
+        :param inv: a set of phonemes that occure in given language. \
+    if inv is None, inv will be calculated from forms else inv will be returned.
+        :type inv: set
+
+        :param forms: a list of words occuring in giving language
+        :type forms: list of str
+
+        :param func: the tokeniser to split words into phonemes
+        :type func: function
+
+        :returns: The phoneme phoneme_inventory of the language
+        :rtype: set | None | same as input type
+
+        :Example:
+
+        >>> from loanpy.helpers import read_inventory
+        >>> read_inventory(None,  ["fdedaeda", "badea", "fdddedab"])
+        {'b', 'd', 'f', 'a', 'e'}
+
+        >>> from loanpy.helpers import read_inventory, clusterise
+        >>> read_inventory(None,  ["fdedaeda", "badea", "fdddedab"], \
+clusterise)
+        {'b', 'ea', 'd', 'fd', 'a', 'ae', 'fddd', 'e'}
+
+        """
+        return inv if inv else set(func("".join(
+        self.forms_target_language))) if self.forms_target_language else None
+
+    def read_phonotacticsinv(self, phonotactic_inventory=None, howmany=9999999):
+        """
+        Called by loanpy.helpers.Etym.__init__; Returns \
+phoneme_inventory of the \
 most frequent x phonotactic structures. \
 Caveat: The map function seems to swallow errors that would be otherwise \
 triggered by Counter. E.g. if you use a float \
 (including float("inf")) for param <howmany>, an empty string \
 will be returned.
 
-        :param struc_inv: Possibility to plug in the inventory manually.
-        :type struc_inv: None | list | set | same type as input
+        :param phonotactic_inventory: Possibility to plug in \
+the phoneme_inventory manually.
+        :type phonotactic_inventory: None | list | set | same type as input
 
         :param forms: a list of words in a language
         :type forms: list | None
 
         :param howmany: howmany most frequent structures should be added to \
-inventory
+phoneme_inventory
         :type howmany: int
 
         :returns: all possible phonotactic structures documented in the data
@@ -466,30 +519,32 @@ inventory
 
         >>> from loanpy.helpers import Etym
         >>> etym = Etym()
-        >>> etym.read_strucinv(forms=["ab", "ab", "aa", "bb", "bb", "bb"])
+        >>> etym.read_phonotacticsinv(forms=["ab", "ab", "aa", "bb", "bb", "bb"])
         {'VV', 'CC', 'VC'}
 
         >>> from loanpy.helpers import Etym
         >>> etym, forms = Etym(), ["ab", "ab", "aa", "bb", "bb", "bb"]
-        >>> etym.read_strucinv(forms=forms, howmany=1)
+        >>> etym.read_phonotacticsinv(forms=forms, howmany=1)
         ['CC'] # b/c that's the nr 1 most frequent structure
 
         >>> from loanpy.helpers import Etym
         >>> etym, forms = Etym(), ["ab", "ab", "aa", "bb", "bb", "bb"]
-        >>> etym.read_strucinv(forms=forms, howmany=2)
+        >>> etym.read_phonotacticsinv(forms=forms, howmany=2)
         ['CC', 'VC'] # b/c that's the 2 most frequent structures
         """
 
-        if struc_inv: return struc_inv
-        if forms is None: return None
-        strucs = list(map(self.word2struc, forms))
+        if phonotactic_inventory: return phonotactic_inventory
+        if self.forms_target_language is None: return None
+        strucs = list(map(self.word2struc, self.forms_target_language))
         if howmany == 9999999: return set(strucs)
         return list(map(lambda x: x[0], Counter(strucs).most_common(howmany)))
 
     def word2struc(self, ipa_in):
         """
-        Called by loanpy.helpers.Etym.__init__; loanpy.qfysc.Qfy.get_struc_corresp, \
-loanpy.adrc.Adrc.adapt, loanpy.adrc.Adrc.adapt_struc, loanpy.adrc.Adrc.reconstruct, \
+        Called by loanpy.helpers.Etym.__init__; \
+loanpy.qfysc.Qfy.get_phonotactics_corresp, \
+loanpy.adrc.Adrc.adapt, loanpy.adrc.Adrc.adapt_phonotactics, \
+loanpy.adrc.Adrc.reconstruct, \
 and loanpy.santiy.write_workflow.
 
         Returns the phonotactic profile of an ipa-string.
@@ -515,7 +570,7 @@ if input is string, it will be tokenised.
         return "".join([self.phon2cv.get(i, "") for i in ipa_in])
 
 
-    def word2struc_keepcv(self, ipa_in):
+    def word2phonotactics_keepcv(self, ipa_in):
         """
         Not called by any function. Returns the phonotactic profile of an \
 ipa-string while keeping \
@@ -525,11 +580,12 @@ Cs and Vs. Originally written for sanity.py but currently not used anywhere.
 
         >>> from loanpy import helpers
         >>> hp = helpers.Etym()
-        >>> hp.word2struc_keepcv("CloVl")
+        >>> hp.word2phonotactics_keepcv("CloVl")
         'CCVVC'
 
         """
-        return "".join([self.phon2cv.get(i, "") if i not in "CV" else i for i in ipa_in])
+        return "".join([self.phon2cv.get(i, "") if i not in "CV"
+        else i for i in ipa_in])
 
     def harmony(self, ipalist):
         """
@@ -586,7 +642,8 @@ many front as back vowels, both options will be returned.
         [['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
         >>> hp.adapt_harmony(['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p'])
         [['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
-        >>> hp.adapt_harmony(['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'])
+        >>> hp.adapt_harmony(\
+['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'])
         [['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], \
 ['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
 
@@ -638,17 +695,20 @@ but turns back vowels to front ones if turnto="F"
     def get_scdictbase(self, write_to=None, most_common=float("inf")):
         """
         Call manually in the beginning. \
-Loop through ipa_all.csv and rank most similar phonemes from inventory. \
+Loop through ipa_all.csv and rank most similar phonemes \
+from phoneme_inventory. \
 Could also turn ipa_all.csv into a square of 6358*6358 phonemes and just use \
 that file for all future cases but that would use an estimated 500MB per \
 type of distance measure. So more economical to calculate it this way. \
-Will still, depending on size of phoneme inventory, take up about 2MB. \
+Will still, depending on size of phoneme phoneme_inventory, \
+take up about 2MB. \
 result is returned, assigned to self.scdictbase and optionally written. \
 Usually there is very little data available \
 on sound substitutions and the ones available give only very small instight \
 into all possibilities. \
 The idea here is therefore that any sound \
-that is not contained in a language's phoneme inventory will be replaced by \
+that is not contained in a language's phoneme phoneme_inventory \
+will be replaced by \
 the most similar available one(s). The available sound substitutions \
 based on etymological data will be combined with \
 this heuristics, if available.
@@ -657,7 +717,7 @@ this heuristics, if available.
         :type write_to: None | <class 'pathlib.PosixPath'> | str
 
         :param most_common: Add only this many most similar phonemes to \
-scdictbase. By default the entire phoneme inventory will be ranked.
+scdictbase. By default the entire phoneme phoneme_inventory will be ranked.
 
         :returns: A heuristic approach to sound substitution in loanword \
 adaptation
@@ -667,24 +727,34 @@ adaptation
 
         >>> from pathlib import Path
         >>> from loanpy.helpers import Etym, __file__
-        >>> etym_obj = Etym(formscsv=Path(__file__).parent / "tests" / \
-"integration" / "input_files" / "forms.csv", srclg=1, tgtlg=2)
+        >>> etym_obj = Etym(forms_csv=Path(__file__).parent / "tests" / \
+"integration" / "input_files" / "forms.csv", source_language=1, \
+target_language=2)
         >>> etym_obj.get_scdictbase()
-        (returns the entire dictionary with inventory ranked according to similarity)
+        (returns the entire dictionary with phoneme_inventory \
+ranked according to similarity)
         >>> etym_obj.scdictbase["i"]
         ["y", "x", "z"]
         """
 
         ipa_all = read_csv(Path(__file__).parent / "ipa_all.csv")
-        ipa_all["substi"] = [self.rank_closest(ph, most_common) for ph in tqdm(ipa_all["ipa"])]
-        scdictbase = dict(zip(ipa_all["ipa"], ipa_all["substi"].str.split(", ")))
+        ipa_all["substi"] = [self.rank_closest(ph, most_common)
+        for ph in tqdm(ipa_all["ipa"])]
+        scdictbase = dict(zip(ipa_all["ipa"],
+        ipa_all["substi"].str.split(", ")))
 
-        scdictbase["C"] = self.rank_closest("ə", most_common, #pick the most unmarked C
-        [i for i in self.phoneme_inventory if self.phon2cv.get(i,"") == "C"]).split(", ")
-        scdictbase["V"] = self.rank_closest("ə", most_common, #pick the most unmarked V
-        [i for i in self.phoneme_inventory if self.phon2cv.get(i,"") == "V"]).split(", ")
-        scdictbase["F"] = [i for i in self.phoneme_inventory if self.vow2fb.get(i,"") == "F"]
-        scdictbase["B"] = [i for i in self.phoneme_inventory if self.vow2fb.get(i,"") == "B"]
+        # pick the most unmarked C
+        scdictbase["C"] = self.rank_closest("ə", most_common,
+        [i for i in self.phoneme_inventory
+        if self.phon2cv.get(i,"") == "C"]).split(", ")
+        # pick the most unmarked V
+        scdictbase["V"] = self.rank_closest("ə", most_common,
+        [i for i in self.phoneme_inventory
+        if self.phon2cv.get(i,"") == "V"]).split(", ")
+        scdictbase["F"] = [i for i in self.phoneme_inventory
+        if self.vow2fb.get(i,"") == "F"]
+        scdictbase["B"] = [i for i in self.phoneme_inventory
+        if self.vow2fb.get(i,"") == "B"]
 
         self.scdictbase = scdictbase
 
@@ -699,16 +769,17 @@ adaptation
         Called by get_scdictbase. \
 Sort self.phoneme_inventory by distance to input-phoneme.
 
-        :param ph: phoneme to which to rank the inventory
+        :param ph: phoneme to which to rank the phoneme_inventory
         :type ph: str (valid chars: col "ipa" in ipa_all.csv)
 
         :param howmany: howmany of the most similar to pick
         :type howmany: {int, float("inf")}
 
-        :param inv: To plug in phoneme inventory manually if necessary
+        :param inv: To plug in phoneme phoneme_inventory manually if necessary
         :type inv: list | set
 
-        :returns: the phoneme inventory ranked by similarity (most similar \
+        :returns: the phoneme phoneme_inventory \
+ranked by similarity (most similar \
 first)
         :rytpe: str (elements separates by ", ")
 
@@ -719,62 +790,69 @@ first)
         >>> etym_obj = Etym()
         >>> etym_obj.rank_closest(ph="d", inv=["r", "t", "l"], howmany=1)
         't'
-        >>> etym_obj = Etym(inventory=["a", "b", "c"])
+        >>> etym_obj = Etym(phoneme_inventory=["a", "b", "c"])
         >>> etym_obj.rank_closest(ph="d")
         'b, c, a'
 
         """
         if self.phoneme_inventory is None and inv is None:
-            raise InventoryMissingError("define phoneme inventory or forms.csv")
+            raise InventoryMissingError(
+            "define phoneme inventory or forms.csv")
         if inv is None: inv = self.phoneme_inventory
 
         phons_and_dist = [(i, self.distance_measure(ph, i)) for i in inv]
-        return pick_mins(phons_and_dist, howmany)
+        return ", ".join(pick_minmax(phons_and_dist, howmany))
 
     #DONT merge this func into rank_closest. It makes things more complicated
-    def rank_closest_struc(self, struc, howmany=9999999, inv=None):
+    def rank_closest_phonotactics(self, struc, howmany=9999999, inv=None):
         """
-        Called by loanpy.qfysc.Qfy.get_struc_corresp. \
-Sort self.struc_inv by distance to given phonotactic structure using \
+        Called by loanpy.qfysc.Qfy.get_phonotactics_corresp. \
+Sort self.phonotactic_inventory by distance to given \
+phonotactic structure using \
 editdistance with two operations (insert (cost: 49), delete (cost: 100)).
 
-        :param struc: The phonetic structure to which to rank the inventory
+        :param struc: The phonetic structure to which \
+to rank the phoneme_inventory
         :type struc: str (consisting of "C"s and "V"s only)
 
         :param howmany: Howmany of the most similar structures should be picked
         :type howmany: {int, float("inf")}
 
-        :param inv: To plug in the phonotactic structure inventory \
+        :param inv: To plug in the phonotactic structure phoneme_inventory \
 manually if necessary
         :type inv: list | set
 
-        :returns: the phonotactic inventory ranked by similarity (most similar \
+        :returns: the phonotactic phoneme_inventory ranked \
+by similarity (most similar \
 first)
         :rytpe: str (elements separates by ", ")
 
         >>> from pathlib import Path
         >>> from loanpy.helpers import Etym, __file__
-        >>> etym_obj = Etym(struc_inv=["CVC", "CVCVV", "CCCC", "VVVVVV"])
-        >>> etym_obj.rank_closest_struc(struc="CVCV", howmany=1)
+        >>> etym_obj = Etym(phonotactic_inventory=\
+["CVC", "CVCVV", "CCCC", "VVVVVV"])
+        >>> etym_obj.rank_closest_phonotactics(struc="CVCV", howmany=1)
         'CVCVV'
         >>> etym_obj = Etym()
-        >>> etym_obj.rank_closest_struc(struc="CVCV", howmany=3,\
+        >>> etym_obj.rank_closest_phonotactics(struc="CVCV", howmany=3,\
 inv=["CVC", "CVCVV", "CCCC", "VVVVVV"])
         "CVCVV, CVC, CCCC"
 
         """
-        if self.struc_inv is None and inv is None:
-            raise InventoryMissingError("define phonotactic inventory or forms.csv")
-        if inv is None: inv = self.struc_inv
+        if self.phonotactic_inventory is None and inv is None:
+            raise InventoryMissingError(
+            "define phonotactic inventory or forms.csv")
+        if inv is None: inv = self.phonotactic_inventory
 
         strucs_and_dist = [(i, edit_distance_with2ops(struc, i)) for i in inv]
-        return pick_mins(strucs_and_dist, howmany)
+        return ", ".join(pick_minmax(strucs_and_dist, howmany))
 
 def gensim_multiword(recip_transl, donor_transl, return_wordpair=False,
 wordvectors= "word2vec-google-news-300"):
     """
     Called by loanpy.loafinder.Search.loans. Takes two strings as input \
-that represent the meanings of a word. Within the strings, meanings are separated \
+that represent the meanings of a word. Within the strings, \
+meanings are separated \
 by ", ". It calculates the cosine similarities of the word pairs of the \
 cartesian product and returns the value of the most similar pair. If \
 return_wordpair is True, the words are returned as well.
@@ -826,14 +904,17 @@ the word pair itself if return_wordpair was True.
 
     # missing translations = empty cells = nans = floats
     if any(not isinstance(arg, str) for arg in [recip_transl, donor_transl]):
-        return (-1, f"!{str(type(recip_transl))}!", f"!{str(type(donor_transl))}!") if return_wordpair else -1
-    else: recip_transl, donor_transl = recip_transl.split(', '), donor_transl.split(', ')
+        return (-1, f"!{str(type(recip_transl))}!",
+        f"!{str(type(donor_transl))}!") if return_wordpair else -1
+    else: recip_transl, donor_transl = recip_transl.split(
+    ', '), donor_transl.split(', ')
 
     global model
     if model is None:
         logger.warning(f"\r{datetime.now().strftime('%H:%M')} loading vectors")
         try: model = load(wordvectors)
-        except MemoryError: logger.warning("Memory Error. Close background processes and use a RAM-saving browser like Opera")
+        except MemoryError: logger.warning(
+        "Memory Error. Close background processes and use RAM-saving browser")
         logger.warning(f"\r{datetime.now().strftime('%H:%M')} Vectors loaded")
 
 
@@ -850,9 +931,11 @@ the word pair itself if return_wordpair was True.
     for rectr in recip_transl:
         for dontr in donor_transl:  # calculate semantic similarity of all pairs
             try: modsim = model.similarity(rectr, dontr)
-            except KeyError: continue # if word not in KeyedVecors of gensim continue
+            # if word not in KeyedVecors of gensim continue
+            except KeyError: continue
             if modsim == 1: return (1, rectr, dontr) if return_wordpair else 1
-            if modsim > topsim:  topsim, rtr, dtr = modsim, rectr, dontr# replace if more similar than topsim
+            # replace if more similar than topsim
+            if modsim > topsim:  topsim, rtr, dtr = modsim, rectr, dontr
     return (topsim, rtr, dtr) if return_wordpair else topsim
 
 def list2regex(sclist):
@@ -880,17 +963,19 @@ removed and replaced with a question mark at the end.
     """
 
     if sclist == ["-"]: return ""
-    if "-" in sclist: return "("+"|".join([i for i in sclist if i != "-"]) + ")?"
+    if "-" in sclist: return "("+"|".join(
+    [i for i in sclist if i != "-"]) + ")?"
     return "("+"|".join(sclist) + ")"
 
 
 def edit_distance_with2ops(string1, string2, w_del=100, w_ins=49):
     """
-    Called by loanpy.helpers.Etym.rank_closest_struc and \
-loanpy.qfysc.Qfy.get_struc_corresp. \
+    Called by loanpy.helpers.Etym.rank_closest_phonotactics and \
+loanpy.qfysc.Qfy.get_phonotactics_corresp. \
 Takes two strings and calculates their similarity by \
 only allowing two operations: insertion and deletion. \
-In line with the "Threshold Principle" by Carole Paradis and Darlene LaCharité (1997) \
+In line with the "Threshold Principle" by Carole Paradis and \
+Darlene LaCharité (1997) \
 the distance is weighted in a way that two insertions are cheaper than \
 one deletion: "The problem is really not very different from the dilemma \
 of a landlord stuck with a limited budget for maintenance and a building \
@@ -901,7 +986,8 @@ a limited budget for adapting ill- formed phonological structures, \
 and that 2) the limit for the budget is universally set at two steps, \
 beyond which a repair by 'demolition' may apply. In other words, we \
 predict that a segment is deleted if (but only if) its rescue is too \
-costly in terms of the Threshold Principle" (p.385, Preservation and Minimality \
+costly in terms of the Threshold Principle" (p.385, Preservation \
+and Minimality \
 in Loanword Adaptation, \
 Author(s): Carole Paradis and Darlene Lacharité, \
 Source: Journal of Linguistics , Sep., 1997, Vol. 33, No. 2 (Sep., 1997), \
@@ -953,7 +1039,8 @@ https://www.geeksforgeeks.org/edit-distance-and-lcs-longest-common-subsequence\
 
     lcs = L[m][n]
     # Edit distance is delete operations + insert operations*0.49.
-    return (m - lcs) * w_del + (n - lcs) * w_ins #costs (=distance) are lower for insertions
+    # costs (=distance) are lower for insertions
+    return (m - lcs) * w_del + (n - lcs) * w_ins
 
 def get_mtx(target, source):
     """
@@ -1080,7 +1167,8 @@ def tuples2editops(op_list, s1, s2):
     """
     Called by loanpy.helpers.editops. \
 The path how string1 is converted to string2 is given in form of tuples \
-that contain the x and y coordinates of every step through the matrix shaped graph. \
+that contain the x and y coordinates of every step through the matrix \
+shaped graph. \
 This function converts those numerical instructions to human readable ones. \
 The x values stand for horizontal movement, y values for vertical one. \
 Vertical movement means deletion, horizontal means insertion. \
@@ -1140,7 +1228,7 @@ substituting.
 
 def editops(s1, s2, howmany_paths=1, w_del=100, w_ins=49):
     """
-    Called by loanpy.adrc.Adrc.adapt_struc. \
+    Called by loanpy.adrc.Adrc.adapt_phonotactics. \
 Takes two strings and returns \
 all paths of cheapest edit operations between them.
 
@@ -1164,7 +1252,8 @@ insertions are cheaper than 1 deletion by default.
 
     >>> from loanpy.helpers import editops
     >>> editops("Budapest", "Bukarest")
-    [('keep B', 'keep u', 'substitute d by k', 'keep a', 'substitute p by r', \
+    [('keep B', 'keep u', 'substitute d by k', 'keep a', \
+'substitute p by r', \
 'keep e', 'keep s', 'keep t')]
     >>> editops("CV", "CCVV")
     [('keep C', 'insert C', 'insert V', 'keep V')]
@@ -1186,7 +1275,7 @@ insertions are cheaper than 1 deletion by default.
 
 def apply_edit(word, editops):
     """
-    Called by loanpy.adrc.Adrc.adapt_struc. \
+    Called by loanpy.adrc.Adrc.adapt_phonotactics. \
 Applies a list of human readable edit operations to a string.
 
     :param word: The input word
@@ -1219,7 +1308,7 @@ Applies a list of human readable edit operations to a string.
         elif "insert" in op: out.append(op[len("insert "):])
     return out
 
-def get_howmany(step, hm_struc_ceiling, hm_paths_ceiling):
+def get_howmany(step, hm_phonotactics_ceiling, hm_paths_ceiling):
     """
     Called by loanpy.adrc.Adrc.adapt and loanpy.sanity.eval_one. \
 Put marbles into three pots, one by one, with following conditions: \
@@ -1229,7 +1318,8 @@ The idea is that loanpy.adrc.Adrc.adapt gets a parameter <howmany> that \
 indicates the total number of predictions, which flows into this function's \
 <step> parameter. This has to be split into three: The first is the number \
 of combinations we want to get from phoneme substitutions. The second the \
-maximum number of combinations from the number of different phonotactic structures \
+maximum number of combinations from the number of different \
+phonotactic structures \
 chosen, to which to adapt. The third the number of paths through which each \
 structure can be be reached. So if we want to make 100 predictions for a word \
 but not pick more than 2 structures to which to adapt and 2 paths through \
@@ -1241,11 +1331,11 @@ left over will be sliced away in loanpy.adrc.Adrc.adapt.
     :param step: the product of the three pots. Stop if reached.
     :type step: int
 
-    :param hm_struc_ceiling: The max nr of marbles for pot 2
-    :type hm_struc_ceiling: int
+    :param hm_phonotactics_ceiling: The max nr of marbles for pot 2
+    :type hm_phonotactics_ceiling: int
 
-    :param hm_struc_ceiling: The max nr of marbles for pot 3
-    :type hm_struc_ceiling: int
+    :param hm_phonotactics_ceiling: The max nr of marbles for pot 3
+    :type hm_phonotactics_ceiling: int
 
     :returns: The way the marbles should be split
     :rtype: (int, int, int)
@@ -1259,11 +1349,13 @@ left over will be sliced away in loanpy.adrc.Adrc.adapt.
     (8, 7, 2)
 
     """
+    if  hm_phonotactics_ceiling == 0: return step, hm_phonotactics_ceiling, hm_paths_ceiling
+
     x, y, z = 1, 1, 1
     while x*y*z < step:
         x+=1
         if x*y*z >= step: return x,y,z
-        if y < hm_struc_ceiling:
+        if y < hm_phonotactics_ceiling:
             y+=1
             if x*y*z >= step: return x,y,z
         if z < hm_paths_ceiling:
@@ -1272,15 +1364,15 @@ left over will be sliced away in loanpy.adrc.Adrc.adapt.
 
     return x, y, z
 
-def pick_mins(inv_and_dist, howmany):
+def pick_minmax(input_and_nr, howmany, func=min, return_all=False):
     """
     Called in loanpy.helpers.Etym.rank_closest and \
-loanpy.helpers.Etym.rank_closest_struc. \
+loanpy.helpers.Etym.rank_closest_phonotactics. \
 Pick only the n smallest numbers from a list. Should be cheaper than \
 sorting the entire list and then taking only the slice we need.
 
-    :param inv_and_dist: inventories and distances
-    :type inv_and_dist: list of tuples
+    :param input_and_nr: inventories and distances
+    :type input_and_nr: list of tuples
 
     :param howmany: howmany minimums do we want to pick from input-list
     :type howmany: int
@@ -1290,22 +1382,66 @@ sorting the entire list and then taking only the slice we need.
 
     :Example:
 
-    >>> from loanpy.helpers import pick_mins
-    >>> pick_mins([("a", 5), ("b", 7), ("c", 3)], float("inf"))
+    >>> from loanpy.helpers import pick_minmax
+    >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"))
     "c, a, b"
-    >>> pick_mins([("a", 5), ("b", 7), ("c", 3)], 1)
+    >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1)
     "c"
-    >>> pick_mins([("a", 5), ("b", 7), ("c", 3)], 2)
+    >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2)
     "c, a"
     """
 
     #if we want to have at least as many elements as the list is long
     #then we will just have to sort the entire list
-    if howmany >= len(inv_and_dist):
-        return ", ".join([i[0] for i in sorted(inv_and_dist, key=lambda tup: tup[1])])
+    if howmany >= len(input_and_nr) or howmany is True:
+        sorted2 = partial(sorted, reverse=True) if func == max else sorted
+        return [i[0] for i in sorted2(input_and_nr, key=lambda tup: tup[1])]
     out = []
     #but if we just want a handful of min values
     for i in range(howmany): #just pick that number of mins thru loop.
-        mindisttup = min(inv_and_dist, key=lambda tup: tup[1])
-        out.append(inv_and_dist.pop(inv_and_dist.index(mindisttup))[0])
-    return ", ".join(out)
+        mindisttup = func(input_and_nr, key=lambda tup: tup[1])
+        out.append(input_and_nr.pop(input_and_nr.index(mindisttup))[0])
+    return out + [i[0] for i in input_and_nr] if return_all else out
+
+def make_cvfb(path2ipa_all, path2out):
+    """
+    Consonants, vowels, front vowels, backvowels. \
+    Transforms the columns of ipa_all.csv to a tuple of two dictionaries. \
+    The first returns "C" for consonants and "V" for vowels, \
+    the second "F" for front vowels and "B" for back vowels.
+
+    :param path2ipa_all: Location of ipa_all.csv (the input file)
+    :type path2ipa_all: pathlib.PosixPath | str
+
+    :param path2out: path to the desired output file.
+    :type path2out: pathlib.PosixPath | str
+
+    :returns: Writes a tuple of two dictionaries to indicated path
+    :rtype: None
+    """
+    ipa_all = read_csv(path2ipa_all)
+
+    phon2cv0 = {phoneme : "C" if cons == "+" else
+                              "V" if cons == "-" else ""
+                    for phoneme,cons in zip(ipa_all["ipa"],
+                                            ipa_all["cons"])}
+
+    vow2fb0 = {phoneme : "F" if back == "-" and cons == "-" else
+                             "B" if back == "+" and cons == "-" else ""
+                    for phoneme,back,cons in zip(ipa_all["ipa"],
+                                                 ipa_all["back"],
+                                                 ipa_all["cons"])}
+    vow2fb0["V"] = "V"
+
+    phon2cv = {}
+    for i in phon2cv0:
+        if phon2cv0[i]:
+            phon2cv[i] = phon2cv0[i]
+
+    vow2fb = {}
+    for i in vow2fb0:
+        if vow2fb0[i]:
+            vow2fb[i] = vow2fb0[i]
+
+    with open(path2out, "w") as f:
+        f.write(str((phon2cv, vow2fb)))

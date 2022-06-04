@@ -37,7 +37,8 @@ def test_read_data():
 def test_gen():
     assert list(gen([1, 2, 3], [4, 5, 6], lambda x, y: x+y))  == [5, 7, 9]
     #make sure *args after "prefix" are passed into the function (z=1)
-    assert list(gen([1, 2, 3], [4, 5, 6], lambda x, y, z: x+y+z, "", 1))  == [6, 8, 10]
+    assert list(gen([1, 2, 3], [4, 5, 6],
+    lambda x, y, z: x+y+z, "", 1))  == [6, 8, 10]
 
 def test_init():
     """test if class Search is initiated correctly"""
@@ -69,14 +70,18 @@ def test_init():
         path2recipdf=path2rec,
         donorcol="ad",
         recipcol="rc",
-        scdictlist_ad=Path(__file__).parent / "input_files" / "sc_ad_3cogs.txt",
-        scdictlist_rc=Path(__file__).parent / "input_files" / "sc_rc_3cogs.txt")
+        scdictlist_ad=Path(__file__
+        ).parent / "input_files" / "sc_ad_3cogs.txt",
+        scdictlist_rc=Path(__file__
+        ).parent / "input_files" / "sc_rc_3cogs.txt")
 
     assert len(search_inst.__dict__) == 12
 
     #assert initiation went properly
-    assert_series_equal(search_inst.search_in, Series(["z"], name="ad", index=[0])) #1
-    assert_series_equal(search_inst.search_for, Series(["z"], name="rc", index=[0])) #2
+    assert_series_equal(
+    search_inst.search_in, Series(["z"], name="ad", index=[0])) #1
+    assert_series_equal(
+    search_inst.search_for, Series(["z"], name="rc", index=[0])) #2
     assert search_inst.phondist == 0 #3
     assert ismethod(search_inst.phondist_msr) #4s
     assert search_inst.donpath == path2don #5
@@ -112,8 +117,8 @@ def test_phonmatch_small():
     search_for="(b|c)?lub", index=99, dropduplicates=True),
     DataFrame({"match": ["blub"], "recipdf_idx": [99]},
     index=[1]))
-#
-#    #test if parameters allow matches to have a higher phonetic distance than 0
+
+    #test if parameters allow matches to have a higher phonetic distance than 0
     #dropduplicates=True (default setting)
     search_inst = Search(phondist=0.5)
     assert_frame_equal(search_inst.phonmatch_small(search_in=srs_srch_in,
@@ -127,25 +132,26 @@ def test_phonmatch_small():
 def test_phonmatch():
     """same as test_phonmatch_small but words to searchin are passed through
     class initiation rather than function arg"""
-#
-#    #set up mock instancec of Search class
+
+    #set up mock instancec of Search class
     search_inst = Search(path2donordf=PATH2READ_DATA, donorcol="col1")
-#
-#    #run test if param dropduplicates == False
+
+    #run test if param dropduplicates == False
     assert_frame_equal(search_inst.phonmatch(
     search_for="(b|c)?lub", index=99, dropduplicates=False),
     DataFrame({"match": ["blub", "club"], "recipdf_idx": [99, 99]},
     index=[1, 1]))
-#
-#    #run test if param dropduplicates == True
+
+    #run test if param dropduplicates == True
     assert_frame_equal(search_inst.phonmatch(
     search_for="(b|c)?lub", index=99, dropduplicates=True),
     DataFrame({"match": ["blub"], "recipdf_idx": [99]},
     index=[1]))
-#
-#    #test if parameters allow matches to have a higher phonetic distance than 0
-#    #dropduplicates=True (default setting)
-    search_inst = Search(path2donordf=PATH2READ_DATA, donorcol="col1", phondist=0.5)
+
+    #test if parameters allow matches to have a higher phonetic distance than 0
+    #dropduplicates=True (default setting)
+    search_inst = Search(path2donordf=PATH2READ_DATA,
+    donorcol="col1", phondist=0.5)
     assert_frame_equal(search_inst.phonmatch(
     search_for="blub", index=99), #if search for regex, phondist must = 0!!
     DataFrame({"match": ["blub"], "recipdf_idx": [99]},
@@ -162,16 +168,16 @@ def test_likeliestphonmatch():
     assert_frame_equal(search_inst.likeliestphonmatch(
     donor_ad="a, blub, club", recip_rc="(b|c)?lub",
     donor_segment="elub", recip_segment="dlub"),
-            DataFrame({"match": ["blub"],
-                       "nse_rc": [10],
-                       "se_rc": [50],
-                       "distr_rc": str([10] * 5),
-                       "align_rc": "['#-<*-', '#dl<*bl', 'u<*u', 'b#<*b', '-#<*-']",
-                       "nse_ad": [4],
-                       "se_ad": [20],
-                       "distr_ad": "[0, 0, 10, 10, 0]",
-                       "align_ad": "['e<V', 'C<b', 'l<l', 'u<u', 'b<b']",
-                       "nse_combined": [14]}),
+    DataFrame({"match": ["blub"],
+               "nse_rc": [10],
+               "se_rc": [50],
+               "distr_rc": str([10] * 5),
+               "align_rc": "['#-<*-', '#dl<*bl', 'u<*u', 'b#<*b', '-#<*-']",
+               "nse_ad": [4],
+               "se_ad": [20],
+               "distr_ad": "[0, 0, 10, 10, 0]",
+               "align_ad": "['e<V', 'C<b', 'l<l', 'u<u', 'b<b']",
+               "nse_combined": [14]}),
     check_dtype=False)
 
     #tear down
@@ -180,8 +186,10 @@ def test_likeliestphonmatch():
 def test_loans():
     #create instance of class
     search_inst = Search(
-    path2donordf=Path(__file__).parent / "input_files" / "loans_got.csv",
-    path2recipdf=Path(__file__).parent / "input_files" / "loans_hun_NoPhonMatch.csv")
+    path2donordf=Path(__file__
+    ).parent / "input_files" / "loans_got.csv",
+    path2recipdf=Path(__file__
+    ).parent / "input_files" / "loans_hun_NoPhonMatch.csv")
 
     #test first break
     #assert that error is raised correctly
@@ -219,11 +227,11 @@ def test_loans():
 
     assert_frame_equal(search_inst.loans(), DataFrame({
     'match':[], 'recipdf_idx':[], 'Meaning_x':[],
-    'Meaning_y':[], 'gensim_multiword':[]}),
-    check_dtype=False)
+    'Meaning_y':[], 'gensim_multiword':[]}), check_dtype=False)
 
     #test with advanced settings.
-    path2dummy_results = Path(__file__).parent / "loans_result_integration_test.csv"
+    path2dummy_results = Path(__file__
+    ).parent / "loans_result_integration_test.csv"
 
     #create instance of class. semsim=0.1 again so matches are found
     search_inst = Search(
@@ -257,8 +265,7 @@ def test_loans():
     "Segments_y": ["d l u b"],
     "Meaning_y": ["computer, interface"],
     "rc": ["(b|c)?lub"],
-    "bla_y": ["xyz"]}),
-    check_dtype=False)
+    "bla_y": ["xyz"]}), check_dtype=False)
 
     #tear down
     plug_in_model(None)
@@ -269,7 +276,8 @@ def test_postprocess():
 
     #set up: define input data frame
     dfin = DataFrame({"match": ["blub"], "recipdf_idx": [0], "Meaning_x": [
-                     "computer, interface"], "Meaning_y": ["human"], "semsim_msr": [0.10940766]})
+                     "computer, interface"],
+                     "Meaning_y": ["human"], "semsim_msr": [0.10940766]})
 
     # set up: define expected output data frame
     dfexp = DataFrame({"recipdf_idx": [0],
@@ -280,7 +288,7 @@ def test_postprocess():
                        "nse_rc": [10],
                        "se_rc": [50],
                        "distr_rc": str([10] * 5),
-                       "align_rc": "['#-<*-', '#dl<*bl', 'u<*u', 'b#<*b', '-#<*-']",
+            "align_rc": "['#-<*-', '#dl<*bl', 'u<*u', 'b#<*b', '-#<*-']",
                        "nse_ad": [5],
                        "se_ad": [20],
                        "distr_ad": "[0, 10, 10, 0]",

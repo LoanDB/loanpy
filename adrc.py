@@ -20,6 +20,7 @@ editops,
 flatten,
 get_howmany,
 list2regex,
+pick_minmax,
 tokenise)
 from loanpy.qfysc import Qfy
 
@@ -43,7 +44,7 @@ input is None.
     >>> from pathlib import Path
     >>> read_scdictlist(None)
     [None, None, None, None]
-    >>> path2sc = Path(__file__).parent / "tests" / "integration" \
+    >>> path2sc = Path(__file__).parent / "tests" \
 / "input_files" / "sc_ad_3cogs.txt"
     >>> read_scdictlist(path2sc)
     [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'], \
@@ -129,16 +130,16 @@ dict2/dict5: list of cognates in which each correspondence occurs.
 
     >>> from loanpy.adrc import Adrc, __file__
     >>> from pathlib import Path
-    >>> path2folder = Path(__file__).parent / "tests" / "integration" \
+    >>> path2folder = Path(__file__).parent / "tests" \
 / "input_files"
     >>> path2sc = path2folder / "sc_ad_3cogs.txt"
     >>> path2forms = path2folder / "forms_3cogs_wot.csv"
     >>> adrc_obj = Adrc(\
 scdictlist=path2sc, \
-formscsv=path2forms, \
-srclg="WOT", tgtlg="EAH", \
+forms_csv=path2forms, \
+source_language="WOT", target_language="EAH", \
 mode="reconstruct", \
-struc_most_frequent=2)
+most_frequent_phonotactics=2)
     >>> adrc_obj.scdict  # sound correspondence dictionary
     {'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'], \
 't͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']}
@@ -148,7 +149,7 @@ struc_most_frequent=2)
     >>> adrc_obj.edict  # examples dictionary
     {'a<a': [1, 2, 3], 'd<d': [2], 'i<ɯ': [1], 'j<j': [3], \
 'l<l': [2], 'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'ɣ<ɣ': [1, 2]}
-    >>> adrc_obj.scdict_struc  # phonotactic correspondence dictionary
+    >>> adrc_obj.scdict_phonotactics  # phonotactic correspondence dictionary
     {'VCCVC': ['VCCVC'], 'VCVC': ['VCVC'], 'VCVCV': ['VCVCV']}
     >>> adrc_obj.workflow
     OrderedDict()
@@ -159,11 +160,11 @@ from loanpy.qfysc.Qfy
     """
     def __init__(self,
     # 9 args for inheritance from from loanpy.qfysc.Qfy
-    formscsv=None,
-    srclg=None,
-    tgtlg=None,
-    struc_most_frequent=9999999,
-    struc_inv=None,
+    forms_csv=None,
+    source_language=None,
+    target_language=None,
+    most_frequent_phonotactics=9999999,
+    phonotactic_inventory=None,
     mode=None,
     connector=None,
     scdictbase=None,
@@ -172,17 +173,17 @@ from loanpy.qfysc.Qfy
     scdictlist=None):
         # inherit from loanpy.qfysc.Qfy
         super().__init__(
-        formscsv=formscsv,
-        srclg=srclg,
-        tgtlg=tgtlg,
-        struc_most_frequent=struc_most_frequent,
-        struc_inv=struc_inv,
+        forms_csv=forms_csv,
+        source_language=source_language,
+        target_language=target_language,
+        most_frequent_phonotactics=most_frequent_phonotactics,
+        phonotactic_inventory=phonotactic_inventory,
         mode=mode,
         connector=connector,
         scdictbase=scdictbase,
         vfb=vfb)
         # read here - was extracted by loanpy.qfysc.Qfy and written to file
-        (self.scdict, self.sedict, self.edict, self.scdict_struc
+        (self.scdict, self.sedict, self.edict, self.scdict_phonotactics
         ) = read_scdictlist(scdictlist)  # sound correspondence dictionaries
 
         self.workflow = OrderedDict()  # will be filled by self.adapt()
@@ -215,14 +216,14 @@ moving the phoneme that is at the same index in the sound correspondence list.
 
     >>> from loanpy.adrc import Adrc, __file__
     >>> from pathlib import Path
-    >>> path2folder = Path(__file__).parent / "tests" / "integration" \
+    >>> path2folder = Path(__file__).parent / "tests" \
 / "input_files"
     >>> path2sc = path2folder / "sc_ad_3cogs.txt"
     >>> path2forms = path2folder / "forms_3cogs_wot.csv"
     >>> adrc_obj = Adrc(\
 scdictlist=path2sc, \
-formscsv=path2forms, \
-srclg="WOT", tgtlg="EAH")
+forms_csv=path2forms, \
+source_language="WOT", target_language="EAH")
     >>> adrc_obj.get_diff(sclistlist=[["d", "x", "$"], ["a", "x", "$"], \
 ["d", "x", "$"], ["a", "x", "$"]], ipa=["d", "a", "d", "a"])
     [1, 6, 1, 6]
@@ -331,26 +332,34 @@ sound can correspond.
 
         return out
 
-    def reconstruct(self, ipastring, howmany=1, clusterised=True,
-                    struc=False, vowelharmony=False, sort_by_nse=False):
+    def reconstruct(self,
+    ipastr,
+    howmany=1,
+    clusterised=True,
+    phonotactics_filter=False,
+    vowelharmony_filter=False,
+    sort_by_nse=False,
+    *args):  # for sanity.eval_one to be able to pass on more args
         """
         Predicts past forms of a word based on data. Should \
 theoretically also work for forward reconstructions, but not tested yet. \
-Every word gets a "#-" and a "-#" slapped to its front and back, to capture \
-prefixes and suffixes that may have appeared or disappeared. In addition to \
-this, word initial and word final sounds/clusters are \
-tagged with an extra "#". \
-If parameters <struc>, <vowelharmony> and <sort_by_nse> are all set to False, \
+Word initial and word final sounds/clusters are \
+tagged with an "#". In addition to \
+this, every word gets a "#-" and a "-#" slapped to its front and back, \
+to capture \
+prefixes and suffixes that may have appeared or disappeared. \
+If parameters <phonotactics_filter>, <vowelharmony_filter> and <sort_by_nse> \
+are all set to False, \
 the output will be a regular expression of the type "^(a|b)(c|d)(e)$". If one \
 of those parameters is set to True, combinatorics will be applied and the \
 outputted regular expression will be of the type "(^ace$|^ade$|^bce$|^bde$)".
 
-        :param ipastring: The non-tokenised input word. \
+        :param ipastr: The non-tokenised input word. \
 Should consist only of \
 valid ipa-characters, as defined in ipa_all.csv's column "ipa", even though \
 the tokeniser handles invalid characters quite well. Make sure this is not \
 an empty string.
-        :type ipastring: str
+        :type ipastr: str
 
         :param howmany: Indicate howmany guesses should be made.
         :type howmany: int, default=1
@@ -360,15 +369,16 @@ word into consonant and vowel clusters and look for those keys in the sound \
 change dictionary.
         :type clusterised: bool, default=True
 
-        :param struc: Indicate whether words should be filtered out \
+        :param phonotactics_filter: Indicate whether words should be filtered out \
 from the final result if their phonotactic profile does not occur in the \
 phonotactic inventory of target language.
-        :type struc: bool, default=False
+        :type phonotactics_filter: bool, default=False
 
-        :param vowelharmony: Indicate whether words violating the \
-constraint front-back vowelharmony (a word can contain only front or only \
+        :param vowelharmony_filter: Indicate whether words violating the \
+constraint front-back vowelharmony_filter (a word can contain only \
+front or only \
 back vowels) should be filtered.
-        :type vowelharmony: bool, default=False
+        :type vowelharmony_filter: bool, default=False
 
         :param sort_by_nse: Indicate whether results \
 should be sorted by their \
@@ -379,8 +389,10 @@ documentation): "The leftmost iterators are in the \
 outermost for-loop, so the \
 output tuples cycle in a manner similar to an odometer \
 (with the rightmost element changing on every iteration)" \
-
         :type sort_by_nse: bool, default=False
+
+        :param args: This does nothing. Just so sanity.eval_one to be able \
+        to pass on a consistent list of args to both adapt and reconstruct.
 
         :returns: A regular expression approximating \
 the indicated number of predicted reconstructions
@@ -404,26 +416,28 @@ the indicated number of predicted reconstructions
         '^(a)(n)(a)(at͡ʃi|ɣ)$'
         >>> path2forms = path2folder / "forms_3cogs_wot.csv"
         >>> # read etymological data to get phonotactic inventory for filter
-        >>> adrc_obj = Adrc(formscsv=path2forms, srclg="H", \
-tgtlg="EAH", scdictlist=path2sc, mode="reconstruct")
-        >>> adrc_obj.reconstruct("aːruː", howmany=2, struc=True)  \
+        >>> adrc_obj = Adrc(forms_csv=path2forms, source_language="H", \
+target_language="EAH", scdictlist=path2sc, mode="reconstruct")
+        >>> adrc_obj.reconstruct("aːruː", howmany=2, phonotactics_filter=True)  \
 # only CVCV in inventory
         '^anaɣ$'
-        >>> adrc_obj.reconstruct("aːruː", howmany=1, struc=True)  \
+        >>> adrc_obj.reconstruct("aːruː", howmany=1, phonotactics_filter=True)  \
 # low howmany -> empty filter
         'wrong phonotactics'
         >>> adrc_obj.vow2fb["i"] = "B"  # let's assume "i" was a back vowel
-        >>> adrc_obj.reconstruct("aːruː", howmany=4, vowelharmony=True)
+        >>> adrc_obj.reconstruct("aːruː", howmany=4, vowelharmony_filter=True)
         '^anaɣ$'
         >>> # "anaat͡ʃi" got filtered out b/c it contains \
 a front and back vowel
-        >>> # violation of constraint "vowelharmony" in \
+        >>> # violation of constraint "vowelharmony_filter" in \
 terms of optimality theory
-        >>> adrc_obj.reconstruct("aːruː", howmany=1, vowelharmony=True)  \
+        >>> adrc_obj.reconstruct("aːruː", howmany=1, \
+vowelharmony_filter=True)  \
 # low howmany -> empty filter
         'wrong vowel harmony'
         >>> adrc_obj.vow2fb["i"] = "F"  # make "i" a front vowel again
-        >>> adrc_obj.reconstruct("aːruː", howmany=4, vowelharmony=True)  \
+        >>> adrc_obj.reconstruct("aːruː", howmany=4, \
+vowelharmony_filter=True)  \
 # nothing gets filtered
         "^anaat͡ʃi$|^anaɣ$"
         >>> adrc_obj.reconstruct("aːruː", howmany=4, sort_by_nse=True)
@@ -432,7 +446,7 @@ terms of optimality theory
         """
 
         # slice up the input the way it's indicated in param <clusterised>
-        ipalist = clusterise(ipastring) if clusterised else tokenise(ipastring)
+        ipalist = clusterise(ipastr) if clusterised else tokenise(ipastr)
 
         # apply same tagging process as in loanpy.qfysc.Qfy.align_clusterwise
         ipalist[0], ipalist[-1] = f"#{ipalist[0]}", f"{ipalist[-1]}#"
@@ -446,47 +460,57 @@ terms of optimality theory
         out = self.read_sc(ipalist, howmany)
 
         # skip combinatorics, instead return result if these 3 params are False
-        if all(i is False for i in [struc, vowelharmony, sort_by_nse]):
+        if all(i is False or i==0 for i in [phonotactics_filter,
+        vowelharmony_filter, sort_by_nse]):
             return f"^{''.join([list2regex(i) for i in out])}$"
 
         # if one of the 3 params is True however, apply combinatorics
         out = ["".join(i).replace("-", "") for i in product(*out)]
 
         # apply first filter if indicated (wrong phontactics out)
-        if struc is True:
-            out = [i for i in out if self.word2struc(i) in self.struc_inv]
+        if phonotactics_filter is True:
+            out = [i for i in out if self.word2struc(i) in
+            self.phonotactic_inventory]
             if out == []: return "wrong phonotactics"
 
-        # apply 2nd filter if indicated (wrong vowelharmony out)
-        if vowelharmony is True:
+        # apply 2nd filter if indicated (wrong vowelharmony_filter out)
+        if vowelharmony_filter is True:
             out = [i for i in out if self.harmony(i)]
             if out == []: return "wrong vowel harmony"
 
         # sort results by decreasing likelihood (normalised sum of examples)
-        if sort_by_nse is True:
-            nse = map(lambda x: self.get_nse(ipastring, x), out)
-            out = [i[1] for i in sorted(zip(nse, out), reverse=True)]
+        if sort_by_nse:
+            out_nse = [(i, self.get_nse(ipastr, i)) for i in out]  # get nse
+            out_max = pick_minmax(out_nse, sort_by_nse, max)
+            out = list(dict.fromkeys(out_max + out))
 
         # can't have float in slice, but howmany=float("inf") is possible now
         if howmany != float("inf"): out = out[:howmany]
         return f"^{'$|^'.join(out)}$"  # turn list to regular expression
 
-    def adapt_struc(self, ipa_in, max_struc=2, max_paths=1,
-    deletion_cost=100, insertion_cost=49, show_workflow=False):
+    def adapt_phonotactics(self,
+    ipastr,
+    max_repaired_phonotactics=2,
+    max_paths2repaired_phonotactics=1,
+    deletion_cost=100,
+    insertion_cost=49,
+    show_workflow=False):
         """
         Called by loanpy.adrc.Adrc.adapt. \
 Repairs the phonotactic structure of a word.
 
-        :pararm ipa_in: The input word. Will be tokenised if string.
-        :type ipa_in: list | str
+        :pararm ipastr: The input word. Will be tokenised if string.
+        :type ipastr: list | str
 
-        :param max_struc: The maximum number of target phonotactic structures \
+        :param max_repaired_phonotactics: The maximum number of target \
+phonotactic structures \
 into which we want to turn the source structure.
-        :type max_struc: int, default=2
+        :type max_repaired_phonotactics: int, default=2
 
-        :param max_paths: The maximum number of different cheapest ways to \
+        :param max_paths2repaired_phonotactics: The maximum number of \
+different cheapest ways to \
 turn the source structure into the target structure
-        :type max_paths: int, default=1
+        :type max_paths2repaired_phonotactics: int, default=1
 
         :param deletion_cost: The cost of deleting a segment
         :type deletion_cost: int, float, default=100
@@ -512,81 +536,82 @@ phonotactic profile of the input-string and the predicted repaired structures.
         >>> path2forms = path2folder / "forms_3cogs_wot.csv"
         >>> adrc_obj = Adrc(\
 scdictlist=path2sc, \
-formscsv=path2forms, \
-srclg="WOT", \
-tgtlg="EAH")
-        >>> adrc_obj.adapt_struc(ipa_in="kiki", max_struc=1)
+forms_csv=path2forms, \
+source_language="WOT", \
+target_language="EAH")
+        >>> adrc_obj.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=1)
         [['k', 'i', 'k', 'i']]
-        >>> adrc_obj.adapt_struc(ipa_in="kiki", max_struc=2)
+        >>> adrc_obj.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2)
         [['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i']]
-        >>> adrc_obj.adapt_struc(ipa_in="kiki", max_struc=2, max_paths=2)
+        >>> adrc_obj.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2, \
+max_paths2repaired_phonotactics=2)
         >>> #C can get inserted before or after k
         [['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i'], ['k', 'i', 'k', 'C', 'i']]
-        >>> adrc_obj.scdict_struc = {}  # empty sound corresp \
+        >>> adrc_obj.scdict_phonotactics = {}  # empty sound corresp \
 data triggers heuristics
-        >>> adrc_obj.adapt_struc(ipa_in="kiki", max_struc=2, \
+        >>> adrc_obj.adapt_phonotactics(ipastr="kiki", max_repaired_phonotactics=2, \
 show_workflow=True)
         [['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C']]
         >>> adrc_obj.workflow
-        OrderedDict([('donor_struc', ['CVCV']), ('pred_strucs', \
+        OrderedDict([('donor_phonotactics', ['CVCV']), ('predicted_phonotactics', \
 [['VCVCV', 'VCVC']])])
 
         """
 
         # tokenise if input is string
-        if isinstance(ipa_in, str): ipa_in = tokenise(ipa_in)
-        # if only 1 guess the safest is: the struture stays the same
-        if max_struc == 1: return [ipa_in]
+        if isinstance(ipastr, str): ipastr = tokenise(ipastr)
         # get phonotactic profile of input string
-        donorstruc = self.word2struc(ipa_in)
+        if max_repaired_phonotactics == 0: return [ipastr]
+        donorstruc = self.word2struc(ipastr)
         # append to workflow if indicated, to check if this went correctly
-        if show_workflow: self.workflow["donor_struc"] = str(donorstruc)
+        if show_workflow: self.workflow["donor_phonotactics"] = str(donorstruc)
         # check if there is data available for this structure
-        try: pred_strucs = self.scdict_struc[donorstruc][:max_struc]
+        try: predicted_phonotactics = self.scdict_phonotactics[donorstruc][:max_repaired_phonotactics]
         # if not use heuristics: pick n most similar strucs from inventory
-        except KeyError: pred_strucs = self.rank_closest_struc(donorstruc,
-        max_struc).split(", ")
+        except KeyError: predicted_phonotactics = self.rank_closest_phonotactics(donorstruc,
+        max_repaired_phonotactics).split(", ")
         # append this step to workflow for debugging, if indicated
-        if show_workflow: self.workflow["pred_strucs"] = str(pred_strucs)
+        if show_workflow: self.workflow["predicted_phonotactics"] = str(predicted_phonotactics)
         # get edit operations between strucs and apply them to input ipa-string
-        return flatten([[apply_edit(ipa_in, edop) for edop in
-        editops(donorstruc, pred, max_paths, deletion_cost, insertion_cost)
-        ] for pred in pred_strucs])
+        return flatten([[apply_edit(ipastr, edop) for edop in
+        editops(donorstruc, pred, max_paths2repaired_phonotactics, deletion_cost,
+        insertion_cost)] for pred in predicted_phonotactics])
 
     def adapt(self,
-    ipa_in,
+    ipastr,
     howmany=1,
-    max_struc=1,
-    max_paths=1,
+    cluster_filter=False,
+    phonotactics_filter=False,
+    repair_vowelharmony=False,
+    sort_by_nse=False,
+    max_repaired_phonotactics=0,
+    max_paths2repaired_phonotactics=1,
     deletion_cost=100,
     insertion_cost=49,
-    vowelharmony=False,
-    clusterised=False,
-    sort_by_nse=False,
-    struc_filter=False,
     show_workflow=False):
         """
         Takes a word as input and makes predictions based on available data \
 and heuristics how it could be repaired when entering target \
 language as a loan.
 
-        :param ipa_in: The non-tokenised input word. Should consist only of \
+        :param ipastr: The non-tokenised input word. Should consist only of \
 valid ipa-characters, as defined in ipa_all.csv's column "ipa", even though \
 the tokeniser handles invalid characters quite well. Make sure this is not \
 an empty string.
-        :type ipa_in: str
+        :type ipastr: str
 
         :param howmany: Indicate howmany guesses should be made.
         :type howmany: int, default=1
 
-        :param max_struc: Indicate howmany of the most similar \
+        :param max_repaired_phonotactics: Indicate howmany of the most similar \
 available structures \
 from the phonotactic inventory should be taken into consideration.
-        :type max_struc: int, default=1
+        :type max_repaired_phonotactics: int, default=1
 
-        :param max_paths: Indicate in maximum howmany different ways \
+        :param max_paths2repaired_phonotactics: Indicate in maximum howmany \
+different ways \
 each phonotactic structure should be repaired.
-        :type max_paths: int, default=1
+        :type max_paths2repaired_phonotactics: int, default=1
 
         :param deletion_cost: The cost of deleting a phoneme
         :type deletion_cost: int | float, default=100
@@ -594,27 +619,34 @@ each phonotactic structure should be repaired.
         :param insertion_cost: The cost of inserting a phoneme
         :type insertion_cost: int | float, default=49
 
-        :param vowelharmony: Indicate whether violations of front-back \
-vowelharmony should be repaired.
-        :type vowelharmony: bool, default=False
+        :param repair_vowelharmony: Indicate whether violations of front-back \
+repair_vowelharmony should be repaired.
+        :type repair_vowelharmony: bool, default=False
 
-        :param clusterised: This is a filter. It throws out all words that \
+        :param cluster_filter: This is a filter. It throws out all words that \
 contain vowel or consonant clusters that are not documented in the target \
 language.
-        :type clusterised: bool, default=False
+        :type cluster_filter: bool, default=False
 
         :param sort_by_nse: Indicate whether results should \
 be sorted by their \
 likelihood. Can be costly to calculate.
         :type sort_by_nse: bool, default=False
 
-        :param struc_filter: Indicate whether words should be filtered out \
+        :param phonotactics_filter: Indicate whether words should be filtered out \
 from the final result if their phonotactic profile does not occur in the \
 phonotactic inventory of target language.
-        :type struc_filter: bool, default=False
+        :type phonotactics_filter: bool, default=False
 
         :param show_workflow: Indicate if the workflow should be attached \
-to the output. Useful for debugging and makes it less black-boxy.
+to the output. Useful for debugging and makes it less black-boxy. \
+The single steps are added as keys to the Adrc-attribute <workflow>. The \
+number of keys varies between 2-5, depending on the arguments \
+passed on to this function. \
+Keys "tokenised" and "adapted_phonotactics" are always there. Keys "donor_phonotactics" \
+and "predicted_phonotactics" are only added if param <max_repaired_phonotactics> was \
+set to greater than 0. Key "adapted_vowelharmony" is only added if \
+param <repair_vowelharmony> was set to True.
         :type show_workflow: bool, default=False
 
         :Example:
@@ -627,69 +659,78 @@ to the output. Useful for debugging and makes it less black-boxy.
         >>> path2forms = path2folder / "forms_3cogs_wot.csv"
         >>> adrc_obj = Adrc(\
 scdictlist=path2sc, \
-formscsv=path2forms, \
-srclg="WOT", \
-tgtlg="EAH")
-        >>> adrc_obj.adapt(ipa_in="dade", howmany=5)
+forms_csv=path2forms, \
+source_language="WOT", \
+target_language="EAH")
+        >>> adrc_obj.adapt(ipastr="dade", howmany=5)
         "dady, datʰy, dedy, detʰy, tʰady"
         >>> # repair phonotactics with data hard-coded in "sc_ad_handmade.txt"
         >>> # Usually this is the same as data extracted from forms.csv
         >>> # But now due to illustrative purposes they are different.
-        >>> adrc_obj.adapt(ipa_in="dade", howmany=6, max_struc=2)
+        >>> adrc_obj.adapt(ipastr="dade", howmany=6, max_repaired_phonotactics=2)
         "dad, ded, tʰad, tʰed, dajdy, dejdy"
-        >>> # max_paths=2 causes j to be inserted before AND after d
-        >>> adrc_obj.adapt(ipa_in="dade", howmany=6, max_struc=2, max_paths=2)
+        >>> # max_paths2repaired_phonotactics=2 causes j to be \
+inserted before AND after d
+        >>> adrc_obj.adapt(ipastr="dade", howmany=6, max_repaired_phonotactics=2, \
+max_paths2repaired_phonotactics=2)
         "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
         >>> adrc_obj.vow2fb["e"] = "B"  # let's assume "e" was a backvowel.
-        >>> # repair vowelharmony before substituting: dade->dadF
-        >>> adrc_obj.adapt(vowelharmony=True, ipa_in="dade", howmany=6, \
-max_struc=2, max_paths=2)
+        >>> # repair repair_vowelharmony before substituting: dade->dadF
+        >>> adrc_obj.adapt(repair_vowelharmony=True, ipastr="dade", \
+howmany=6, \
+max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         "dad, tʰad, dajdæ, tʰajdæ, dujdy, tʰujdy"
-        >>> # phonotactic inventory for struc_filter is calculated \
+        >>> # phonotactic inventory for phonotactics_filter is calculated \
 from forms.csv!
         >>> # contains only structures of the 3 words occuring in \
 the target lg EAH
-        >>> adrc_obj.struc_inv  # this will filter out all results
+        >>> adrc_obj.phonotactic_inventory  # this will filter out all results
         {'VCVC', 'VCVCV', 'VCCVC'}
-        >>> adrc_obj.adapt(struc_filter=True, vowelharmony=True, \
-ipa_in="dade", howmany=6, max_struc=2, max_paths=2)
+        >>> adrc_obj.adapt(phonotactics_filter=True, repair_vowelharmony=True, \
+ipastr="dade", howmany=6, max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         'wrong phonotactics'
-        >>> adrc_obj.struc_inv.add('CVCCV')  # so let's assume CVCCV \
+        >>> adrc_obj.phonotactic_inventory.add('CVCCV')  \
+# so let's assume CVCCV \
 was in the inventory
-        >>> adrc_obj.adapt(struc_filter=True, vowelharmony=True, \
-ipa_in="dade", howmany=6, max_struc=2, max_paths=2)
+        >>> adrc_obj.adapt(phonotactics_filter=True, repair_vowelharmony=True, \
+ipastr="dade", howmany=6, max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         "dajdæ, tʰajdæ, dujdy, tʰujdy, dadjæ, tʰadjæ"
         >>> # now let's filter out all clusters undocumented in forms.csv
         >>> adrc_obj.clusters  # only these clusters are allowed
         {'ld', 't͡ʃ', 'j', 'ɣ', 'a', 'n', 'ia'}
-        >>> adrc_obj.adapt(clusterised=True, struc_filter=True, \
-vowelharmony=True, ipa_in="dade", howmany=6, max_struc=2, max_paths=2)
+        >>> adrc_obj.adapt(cluster_filter=True, phonotactics_filter=True, \
+repair_vowelharmony=True, ipastr="dade", howmany=6, max_repaired_phonotactics=2, \
+max_paths2repaired_phonotactics=2)
         "wrong clusters"
         >>>  # let's use a different sound correspondence file
         >>> path2sc = path2folder / "sc_ad_handmade2.txt"
         >>> adrc_obj = Adrc(\
 scdictlist=path2sc, \
-formscsv=path2forms, \
-srclg="WOT", \
-tgtlg="EAH")
-        >>> adrc_obj.struc_inv.add('CVCCV')
+forms_csv=path2forms, \
+source_language="WOT", \
+target_language="EAH")
+        >>> adrc_obj.phonotactic_inventory.add('CVCCV')
         >>> # let's ramp up the combinatorics
-        >>> adrc_obj.adapt(howmany=1000, clusterised=True, struc_filter=True, \
-vowelharmony=True, ipa_in="dade", max_struc=2, max_paths=2)
+        >>> adrc_obj.adapt(howmany=1000, cluster_filter=True, \
+phonotactics_filter=True, \
+repair_vowelharmony=True, ipastr="dade", max_repaired_phonotactics=2, \
+max_paths2repaired_phonotactics=2)
         't͡ʃalda'
         >>> adrc_obj.clusters.add("d")  # let's assume d was an allowed cluster
-        >>> adrc_obj.adapt(howmany=1000, clusterised=True, \
-struc_filter=True, vowelharmony=True, ipa_in="dade", max_struc=2, max_paths=2)
+        >>> adrc_obj.adapt(howmany=1000, cluster_filter=True, \
+phonotactics_filter=True, repair_vowelharmony=True, ipastr="dade", \
+max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         'dalda, t͡ʃalda'
         >>> # now sort results by likelihood (nse) and document workflow
         >>> adrc_obj.adapt(sort_by_nse=True, show_workflow=True, \
-howmany=1000, clusterised=True, \
-struc_filter=True, vowelharmony=True, ipa_in="dade", max_struc=2, max_paths=2)
+howmany=1000, cluster_filter=True, \
+phonotactics_filter=True, repair_vowelharmony=True, ipastr="dade", \
+max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         't͡ʃalda, dalda'
         >>> adrc_obj.workflow
         OrderedDict([('tokenised', \
-[['d', 'a', 'd', 'e']]), ('donor_struc', ['CVCV']), ('pred_strucs', \
-[['CVC', 'CVCCV']]), ('adapted_struc', [[['d', 'a', 'd'], \
+[['d', 'a', 'd', 'e']]), ('donor_phonotactics', ['CVCV']), ('predicted_phonotactics', \
+[['CVC', 'CVCCV']]), ('adapted_phonotactics', [[['d', 'a', 'd'], \
 ['d', 'a', 'C', 'd', 'e'], ['d', 'a', 'd', 'C', 'e']]]), \
 ('adapted_vowelharmony', \
 [[['d', 'a', 'd'], ['d', 'a', 'C', 'd', 'e'], \
@@ -701,22 +742,27 @@ struc_filter=True, vowelharmony=True, ipa_in="dade", max_struc=2, max_paths=2)
 
         """
         # distribute howmany so that the product of these three approximates it
-        max_phon, max_struc, max_paths = get_howmany(
-        howmany, max_struc, max_paths)
+        max_phon, max_repaired_phonotactics, max_paths2repaired_phonotactics = get_howmany(
+        howmany, max_repaired_phonotactics, max_paths2repaired_phonotactics)
         # reset workflow variable, tokenise input (must be untokenised ipa str)
-        self.workflow, out = OrderedDict(), tokenise(ipa_in)
+        self.workflow, out = OrderedDict(), tokenise(ipastr)
         # document the tokenisation if indicated
         if show_workflow: self.workflow["tokenised"] = str(out)
 
-        # repair the phonotactic structure. With max_struc=1 nothing happens
-        out = self.adapt_struc(out,
-        max_struc, max_paths, deletion_cost, insertion_cost, show_workflow)
+        # repair the phonotactic structure if indicated
+        out = self.adapt_phonotactics(
+        out,
+        max_repaired_phonotactics,
+        max_paths2repaired_phonotactics,
+        deletion_cost,
+        insertion_cost,
+        show_workflow)
         # document how structure was repaired if indicated
-        if show_workflow: self.workflow["adapted_struc"] = str(out)
+        if show_workflow: self.workflow["adapted_phonotactics"] = str(out)
 
-        if vowelharmony:  # repair vowel harmony if indicated
+        if repair_vowelharmony:  # repair vowel harmony if indicated
             out = flatten(map(self.adapt_harmony, out))
-            # document how vowelharmony was repaired if indicated
+            # document how repair_vowelharmony was repaired if indicated
             if show_workflow: self.workflow["adapted_vowelharmony"] = str(out)
 
         # read possible sound correspondences for each phoneme
@@ -729,25 +775,26 @@ struc_filter=True, vowelharmony=True, ipa_in="dade", max_struc=2, max_paths=2)
         out = combine_ipalists(out)
 
         # phonotactics repaired, still: 1 phoneme can correspond to +-1 phoneme
-        if struc_filter:  # structure not in target lg's phonotactic inventory
-            out = [i for i in out if self.word2struc(i) in self.struc_inv]
+        if phonotactics_filter:  # structure not in target lg's phonotactic inventory
+            out = [i for i in out if self.word2struc(i)
+            in self.phonotactic_inventory]
             #  indicate empty filter and return if necessary
             if out == []: return "wrong phonotactics"
 
-        if clusterised:  # filter clusters not in target lg's cluster inventory
+        if cluster_filter:  # filter clusters not in target lg's cluster inventory
             out = [wrd for wrd in out
-                   if all(cl in self.clusters for cl in clusterise(wrd))]
+                   if all(cl in self.cluster_inventory for cl
+                   in clusterise(wrd))]
             # indicate empty filter and return if necessary
             if out == []: return "wrong clusters"
 
         if sort_by_nse:  # sort resutls by likelyhood (nse) if indicated
-            out = [(self.get_nse(ipa_in, i), i) for i in out]  # get nse
-            out.sort(key=itemgetter(0), reverse=True)  # sort by it
-            out = [i[1] for i in out]  # discard nse, keep results
+            out_nse = [(i, self.get_nse(ipastr, i)) for i in out]  # get nse
+            out = pick_minmax(out_nse, sort_by_nse, max, True)
 
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
 
-    def get_nse(self, left, right, show_workflow=False):
+    def get_nse(self, left, right):
         """
         Called by loanpy.adrc.Adrc.adapt, loanpy.adrc.Adrc.reconstruct, \
 loanpy.loanfinder.Search, loanpy.loanfinder.likeliestphonmatch. \
@@ -792,9 +839,9 @@ calculated.
         >>> path2forms = path2folder / "forms_3cogs_wot.csv"
         >>> adrc_obj = Adrc(\
 scdictlist=path2sc, \
-formscsv=path2forms, \
-srclg="WOT", \
-tgtlg="EAH")
+forms_csv=path2forms, \
+source_language="WOT", \
+target_language="EAH")
         >>> adrc_obj.get_nse("dade", "dady")
         33.25
         >>> adrc_obj.get_nse("dade", "dady", se=False)
@@ -803,9 +850,7 @@ tgtlg="EAH")
         (33.25, 133, [1, 6, 1, 125])
         """
         # self.align can't handle empty strings as input!
-        if (not left or not right) and show_workflow is False: return 0
-        if (not left or not right) and show_workflow is True: return (
-        0, 0, [0], [])
+        if not left or not right: return (0, 0, [0], [])
         # align the two input strings
         dfsc = self.align(left, right)
         # turn alignment-df into one pandas Series of sound correspondences
@@ -818,7 +863,4 @@ adapt"  else dfsc["keys"] + self.connector + dfsc["vals"]
         # divide the sum through the length of the word, round on 2 decimals
         normalised_outsum = round(outsum / len(dfsc), 2)
         # add the in-between-steps if indicated so (useful for debugging)
-        if show_workflow is True:
-            return normalised_outsum, outsum, str(outlist), str(list(sc))
-        # return only the normalised value (nse) if show_workflow is not True
-        return normalised_outsum
+        return normalised_outsum, outsum, str(outlist), str(list(sc))

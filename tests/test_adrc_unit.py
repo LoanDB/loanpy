@@ -79,7 +79,7 @@ def test_init():
             assert monkey_adrc.scdict is None
             assert monkey_adrc.sedict is None
             assert monkey_adrc.edict is None
-            assert monkey_adrc.scdict_struc is None
+            assert monkey_adrc.scdict_phonotactics is None
             assert monkey_adrc.workflow == OrderedDict()
 
             # double check with __dict__
@@ -87,13 +87,15 @@ def test_init():
             assert monkey_adrc.__dict__ == {
                 'edict': None,
                 'scdict': None,
-                'scdict_struc': None,
+                'scdict_phonotactics': None,
                 'sedict': None,
                 'workflow': OrderedDict()}
 
     #assert calls
-    super_method_mock.assert_called_with(formscsv=None, srclg=None, tgtlg=None,
-    struc_most_frequent=9999999, struc_inv=None, mode=None, connector=None,
+    super_method_mock.assert_called_with(forms_csv=None,
+    source_language=None, target_language=None,
+    most_frequent_phonotactics=9999999, phonotactic_inventory=None,
+    mode=None, connector=None,
     scdictbase=None, vfb=None)
     assert read_scdictlist_mock.call_args_list == [call(None)]
 
@@ -108,15 +110,15 @@ def test_init():
             read_scdictlist_mock.return_value = [d0, d1, d2, d3]
             monkey_adrc = Adrc(
                 scdictlist="soundchanges.txt",
-                formscsv="forms.csv",
+                forms_csv="forms.csv",
                 mode="reconstruct",
-                struc_most_frequent=2)
+                most_frequent_phonotactics=2)
 
             # assert initiation went correctly
             assert monkey_adrc.scdict == d0
             assert monkey_adrc.sedict == d1
             assert monkey_adrc.edict == d2
-            assert monkey_adrc.scdict_struc == d3
+            assert monkey_adrc.scdict_phonotactics == d3
             assert monkey_adrc.workflow == OrderedDict()
 
             # double check with __dict__
@@ -124,14 +126,15 @@ def test_init():
             assert monkey_adrc.__dict__ == {
                 'edict': {'d2': None},
                 'scdict': {'d0': None},
-                'scdict_struc': {'d3': None},
+                'scdict_phonotactics': {'d3': None},
                 'sedict': {'d1': None},
                 'workflow': OrderedDict()}
 
     #assert calls
     super_method_mock.assert_called_with(
-        formscsv='forms.csv', srclg=None, tgtlg=None, struc_most_frequent=2,
-        struc_inv=None, mode='reconstruct', connector=None,
+        forms_csv='forms.csv', source_language=None, target_language=None,
+        most_frequent_phonotactics=2,
+        phonotactic_inventory=None, mode='reconstruct', connector=None,
         scdictbase=None, vfb=None)
     assert read_scdictlist_mock.call_args_list == [call("soundchanges.txt")]
 
@@ -229,7 +232,8 @@ def test_read_sc():
         prod_mock.return_value = 16
 
         # assert
-        assert Adrc.read_sc(self=monkey_adrc, ipa=["k", "i", "k", "i"], howmany=1000) == [
+        assert Adrc.read_sc(self=monkey_adrc, ipa=["k", "i", "k", "i"],
+        howmany=1000) == [
             ["k", "h"], ["e", "o"], ["k", "h"], ["e", "o"]]
 
     # assert 3 calls: get_diff, prod_mock, tokenise
@@ -264,7 +268,8 @@ def test_read_sc():
         with patch("loanpy.adrc.prod", side_effect=[4, 1, 2]) as prod_mock:
 
             # assert sound correspondences are read in correctly
-            assert Adrc.read_sc(self=monkey_adrc, ipa=["k", "i"], howmany=2) == [
+            assert Adrc.read_sc(self=monkey_adrc, ipa=["k", "i"],
+            howmany=2) == [
                 ["k", "h"], ["e"]]
 
     # assert 3 calls: prod_mock, get_diff, move_sc
@@ -280,7 +285,8 @@ def test_read_sc():
     # set up mock class, plug in mock scdict,
     #def var for side_effect of move_sc, mock move_sc, mock math.prod
     monkey_adrc = AdrcMonkeyread_sc(get_diff=[[2, 2, 5], [2, 2, 5], [3, 2, 5]])
-    monkey_adrc.scdict = {"k": ["k", "h", "s"], "i": ["e", "o"], "p": ["b", "v"]}
+    monkey_adrc.scdict = {"k": ["k", "h", "s"], "i": ["e", "o"],
+    "p": ["b", "v"]}
     se_move_sc = [
         ([["s", "$"], ["o", "$"], ["v", "$"]], [["k", "h"], ["e"], ["b"]]),
         ([["s", "$"], ["$"], ["v", "$"]], [["k", "h"], ["e", "o"], ["b"]])
@@ -299,7 +305,8 @@ def test_read_sc():
     assert prod_mock.call_args_list == [call([3, 2, 2]), call(
         [1, 1, 1]), call([1, 1, 1]), call([2, 1, 1]), call([2, 2, 1])]
     assert monkey_adrc.get_diff_called_with == [
-        ([["k", "h", "s", "$"], ["e", "o", "$"], ["b", "v", "$"]], ["k", "i", "p"]),
+        ([["k", "h", "s", "$"], ["e", "o", "$"], ["b", "v", "$"]],
+        ["k", "i", "p"]),
         ([["s", "$"], ["o", "$"], ["v", "$"]], ["k", "i", "p"]),
         ([["s", "$"], ["$"], ["v", "$"]], ["k", "i", "p"])]
     assert move_sc_mock.call_args_list == [
@@ -318,27 +325,31 @@ def test_reconstruct():
 
     # set up mock class, plug in mock scdict, mock clusterise
     monkey_adrc = AdrcMonkey()
-    monkey_adrc.scdict = {"#-": ["-"], "#k": ["k", "h"], "k": ["h"], "-#": ["-"]}
+    monkey_adrc.scdict = {"#-": ["-"], "#k": ["k", "h"], "k": ["h"],
+    "-#": ["-"]}
     with patch("loanpy.adrc.clusterise") as clusterise_mock:
         clusterise_mock.return_value = list("kiki")
 
         # assert reconstruct works
         assert Adrc.reconstruct(
             self=monkey_adrc,
-            ipastring="kiki") == "i, i# not old"
+            ipastr="kiki") == "i, i# not old"
 
     # assert 1 call: clusterise
     clusterise_mock.assert_called_with("kiki")
 
-    # test 2nd break: struc and vowelharmony are False
+    # test 2nd break: phonotactics_filter and vowelharmony_filter are False
 
     # set up mock class, will be used multiple times throughout this test
     class AdrcMonkeyReconstruct:
-        def __init__(self, read_sc_returns, harmony_returns=""):
+        def __init__(self,
+        read_sc_returns,
+        harmony_returns="",
+        word2phonotactics_returns=["CVCV", "CVVCV", "CVCV", "CVVCV"]):
             self.read_sc_called_with = []
             self.read_sc_returns = read_sc_returns
-            self.word2struc_returns = iter(["CVCV", "CVVCV", "CVCV", "CVVCV"])
-            self.word2struc_called_with = []
+            self.word2phonotactics_returns = iter(word2phonotactics_returns)
+            self.word2phonotactics_called_with = []
             self.harmony_returns = iter(harmony_returns)
             self.harmony_called_with = []
             self.get_nse_returns = iter([20, 4, 99, 17])
@@ -349,8 +360,8 @@ def test_reconstruct():
             return self.read_sc_returns
 
         def word2struc(self, *args):
-            self.word2struc_called_with.append([*args])
-            return next(self.word2struc_returns)
+            self.word2phonotactics_called_with.append([*args])
+            return next(self.word2phonotactics_returns)
 
         def harmony(self, *args):
             self.harmony_called_with.append([*args])
@@ -378,7 +389,7 @@ def test_reconstruct():
             # assert reconstruct works
             assert Adrc.reconstruct(
                 self=monkey_adrc,
-                ipastring="kiki",
+                ipastr="kiki",
                 clusterised=False) == "^(k)(i)(h)(e)$"
 
     # assert 3 calls: tokenise, read_sc, list2regex
@@ -407,7 +418,7 @@ def test_reconstruct():
             # assert reconstruct works
             assert Adrc.reconstruct(
                 self=monkey_adrc,
-                ipastring="kiki",
+                ipastr="kiki",
                 howmany=2) == "^(k|h)(i)(h)(e)$"
 
     # assert 3 calls: clusterise, read_sc, list2regex
@@ -417,17 +428,17 @@ def test_reconstruct():
     assert list2regex_mock.call_args_list == [
     call(["-"]), call(["k", "h"]), call(["i"]),
     call(["h"]), call(["e"]), call(["-"])]
-    # test with struc=True
+    # test with phonotactics_filter=True
 
     # teardown/setup: overwrite mock class, plug in mock scdict,
-    # plug in mock struc_inv
+    # plug in mock phonotactic_inventory
     monkey_adrc = AdrcMonkeyReconstruct(
         read_sc_returns=[["-"], ["k", "h"], ["i", "ei"], ["h"], ["e"], ["-"]])
     monkey_adrc.scdict = {
         "#-": ["-"], "#k": ["k", "h"], "i": ["i", "ei"],
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
-    monkey_adrc.struc_inv = ["CVVCV"]
+    monkey_adrc.phonotactic_inventory = ["CVVCV"]
 
     # set up: mock tokenise
     with patch("loanpy.adrc.tokenise") as tokenise_mock:
@@ -436,28 +447,29 @@ def test_reconstruct():
         # assert reconstruct works
         assert Adrc.reconstruct(
             self=monkey_adrc,
-            ipastring="kiki",
+            ipastr="kiki",
             howmany=3,
-            struc=True,
+            phonotactics_filter=True,
             clusterised=False) == "^keihe$|^heihe$"
 
     # assert 3 calls: tokenise, read_sc, word2struc
     tokenise_mock.assert_called_with("kiki")
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 3)]
-    assert monkey_adrc.word2struc_called_with == [
+    assert monkey_adrc.word2phonotactics_called_with == [
         ["kihe"], ["keihe"], ["hihe"], ["heihe"]]
 
-    # test struc=True, result empty
+    # test phonotactics_filter=True, result empty
 
-    # teardown/setup: overwrite mock class, plug in mock scdict and struc_inv
+    # teardown/setup: overwrite mock class, plug in mock scdict
+    # and phonotactic_inventory
     monkey_adrc = AdrcMonkeyReconstruct(
         read_sc_returns=[["-"], ["k", "h"], ["i", "ei"], ["h"], ["e"], ["-"]])
     monkey_adrc.scdict = {
         "#-": ["-"], "#k": ["k", "h"], "i": ["i", "ei"],
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
-    monkey_adrc.struc_inv = ["CCCVVVVCV"]
+    monkey_adrc.phonotactic_inventory = ["CCCVVVVCV"]
 
     # set up: mock clusterise
     with patch("loanpy.adrc.clusterise") as clusterise_mock:
@@ -465,26 +477,27 @@ def test_reconstruct():
 
         # assert reconstruct works
         assert Adrc.reconstruct(
-            self=monkey_adrc, ipastring="kiki", howmany=3, struc=True
+            self=monkey_adrc, ipastr="kiki", howmany=3, phonotactics_filter=True
         ) == "wrong phonotactics"
 
     # assert 3 calls: clusterise, read_sc, word2struc
     clusterise_mock.assert_called_with("kiki")
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 3)]
-    assert monkey_adrc.word2struc_called_with == [
+    assert monkey_adrc.word2phonotactics_called_with == [
         ["kihe"], ["keihe"], ["hihe"], ["heihe"]]
 
-    # test struc=True, result empty, clusterised=False
+    # test phonotactics_filter=True, result empty, clusterised=False
 
-    # teardown/setup: overwrite mock class, plug in mock scdict, struc_inv
+    # teardown/setup: overwrite mock class, plug in mock scdict,
+    # phonotactic_inventory
     monkey_adrc = AdrcMonkeyReconstruct(
         read_sc_returns=[["-"], ["k", "h"], ["i", "ei"], ["h"], ["e"], ["-"]])
     monkey_adrc.scdict = {
         "#-": ["-"], "#k": ["k", "h"], "i": ["i", "ei"],
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
-    monkey_adrc.struc_inv = ["CCCVVVVCV"]
+    monkey_adrc.phonotactic_inventory = ["CCCVVVVCV"]
 
     # set up: mock tokenise
     with patch("loanpy.adrc.tokenise") as tokenise_mock:
@@ -493,19 +506,19 @@ def test_reconstruct():
         # assert reconstruct works (returns an error message as string)
         assert Adrc.reconstruct(
             self=monkey_adrc,
-            ipastring="kiki",
+            ipastr="kiki",
             howmany=3,
-            struc=True,
+            phonotactics_filter=True,
             clusterised=False) == "wrong phonotactics"
 
     # assert 3 calls: tokenise, read_sc, word2struc
     tokenise_mock.assert_called_with("kiki")
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 3)]
-    assert monkey_adrc.word2struc_called_with == [
+    assert monkey_adrc.word2phonotactics_called_with == [
         ["kihe"], ["keihe"], ["hihe"], ["heihe"]]
 
-    # test vowelharmony=True
+    # test vowelharmony_filter=True
 
     # teardown/setup: overwrite mock class, plug in scdict
     monkey_adrc = AdrcMonkeyReconstruct(read_sc_returns=[
@@ -521,12 +534,12 @@ def test_reconstruct():
     with patch("loanpy.adrc.tokenise") as tokenise_mock:
         tokenise_mock.return_value = list("kiki")
 
-        # assert reconstruct works
+        # assert reconstruct works with vowelharmony_filter=True
         assert Adrc.reconstruct(
             self=monkey_adrc,
-            ipastring="kiki",
+            ipastr="kiki",
             howmany=3,
-            vowelharmony=True,
+            vowelharmony_filter=True,
             clusterised=False) == "^kihe$|^hihe$"
 
     # assert 3 calls: tokenise, read_sc, harmony
@@ -536,7 +549,7 @@ def test_reconstruct():
     assert monkey_adrc.harmony_called_with == [
         ["kihe"], ["kohe"], ["hihe"], ["hohe"]]
 
-    # test vowelharmony=True, result is empty
+    # test vowelharmony_filter=True, result is empty
 
     # teardowns/setup: overwrite mock class, plug in scdict
     monkey_adrc = AdrcMonkeyReconstruct(
@@ -555,9 +568,9 @@ def test_reconstruct():
         # assert reconstruct works (returns error message as string)
         assert Adrc.reconstruct(
             self=monkey_adrc,
-            ipastring="kiki",
+            ipastr="kiki",
             howmany=3,
-            vowelharmony=True,
+            vowelharmony_filter=True,
             clusterised=False) == "wrong vowel harmony"
 
     # assert 3 calls: tokenise, read_sc, harmony
@@ -572,7 +585,7 @@ def test_reconstruct():
     # teardown/setup: overwrite mock class, plug in scdict
     monkey_adrc = AdrcMonkeyReconstruct(
         read_sc_returns=[["-"], ["k", "h"], ["i", "o"], ["h"], ["e"], ["-"]],
-    )
+    )  # unsorted: kihe, kohe, hihe, hohe (like odometer, help(itertools.prod))
     monkey_adrc.scdict = {
         "#-": ["-"], "#k": ["k", "h"], "i": ["i", "o"],
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
@@ -581,66 +594,261 @@ def test_reconstruct():
     # set up: mock tokenise
     with patch("loanpy.adrc.tokenise") as tokenise_mock:
         tokenise_mock.return_value = list("kiki")
+        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+            pick_minmax_mock.return_value = ["hihe", "kihe", "hohe", "kohe"]
 
-        # assert reconstruct works and sorts the result by nse
-        assert Adrc.reconstruct(
-            self=monkey_adrc,
-            ipastring="kiki",
-            howmany=float("inf"),
-            sort_by_nse=True,
-            clusterised=False) == "^hihe$|^kihe$|^hohe$|^kohe$"
+            # assert reconstruct works and sorts the result by nse
+            assert Adrc.reconstruct(
+                self=monkey_adrc,
+                ipastr="kiki",
+                howmany=float("inf"),
+                sort_by_nse=True,
+                clusterised=False) == "^hihe$|^kihe$|^hohe$|^kohe$"
 
     # assert 3 calls: tokenise, read_sc, and get_nse
     tokenise_mock.assert_called_with("kiki")
+    pick_minmax_mock.assert_called_with([
+    ("kihe", 20), ("kohe", 4), ("hihe", 99), ("hohe", 17)], True, max)
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
     assert monkey_adrc.get_nse_called_with == [["kiki", "kihe"], [
         "kiki", "kohe"], ["kiki", "hihe"], ["kiki", "hohe"]]
 
+    # test sort_by_nse=1
+
+    # teardown/setup: overwrite mock class, plug in scdict
+    monkey_adrc = AdrcMonkeyReconstruct(
+        read_sc_returns=[["-"], ["k", "h"], ["i", "o"], ["h"], ["e"], ["-"]],
+    )  # unsorted: kihe, kohe, hihe, hohe (like odometer, help(itertools.prod))
+    monkey_adrc.scdict = {
+        "#-": ["-"], "#k": ["k", "h"], "i": ["i", "o"],
+        "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
+    }
+
+    # set up: mock tokenise, pick_minmax
+    with patch("loanpy.adrc.tokenise") as tokenise_mock:
+        tokenise_mock.return_value = list("kiki")
+        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+            pick_minmax_mock.return_value = ["hihe"]
+
+            # assert reconstruct works and picks 1 word with highest nse
+            assert Adrc.reconstruct(
+                self=monkey_adrc,
+                ipastr="kiki",
+                howmany=float("inf"),
+                sort_by_nse=1,
+                clusterised=False) == "^hihe$|^kihe$|^kohe$|^hohe$"
+
+    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
+    tokenise_mock.assert_called_with("kiki")
+    pick_minmax_mock.assert_called_with(
+    [("kihe", 20), ("kohe", 4), ("hihe", 99), ("hohe", 17)], 1, max)
+    assert monkey_adrc.read_sc_called_with == [
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+    assert monkey_adrc.get_nse_called_with == [["kiki", "kihe"], [
+        "kiki", "kohe"], ["kiki", "hihe"], ["kiki", "hohe"]]
+
+    # test sort_by_nse=2
+
+    # teardown/setup: overwrite mock class, plug in scdict
+    monkey_adrc = AdrcMonkeyReconstruct(
+        read_sc_returns=[["-"], ["k", "h"], ["i", "o"], ["h"], ["e"], ["-"]],
+    )  # unsorted: kihe, kohe, hihe, hohe (like odometer, help(itertools.prod))
+    monkey_adrc.scdict = {
+        "#-": ["-"], "#k": ["k", "h"], "i": ["i", "o"],
+        "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
+    }
+
+    # set up: mock tokenise, pick_minmax
+    with patch("loanpy.adrc.tokenise") as tokenise_mock:
+        tokenise_mock.return_value = list("kiki")
+        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+            pick_minmax_mock.return_value = ["hihe", "kihe"]
+
+            # assert reconstruct works and picks 1 word with highest nse
+            assert Adrc.reconstruct(
+                self=monkey_adrc,
+                ipastr="kiki",
+                howmany=float("inf"),
+                sort_by_nse=2,
+                clusterised=False) == "^hihe$|^kihe$|^kohe$|^hohe$"
+
+    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
+    tokenise_mock.assert_called_with("kiki")
+    pick_minmax_mock.assert_called_with(
+    [("kihe", 20), ("kohe", 4), ("hihe", 99), ("hohe", 17)], 2, max)
+    assert monkey_adrc.read_sc_called_with == [
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+    assert monkey_adrc.get_nse_called_with == [["kiki", "kihe"], [
+        "kiki", "kohe"], ["kiki", "hihe"], ["kiki", "hohe"]]
+
+    # test sort_by_nse=3
+
+    # teardown/setup: overwrite mock class, plug in scdict
+    monkey_adrc = AdrcMonkeyReconstruct(
+        read_sc_returns=[["-"], ["k", "h"], ["i", "o"], ["h"], ["e"], ["-"]],
+    )  # unsorted: kihe, kohe, hihe, hohe (like odometer, help(itertools.prod))
+    monkey_adrc.scdict = {
+        "#-": ["-"], "#k": ["k", "h"], "i": ["i", "o"],
+        "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
+    }
+
+    # set up: mock tokenise, pick_minmax
+    with patch("loanpy.adrc.tokenise") as tokenise_mock:
+        tokenise_mock.return_value = list("kiki")
+        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+            pick_minmax_mock.return_value = ["hihe", "kihe", "hohe"]
+
+            # assert reconstruct works and picks 1 word with highest nse
+            assert Adrc.reconstruct(
+                self=monkey_adrc,
+                ipastr="kiki",
+                howmany=float("inf"),
+                sort_by_nse=3,
+                clusterised=False) == "^hihe$|^kihe$|^hohe$|^kohe$"
+
+    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
+    tokenise_mock.assert_called_with("kiki")
+    pick_minmax_mock.assert_called_with(
+    [("kihe", 20), ("kohe", 4), ("hihe", 99), ("hohe", 17)], 3, max)
+    assert monkey_adrc.read_sc_called_with == [
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+    assert monkey_adrc.get_nse_called_with == [["kiki", "kihe"], [
+        "kiki", "kohe"], ["kiki", "hihe"], ["kiki", "hohe"]]
+
+    # test sort_by_nse=0
+
+    # teardown/setup: overwrite mock class, plug in scdict
+    monkey_adrc = AdrcMonkeyReconstruct(
+        read_sc_returns=[["-"], ["k", "h"], ["i", "o"], ["h"], ["e"], ["-"]],
+    )  # unsorted: kihe, kohe, hihe, hohe (like odometer, help(itertools.prod))
+    monkey_adrc.scdict = {
+        "#-": ["-"], "#k": ["k", "h"], "i": ["i", "o"],
+        "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
+    }
+
+    # set up: mock tokenise, pick_minmax
+    with patch("loanpy.adrc.tokenise") as tokenise_mock:
+        tokenise_mock.return_value = list("kiki")
+        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+            # assert reconstruct works and picks 0 words with highest nse
+            assert Adrc.reconstruct(
+                self=monkey_adrc,
+                ipastr="kiki",
+                howmany=float("inf"),
+                sort_by_nse=0,
+                clusterised=False) == "^(k|h)(i|o)(h)(e)$"
+
+    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
+    tokenise_mock.assert_called_with("kiki")
+    pick_minmax_mock.assert_not_called()
+    assert monkey_adrc.read_sc_called_with == [
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+    assert monkey_adrc.get_nse_called_with == []
+
+    # test sort_by_nse=False
+
+    # teardown/setup: overwrite mock class, plug in scdict
+    monkey_adrc = AdrcMonkeyReconstruct(
+        read_sc_returns=[["-"], ["k", "h"], ["i", "o"], ["h"], ["e"], ["-"]],
+    )  # unsorted: kihe, kohe, hihe, hohe (like odometer, help(itertools.prod))
+    monkey_adrc.scdict = {
+        "#-": ["-"], "#k": ["k", "h"], "i": ["i", "o"],
+        "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
+    }
+
+    # set up: mock tokenise, pick_minmax
+    with patch("loanpy.adrc.tokenise") as tokenise_mock:
+        tokenise_mock.return_value = list("kiki")
+        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+            # assert reconstruct works and picks 0 words with highest nse
+            assert Adrc.reconstruct(
+                self=monkey_adrc,
+                ipastr="kiki",
+                howmany=float("inf"),
+                sort_by_nse=False,
+                clusterised=False) == "^(k|h)(i|o)(h)(e)$"
+
+    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
+    tokenise_mock.assert_called_with("kiki")
+    pick_minmax_mock.assert_not_called()
+    assert monkey_adrc.read_sc_called_with == [
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+    assert monkey_adrc.get_nse_called_with == []
+
+    # test sort_by_nse=False, but combinatorics applied b/c phonotactics_filter=True
+
+    # teardown/setup: overwrite mock class, plug in scdict
+    monkey_adrc = AdrcMonkeyReconstruct(
+        read_sc_returns=[["-"], ["k", "h"], ["i", "o"], ["h"], ["e"], ["-"]],
+        # let's all thru filter but triggers combinatorics!
+        word2phonotactics_returns=["CVCV"]*4
+    )  # unsorted: kihe, kohe, hihe, hohe (like odometer, help(itertools.prod))
+    monkey_adrc.scdict = {
+        "#-": ["-"], "#k": ["k", "h"], "i": ["i", "o"],
+        "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
+    }
+    monkey_adrc.phonotactic_inventory = ["CVCV"]  # let's all thru filter!
+
+    # set up: mock tokenise, pick_minmax
+    with patch("loanpy.adrc.tokenise") as tokenise_mock:
+        tokenise_mock.return_value = list("kiki")
+        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+            # assert reconstruct works and picks 0 words with highest nse
+            assert Adrc.reconstruct(
+                self=monkey_adrc,
+                ipastr="kiki",
+                howmany=float("inf"),
+                sort_by_nse=False,
+                phonotactics_filter=True,
+                clusterised=False) == "^kihe$|^kohe$|^hihe$|^hohe$"
+
+    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
+    tokenise_mock.assert_called_with("kiki")
+    pick_minmax_mock.assert_not_called()
+    assert monkey_adrc.read_sc_called_with == [
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+    assert monkey_adrc.get_nse_called_with == []
+    assert monkey_adrc.word2phonotactics_called_with == [
+    ["kihe"], ["kohe"], ["hihe"], ["hohe"]]
+
+
     del monkey_adrc, AdrcMonkeyReconstruct
 
 
-def test_adapt_struc():
+def test_adapt_phonotactics():
     """test if phonotactic structures are adapted correctly"""
 
     # set up mock class, used multiple times throughout this test
-    class AdrcMonkeyadapt_struc:
+    class AdrcMonkeyadapt_phonotactics:
         def __init__(self):
-            self.word2struc_returns = "CVCV"
-            self.word2struc_called_with = []
-            self.rank_closest_struc_returns = "CVC, CVCCV"
-            self.rank_closest_struc_called_with = []
+            self.word2phonotactics_returns = "CVCV"
+            self.word2phonotactics_called_with = []
+            self.rank_closest_phonotactics_returns = "CVC, CVCCV"
+            self.rank_closest_phonotactics_called_with = []
 
         def word2struc(self, *args):
-            self.word2struc_called_with.append([*args])
-            return self.word2struc_returns
+            self.word2phonotactics_called_with.append([*args])
+            return self.word2phonotactics_returns
 
-        def rank_closest_struc(self, *args):
-            self.rank_closest_struc_called_with.append([*args])
-            return self.rank_closest_struc_returns
+        def rank_closest_phonotactics(self, *args):
+            self.rank_closest_phonotactics_called_with.append([*args])
+            return self.rank_closest_phonotactics_returns
 
-    # test first break
-
-    # set up mock class
-    monkey_adrc = AdrcMonkeyadapt_struc()
-    # set up: mock tokenise
+    #test first break (max_repaired_phonotactics=0)
     with patch("loanpy.adrc.tokenise") as tokenise_mock:
         tokenise_mock.return_value = ["k", "i", "k", "i"]
+        assert Adrc.adapt_phonotactics(self=AdrcMonkeyadapt_phonotactics(),
+        ipastr="kiki", max_repaired_phonotactics=0
+        ) == [["k", "i", "k", "i"]]
 
-        # assert adapt_struc works
-        assert Adrc.adapt_struc(self=monkey_adrc, ipa_in="kiki", max_struc=1) == [
-            ["k", "i", "k", "i"]]
-
-    # assert 3 calls: word2struc, rank_closest_struc, tokenise
-    assert monkey_adrc.word2struc_called_with == []
-    assert monkey_adrc.rank_closest_struc_called_with == []
     tokenise_mock.assert_called_with("kiki")
 
-    # test all in dict (no break)
+    # test all in dict (no break
 
-    # teardown/setup: overwrite mock class, plug in scdict_struc,
-    monkey_adrc = AdrcMonkeyadapt_struc()
-    monkey_adrc.scdict_struc = {"CVCV": ["CVC", "CVCCV"]}
+    # teardown/setup: overwrite mock class, plug in scdict_phonotactics,
+    monkey_adrc = AdrcMonkeyadapt_phonotactics()
+    monkey_adrc.scdict_phonotactics = {"CVCV": ["CVC", "CVCCV"]}
     # set up: define vars for side_effect of mock editops
     ops1 = ("keep C", "keep V", "keep C", "delete V")
     ops2 = ("keep C", "keep V", "insert C", "keep C", "keep V")
@@ -652,16 +860,16 @@ def test_adapt_struc():
             with patch("loanpy.adrc.apply_edit", side_effect=[
             "kik", "kiCki"]) as apply_edit_mock:
 
-                #assert adapt_struc is working
-                assert Adrc.adapt_struc(
-                    self=monkey_adrc, ipa_in="kiki", max_struc=2) == [
-                    'kik', 'kiCki']
+                #assert adapt_phonotactics is working
+                assert Adrc.adapt_phonotactics(
+                    self=monkey_adrc, ipastr="kiki", max_repaired_phonotactics=2
+                    ) == ['kik', 'kiCki']
 
-    # assert 5 calls were made: word2struc, rank_closest_struc,
+    # assert 5 calls were made: word2struc, rank_closest_phonotactics,
     #editops, apply_edit, tokenise
-    assert monkey_adrc.word2struc_called_with == [
+    assert monkey_adrc.word2phonotactics_called_with == [
         [["k", "i", "k", "i"]]]
-    assert monkey_adrc.rank_closest_struc_called_with == []
+    assert monkey_adrc.rank_closest_phonotactics_called_with == []
     editops_mock.assert_has_calls(
         [call("CVCV", "CVC", 1, 100, 49), call("CVCV", "CVCCV", 1, 100, 49)])
     apply_edit_mock.assert_has_calls(
@@ -672,8 +880,8 @@ def test_adapt_struc():
     # test struc missing from dict and rank_closest instead, test show_workflow
 
     # set up mock class, plug in empty dict to trigger error
-    monkey_adrc = AdrcMonkeyadapt_struc()
-    monkey_adrc.scdict_struc = {}
+    monkey_adrc = AdrcMonkeyadapt_phonotactics()
+    monkey_adrc.scdict_phonotactics = {}
     monkey_adrc.workflow = OrderedDict()
     # set up: define side effect of mock-editops
     ops1 = ("keep C", "keep V", "keep C", "delete V")
@@ -686,20 +894,20 @@ def test_adapt_struc():
             with patch("loanpy.adrc.apply_edit", side_effect=[
             "kik", "kiCki"]) as apply_edit_mock:
 
-                #assert adapt_struc is working
-                assert Adrc.adapt_struc(
+                #assert adapt_phonotactics is working
+                assert Adrc.adapt_phonotactics(
                     self=monkey_adrc,
-                    ipa_in="kiki",
-                    max_struc=2,
+                    ipastr="kiki",
+                    max_repaired_phonotactics=2,
                     show_workflow=True) == ['kik', 'kiCki']
 
-    # assert 6 calls: word2struc, rank_closest_struc, workflow,
+    # assert 6 calls: word2struc, rank_closest_phonotactics, workflow,
     #editops, apply_edit, tokenise
-    assert monkey_adrc.word2struc_called_with == [
+    assert monkey_adrc.word2phonotactics_called_with == [
         [["k", "i", "k", "i"]]]
-    assert monkey_adrc.rank_closest_struc_called_with == [["CVCV", 2]]
+    assert monkey_adrc.rank_closest_phonotactics_called_with == [["CVCV", 2]]
     assert monkey_adrc.workflow == OrderedDict(
-    [('donor_struc', 'CVCV'), ('pred_strucs', "['CVC', 'CVCCV']")])
+    [('donor_phonotactics', 'CVCV'), ('predicted_phonotactics', "['CVC', 'CVCCV']")])
     editops_mock.assert_has_calls(
         [call("CVCV", "CVC", 1, 100, 49), call("CVCV", "CVCCV", 1, 100, 49)])
     apply_edit_mock.assert_has_calls(
@@ -708,7 +916,7 @@ def test_adapt_struc():
     tokenise_mock.assert_called_with("kiki")
 
     # tear down
-    del monkey_adrc, ops1, ops2, AdrcMonkeyadapt_struc
+    del monkey_adrc, ops1, ops2, AdrcMonkeyadapt_phonotactics
 
 
 def test_adapt():
@@ -721,22 +929,22 @@ def test_adapt():
         [["k", "h"], ["e", "o"], ["t"], ["k"], ["e"]]],
         combineipalistsreturns=[
             "kek", "kok", "hek", "hok", "ketke", "kotke", "hetke", "hotke"]):
-            self.adapt_struc_called_with = None
+            self.adapt_phonotactics_called_with = None
             self.read_sc_returns = iter(read_screturns)
             self.read_sc_called_with = []
             self.workflow = OrderedDict()
             self.adapt_harmony_called_with = []
-            self.struc_inv = ["CVCCV"]
-            self.word2struc_called_with = []
-            self.word2struc_returns = iter(["CVC"] * 6 + ["CVCCV"] * 4)
-            self.clusters = ["k", "h", "tk", "o", "u", "e"]
+            self.phonotactic_inventory = ["CVCCV"]
+            self.word2phonotactics_called_with = []
+            self.word2phonotactics_returns = iter(["CVC"] * 6 + ["CVCCV"] * 4)
+            self.cluster_inventory = ["k", "h", "tk", "o", "u", "e"]
             self.get_nse_returns = iter([5, 9])
             self.get_nse_called_with = []
 
-        def adapt_struc(self, *args):
-            self.adapt_struc_called_with = [*args]
-            self.workflow["donor_struc"] = "CVCV"
-            self.workflow["pred_strucs"] = "['CVC', 'CVCCV']"
+        def adapt_phonotactics(self, *args):
+            self.adapt_phonotactics_called_with = [*args]
+            self.workflow["donor_phonotactics"] = "CVCV"
+            self.workflow["predicted_phonotactics"] = "['CVC', 'CVCCV']"
             return [['kik'], ['kiCki']]
 
         def read_sc(self, *args):
@@ -748,8 +956,8 @@ def test_adapt():
             return [[['kBk'], ['kiCki']]]
 
         def word2struc(self, *args):
-            self.word2struc_called_with.append([*args])
-            return next(self.word2struc_returns)
+            self.word2phonotactics_called_with.append([*args])
+            return next(self.word2phonotactics_returns)
 
         def get_nse(self, *args):
             self.get_nse_called_with.append([*args])
@@ -761,28 +969,30 @@ def test_adapt():
     monkey_adrc = AdrcMonkeyAdapt()
     with patch("loanpy.adrc.tokenise") as tokenise_mock:
         with patch("loanpy.adrc.get_howmany") as get_howmany_mock:
-            with patch("loanpy.adrc.combine_ipalists") as combine_ipalists_mock:
-                combine_ipalists_mock.return_value = "kek", "kok", "hek", "hok", "ketke", "kotke", "hetke", "hotke"
+            with patch("loanpy.adrc.combine_ipalists"
+            ) as combine_ipalists_mock:
+                combine_ipalists_mock.return_value = ["kek", "kok", "hek",
+                "hok", "ketke", "kotke", "hetke", "hotke"]
                 get_howmany_mock.return_value = (8, 1, 1)
                 tokenise_mock.return_value = ["k", "i", "k", "i"]
 
                 #assert adapt is working
-                assert Adrc.adapt(self=monkey_adrc, ipa_in="kiki",
+                assert Adrc.adapt(self=monkey_adrc, ipastr="kiki",
                 howmany=8) == "kek, kok, hek, hok, ketke, kotke, hetke, hotke"
 
-    # assert 7 calls: tokenise, adapt_struc, read_sc, combine_ipalists,
+    # assert 7 calls: tokenise, adapt_phonotactics, read_sc, combine_ipalists,
     #adapt_harmony, word2struc, get_howmany
     combine_ipalists_mock.assert_called_with([
         [["k", "h"], ["e", "o"], ["k"]],
         [["k", "h"], ["e", "o"], ["t"], ["k"], ["e"]]])
     tokenise_mock.assert_called_with("kiki")
-    get_howmany_mock.assert_called_with(8, 1, 1)
-    assert monkey_adrc.adapt_struc_called_with == [
+    get_howmany_mock.assert_called_with(8, 0, 1)
+    assert monkey_adrc.adapt_phonotactics_called_with == [
         ["k", "i", "k", "i"], 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
     [['kik'], 8], [['kiCki'], 8]]
     assert monkey_adrc.adapt_harmony_called_with == []
-    assert monkey_adrc.word2struc_called_with == []
+    assert monkey_adrc.word2phonotactics_called_with == []
 
     # advanced settings
 
@@ -797,7 +1007,8 @@ def test_adapt():
             flatten_mock.return_value = [list('kBk'), list('kiCki')]
             with patch("loanpy.adrc.get_howmany") as get_howmany_mock:
                 get_howmany_mock.return_value = (2, 2, 2)
-                with patch("loanpy.adrc.combine_ipalists") as combine_ipalists_mock:
+                with patch("loanpy.adrc.combine_ipalists"
+                ) as combine_ipalists_mock:
                     combine_ipalists_mock.return_value = [
                     'kok', 'kuk', 'hok', 'huk', 'cok',
                     'cuk', 'kotke', 'kodke', 'kutke', 'kudke']
@@ -805,17 +1016,17 @@ def test_adapt():
                     # assert adapt works
                     assert Adrc.adapt(
                         self=monkey_adrc,
-                        ipa_in="kiki",
+                        ipastr="kiki",
                         howmany=6,
-                        max_struc=2,
-                        max_paths=2,
-                        vowelharmony=True,
-                        struc_filter=True,
+                        max_repaired_phonotactics=2,
+                        max_paths2repaired_phonotactics=2,
+                        repair_vowelharmony=True,
+                        phonotactics_filter=True,
                         sort_by_nse=True,
-                        clusterised=True,
+                        cluster_filter=True,
                         show_workflow=True) == "kutke, kotke"
 
-    # assert 8 calls: tokenise, flatten, adapt_struc, read_sc,
+    # assert 8 calls: tokenise, flatten, adapt_phonotactics, read_sc,
     #combine_ipalists, adapt_harmony, workflow, get_howmany
     tokenise_mock.assert_called_with("kiki")
     get_howmany_mock.assert_called_with(6, 2, 2)
@@ -824,7 +1035,7 @@ def test_adapt():
     ["o", "u"], ["t", "d"], ["k"], ["e"]]])
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
-    assert monkey_adrc.adapt_struc_called_with == [
+    assert monkey_adrc.adapt_phonotactics_called_with == [
         ["k", "i", "k", "i"], 2, 2, 100, 49, True]
     assert monkey_adrc.read_sc_called_with == [
         [["k", "B", "k"], 2], [["k", "i", "C", "k", "i"], 2]]
@@ -834,77 +1045,209 @@ def test_adapt():
     ['kiki', 'kotke'], ['kiki', 'kutke']]
     assert monkey_adrc.workflow == OrderedDict(
     [('tokenised', "['k', 'i', 'k', 'i']"),
-    ('donor_struc', 'CVCV'), ('pred_strucs',
+    ('donor_phonotactics', 'CVCV'), ('predicted_phonotactics',
     "['CVC', 'CVCCV']"),
-    ('adapted_struc', "[['kik'], ['kiCki']]"),
+    ('adapted_phonotactics', "[['kik'], ['kiCki']]"),
     ('adapted_vowelharmony',
     "[['k', 'B', 'k'], ['k', 'i', 'C', 'k', 'i']]"),
     ('before_combinatorics',
     "[[['k', 'h', 'c'], ['o', 'u'], ['k']], \
 [['k'], ['o', 'u'], ['t', 'd'], ['k'], ['e']]]")])
 
-    # struc_filter empty
+    # phonotactics_filter empty
 
-    # teardown/setup: overwrite instance of mock class, plug in struc_inv,
-    # mock tokenise
+    # teardown/setup: overwrite instance of mock class,
+    # plug in phonotactic_inventory, mock tokenise
     monkey_adrc = AdrcMonkeyAdapt()
-    monkey_adrc.struc_inv = ["CV", "VC"]
+    monkey_adrc.phonotactic_inventory = ["CV", "VC"]
     with patch("loanpy.adrc.tokenise") as tokenise_mock:
         tokenise_mock.return_value = ["k", "i", "k", "i"]
         with patch("loanpy.adrc.get_howmany") as get_howmany_mock:
             get_howmany_mock.return_value = (1, 1, 1)
-            with patch("loanpy.adrc.combine_ipalists") as combine_ipalists_mock:
+            with patch("loanpy.adrc.combine_ipalists"
+            ) as combine_ipalists_mock:
                 combine_ipalists_mock.return_value = [
                 'kok', 'kuk', 'hok', 'huk', 'cok',
                 'cuk', 'kotke', 'kodke', 'kutke', 'kudke']
 
                 # assert adapt returns error message as string
                 assert Adrc.adapt(
-                    self=monkey_adrc, ipa_in="kiki", struc_filter=True
+                    self=monkey_adrc, ipastr="kiki", phonotactics_filter=True
                 ) == "wrong phonotactics"
 
-    # assert 4 calls: tokenise, adapt_struc,
+    # assert 4 calls: tokenise, adapt_phonotactics,
     #read_sc and combine_ipalists
     tokenise_mock.assert_called_with("kiki")
-    get_howmany_mock.assert_called_with(1, 1, 1)
+    get_howmany_mock.assert_called_with(1, 0, 1)
     combine_ipalists_mock.assert_called_with([
         [["k", "h"], ["e", "o"], ["k"]], [["k", "h"],
         ["e", "o"], ["t"], ["k"], ["e"]]])
-    assert monkey_adrc.adapt_struc_called_with == [
+    assert monkey_adrc.adapt_phonotactics_called_with == [
         ["k", "i", "k", "i"], 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
     [['kik'], 1], [['kiCki'], 1]]
 
-    # clusterised empty filter
+    # cluster_filter empty filter
 
-    # teardown/setup: overwrite instance of mock class, plug in clusters, mock
-    # tokenise
+    # teardown/setup: overwrite instance of mock class
+    # , plug in cluster_inventory, mock tokenise
     monkey_adrc = AdrcMonkeyAdapt()
-    monkey_adrc.clusters = ["pr", "gr", "vrp", "skrrrr"]
+    monkey_adrc.cluster_inventory = ["pr", "gr", "vrp", "skrrrr"]
     with patch("loanpy.adrc.tokenise") as tokenise_mock:
         tokenise_mock.return_value = ["k", "i", "k", "i"]
         with patch("loanpy.adrc.get_howmany") as get_howmany_mock:
             get_howmany_mock.return_value = (1, 1, 1)
-            with patch("loanpy.adrc.combine_ipalists") as combine_ipalists_mock:
+            with patch("loanpy.adrc.combine_ipalists"
+            ) as combine_ipalists_mock:
                 combine_ipalists_mock.return_value = [
                 'kok', 'kuk', 'hok', 'huk', 'cok',
                 'cuk', 'kotke', 'kodke', 'kutke', 'kudke']
 
                 # make sure adapt works (i.e. returns error message as string)
                 assert Adrc.adapt(
-                    self=monkey_adrc, ipa_in="kiki", clusterised=True
+                    self=monkey_adrc, ipastr="kiki", cluster_filter=True
                 ) == "wrong clusters"
 
-    # assert 4 calls: tokenise, adapt_struc, read_sc, combine_ipalists
+    # assert 4 calls: tokenise, adapt_phonotactics, read_sc, combine_ipalists
     tokenise_mock.assert_called_with("kiki")
-    get_howmany_mock.assert_called_with(1, 1, 1)
+    get_howmany_mock.assert_called_with(1, 0, 1)
     combine_ipalists_mock.assert_called_with([
         [["k", "h"], ["e", "o"], ["k"]], [["k", "h"],
         ["e", "o"], ["t"], ["k"], ["e"]]])
-    assert monkey_adrc.adapt_struc_called_with == [
+    assert monkey_adrc.adapt_phonotactics_called_with == [
         ["k", "i", "k", "i"], 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
     [['kik'], 1], [['kiCki'], 1]]
+
+    # advanced settings, sort_by_nse=1
+
+    # teardown/setup: overwrite mock class, mock tokenise,
+    # mock flatten, mock get_howmany
+    monkey_adrc = AdrcMonkeyAdapt(read_screturns=[
+    [["k", "h", "c"], ["o", "u"], ["k"]],
+    [["k"], ["o", "u"], ["t", "d"], ["k"], ["e"]]])
+    with patch("loanpy.adrc.tokenise") as tokenise_mock:
+        tokenise_mock.return_value = ["k", "i", "k", "i"]
+        with patch("loanpy.adrc.flatten") as flatten_mock:
+            flatten_mock.return_value = [list('kBk'), list('kiCki')]
+            with patch("loanpy.adrc.get_howmany") as get_howmany_mock:
+                get_howmany_mock.return_value = (2, 2, 2)
+                with patch("loanpy.adrc.combine_ipalists"
+                ) as combine_ipalists_mock:
+                    combine_ipalists_mock.return_value = [
+                    'kok', 'kuk', 'hok', 'huk', 'cok',
+                    'cuk', 'kotke', 'kodke', 'kutke', 'kudke']
+                    with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+                        pick_minmax_mock.return_value = ["kutke"]
+
+                        # assert adapt works
+                        assert Adrc.adapt(
+                            self=monkey_adrc,
+                            ipastr="kiki",
+                            howmany=6,
+                            max_repaired_phonotactics=2,
+                            max_paths2repaired_phonotactics=2,
+                            repair_vowelharmony=True,
+                            phonotactics_filter=True,
+                            sort_by_nse=1,
+                            cluster_filter=True,
+                            show_workflow=True) == "kutke"
+
+    # assert 8 calls: tokenise, flatten, adapt_phonotactics, read_sc,
+    #combine_ipalists, adapt_harmony, workflow, get_howmany
+    tokenise_mock.assert_called_with("kiki")
+    get_howmany_mock.assert_called_with(6, 2, 2)
+    combine_ipalists_mock.assert_called_with([
+    [["k", "h", "c"], ["o", "u"], ["k"]], [["k"],
+    ["o", "u"], ["t", "d"], ["k"], ["e"]]])
+    pick_minmax_mock.assert_called_with([
+    ("kotke", 5), ("kutke", 9)], 1, max, True)
+
+    assert list(flatten_mock.call_args_list[0][0][0]) == [
+        [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
+    assert monkey_adrc.adapt_phonotactics_called_with == [
+        ["k", "i", "k", "i"], 2, 2, 100, 49, True]
+    assert monkey_adrc.read_sc_called_with == [
+        [["k", "B", "k"], 2], [["k", "i", "C", "k", "i"], 2]]
+    assert monkey_adrc.adapt_harmony_called_with == [
+        [['kik']], [['kiCki']]]
+    assert monkey_adrc.get_nse_called_with == [
+    ['kiki', 'kotke'], ['kiki', 'kutke']]
+    assert monkey_adrc.workflow == OrderedDict(
+    [('tokenised', "['k', 'i', 'k', 'i']"),
+    ('donor_phonotactics', 'CVCV'), ('predicted_phonotactics',
+    "['CVC', 'CVCCV']"),
+    ('adapted_phonotactics', "[['kik'], ['kiCki']]"),
+    ('adapted_vowelharmony',
+    "[['k', 'B', 'k'], ['k', 'i', 'C', 'k', 'i']]"),
+    ('before_combinatorics',
+    "[[['k', 'h', 'c'], ['o', 'u'], ['k']], \
+[['k'], ['o', 'u'], ['t', 'd'], ['k'], ['e']]]")])
+
+    # advanced settings, sort_by_nse=2
+
+    # teardown/setup: overwrite mock class, mock tokenise,
+    # mock flatten, mock get_howmany
+    monkey_adrc = AdrcMonkeyAdapt(read_screturns=[
+    [["k", "h", "c"], ["o", "u"], ["k"]],
+    [["k"], ["o", "u"], ["t", "d"], ["k"], ["e"]]])
+    with patch("loanpy.adrc.tokenise") as tokenise_mock:
+        tokenise_mock.return_value = ["k", "i", "k", "i"]
+        with patch("loanpy.adrc.flatten") as flatten_mock:
+            flatten_mock.return_value = [list('kBk'), list('kiCki')]
+            with patch("loanpy.adrc.get_howmany") as get_howmany_mock:
+                get_howmany_mock.return_value = (2, 2, 2)
+                with patch("loanpy.adrc.combine_ipalists"
+                ) as combine_ipalists_mock:
+                    combine_ipalists_mock.return_value = [
+                    'kok', 'kuk', 'hok', 'huk', 'cok',
+                    'cuk', 'kotke', 'kodke', 'kutke', 'kudke']
+                    with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+                        pick_minmax_mock.return_value = ["kutke", "kotke"]
+
+                        # assert adapt works
+                        assert Adrc.adapt(
+                            self=monkey_adrc,
+                            ipastr="kiki",
+                            howmany=6,
+                            max_repaired_phonotactics=2,
+                            max_paths2repaired_phonotactics=2,
+                            repair_vowelharmony=True,
+                            phonotactics_filter=True,
+                            sort_by_nse=2,
+                            cluster_filter=True,
+                            show_workflow=True) == "kutke, kotke"
+
+    # assert 8 calls: tokenise, flatten, adapt_phonotactics, read_sc,
+    #combine_ipalists, adapt_harmony, workflow, get_howmany
+    tokenise_mock.assert_called_with("kiki")
+    get_howmany_mock.assert_called_with(6, 2, 2)
+    combine_ipalists_mock.assert_called_with([
+    [["k", "h", "c"], ["o", "u"], ["k"]], [["k"],
+    ["o", "u"], ["t", "d"], ["k"], ["e"]]])
+    pick_minmax_mock.assert_called_with([
+    ("kotke", 5), ("kutke", 9)], 2, max, True)
+
+    assert list(flatten_mock.call_args_list[0][0][0]) == [
+        [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
+    assert monkey_adrc.adapt_phonotactics_called_with == [
+        ["k", "i", "k", "i"], 2, 2, 100, 49, True]
+    assert monkey_adrc.read_sc_called_with == [
+        [["k", "B", "k"], 2], [["k", "i", "C", "k", "i"], 2]]
+    assert monkey_adrc.adapt_harmony_called_with == [
+        [['kik']], [['kiCki']]]
+    assert monkey_adrc.get_nse_called_with == [
+    ['kiki', 'kotke'], ['kiki', 'kutke']]
+    assert monkey_adrc.workflow == OrderedDict(
+    [('tokenised', "['k', 'i', 'k', 'i']"),
+    ('donor_phonotactics', 'CVCV'), ('predicted_phonotactics',
+    "['CVC', 'CVCCV']"),
+    ('adapted_phonotactics', "[['kik'], ['kiCki']]"),
+    ('adapted_vowelharmony',
+    "[['k', 'B', 'k'], ['k', 'i', 'C', 'k', 'i']]"),
+    ('before_combinatorics',
+    "[[['k', 'h', 'c'], ['o', 'u'], ['k']], \
+[['k'], ['o', 'u'], ['t', 'd'], ['k'], ['e']]]")])
 
     #tear down
     del monkey_adrc, AdrcMonkeyAdapt
@@ -913,7 +1256,7 @@ def test_get_nse():
     """test if normalised sum of examples is calculated correctly"""
 
     # test first break, no set up needed here
-    assert Adrc.get_nse(self=None, left=None, right=None) == 0
+    assert Adrc.get_nse(self=None, left=None, right=None) == (0, 0, [0], [])
 
     # create mock class, used multiple times in this test
     class AdrcMonkeyget_nse:
@@ -941,17 +1284,10 @@ def test_get_nse():
     monkey_adrc = AdrcMonkeyget_nse()
     # assert
     assert Adrc.get_nse(
-        self=monkey_adrc, left="ɟɒloɡ", right="jɑlkɑ") == 6.67
-    #assert call
-    assert monkey_adrc.align_called_with == [["ɟɒloɡ", "jɑlkɑ"]]
-
-    # test show_workflow=True
-    # set up by overwriting mock class instance
-    monkey_adrc = AdrcMonkeyget_nse()
-    # assert
-    assert Adrc.get_nse(
-        self=monkey_adrc, left="ɟɒloɡ", right="jɑlkɑ", show_workflow=True) == (
-        6.67, 40, "[10, 9, 8, 7, 6, 0]", "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*lk', 'o<*ɑ', 'ɡ#<*-']")
+        self=monkey_adrc, left="ɟɒloɡ", right="jɑlkɑ") == (
+        6.67, 40,
+        '[10, 9, 8, 7, 6, 0]',
+        "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*lk', 'o<*ɑ', 'ɡ#<*-']")
     #assert call
     assert monkey_adrc.align_called_with == [["ɟɒloɡ", "jɑlkɑ"]]
 

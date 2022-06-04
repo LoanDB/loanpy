@@ -1,0 +1,4 @@
+Target_Form,Source_Form,Cognacy,best_guess,predicted_phonotactics,NSE_Source_Target_Form,SE_Source_Target_Form,E_distr_Source_Target_Form,align_Source_Target_Form,NSE_Source_best_guess,SE_Source_best_guess,E_distr_Source_best_guess,align_Source_best_guess,phonotactics_predicted,fast_levenshtein_distance_best_guess_Target_Form,fast_levenshtein_distance_div_maxlen_best_guess_Target_Form
+aɣat͡ʃi,aɣat͡ʃːɯ,1,aɣa,"['VCV', 'CCC']",3.2,16,"[6, 2, 6, 1, 1]","['a<a', 'ɣ<ɣ', 'a<a', 't͡ʃ<t͡ʃː', 'i<ɯ']",2.8,14,"[6, 2, 6, 0, 0]","['a<a', 'ɣ<ɣ', 'a<a', 'C<t͡ʃː', 'V<ɯ']",False,4,0.57
+aldaɣ,aldaɣ,2,bla,"['CCC', 'VCC']",3.2,16,"[6, 1, 1, 6, 2]","['a<a', 'l<l', 'd<d', 'a<a', 'ɣ<ɣ']",1.17,7,"[0, 0, 1, 0, 6, 0]","['V<a', 'b<C', 'l<l', 'C<d', 'a<a', 'C<ɣ']",False,3,0.6
+ajan,ajan,3,ajan,['VCVC'],3.5,14,"[6, 1, 6, 1]","['a<a', 'j<j', 'a<a', 'n<n']",3.5,14,"[6, 1, 6, 1]","['a<a', 'j<j', 'a<a', 'n<n']",True,0,0.0
