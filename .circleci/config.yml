@@ -1,0 +1,24 @@
+version: 2.1
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  build:
+    executor:
+      name: win/default
+      shell: powershell.exe
+    steps:
+      - checkout
+      - run:
+          name: "Install Python"
+          command: choco install python --version=3.10.0
+          
+      - run:
+          name: "Install Deps"
+          command: pip install --user -r requirements.txt
+          
+      - run:
+          name: "python/test"
+          command: python -m unittest discover -v
+
+

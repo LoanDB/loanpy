@@ -11,17 +11,19 @@ from pathlib import Path
 from re import search
 from time import gmtime, strftime, time
 
-try: from matplotlib.pyplot import (
-clf,
-legend,
-plot,
-savefig,
-scatter,
-text,
-title,
-xlabel,
-ylabel)
-except KeyError: pass  # Sphinx needs this to generate the documentation
+try:
+    from matplotlib.pyplot import (
+                                   clf,
+                                   legend,
+                                   plot,
+                                   savefig,
+                                   scatter,
+                                   text,
+                                   title,
+                                   xlabel,
+                                   ylabel)
+except KeyError:
+    pass  # Sphinx needs this to generate the documentation
 from pandas import DataFrame, concat, read_csv
 from panphon.distance import Distance
 from tqdm import tqdm
@@ -32,12 +34,14 @@ from loanpy.adrc import Adrc
 BANNED = ["KeyError", "not old", "wrong phonotactics",
           "wrong vowel harmony", "wrong clusters"]
 
+
 class ArgumentsAlreadyTested(Exception):
     """
     Raised by loanpy.sanity.check_cache if arguments for evaluation were \
 already run once. Classical cache thing.
     """
     pass
+
 
 def cache(method):
     """
@@ -63,41 +67,42 @@ see loanpy.sanity.check_cache and loanpy.sanity.write_to_cache.
     @wraps(method)
     def wrapped(*args, **kwargs):
         path2cache, init_args = {**kwargs}["path2cache"], {**kwargs} | dict(
-        zip(["forms_csv", "tgt_lg", "src_lg"], [*args]))
+            zip(["forms_csv", "tgt_lg", "src_lg"], [*args]))
         check_cache(path2cache, init_args)
         result = method(*args, **kwargs)
         write_to_cache(path2cache, init_args, result[1], result[2], result[3])
     return wrapped
 
+
 def eval_all(
-# Fllowing 9 params will go to loanpy.adrc.Adrc.__init__
-forms_csv, # name of df etymological data to evaluate (forms.csv in cldf)
-target_language,  # computational target language in forms.csv (cldf format)
-source_language,  # computational source language in forms.csv (cldf format)
-mode="adapt",  # should we adapt or reconstruct?
-most_frequent_phonotactics=9999999, # howmany most freq strucs 2 inventory
-phonotactic_inventory=None,  # chance to hard-code phonotactic inventory
-connector=None,  # by default "<" for adaptations and  "<*" for reconstr.
-scdictbase=None, # cannot be bool! Provide path, or dict, else None
-vfb=None,  # define placeholder vowels else None
-# These 5 go to both loanpy.adrc.Adrc.adapt AND loanpy.adrc.Adrc.reconstruct
-guesslist=[10, 50, 100, 500, 1000],  # list of input args for param "howmany"
-clusters=False,  # filter (adapt) / slice by (reconstruct) clusters?
-phonotactics_filter=False,  # should words with wrong phonotactics be filtred out?
-vowelharmony=False,  # repaire (adapt) or filter (reconstruct) vowelharmony?
-sort_by_nse=False,  # sort results by likelihood?
-# These 5 go only to loanpy.adrc.Adrc.adapt if mode=="adapt"
-max_repaired_phonotactics=1,  # ceiling for nr of repaired phonotactics in adapt
-max_paths2repaired_phonotactics=1,  # ceiling for nr of paths 2 repaired strucs
-deletion_cost=100,  # cost for deleting a segment
-insertion_cost=49,  # cost for inserting a segment
-show_workflow=False,  # should workflow be displayed (adapt)
-# These 4 are for internal use
-path2cache=False,  # path to cache (contains optimal parameters)
-crossval=True,  # boolean: Isolate word to predict from training data?
-writesc=False,  # should sound corresp files be written? (for debugging)
-write_to=None  # "pathname.csv" to write and plot results
-):
+                # Fllowing 9 params will go to loanpy.adrc.Adrc.__init__
+                forms_csv,  # etymological data to evaluate (cldf's forms.csv)
+                target_language,  # computational target language in forms.csv
+                source_language,  # computational source language in forms.csv
+                mode="adapt",  # should we adapt or reconstruct?
+                most_frequent_phonotactics=9999999,  # howmany most freq
+                phonotactic_inventory=None,  # chance to hard-code inventory
+                connector=None,  # by default "<" for adapt &  "<*" 4 reconstr.
+                scdictbase=None,  # not bool! Provide path, or dict, else None
+                vfb=None,  # define placeholder vowels else None
+                # These 5 go to both loanpy.adrc.Adrc.adapt AND .reconstruct
+                guesslist=[10, 50, 100, 500, 1000],  # list of args 4 "howmany"
+                clusters=False,  # filter (adapt) / slice (reconstr.) clusters
+                phonotactics_filter=False,  # filter out wrong phonotactics?
+                vowelharmony=False,  # repaire (adapt) / filter (reconstr)?
+                sort_by_nse=False,  # sort results by likelihood?
+                # These 5 go only to loanpy.adrc.Adrc.adapt if mode=="adapt"
+                max_repaired_phonotactics=1,  # howmany phtct replacements max
+                max_paths2repaired_phonotactics=1,  # CCV->CV: delete 1st/2nd C
+                deletion_cost=100,  # cost for deleting a phoneme (TCRS)
+                insertion_cost=49,  # cost for inserting a phoneme (TCRS)
+                show_workflow=False,  # should workflow be displayed (adapt)
+                # These 4 are for internal use
+                path2cache=False,  # path to cache (optimal parameters)
+                crossval=True,  # bool: Isolate word from training data?
+                writesc=False,  # write sound corresp files? (for debugging)
+                write_to=None  # "pathname.csv" to write and plot results
+                ):
     """
 
     Trains crossvalidated models, evaluates and visualises predictions. \
@@ -136,13 +141,13 @@ write_to=None  # "pathname.csv" to write and plot results
     :param most_frequent_phonotactics: The n most frequent structures \
     to accept into the target language's phonotactic inventory. \
     For more details \
-    see loanpy.helpers.Etym.read_phonotacticsinv.
+    see loanpy.helpers.Etym.read_phonotactic_inv.
     :type most_frequent_phonotactics: int, default=9999999
 
     :param phonotactic_inventory: Chance to plug in phonotactic \
     inventory manually. If None, \
     will be extracted automatically from data. For more details \
-    see loanpy.helpers.Etym.read_phonotacticsinv.
+    see loanpy.helpers.Etym.read_phonotactic_inv.
     :type phonotactic_inventory: list, default=None
 
     :param connector: The string that connects the left side of an etymology \
@@ -183,7 +188,7 @@ write_to=None  # "pathname.csv" to write and plot results
     should be filtered out if they consist of a \
     phonotactic structure that is not contained in the language's \
     phonotactic inventory. For more details see \
-    loanpy.helpers.Etym.read_phonotacticsinv.
+    loanpy.helpers.Etym.read_phonotactic_inv.
     :type phonotactics_filter: bool, default=False
 
     :param vowelharmony: Will be passed to loanpy.adrc.Adrc.adapt's \
@@ -279,8 +284,10 @@ write_to=None  # "pathname.csv" to write and plot results
     :returns: Adds two columns to the input data frame: "guesses", \
     which indicate \
     howmany guesses were necessary to make the correct prediction (if inf, \
-    all predictions were wrong) and best guess, which shows the closest guess (if \
-    combinatorics were applied, this is 1 word, in case of (a)(b)(c) type regexes \
+    all predictions were wrong) \
+and best guess, which shows the closest guess (if \
+    combinatorics were applied, this is \
+1 word, in case of (a)(b)(c) type regexes \
     the entire regex is just kept.
     :rtype: pandas.core.frame.DataFrame
 
@@ -302,38 +309,37 @@ mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
 
     # first 9 args
     adrc_obj = Adrc(
-    forms_csv=forms_csv,
-    source_language=source_language,
-    target_language=target_language,
-    mode=mode,
-    most_frequent_phonotactics=most_frequent_phonotactics,
-    phonotactic_inventory=phonotactic_inventory,
-    connector=connector,
-    scdictbase=scdictbase,
-    vfb=vfb)
+                    forms_csv=forms_csv,
+                    source_language=source_language,
+                    target_language=target_language,
+                    mode=mode,
+                    most_frequent_phonotactics=most_frequent_phonotactics,
+                    phonotactic_inventory=phonotactic_inventory,
+                    connector=connector,
+                    scdictbase=scdictbase,
+                    vfb=vfb)
 
     # next 10 args to adapt/reconstruct
     adrc_obj = loop_thru_data(
-                                ## first 7 go to adapt *and* reconstruct
-    adrc_obj,                   #0  "self"
-                                #X(1)  srcwrd inserted here in loop_thru_data
-                                #X(2)  howmany inserted here in eval_one
-    clusters,                   #1(3)
-    phonotactics_filter,               #2(4)
-    vowelharmony,               #3(5)
-    sort_by_nse,                #4(6)
-                                    # next 5 only to loanpy.adrc.Adrc.adapt
-    max_repaired_phonotactics,        #5(7)
-    max_paths2repaired_phonotactics,  #6(8)
-    deletion_cost,              #7(9)
-    insertion_cost,             #8(10)
-    show_workflow,              #9(11)
+                                # first 7 go to adapt *and* reconstruct
+                                adrc_obj,                   # 0  "self"
+                                # X(1)  srcwrd inserted here in loop_thru_data
+                                # X(2)  howmany inserted here in eval_one
+                                clusters,                   # 1 (3)
+                                phonotactics_filter,        # 2 (4)
+                                vowelharmony,               # 3 (5)
+                                sort_by_nse,                # 4 (6)
+                                # next 5 only to loanpy.adrc.Adrc.adapt
+                                max_repaired_phonotactics,        # 5 (7)
+                                max_paths2repaired_phonotactics,  # 6 (8)
+                                deletion_cost,              # 7 (9)
+                                insertion_cost,             # 8 (10)
+                                show_workflow,              # 9 (11)
 
-    guesslist,                  #10  # pop in eval_one, insert howmany on top
-
-    mode,                       #11  # pop in eval_one, which func to use
-    writesc,                    #12  # pop in loop_thru_data, write sound chg?
-    crossval)                   #13  # pop in loop_thru_data, crossvalidate?
+                                guesslist,  # 10  # pop in eval_one
+                                mode,  # 11 pop in eval_one, picks ad vs rc
+                                writesc,  # 12 pop in loop_thru_data
+                                crossval)  # 13 pop in loop_thru_data
 
     adrc_obj = postprocess(adrc_obj)
     stat = postprocess2(adrc_obj, guesslist, mode, write_to)
@@ -341,6 +347,7 @@ mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
     end = time()
 
     return adrc_obj.dfety, stat, start, end
+
 
 def loop_thru_data(*args):  # args range(14)
     """
@@ -399,28 +406,32 @@ False, False, False, False, False, \
     crossval, writesc, = args.pop(), args.pop()
     args.insert(1, 0)  # insert empty place for source word!
     # get non-crossvalidated sound correspondences if indicated
-    if crossval is False: args[0] = get_noncrossval_sc(args[0], writesc)
+    if crossval is False:
+        args[0] = get_noncrossval_sc(args[0], writesc)
 
     for idx2isolate, (srcwrd, tgtwrd) in tqdm(enumerate(zip(
-    args[0].dfety.Source_Form, args[0].dfety.Target_Form))):
+            args[0].dfety.Source_Form, args[0].dfety.Target_Form))):
         # get crossvalidated sound correspondences if indicated
-        if crossval is True: args[0] = get_crossval_data(args[0],
-        idx2isolate, writesc)
+        if crossval is True:
+            args[0] = get_crossval_data(args[0], idx2isolate, writesc)
         # make prediction from source word, check if target was hit
         args[1] = srcwrd  # insert sourceword into empty space created for it
         result_eval_one = eval_one(tgtwrd, *args)  # args 0-11 (incl)
-        if out == {}: out = {k: [result_eval_one[k]] for k in result_eval_one}
+        if out == {}:
+            out = {k: [result_eval_one[k]] for k in result_eval_one}
         else:
             # update dict
-            for key in out: out[key].append(result_eval_one[key])
+            for key in out:
+                out[key].append(result_eval_one[key])
         # plug dropped word back in to forms if necessary
-        if crossval is True: args[0].forms_target_language.insert(
-        args[0].idx_of_popped_word, args[0].popped_word)
-    args[0].dfety = concat([args[0].dfety, DataFrame(out)], axis=1
-    )
+        if crossval is True:
+            args[0].forms_target_language.insert(
+                args[0].idx_of_popped_word, args[0].popped_word)
+    args[0].dfety = concat([args[0].dfety, DataFrame(out)], axis=1)
     return args[0]  # the adrc_obj
 
-def eval_one(tgtwrd, *args):  #in: args 0-11 (incl). out: dict
+
+def eval_one(tgtwrd, *args):  # in: args 0-11 (incl). out: dict
     """
     Called by loanpy.sanity.loop_thru_data.
     Loop through the guesslist and adapts/reconstructs (depending on mode) \
@@ -522,10 +533,12 @@ False, False, False, 0, 1, 100, 49, True, [1], "adapt")
     eval_func = eval_adapt if args.pop() == "adapt" else eval_recon
     for guess in args.pop():  # guesslist
         out = eval_func(tgtwrd, *args[:2], guess, *args[2:])
-        if out["guesses"] != float("inf"): break
+        if out["guesses"] != float("inf"):
+            break
     return out  # dict (for df), from eval_adapt or eval_recon
 
-def eval_adapt(tgtwrd, *args): # in: args 0+howmany+ args1-9(incl)
+
+def eval_adapt(tgtwrd, *args):  # in: args 0+howmany+ args1-9(incl)
     """
     Called by loanpy.sanity.eval_one.
     Checks if target was hit by predictions made by loanpy.adrc.Adrc.adapt
@@ -601,13 +614,18 @@ target_language="EAH", scdictlist=path2sc_ad)
     try:
         pred = Adrc.adapt(*args).split(", ")
         # best guess = target+1 if hit (e.g index 0 means 1 guess needed)
-        try: out = {"guesses": pred.index(tgtwrd)+1, "best_guess": tgtwrd}
-        except ValueError: out = {
-        "guesses": float("inf"), "best_guess": pred[0]}  # nr1 pred if not hit
-    except KeyError: out = {
-    "guesses": float("inf"), "best_guess": "KeyError"}  # this if pred not made
-    if args[-1] is True: out |= args[0].workflow  # merge
+        try:
+            out = {"guesses": pred.index(tgtwrd)+1, "best_guess": tgtwrd}
+        except ValueError:
+            # first prediction if not hit
+            out = {"guesses": float("inf"), "best_guess": pred[0]}
+    except KeyError:
+        # this if predictions not made
+        out = {"guesses": float("inf"), "best_guess": "KeyError"}
+    if args[-1] is True:
+        out |= args[0].workflow  # merge
     return out  # dict
+
 
 def eval_recon(tgtwrd, *args):
     """
@@ -674,21 +692,26 @@ target_language="EAH", scdictlist=path2sc_rc)
     {'guesses': 1, 'best_guess': 'anaat͡ʃi'}
 
     """
-    #make prediction
+    # make prediction
     pred = Adrc.reconstruct(*args)
-    #define two conditions with which the output will be evaluated
-    short_regex, target_hit = "(" in pred, bool(
-    search(pred, tgtwrd)) # is pred-regex IN tgtwrd?
-    #return output based on those 2 conditions
-    if short_regex and target_hit: out = args[2], pred
-    elif "not old" in pred: out = float("inf"), pred
-    elif short_regex and not target_hit: out = float("inf"), pred
-    elif not short_regex and target_hit: out = pred[1:-1].split("$|^").index(
-    tgtwrd)+1, tgtwrd
-    elif not short_regex and not target_hit: out = float("inf"), pred[
-    1:-1].split("$|^")[0]
-    else: out = float("inf"), pred
+    # define two conditions with which the output will be evaluated
+    # is pred-regex IN tgtwrd?
+    short_regex, target_hit = "(" in pred, bool(search(pred, tgtwrd))
+    # return output based on those 2 conditions
+    if short_regex and target_hit:
+        out = args[2], pred
+    elif "not old" in pred:
+        out = float("inf"), pred
+    elif short_regex and not target_hit:
+        out = float("inf"), pred
+    elif not short_regex and target_hit:
+        out = pred[1:-1].split("$|^").index(tgtwrd)+1, tgtwrd
+    elif not short_regex and not target_hit:
+        out = float("inf"), pred[1:-1].split("$|^")[0]
+    else:
+        out = float("inf"), pred
     return {"guesses": out[0], "best_guess": out[1]}
+
 
 def get_noncrossval_sc(adrc_obj, writesc):
     """
@@ -731,9 +754,10 @@ target_language="EAH")
      'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']}
     """
     # if we don't crossvalidate we just get sound corresp from big file
-    (adrc_obj.scdict, adrc_obj.sedict, _, adrc_obj.scdict_phonotactics, _, _
-    ) = adrc_obj.get_sound_corresp(writesc) #getsc
+    (adrc_obj.scdict, adrc_obj.sedict, _,  # get sound correspondences
+     adrc_obj.scdict_phonotactics, _, _) = adrc_obj.get_sound_corresp(writesc)
     return adrc_obj
+
 
 def get_crossval_data(adrc_obj, idx, writesc=None):
     """
@@ -789,27 +813,29 @@ target_language="EAH")
     # isolate
     adrc_obj.dfety = adrc_obj.dfety.drop([adrc_obj.dfety.index[idx]])
     # create filename for corssvalidated training results
-    if writesc: writesc = writesc / f"sc{idx}isolated.txt"
+    if writesc:
+        writesc = writesc / f"sc{idx}isolated.txt"
     # get index of popped word in forms
     adrc_obj.idx_of_popped_word = adrc_obj.forms_target_language.index(
-    dropped_row.at[idx, "Target_Form"])
+        dropped_row.at[idx, "Target_Form"])
     # pop isolated word from forms, from which inventories are concluded
     adrc_obj.popped_word = adrc_obj.forms_target_language.pop(
-    adrc_obj.idx_of_popped_word)
+        adrc_obj.idx_of_popped_word)
     # get crossvalidated inventories from crossvalidated forms
     (adrc_obj.phoneme_inventory, adrc_obj.cluster_inventory,
-    adrc_obj.phonotactic_inventory) = adrc_obj.get_inventories()
+     adrc_obj.phonotactic_inventory) = adrc_obj.get_inventories()
     # popped word will be plugged in in loop_thru_data at end of loop
     # because adapt & reconstruct use inventories for filters etc.
     # train model on crossvalidated data (chosen row is isolated)
-    (adrc_obj.scdict, adrc_obj.sedict, _, adrc_obj.scdict_phonotactics, _, _
-    ) = adrc_obj.get_sound_corresp(writesc) #getsc
+    (adrc_obj.scdict, adrc_obj.sedict, _,  # get sound correspondences
+     adrc_obj.scdict_phonotactics, _, _) = adrc_obj.get_sound_corresp(writesc)
     # dropped row plugged in again so df can be reused in next round of loop
     # can be done here b/c only qfysc uses dfety, not used in adapt/reconstruct
     adrc_obj.dfety = concat([adrc_obj.dfety.head(idx),
-                             dropped_row, #re-insert isolated row
+                             dropped_row,  # re-insert isolated row
                              adrc_obj.dfety.tail(len(adrc_obj.dfety)-idx)])
     return adrc_obj
+
 
 def postprocess(adrc_obj):
     """
@@ -820,7 +846,8 @@ def postprocess(adrc_obj):
     Source words and best guesses. This results in 2*4=8 columns, since \
     workflow will be returned as well. b) Checks if the correct phonotactics \
     were predicted or not, \
-    in case param <show_workflow> = True and <max_repaired_phonotactics> > 0 in \
+    in case param <show_workflow> = True \
+and <max_repaired_phonotactics> > 0 in \
     loanpy.sanity.eval_all. \
     c) calculates the Levenshtein Distance and its \
     normalised version between Source words and best guesses.
@@ -829,7 +856,8 @@ def postprocess(adrc_obj):
     :type adrc_obj: loanpy.adrc.Adrc
 
     :returns: An adrc_obj with 10-11 additional columns: 2*4=8 about nse. \
-    1 optional one called "phonotactics_predicted" and 2 about the Levenshtein distances.
+    1 optional one called "phonotactics_predicted" \
+and 2 about the Levenshtein distances.
     :rtype: loanpy.adrc.Adrc
 
     :Example:
@@ -903,15 +931,16 @@ target_language="EAH", scdictlist=path2sc_ad)
     0    0.57
     1    0.60
     2    0.00
-    Name: fast_levenshtein_distance_div_maxlen_best_guess_Target_Form, dtype: float64
+    Name: fast_levenshtein_distance_div_maxlen_best_guess_Target_Form, \
+dtype: float64
 
     """
     adrc_obj = get_nse4df(adrc_obj, "Target_Form")
     adrc_obj = get_nse4df(adrc_obj, "best_guess")
-    # this is wrong: col only exists if additionally max_repaired_phonotactics!=0
     adrc_obj = phonotactics_predicted(adrc_obj)
     adrc_obj = get_dist(adrc_obj, "best_guess")
     return adrc_obj
+
 
 def postprocess2(adrc_obj, guesslist, mode, write_to=None):
     """
@@ -963,36 +992,38 @@ target_language="EAH", scdictlist=path2sc_ad)
     """
 
     tpr_fpr_opt = get_tpr_fpr_opt(
-    adrc_obj.dfety.guesses,  # how many guesses were NEEDED
-    guesslist,   # how many guesses were MADE
-    len(adrc_obj.dfety)
-    )
+                                    # howmany guesses were NEEDED
+                                    adrc_obj.dfety.guesses,
+                                    guesslist,   # how many guesses were MADE
+                                    len(adrc_obj.dfety)
+                                    )
 
     stat = make_stat(
-    tpr_fpr_opt[2][2],
-    tpr_fpr_opt[2][1],
-    guesslist[-1],
-    len(adrc_obj.dfety)
-    )
+                        tpr_fpr_opt[2][2],
+                        tpr_fpr_opt[2][1],
+                        guesslist[-1],
+                        len(adrc_obj.dfety)
+                        )
 
     if write_to:
         plot_roc(
-        guesslist,
-        Path(str(write_to)[:-4]+".jpg"),
-        tpr_fpr_opt,
-        stat[0],
-        stat[2],
-        len(adrc_obj.dfety),
-        mode
-        )
+                    guesslist,
+                    Path(str(write_to)[:-4]+".jpg"),
+                    tpr_fpr_opt,
+                    stat[0],
+                    stat[2],
+                    len(adrc_obj.dfety),
+                    mode
+                    )
 
         adrc_obj.dfety.to_csv(
-        write_to,
-        encoding="utf_8",
-        index=False
-        )
+                                write_to,
+                                encoding="utf_8",
+                                index=False
+                                )
 
     return stat
+
 
 def get_nse4df(adrc_obj, tgt_col):
     """
@@ -1030,14 +1061,18 @@ target_language="EAH", scdictlist=path2sc_ad)
     """
 
     col1, col2 = adrc_obj.dfety[tgt_col], adrc_obj.dfety["Source_Form"]
-    if adrc_obj.mode == "reconstruct": col1, col2 = col2, col1  # flip it!
+    if adrc_obj.mode == "reconstruct":
+        col1, col2 = col2, col1  # flip it!
 
-    adrc_obj.dfety = concat([adrc_obj.dfety,
-    DataFrame([adrc_obj.get_nse(tgt, src) for tgt, src in zip(col1, col2)],
-    columns=[f"NSE_Source_{tgt_col}", f"SE_Source_{tgt_col}",
-    f"E_distr_Source_{tgt_col}", f"align_Source_{tgt_col}"])], axis=1)
+    adrc_obj.dfety = concat(
+        [adrc_obj.dfety, DataFrame([adrc_obj.get_nse(tgt, src)
+         for tgt, src in zip(col1, col2)],
+            columns=[f"NSE_Source_{tgt_col}", f"SE_Source_{tgt_col}",
+                     f"E_distr_Source_{tgt_col}",
+                     f"align_Source_{tgt_col}"])], axis=1)
 
     return adrc_obj
+
 
 def phonotactics_predicted(adrc_obj):
     """
@@ -1078,17 +1113,20 @@ def phonotactics_predicted(adrc_obj):
 
     """
 
-    try: adrc_obj.dfety["phonotactics_predicted"] = [
-    True if adrc_obj.word2struc(actual) in pred
-    else False for actual, pred in
-    zip(adrc_obj.dfety["Target_Form"], adrc_obj.dfety["predicted_phonotactics"])]
-    except KeyError: pass
+    try:
+        adrc_obj.dfety[
+            "phonotactics_predicted"] = [True if adrc_obj.word2phonotactics(actual)
+                                         in pred else False for actual, pred
+                                         in zip(adrc_obj.dfety["Target_Form"],
+                                                adrc_obj.dfety[
+                                                    "predicted_phonotactics"])]
+    except KeyError:
+        pass
     return adrc_obj
 
-def get_dist(adrc_obj, col, dst_msrs=[
-"fast_levenshtein_distance",
-"fast_levenshtein_distance_div_maxlen"
-]):
+
+def get_dist(adrc_obj, col, dst_msrs=["fast_levenshtein_distance",
+                                      "fast_levenshtein_distance_div_maxlen"]):
     """
     Called by loanpy.sanity.postprocess.
     Calculates the Levenshtein Distance and the normalised Levenshtein \
@@ -1140,7 +1178,8 @@ def get_dist(adrc_obj, col, dst_msrs=[
     0    0.42
     1    0.83
     2    0.00
-    Name: fast_levenshtein_distance_div_maxlen_best_guess_Target_Form, dtype: float64
+    Name: fast_levenshtein_distance_div_maxlen_best_guess_Target_Form, \
+dtype: float64
 
 
     """
@@ -1157,6 +1196,7 @@ def get_dist(adrc_obj, col, dst_msrs=[
         adrc_obj.dfety[f"{dst_msr}_{col}_Target_Form"] = new_col
 
     return adrc_obj
+
 
 def make_stat(opt_fp, opt_tp, max_fp, len_df):
     """
@@ -1198,6 +1238,7 @@ def make_stat(opt_fp, opt_tp, max_fp, len_df):
     opt_tpr = str(round(opt_tp*100)) + "%"
 
     return opt_howmany, opt_tp_str, opt_tpr
+
 
 def get_tpr_fpr_opt(guesses_needed, guesses_made, len_df):
     """
@@ -1241,25 +1282,28 @@ len_df=10)
     [0.001, 0.003, 0.005, 0.007, 0.009, 0.099, 1.0],
     (0.501, 0.6, 0.099))
     """
+# keep only rows that are guess or lower = the correctly
+# identified ones in the given round
+# divide that number by the max amount of true positives
+# -> e.g. 10/119 were correct if 100 guesses were made
     tpr, fpr = [], []
-    for guess in guesses_made: #loop through fpr
+    for guess in guesses_made:  # loop through fpr
         tpr.append(round(len([
-        # keep only rows that are guess or lower = the correctly
-        # identified ones in the given round
-        # divide that number by the max amount of true positives
-        # -> e.g. 10/119 were correct if 100 guesses were made
-        i for i in guesses_needed if i and i <= guess])/len_df, 3))
+                                i for i in guesses_needed
+                                if i and i <= guess])/len_df, 3))
         # how much of a fraction of the max amount of guess is our current fpr
         # e.g. 2K out out 10K would be 0.2 = 20%
         fpr.append(round(guess/(guesses_made[-1]), 3))
 
     # I'm gleb to see you
+    # https://www.youtube.com/watch?v=jl7bMLf-f9A
     optimum = max([(tp-guess, tp, guess) for tp, guess in zip(tpr, fpr)])
 
     return tpr, fpr, optimum
 
+
 def plot_roc(guesslist, plot_to, tpr_fpr_opt, opt_howmany, opt_tpr,
-len_df, mode):
+             len_df, mode):
     """
     Plots an ROC-curve: True positive rate goes on the x-axis, false \
     positive rate on the y-axis. Optimum is marked with an "x" on the curve.
@@ -1319,13 +1363,14 @@ len_df, mode):
     xlabel(f'fpr (100%={guesslist[-1]})')
     ylabel(f'tpr (100%={len_df})')
     plot(tpr_fpr_opt[1], tpr_fpr_opt[0], label=f'ROC-curve')
-    scatter(tpr_fpr_opt[2][2],tpr_fpr_opt[2][1], marker='x', c='blue',
-    label=f"Optimum:\nhowmany={opt_howmany} -> tpr: {opt_tpr}")
+    scatter(tpr_fpr_opt[2][2], tpr_fpr_opt[2][1], marker='x', c='blue',
+            label=f"Optimum:\nhowmany={opt_howmany} -> tpr: {opt_tpr}")
     title(f'Predicting with loanpy.adrc.Adrc.{mode}')
     legend()
 
     savefig(plot_to)
     clf()  # important, else old plot keeps getting overwritten
+
 
 def check_cache(path2cache, init_args):
     """
@@ -1362,22 +1407,25 @@ certain conditions, else no action
     """
 
     try:  # this means that the file already exists
-        for idx, row in read_csv(path2cache,  # loop through file
-            usecols=list(init_args)).fillna("").iterrows():
+        # loop through file
+        for idx, row in read_csv(
+                path2cache, usecols=list(init_args)).fillna("").iterrows():
             # check whether given parameters were already run once
             if list(map(str, list(init_args.values()))
-            ) == list(map(str, list(row))):
-            # if yes, raise error and specify the row where they are stored
+                    ) == list(map(str, list(row))):
+                # if yes, raise error and specify the row where they are stored
                 raise ArgumentsAlreadyTested(f"These arguments were tested \
 already, see {path2cache} line {idx+1}! (start counting at 1 in 1st row)")
 
-    except FileNotFoundError: # if cache doesn't exist, create empty one
-    # columns are the args with which eval_all was run
-         DataFrame(columns=list(init_args)+[
-         # as well as evaluation columns eval_all will create
-         "opt_tpr", "optimal_howmany", "opt_tp", "timing", "date"
-         # write empty cache to file at indicated location
-         ]).to_csv(path2cache, index=False, encoding="utf-8")
+    except FileNotFoundError:  # if cache doesn't exist, create empty one
+        # columns are the args with which eval_all was run
+        DataFrame(columns=list(
+            init_args)+["opt_tpr", "optimal_howmany", "opt_tp", "timing",
+                        "date"]).to_csv(path2cache, index=False,
+                                        encoding="utf-8")
+        # as well as evaluation columns eval_all will create
+        # write empty cache to file at indicated location
+
 
 def write_to_cache(path2cache, init_args, stat, start, end):
     """
@@ -1406,12 +1454,21 @@ def write_to_cache(path2cache, init_args, stat, start, end):
     :rtype: None
     """
 
-    for i in init_args: init_args[i] = str(init_args[i]) #to make df out of it
+    for i in init_args:
+        init_args[i] = str(init_args[i])  # to make df out of it
 
-    #concat old and new cache, sort, write to csv
-    concat([read_csv(path2cache), DataFrame(init_args, index=[0]).assign(
-    optimal_howmany=[stat[0]], opt_tp=[stat[1]], opt_tpr=[stat[2]],
-    timing=[strftime("%H:%M:%S",gmtime(end-start))],
-    date=[datetime.now().strftime("%x %X")])]).sort_values(
-    by=['opt_tpr'], ascending=False, ignore_index=True).to_csv(
-    path2cache, index=False, encoding="utf_8_sig")
+    # concat old and new cache, sort, write to csv
+    concat([read_csv(path2cache),
+            DataFrame(
+                init_args, index=[0]).assign(
+                        optimal_howmany=[stat[0]],
+                        opt_tp=[stat[1]], opt_tpr=[stat[2]],
+                        timing=[strftime("%H:%M:%S",
+                                         gmtime(end-start))],
+                        date=[datetime.now().strftime("%x %X")]
+                        )]).sort_values(
+                                        by=['opt_tpr'],
+                                        ascending=False,
+                                        ignore_index=True).to_csv(
+                                            path2cache, index=False,
+                                            encoding="utf_8_sig")
