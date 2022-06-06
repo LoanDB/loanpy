@@ -16,10 +16,12 @@ from loanpy.adrc import Adrc
 
 logger = getLogger(__name__)
 
+
 class NoPhonMatch(Exception):
     pass
 
-def read_data(path2forms, adrc_col): #explosion means explode
+
+def read_data(path2forms, adrc_col):  # explosion means explode
     """
     Reads a column with adapted or reconstructed words in a forms.csv file, \
 drops empty elements, drops elements with certain keywords used by \
@@ -52,20 +54,22 @@ Words can be regexes as well
     Name: col1, dtype: object
 
     """
-    #so the class can be initiated even without path2forms
-    if path2forms is None: return None
-    #these red flags are returned by adapt() and reconstruct()
+    # so the class can be initiated even without path2forms
+    if path2forms is None:
+        return None
+    # these red flags are returned by adapt() and reconstruct()
     todrop = "wrong clusters|wrong phonotactics|not old|wrong vowel harmony"
-    #reading only 1 column saves RAM. Expensive calculations ahead.
+    # reading only 1 column saves RAM. Expensive calculations ahead.
     df_forms = read_csv(path2forms, encoding="utf-8",
-    usecols=[adrc_col]).fillna("")
-    #drops columns with red flags
+                        usecols=[adrc_col]).fillna("")
+    # drops columns with red flags
     df_forms = df_forms[~df_forms[adrc_col].str.contains(todrop)]
-    #reconstructed words don't have ", " so nothing should happen there
+    # reconstructed words don't have ", " so nothing should happen there
     df_forms[adrc_col] = df_forms[adrc_col].str.split(", ")
-    #explode is the pandas Series equivalent of flattening a nested list
+    # explode is the pandas Series equivalent of flattening a nested list
     df_forms = df_forms.explode(adrc_col)  # one word per row
     return df_forms[adrc_col]  # a pandas Series object
+
 
 def gen(iterable1, iterable2, function, prefix="Calculating", *args):
     """
@@ -110,7 +114,8 @@ the tuples from the two zipped iterables.
     [6, 8, 10]
     """
     for ele1, ele2 in zip(tqdm(iterable1, prefix), iterable2):
-        yield function(ele1, ele2, *args) # can't pass kwargs!
+        yield function(ele1, ele2, *args)  # can't pass kwargs!
+
 
 class Search():
     """
@@ -224,7 +229,7 @@ scdictlist_rc=path2sc_rc)
     def __init__(self, path2donordf=None, path2recipdf=None, donorcol="ad",
                  recipcol="rc",
                  phondist=0, phondist_msr="hamming_feature_edit_distance",
-                 semsim=1 , semsim_msr=gensim_multiword,
+                 semsim=1, semsim_msr=gensim_multiword,
                  scdictlist_ad=None, scdictlist_rc=None):
 
         # pandas Series of predicted adapted donor words in which to search
@@ -234,18 +239,17 @@ scdictlist_rc=path2sc_rc)
         # path to donor and recipient forms.csv to read extra infos later
         self.donpath, self.recpath = path2donordf, path2recipdf
         # names of the columns containing adapted and reconstructed words
-        self.doncol, self.reccol = donorcol, recipcol # used in postprocessing
+        self.doncol, self.reccol = donorcol, recipcol  # used in postprocessing
 
-        self.phondist = phondist # maximal phonological distance of a mtach
-        self.phondist_msr = getattr(Distance(), phondist_msr) #distance measure
-        self.semsim = semsim # minimal semantic similarity of a match
-        self.semsim_msr = semsim_msr # semantic similarity measuring function
+        self.phondist = phondist  # maximal phonological distance of a mtach
+        self.phondist_msr = getattr(Distance(), phondist_msr)  # distnc measure
+        self.semsim = semsim  # minimal semantic similarity of a match
+        self.semsim_msr = semsim_msr  # semantic similarity measuring function
 
         # normalised sum of examples for adaptions and reconstructions
-        self.get_nse_ad = Adrc(
-        scdictlist=scdictlist_ad, mode="adapt").get_nse
-        self.get_nse_rc = Adrc(
-        scdictlist=scdictlist_rc, mode="reconstruct").get_nse
+        self.get_nse_ad = Adrc(scdictlist=scdictlist_ad, mode="adapt").get_nse
+        self.get_nse_rc = Adrc(scdictlist=scdictlist_rc,
+                               mode="reconstruct").get_nse
 
     def phonmatch(self, search_for, index, dropduplicates=True):
         """
@@ -261,7 +265,8 @@ donor language.
 
         :param index: The number with which to replace a match. \
         (This number will be \
-        used to merge the rest of the recipdf data frame, so it should represent \
+        used to merge the rest of the recipdf \
+data frame, so it should represent \
         the index in the recipdf data frame.)
         :type index: idx
 
@@ -302,22 +307,22 @@ phonological matches. The index \
 
         """
         # maximal phonetic distance == 0 means only identical words are matches
-        if self.phondist == 0: # will drop all non-identical elements
+        if self.phondist == 0:  # will drop all non-identical elements
             matched = self.search_in[self.search_in.str.match(search_for)]
-        else: # will otherwise drop everything above the max distance
+        else:  # will otherwise drop everything above the max distance
             self.phondist_msr = partial(self.phondist_msr, target=search_for)
-            matched = self.search_in[self.search_in.apply(
-            self.phondist_msr) <= self.phondist]
+            matched = self.search_in[
+                self.search_in.apply(self.phondist_msr) <= self.phondist]
 
         # creates new col "recipdf_idx" - keys to the input df
         dfphonmatch = DataFrame({"match": matched, "recipdf_idx": index})
 
         # this makes things more economical. dropping redundancies
         if dropduplicates is True:
-            dfphonmatch = dfphonmatch[
-            ~dfphonmatch.index.duplicated(keep='first')]
+            dfphonmatch = dfphonmatch[~dfphonmatch.index.duplicated(
+                keep='first')]
 
-        #returns a pandas data frame
+        # returns a pandas data frame
         return dfphonmatch
 
     def loans(self, write_to=False, postprocess=False, merge_with_rest=False):
@@ -365,36 +370,43 @@ internet + a minute to load
 
         """
 
-        #find phonological matches
-        dfmatches = concat(gen(self.search_for,
-        self.search_for.index, self.phonmatch,
-        "searching for phonological matches: "))
-        #raise exception if no matches found
-        if len(dfmatches) == 0: raise NoPhonMatch(
-        "no phonological matches found")
+        # find phonological matches
+        dfmatches = concat(gen(self.search_for, self.search_for.index,
+                               self.phonmatch,
+                               "searching for phonological matches: "))
+        # raise exception if no matches found
+        if len(dfmatches) == 0:
+            raise NoPhonMatch("no phonological matches found")
 
-        #add translations for semantic comparison
+        # add translations for semantic comparison
         dfmatches = dfmatches.merge(read_csv(self.recpath, encoding="utf-8",
-    usecols=["Meaning"]).fillna(""), left_on="recipdf_idx", right_index=True)
+                                             usecols=["Meaning"]).fillna(""),
+                                    left_on="recipdf_idx", right_index=True)
         dfmatches = dfmatches.merge(read_csv(self.donpath, encoding="utf-8",
-        usecols=["Meaning"]).fillna(""), left_index=True, right_index=True)
+                                             usecols=["Meaning"]).fillna(""),
+                                    left_index=True, right_index=True)
 
-        #calculate semantic similarity of phonological matches
-        dfmatches[self.semsim_msr.__name__] = list(
-        gen(dfmatches["Meaning_x"], dfmatches["Meaning_y"], self.semsim_msr,
-        "calculating semantic similarity of phonological matches: "))
+        # calculate semantic similarity of phonological matches
+        dfmatches[self.semsim_msr.__name__] = list(gen(dfmatches["Meaning_x"],
+                                                       dfmatches["Meaning_y"],
+                                                       self.semsim_msr,
+                                                       "calculating semantic \
+similarity of phonological matches: "))
 
-        #sorting and cutting off words with too low semantic similarity
-        logger.warning(
-f"cutting off by semsim ({self.semsim}) and ranking by semantic similarity")
+        # sorting and cutting off words with too low semantic similarity
+        logger.warning("cutting off by semsim=" +
+                       str(self.semsim) +
+                       "and ranking by semantic similarity")
         dfmatches = dfmatches[dfmatches[
-        self.semsim_msr.__name__] >= self.semsim]
-        dfmatches = dfmatches.sort_values(
-        by=self.semsim_msr.__name__, ascending=False)
+            self.semsim_msr.__name__] >= self.semsim]
+        dfmatches = dfmatches.sort_values(by=self.semsim_msr.__name__,
+                                          ascending=False)
 
         # 3 optional extra steps indicated in params, skipped by default
-        if postprocess: dfmatches = self.postprocess(dfmatches)
-        if merge_with_rest: dfmatches = self.merge_with_rest(dfmatches)
+        if postprocess:
+            dfmatches = self.postprocess(dfmatches)
+        if merge_with_rest:
+            dfmatches = self.merge_with_rest(dfmatches)
         if write_to:
             dfmatches.to_csv(write_to, encoding="utf-8", index=False)
             logger.warning(f"file written to {write_to}")
@@ -419,11 +431,15 @@ words
         >>> from pathlib import Path
         >>> from pandas import DataFrame
         >>> from loanpy.loanfinder import Search, __file__
-        >>> PATH2SC_AD = Path(__file__).parent / "tests" / "input_files" / "sc_ad_likeliest.txt"
-        >>> PATH2SC_RC = Path(__file__).parent / "tests" / "input_files" / "sc_rc_likeliest.txt"
+        >>> PATH2SC_AD = Path(__file__).parent / "tests" \
+/ "input_files" / "sc_ad_likeliest.txt"
+        >>> PATH2SC_RC = Path(__file__).parent / "tests" \
+/ "input_files" / "sc_rc_likeliest.txt"
         >>> search_obj = Search(
-        >>> path2donordf=Path(__file__).parent / "tests" / "input_files" / "loans_got.csv",
-        >>> path2recipdf=Path(__file__).parent / "tests" / "input_files" / "loans_hun.csv",
+        >>> path2donordf=Path(__file__).parent / "tests" \
+/ "input_files" / "loans_got.csv",
+        >>> path2recipdf=Path(__file__).parent / "tests" / \
+"input_files" / "loans_hun.csv",
         >>> scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC,
         >>> semsim=0.2)
         >>> dfin = DataFrame({"match": ["blub"], "recipdf_idx": [0],
@@ -431,41 +447,47 @@ words
         >>> "Meaning_y": ["human"], "semsim_msr": [0.10940766]})
         >>> search_obj.postprocess(dfin)
         postprocessing...
-           recipdf_idx            Meaning_x  ...                      align_ad  nse_combined
-        0            0  computer, interface  ...  ['b<b', 'l<l', 'u<u', 'b<b']          15.0
+           recipdf_idx            Meaning_x  ...                      align_ad\
+  nse_combined
+        0            0  computer, interface  ...  ['b<b', 'l<l', 'u<u', 'b<b']\
+        15.0
 
 
         """
         logger.warning(f"postprocessing...")
-        #read in data for likeliestphonmatch, i.e. col Segments in both,
-        #donor and recipient dataframes
+        # read in data for likeliestphonmatch, i.e. col Segments in both,
+        # donor and recipient dataframes
         dfmatches = dfmatches.merge(read_csv(self.recpath, encoding="utf-8",
-        usecols=["Segments", self.reccol]).fillna(""),left_on="recipdf_idx",
-        right_index=True)
+                                             usecols=["Segments",
+                                                      self.reccol]).fillna(""),
+                                    left_on="recipdf_idx", right_index=True)
         dfmatches = dfmatches.merge(read_csv(self.donpath, encoding="utf-8",
-        usecols=["Segments", self.doncol]).fillna(""),left_index=True,
-        right_index=True)
-        dfmatches["Segments_x"] = [
-        i.replace(" ", "") for i in dfmatches["Segments_x"]]
-        dfmatches["Segments_y"] = [
-        i.replace(" ", "") for i in dfmatches["Segments_y"]]
-        #calculate likeliest phonological matches
-        newcols = concat([
-        self.likeliestphonmatch(ad, rc, segd, segr) for ad, rc, segd, segr
-        in zip(dfmatches[self.doncol], dfmatches[self.reccol],
-               dfmatches["Segments_y"], dfmatches["Segments_x"])])
-        del dfmatches["match"] # delete non-likeliest matches
-        newcols.index = dfmatches.index # otherwise concat wont work
+                                             usecols=["Segments",
+                                                      self.doncol]).fillna(""),
+                                    left_index=True, right_index=True)
+        dfmatches["Segments_x"] = [i.replace(" ", "")
+                                   for i in dfmatches["Segments_x"]]
+        dfmatches["Segments_y"] = [i.replace(" ", "")
+                                   for i in dfmatches["Segments_y"]]
+        # calculate likeliest phonological matches
+        newcols = concat([self.likeliestphonmatch(ad, rc, segd, segr)
+                          for ad, rc, segd, segr
+                          in zip(dfmatches[self.doncol],
+                                 dfmatches[self.reccol],
+                                 dfmatches["Segments_y"],
+                                 dfmatches["Segments_x"])])
+        del dfmatches["match"]  # delete non-likeliest matches
+        newcols.index = dfmatches.index  # otherwise concat wont work
 
-        dfmatches = concat([dfmatches, newcols], axis=1) #add new cols
-        #delete redundant data
+        dfmatches = concat([dfmatches, newcols], axis=1)  # add new cols
+        # delete redundant data
         del (dfmatches["Segments_x"], dfmatches[self.reccol],
-            dfmatches["Segments_y"], dfmatches[self.doncol])
+             dfmatches["Segments_y"], dfmatches[self.doncol])
 
-        return dfmatches #same structure as input df
+        return dfmatches  # same structure as input df
 
     def likeliestphonmatch(self, donor_ad, recip_rc, donor_segment,
-    recip_segment):
+                           recip_segment):
         """
         Calculates the nse of recip_rc-recip_segment \
 and donor_ad-donor_segment, adds them together \
@@ -491,40 +513,48 @@ and picks the word pair with the highest sum. Adds cols with bonus info.
         >>> from pathlib import Path
         >>> from pandas import DataFrame
         >>> from loanpy.loanfinder import Search, __file__
-        >>> PATH2SC_AD = Path(__file__).parent / "tests" / "input_files" / "sc_ad_likeliest.txt"
-        >>> PATH2SC_RC = Path(__file__).parent / "tests" / "input_files" / "sc_rc_likeliest.txt"
-        >>> PATH2READ_DATA = Path(__file__).parent / "tests" / "input_files" / "ad_read_data.csv"
+        >>> PATH2SC_AD = Path(__file__).parent / "tests" \
+/ "input_files" / "sc_ad_likeliest.txt"
+        >>> PATH2SC_RC = Path(__file__).parent / "tests" \
+/ "input_files" / "sc_rc_likeliest.txt"
+        >>> PATH2READ_DATA = Path(__file__).parent / "tests" \
+/ "input_files" / "ad_read_data.csv"
         >>> search_obj = Search(
         >>> path2donordfPATH2READ_DATA, donorcol="col1",
         >>> scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC)
-        >>> search_obj.likeliestphonmatch(donor_ad="a, blub, club", recip_rc="(b|c)?lub",
+        >>> search_obj.likeliestphonmatch(donor_ad="a, blub, \
+club", recip_rc="(b|c)?lub",
         >>> donor_segment="elub", recip_segment="dlub")
-            match  nse_rc  se_rc  ...           distr_ad                             align_ad  nse_combined
-            0  blub    10.0     50  ...  [0, 0, 10, 10, 0]  ['e<V', 'C<b', 'l<l', 'u<u', 'b<b']          14.0
+            match  nse_rc  se_rc  ...           distr_ad\
+            align_ad  nse_combined
+            0  blub    10.0     50  ...  [0, 0, 10, 10, 0]  \
+            ['e<V', 'C<b', 'l<l', 'u<u', 'b<b']          14.0
             [1 rows x 10 columns]
 
 
         """
         # step 1: serach for phonological matches between
         # reconstructed regex and list of predicted adaptations
-        dfph = self.phonmatch_small(Series(donor_ad.split(", "),
-        name="match"), recip_rc, dropduplicates=False)
-        #get the nse score between original and predictions
-        #and write to new columns
-        #cols se_rc, lst_rc, se_ad, lst_ad are just extra info for the user
-        dfph = DataFrame([(wrd,) + self.get_nse_rc(recip_segment, wrd)
-                                 + self.get_nse_ad(donor_segment, wrd)
-        for wrd in dfph["match"]], columns=["match", "nse_rc", "se_rc",
-        "distr_rc", "align_rc", "nse_ad", "se_ad", "distr_ad", "align_ad"])
-        #add combined nse
+        dfph = self.phonmatch_small(Series(donor_ad.split(", "), name="match"),
+                                    recip_rc, dropduplicates=False)
+        # get the nse score between original and predictions
+        # and write to new columns
+        # cols se_rc, lst_rc, se_ad, lst_ad are just extra info for the user
+        dfph = DataFrame([(wrd,) + self.get_nse_rc(recip_segment, wrd) +
+                          self.get_nse_ad(donor_segment, wrd)
+                          for wrd in dfph["match"]],
+                         columns=["match", "nse_rc", "se_rc", "distr_rc",
+                                  "align_rc", "nse_ad", "se_ad", "distr_ad",
+                                  "align_ad"])
+        # add combined nse
         dfph["nse_combined"] = dfph["nse_rc"] + dfph["nse_ad"]
-        #get idx of max combined, keep only that idx (=likeliest match)
+        # get idx of max combined, keep only that idx (=likeliest match)
         dfph = dfph[dfph.index == dfph["nse_combined"].idxmax()]
 
         return dfph
 
     def phonmatch_small(self, search_in, search_for, index=None,
-    dropduplicates=True):
+                        dropduplicates=True):
 
         """
         Same as loanpy.loanfinder.Serch.phonmatch but search_in \
@@ -542,7 +572,8 @@ search in the wordlist
 
         :param index: The number with which to replace a match. \
         (This number will be \
-        used to merge the rest of the recipdf data frame, so it should represent \
+        used to merge the rest of the recipdf data \
+frame, so it should represent \
         the index in the recipdf data frame.)
         :type index: str
 
@@ -568,19 +599,19 @@ matches. The index \
         :rtype: pandas.core.series.Series
 
         """
-        #for inline comments see loanpy.loanfinder.Search.phonmatch
+        # for inline comments see loanpy.loanfinder.Search.phonmatch
         if self.phondist == 0:
             matched = search_in[search_in.str.match(search_for)]
         else:
             self.phondist_msr = partial(self.phondist_msr, target=search_for)
-            matched = search_in[search_in.apply(
-            self.phondist_msr) <= self.phondist]
+            matched = search_in[
+                search_in.apply(self.phondist_msr) <= self.phondist]
 
         dfphonmatch = DataFrame({"match": matched, "recipdf_idx": index})
 
         if dropduplicates is True:
             dfphonmatch = dfphonmatch[
-            ~dfphonmatch.index.duplicated(keep='first')]
+                ~dfphonmatch.index.duplicated(keep='first')]
         return dfphonmatch
 
     def merge_with_rest(self, dfmatches):
@@ -595,14 +626,15 @@ from both input data frames. This helps to inspect results quickly manually.
 input forms.csv
         :rtype: pandas.core.frame.DataFrame
         """
-        logger.warning(
-        f"Merging with remaining columns from input data frames")
+        logger.warning("Merging with remaining columns from input data frames")
         # avoid duplicates
         dfmatches = dfmatches.drop(["Meaning_x", "Meaning_y"], axis=1)
         dfmatches = dfmatches.merge(read_csv(self.donpath,
-        encoding="utf-8").fillna(""),left_index=True, right_index=True)
+                                             encoding="utf-8").fillna(""),
+                                    left_index=True, right_index=True)
         dfmatches = dfmatches.merge(read_csv(self.recpath,
-        encoding="utf-8").fillna(""),left_on="recipdf_idx", right_index=True)
+                                             encoding="utf-8").fillna(""),
+                                    left_on="recipdf_idx", right_index=True)
         dfmatches = dfmatches.sort_values(by=self.semsim_msr.__name__,
-        ascending=False) #bc unsorted by merge
+                                          ascending=False)  # unsorted by merge
         return dfmatches

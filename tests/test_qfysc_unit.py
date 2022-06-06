@@ -9,7 +9,7 @@ from loanpy.qfysc import (
     WrongModeError,
     read_mode,
     read_connector,
-    #read_nsedict,
+    # read_nsedict,
     read_scdictbase)
 
 from pytest import raises
@@ -52,7 +52,8 @@ class QfyMonkeyGetSoundCorresp:
         self.word2phonotactics_called_with = []
         self.rank_closest_phonotactics_called_with = []
         self.dfety = DataFrame({"Target_Form": ["kiki", "buba"],
-        "Source_Form": ["hehe", "pupa"], "Cognacy": [12, 13]})
+                                "Source_Form": ["hehe", "pupa"],
+                                "Cognacy": [12, 13]})
         self.left = "Target_Form"
         self.right = "Source_Form"
         self.mode = mode
@@ -73,7 +74,7 @@ class QfyMonkeyGetSoundCorresp:
         self.align_called_with.append((left, right))
         return next(self.align_returns)
 
-    def word2struc(self, word):
+    def word2phonotactics(self, word):
         self.word2phonotactics_called_with.append(word)
         return "CVCV"
 
@@ -95,7 +96,7 @@ def test_read_mode():
         read_mode(mode="neitheradaptnorreconstruct")
     assert str(
         wrongmodeerror_mock.value
-        ) == "parameter <mode> must be 'adapt' or 'reconstruct'"
+    ) == "parameter <mode> must be 'adapt' or 'reconstruct'"
 
     assert read_mode("adapt") == "adapt"
     assert read_mode("reconstruct") == "reconstruct"
@@ -112,6 +113,7 @@ def test_read_connector():
     assert read_connector(
         connector=(" from ", " from *"),
         mode="reconstruct") == " from *"
+
 
 def test_read_scdictbase():
     """test if scdictbase is generated correctly from ipa_all.csv"""
@@ -132,7 +134,7 @@ def test_read_scdictbase():
         assert read_scdictbase(base) == base
         assert read_scdictbase(path) == base
 
-    #assert call
+    # assert call
     literal_eval_mock.assert_called_with(str(base))
 
     # tear down
@@ -149,10 +151,10 @@ def test_init():
             read_mode_mock.return_value = "adapt"
             with patch("loanpy.qfysc.read_connector") as read_connector_mock:
                 read_connector_mock.return_value = "<"
-                #with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
+                # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
                 #    read_nsedict_mock.return_value = {}
                 with patch("loanpy.qfysc.read_scdictbase"
-                ) as read_scdictbase_mock:
+                           ) as read_scdictbase_mock:
                     read_scdictbase_mock.return_value = {}
                     mockqfy = Qfy()
 
@@ -170,7 +172,7 @@ def test_init():
                         'scdictbase': {},
                         'vfb': None}
 
-                    #assert calls
+                    # assert calls
                     super_method_mock.assert_called_with(
                         forms_csv=None, source_language=None,
                         target_language=None,
@@ -178,7 +180,7 @@ def test_init():
                         phonotactic_inventory=None)
                     read_mode_mock.assert_called_with("adapt")
                     read_connector_mock.assert_called_with(None, "adapt")
-                    #read_nsedict_mock.assert_called_with(None)
+                    # read_nsedict_mock.assert_called_with(None)
                     read_scdictbase_mock.assert_called_with(None)
 
     # tear down
@@ -210,7 +212,7 @@ def test_align():
         self=mockqfy,
         left="leftstr",
         right="rightstr") == "lingpyaligned"
-    #assert call
+    # assert call
     assert mockqfy.align_lingpy_called_with == [['leftstr', 'rightstr']]
 
     # set up mock class, plug in mode
@@ -221,7 +223,7 @@ def test_align():
         self=mockqfy,
         left="leftstr",
         right="rightstr") == "clusterwisealigned"
-    #assert call
+    # assert call
     assert mockqfy.align_clusterwise_called_with == [["leftstr", "rightstr"]]
 
     # tear down
@@ -250,9 +252,9 @@ def test_align_lingpy():
                     right="hal"),
                 DataFrame(exp))
 
-    #assert calls
+    # assert calls
     Pairwise_mock.assert_has_calls([call(
-    seqs='kala', seqB='hal', merge_vowels=False)])
+        seqs='kala', seqB='hal', merge_vowels=False)])
     # Pairwise always initiated by 3 args
     assert DataFrame_Monkey.call_args_list == [call(exp)]
     assert mockpairwise.align_called_with == [[]]
@@ -267,7 +269,7 @@ def test_align_clusterwise():
     # set up basic mock class, plug in phon2cv, create expected output var
     mockqfy = QfyMonkey()
     mockqfy.phon2cv = {
-    "ɟ": "C", "ɒ": "V", "l": "C", "o": "V", "ɡ": "C", "j": "C"}
+        "ɟ": "C", "ɒ": "V", "l": "C", "o": "V", "ɡ": "C", "j": "C"}
     exp = DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
                     "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']})
 
@@ -284,10 +286,10 @@ def test_get_sound_corresp():
 
     # set up: the expected outcome of assert while mode=="adapt"
     exp = [{"a": ["a", "y", "ü"], "b": ["p", "v"], "i": ["e", "i"],
-         "k": ["h", "c"], "u": ["u", "o"]},
-         {'a<a': 1, 'e<i': 2, 'h<k': 2, 'p<b': 2, 'u<u': 1},
-         {'a<a': [13], 'e<i': [12], 'h<k': [12], 'p<b': [13], 'u<u': [13]},
-         {'d1': 0}, {'d2': 0}, {'d3': 0}]
+            "k": ["h", "c"], "u": ["u", "o"]},
+           {'a<a': 1, 'e<i': 2, 'h<k': 2, 'p<b': 2, 'u<u': 1},
+           {'a<a': [13], 'e<i': [12], 'h<k': [12], 'p<b': [13], 'u<u': [13]},
+           {'d1': 0}, {'d2': 0}, {'d3': 0}]
 
     # set up: the expected outcome of assert while mode=="reconstruct"
     exp2 = [{'#-': ['-'], '#b': ['p'], '#k': ['h'], 'a#': ['a', 'ə', 'ʌ'],
@@ -297,20 +299,24 @@ def test_get_sound_corresp():
              'i#<*e': 1, 'i<*e': 1, 'k<*h': 1, 'u<*u': 1},
             {'#-<*-': [12, 13], '#b<*p': [13], '#k<*h': [12],
              'a#<*a': [13], 'b<*p': [13], 'i#<*e': [12], 'i<*e': [12],
-              'k<*h': [12], 'u<*u': [13]},
-              {}, {}, {}]
+             'k<*h': [12], 'u<*u': [13]},
+            {}, {}, {}]
 
     # set up: create instance 1 of mock class
-    mockqfy = QfyMonkeyGetSoundCorresp(mode="adapt", connector="<",
-        alignreturns1=DataFrame({"keys": ["k", "i", "k", "i"],
-                                 "vals": ["h", "e", "h", "e"]}),
-        alignreturns2=DataFrame(
-                                {"keys": ["b", "u", "b", "a"],
-                                 "vals": ["p", "u", "p", "a"]}))
+    mockqfy = QfyMonkeyGetSoundCorresp(
+        mode="adapt", connector="<", alignreturns1=DataFrame(
+            {
+                "keys": [
+                    "k", "i", "k", "i"], "vals": [
+                    "h", "e", "h", "e"]}), alignreturns2=DataFrame(
+                        {
+                            "keys": [
+                                "b", "u", "b", "a"], "vals": [
+                                    "p", "u", "p", "a"]}))
 
     # set up: create instance 2 of mock class
-    mockqfy2 = QfyMonkeyGetSoundCorresp( # necessary bc of iter()
-    mode="reconstruct", connector="<*", vfb="əœʌ",
+    mockqfy2 = QfyMonkeyGetSoundCorresp(  # necessary bc of iter()
+        mode="reconstruct", connector="<*", vfb="əœʌ",
         alignreturns1=DataFrame(
             {"keys": ["#-", "#k", "i", "k", "i#"],
              "vals": ["-", "h", "e", "h", "e"]}),
@@ -321,8 +327,8 @@ def test_get_sound_corresp():
     # set up the side_effects of pandas.concat
     dfconcat = DataFrame({"keys": list("kikibuba"), "vals": list("hehepupa")})
     dfconcat2 = DataFrame(
-    {"keys": ["#-", "#k", "i", "k", "i#", "#-", "#b", "u", "b", "a#"],
-     "vals": ["-", "h", "e", "h", "e", "-", "p", "u", "p", "a"]})
+        {"keys": ["#-", "#k", "i", "k", "i#", "#-", "#b", "u", "b", "a#"],
+         "vals": ["-", "h", "e", "h", "e", "-", "p", "u", "p", "a"]})
 
     # set up path for param write_to
     path2test_get_sound_corresp = Path(
@@ -330,7 +336,7 @@ def test_get_sound_corresp():
 
     # mock pandas.concat
     with patch("loanpy.qfysc.concat", side_effect=[
-    dfconcat, dfconcat2]) as concat_mock:
+            dfconcat, dfconcat2]) as concat_mock:
         # groupby too difficult to mock
         # assert while mode=="adapt"
         assert Qfy.get_sound_corresp(
@@ -338,7 +344,7 @@ def test_get_sound_corresp():
         try:  # assert that no file was being written
             remove(Path(__file__).parent / "soundchanges.txt")
             assert 1 == 2  # this asserts that the except part was being run
-        except FileNotFoundError: #i.e. the file was correctly not written
+        except FileNotFoundError:  # i.e. the file was correctly not written
             pass
         # assert while mode=="reconstruct"
         assert Qfy.get_sound_corresp(
@@ -352,7 +358,7 @@ def test_get_sound_corresp():
         assert mockqfy.align_called_with == [
             ("kiki", "hehe"), ("buba", "pupa")]
         assert mockqfy.word2phonotactics_called_with == []  # not called
-        assert mockqfy.rank_closest_phonotactics_called_with == []  # not called
+        assert mockqfy.rank_closest_phonotactics_called_with == []  # no called
         for act, exp in zip(
             concat_mock.call_args_list[0][0][0], [
                 mockqfy.df1, mockqfy.df2]):
@@ -395,7 +401,8 @@ def test_get_phonotactics_corresp():
         alignreturns2=None)
 
     mockqfy.dfety = DataFrame({"Target_Form": ["kiki", "buba"],
-    "Source_Form": ["hehe", "pupa"], "Cognacy": [12, 13]})
+                               "Source_Form": ["hehe", "pupa"],
+                               "Cognacy": [12, 13]})
     mockqfy.left = "Target_Form"
     mockqfy.right = "Source_Form"
     mockqfy.connector = "<"
@@ -405,20 +412,22 @@ def test_get_phonotactics_corresp():
     exp_call1 = list(zip(["CVCV", "CVCV"], ["CVCV", "CVCV"], [12, 13]))
     exp_call2 = {"columns": ["keys", "vals", "wordchange"]}
 
-    path2test_get_phonotactics_corresp = Path(__file__).parent / "phonotctchange.txt"
+    path2test_get_phonotactics_corresp = Path(
+        __file__).parent / "phonotctchange.txt"
 
     with patch("loanpy.qfysc.DataFrame") as DataFrame_mock:
         DataFrame_mock.return_value = DataFrame(
-            {"keys": ["CVCV"]*2, "vals": ["CVCV"]*2, "wordchange": [12, 13]})
+            {"keys": ["CVCV"] * 2, "vals": ["CVCV"] * 2,
+             "wordchange": [12, 13]})
 
         # assert
-        assert Qfy.get_phonotactics_corresp(self=mockqfy,
-        write_to=path2test_get_phonotactics_corresp) == exp
+        assert Qfy.get_phonotactics_corresp(
+            self=mockqfy, write_to=path2test_get_phonotactics_corresp) == exp
         # assert file was written
         with open(path2test_get_phonotactics_corresp, "r") as f:
             assert literal_eval(f.read()) == exp
 
-    #assert calls
+    # assert calls
     assert list(DataFrame_mock.call_args_list[0][0][0]) == exp_call1
     assert DataFrame_mock.call_args_list[0][1] == exp_call2
     assert mockqfy.word2phonotactics_called_with == [

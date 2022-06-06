@@ -64,12 +64,13 @@ def test_read_cvfb():
         # assert
         assert read_cvfb() == ({"a": "V", "b": "C"}, {"e": "F", "o": "B"})
 
-        #assert calls
+        # assert calls
         literal_eval_mock.assert_called()
         assert isinstance(literal_eval_mock.call_args_list[0][0][0], str)
         assert len(literal_eval_mock.call_args_list[0][0][0]) == 92187
         assert literal_eval_mock.call_args_list[0][0][0][:
-                                                20] == "[{'q': 'C', 'q̟': 'C"
+                                                         20] == "[\
+{'q': 'C', 'q̟': 'C"
 
 
 def test_read_forms():
@@ -91,7 +92,7 @@ def test_read_forms():
         assert read_forms(None) is None
         assert_frame_equal(read_forms(path), dfexp)
 
-    #assert calls
+    # assert calls
     read_csv_mock.assert_called_with(
         path, usecols=['Segments', 'Cognacy', 'Language_ID'])
 
@@ -115,7 +116,7 @@ def test_cldf2pd():
 
     # assert
     assert cldf2pd(None, source_language="whatever",
-    target_language="wtvr2") is None
+                   target_language="wtvr2") is None
     assert_frame_equal(dfout, dfexp)
 
     # tear down
@@ -131,12 +132,13 @@ def test_read_dst():
     # set up monkey class
     class MonkeyDist:  # mock panphon's Distance() class
         def __init__(self): pass
+
         def weighted_feature_edit_distance(self): pass
 
-    #initiate monkey class
+    # initiate monkey class
     mockdist = MonkeyDist()
 
-    #mock panphon.distance.Distance
+    # mock panphon.distance.Distance
     with patch("loanpy.helpers.Distance") as Distance_mock:
         Distance_mock.return_value = mockdist
         out = read_dst("weighted_feature_edit_distance")
@@ -144,7 +146,7 @@ def test_read_dst():
         # assert
         assert ismethod(out)  # check if it is a method of the mocked class
 
-    #assert calls
+    # assert calls
     assert out == mockdist.weighted_feature_edit_distance
     Distance_mock.assert_called_with()  # the class was called without args
 
@@ -155,8 +157,8 @@ def test_read_dst():
 def test_flatten():
     """check if nested lists are flattened and "" thrown out"""
     assert flatten([["a", "b"], ["c"]]) == ["a", "b", "c"]
-    assert flatten([["wrd1", "wrd2", ""], ["wrd3", "", ""]]) == ["wrd1",
-    "wrd2", "wrd3"]
+    assert flatten([["wrd1", "wrd2", ""], ["wrd3", "", ""]]) == [
+        "wrd1", "wrd2", "wrd3"]
 
 
 def test_combine_ipalists():
@@ -166,15 +168,16 @@ def test_combine_ipalists():
     with patch("loanpy.helpers.flatten") as flatten_mock:
         flatten_mock.return_value = ["ki", "ke", "gi", "bu", "bo", "pu"]
         with patch("loanpy.helpers.product", side_effect=[
-        [('k', 'i'), ('k', 'e'), ('g', 'i'), ('g', 'e')],
-        [('b', 'u'), ('b', 'o'), ('p', 'u'), ('p', 'o')]]) as product_mock:
+            [('k', 'i'), ('k', 'e'), ('g', 'i'), ('g', 'e')],
+                [('b', 'u'), ('b', 'o'),
+                 ('p', 'u'), ('p', 'o')]]) as product_mock:
             inlist = [[["k", "g"], ["i", "e"]], [["b", "p"], ["u", "o"]]]
             out = ["ki", "ke", "gi", "bu", "bo", "pu"]
 
             # assert
             assert combine_ipalists(inlist) == out
 
-    #assert calls
+    # assert calls
     flatten_mock.assert_called_with(
         [["ki", "ke", "gi", "ge"], ["bu", "bo", "pu", "po"]])
     product_mock.assert_has_calls([call(["k", "g"], ["i", "e"]),
@@ -183,15 +186,16 @@ def test_combine_ipalists():
     # tear down
     del inlist, out
 
+
 def test_forms2list():
     "test if dff is converted to a list correctly"
-    #test first break: return None if dff is None
+    # test first break: return None if dff is None
     assert forms2list(None, "sth") is None
 
-    #set up fake input df
+    # set up fake input df
     mock_df_in = DataFrame({"Segments": ["abc", "def", "pou"],
-                      "Cognacy": [1, 1, 2],
-                      "Language_ID": ["lg2", "lg1", "lg2"]})
+                            "Cognacy": [1, 1, 2],
+                            "Language_ID": ["lg2", "lg1", "lg2"]})
     assert forms2list(mock_df_in, "lg2") == ["abc", "pou"]
 
 
@@ -208,10 +212,10 @@ def test_init():
                 with patch("loanpy.helpers.cldf2pd") as cldf2pd_mock:
                     cldf2pd_mock.return_value = None
                     with patch("loanpy.helpers.Etym.get_inventories"
-                    ) as get_inventories_mock:
+                               ) as get_inventories_mock:
                         get_inventories_mock.return_value = (None, None, None)
                         with patch("loanpy.helpers.read_dst"
-                        ) as read_dst_mock:
+                                   ) as read_dst_mock:
                             read_dst_mock.return_value = "distfunc"
 
                             # initiate without args
@@ -238,7 +242,7 @@ def test_init():
                                 'phonotactic_inventory': None,
                                 'vow2fb': {'d2': 456}}
 
-    #assert calls
+    # assert calls
     read_forms_mock.assert_called_with(None)
     forms2list_mock.assert_called_with(None, None)
     read_cvfb_mock.assert_called_with()
@@ -264,9 +268,9 @@ def test_init():
                 with patch("loanpy.helpers.cldf2pd") as cldf2pd_mock:
                     cldf2pd_mock.return_value = "sth3"
                     with patch("loanpy.helpers.Etym.get_inventories"
-                    ) as get_inventories_mock:
+                               ) as get_inventories_mock:
                         get_inventories_mock.return_value = (
-                        "sth4", "sth5", "sth6")
+                            "sth4", "sth5", "sth6")
                         with patch("loanpy.helpers.read_dst") as read_dst_mock:
                             read_dst_mock.return_value = "sth7"
 
@@ -296,7 +300,7 @@ def test_init():
                                 'phonotactic_inventory': "sth6",
                                 'vow2fb': "sth2"}
 
-    #assert calls
+    # assert calls
     read_forms_mock.assert_called_with("path")
     forms2list_mock.assert_called_with(dfmk, "lg2")
     read_cvfb_mock.assert_called_with()
@@ -307,6 +311,7 @@ def test_init():
 
     # tear down
     del mocketym, dfmk
+
 
 def test_read_inventory():
     """check if phoneme inventory is extracted correctly"""
@@ -321,7 +326,7 @@ def test_read_inventory():
     assert Etym.read_inventory(etym_monkey, None) is None
 
     # set up
-     # this is the vocabulary of the language
+    # this is the vocabulary of the language
     etym_monkey.forms_target_language = ["a", "aab", "bc"]
     with patch("loanpy.helpers.tokenise") as tokenise_mock:
         # these are all letters of the language
@@ -329,9 +334,9 @@ def test_read_inventory():
 
         # assert
         assert Etym.read_inventory(etym_monkey,
-            None, tokenise_mock) == set(['a', 'b', 'c'])
+                                   None, tokenise_mock) == set(['a', 'b', 'c'])
 
-    #assert calls
+    # assert calls
     tokenise_mock.assert_called_with("aaabbc")
 
     # set up2: for clusterise
@@ -341,61 +346,66 @@ def test_read_inventory():
             'aa', 'bb', 'aa', 'c']  # clusterised vocab
 
         # assert
-        assert Etym.read_inventory(etym_monkey,
-            None, clusterise_mock) == set(['aa', 'bb', 'c'])
+        assert Etym.read_inventory(
+            etym_monkey, None, clusterise_mock) == set(['aa', 'bb', 'c'])
 
-    #assert calls
+    # assert calls
     # all words are pulled together to one string
     clusterise_mock.assert_called_with("aabbaac")
 
     # tear down
     del etym_monkey, EtymMonkey
 
+
 def test_get_inventories():
-    #set up
+    """test if phoneme/cluster/phonotactic inventories are read in well"""
+    # set up
     class EtymMonkey():
         def __init__(self):
             self.read_inventory_called_with = []
-            self.read_phonotacticsinv_called_with = []
+            self.read_phonotactic_inv_called_with = []
+
         def read_inventory(self, *args):
             self.read_inventory_called_with.append([*args])
             return "read_inventory_returned_this"
-        def read_phonotacticsinv(self, *args):
-            self.read_phonotacticsinv_called_with.append([*args])
-            return "read_phonotacticsinv_returned_this"
 
-    #create instancce
+        def read_phonotactic_inv(self, *args):
+            self.read_phonotactic_inv_called_with.append([*args])
+            return "read_phonotactic_inv_returned_this"
+
+    # create instancce
     etym_monkey = EtymMonkey()
-    #run func
+    # run func
     assert Etym.get_inventories(self=etym_monkey) == (
-    "read_inventory_returned_this",
-    "read_inventory_returned_this",
-    "read_phonotacticsinv_returned_this"
+        "read_inventory_returned_this",
+        "read_inventory_returned_this",
+        "read_phonotactic_inv_returned_this"
     )
 
-    #assert calls
+    # assert calls
     assert etym_monkey.read_inventory_called_with == [
-    [None], [None, hp.clusterise]]
-    assert etym_monkey.read_phonotacticsinv_called_with == [[None, 9999999]]
+        [None], [None, hp.clusterise]]
+    assert etym_monkey.read_phonotactic_inv_called_with == [[None, 9999999]]
 
-    #run func without default parameters
+    # run func without default parameters
 
-    #create instancce
+    # create instancce
     etym_monkey = EtymMonkey()
-    #assert assigned attributes
+    # assert assigned attributes
     assert Etym.get_inventories(etym_monkey, "param1", "param2", "param3", 4
-    ) == ("read_inventory_returned_this",
-    "read_inventory_returned_this",
-    "read_phonotacticsinv_returned_this")
-    #assert calls
+                                ) == ("read_inventory_returned_this",
+                                      "read_inventory_returned_this",
+                                      "read_phonotactic_inv_returned_this")
+    # assert calls
     assert etym_monkey.read_inventory_called_with == [["param1"], [
-    "param2", hp.clusterise]]
-    assert etym_monkey.read_phonotacticsinv_called_with == [["param3", 4]]
+        "param2", hp.clusterise]]
+    assert etym_monkey.read_phonotactic_inv_called_with == [["param3", 4]]
 
-    #tear down
+    # tear down
     del etym_monkey, EtymMonkey
 
-def test_read_phonotacticsinv():
+
+def test_read_phonotactic_inv():
     """test if inventory of phonotactic structures is extracted correctly"""
 
     # set up custom class
@@ -406,7 +416,7 @@ def test_read_phonotacticsinv():
                 ["VV", "VC", "VC", "CC", "CC", "CC"])
             self.called_with = []
 
-        def word2struc(self, word):
+        def word2phonotactics(self, word):
             self.called_with.append(word)
             return next(self.phonotactics_readstrucinv)
 
@@ -414,25 +424,25 @@ def test_read_phonotacticsinv():
     mocketym = EtymMonkeyReadstrucinv()
 
     # assert with different parameter combinations
-    assert Etym.read_phonotacticsinv(self=mocketym, phonotactic_inventory=[
-    "a", "b", "c"]) == ["a", "b", "c"]
+    assert Etym.read_phonotactic_inv(self=mocketym, phonotactic_inventory=[
+        "a", "b", "c"]) == ["a", "b", "c"]
     mocketym.forms_target_language = None
-    assert Etym.read_phonotacticsinv(self=mocketym, phonotactic_inventory=None,
-                              ) is None
+    assert Etym.read_phonotactic_inv(self=mocketym, phonotactic_inventory=None,
+                                     ) is None
     mocketym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
     # now just read the most frquent 2 structures. VV is the 3rd frquent. so
     # not in the output.
-    assert Etym.read_phonotacticsinv(self=mocketym, phonotactic_inventory=None,
-                              howmany=2) == ["CC", "VC"]
+    assert Etym.read_phonotactic_inv(self=mocketym, phonotactic_inventory=None,
+                                     howmany=2) == {"CC", "VC"}
 
-    #assert calls
+    # assert calls
     assert mocketym.called_with == mocketym.forms_target_language
 
     # tear down
     del mocketym, EtymMonkeyReadstrucinv
 
 
-def test_word2struc():
+def test_word2phonotactics():
     """test is the phonotactic structure of a word is returned correctly"""
 
     # set up1
@@ -441,16 +451,16 @@ def test_word2struc():
 
     # assert without mocking tokenise (input is tokenised already)
     # sounds missing from dict are ignored
-    assert Etym.word2struc(self=mocketym, ipa_in=["a", "b", "c"]) == "VC"
+    assert Etym.word2phonotactics(self=mocketym, ipa_in=["a", "b", "c"]) == "VC"
 
     # set up2
     with patch("loanpy.helpers.tokenise") as tokenise_mock:
         tokenise_mock.return_value = ['a', 'b', 'c']
 
         # assert if it works with tokenisation as well
-        assert Etym.word2struc(self=mocketym, ipa_in="abc") == "VC"
+        assert Etym.word2phonotactics(self=mocketym, ipa_in="abc") == "VC"
 
-        #assert call
+        # assert call
         tokenise_mock.assert_called_with("abc")
 
     # tear down
@@ -494,7 +504,7 @@ def test_harmony():
         # assert with tokenisation
         assert Etym.harmony(self=mocketym, ipalist="bot͡sibot͡si") is False
 
-    #assert calls
+    # assert calls
     tokenise_mock.assert_called_with("bot͡sibot͡si")
 
     # set up 3: overwrite vow2fb
@@ -508,7 +518,7 @@ def test_harmony():
         # assert
         assert Etym.harmony(self=mocketym, ipalist="tɒrkɒ") is True
 
-    #assert call
+    # assert call
     tokenise_mock.assert_called_with("tɒrkɒ")
 
     # set up 5: overwrite vow2fb
@@ -525,14 +535,14 @@ def test_harmony():
         # assert
         assert Etym.harmony(self=mocketym, ipalist="ʃɛfylɛʃɛ") is True
 
-    #assert call
+    # assert call
     tokenise_mock.assert_called_with("ʃɛfylɛʃɛ")
 
     # tear down
     del mocketym
 
 
-def test_adapt_harmony():
+def test_repair_harmony():
     """test if a words vowelharmony is repaired correctly"""
 
     # set up1: custom class, create an instance of it, mock tokeniser
@@ -545,10 +555,10 @@ def test_adapt_harmony():
         tokenise_mock.return_value = ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']
 
         # assert that nothing happens if input word has vowel harmony
-        assert Etym.adapt_harmony(self=mocketym, ipalist='kɛsthɛj') == [
+        assert Etym.repair_harmony(self=mocketym, ipalist='kɛsthɛj') == [
             ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
 
-    #assert calls
+    # assert calls
     assert mocketym.called_with == ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']
     tokenise_mock.assert_called_with('kɛsthɛj')
 
@@ -573,10 +583,10 @@ def test_adapt_harmony():
         tokenise_mock.return_value = ['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ']
 
         # assert that the wrong front vowel ø is replaced by "B"
-        assert Etym.adapt_harmony(self=mocketym, ipalist='ɒlʃoːørʃ') == [
+        assert Etym.repair_harmony(self=mocketym, ipalist='ɒlʃoːørʃ') == [
             ['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
 
-        #assert calls
+        # assert calls
         assert mocketym.get_fb_called_with == [
             (['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'], "B")]
         assert mocketym.harmony_called_with == [
@@ -589,11 +599,11 @@ def test_adapt_harmony():
     mocketym.vow2fb = {"eː": "F", "ɒ": "B", "ɛ": "F"}
 
     # assert that the wrong front vowel "ɒ" is replace by "F"
-    assert Etym.adapt_harmony(
+    assert Etym.repair_harmony(
         self=mocketym,
         ipalist=['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p']) == [
         ['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
-    #assert calls
+    # assert calls
     assert mocketym.get_fb_called_with == [
         (['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p'], "F")]
     assert mocketym.harmony_called_with == [
@@ -609,10 +619,10 @@ def test_adapt_harmony():
 
     # assert words without vowelharmony with equally many front and back vowels
     # are repaired in both possible ways
-    assert Etym.adapt_harmony(self=mocketym, ipalist=list('bɒlɒtonkɛnɛʃɛ')
-    ) == [bkb, bkf]
+    assert Etym.repair_harmony(self=mocketym, ipalist=list('bɒlɒtonkɛnɛʃɛ')
+                              ) == [bkb, bkf]
 
-    #assert calls
+    # assert calls
     assert mocketym.harmony_called_with == bk
     assert mocketym.get_fb_called_with == [(bk, "F"), (bk, "B")]
 
@@ -640,7 +650,7 @@ def test_get_fb():
     assert Etym.get_fb(
         self=mocketym, ipalist=[
             'ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'], turnto="B") == [
-            'ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']
+        'ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']
 
     # set up3: overwrite vow2fb
     mocketym.vow2fb = {"ɛ": "F", "o": "B", "ɒ": "B"}
@@ -657,7 +667,7 @@ def test_get_fb():
         ipalist=['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n',
                  'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'],
         turnto="F") == ['b', 'F', 'l', 'F', 't', 'F', 'n',
-                 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ']
+                        'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ']
 
     # tear down
     del mocketym
@@ -676,7 +686,7 @@ def test_get_scdictbase():
     class EtymMonkeyget_scdictbase:
         def __init__(self):
             self.rnkcls = iter(["e, f, d", "d, f, e", "f, d, e", "f, d", "e",
-            "e", "d", "f", "f", "e"])
+                                "e", "d", "f", "f", "e"])
             self.rank_closest_called_with = []
 
         def rank_closest(self, *args):
@@ -689,13 +699,13 @@ def test_get_scdictbase():
         mocketym.phon2cv = {"d": "C", "e": "V", "f": "C"}
         mocketym.vow2fb = {"e": "F"}
         path2test_scdictbase = Path(__file__).parent / "test_scdictbase.txt"
-        exp = { "a": ["e", "f", "d"],
-                "b": ["d", "f", "e"],
-                "c": ["f", "d", "e"],
-                "C": ["f", "d"],
-                "V": ["e"],
-                "F": ["e"],
-                "B": []}
+        exp = {"a": ["e", "f", "d"],
+               "b": ["d", "f", "e"],
+               "c": ["f", "d", "e"],
+               "C": ["f", "d"],
+               "V": ["e"],
+               "F": ["e"],
+               "B": []}
         exp2 = {"a": ["e"],
                 "b": ["d"],
                 "c": ["f"],
@@ -719,20 +729,22 @@ def test_get_scdictbase():
 
         # assert correct output with howmany=1 instead of inf
         assert Etym.get_scdictbase(
-        self=mocketym, write_to=path2test_scdictbase, most_common=1) == exp2
+            self=mocketym,
+            write_to=path2test_scdictbase,
+            most_common=1) == exp2
         assert mocketym.scdictbase == exp2
         with open(path2test_scdictbase, "r", encoding="utf-8") as f:
             assert literal_eval(f.read()) == exp2
 
-    #assert calls
+    # assert calls
     assert_series_equal(hp.tqdm.called_with, Series(
         ["a", "b", "c"], name="ipa"))
     read_csv_mock.assert_called_with(
         Path(__file__).parent.parent / "ipa_all.csv")
     assert mocketym.rank_closest_called_with == [
-    ['a', float("inf")], ['b', float("inf")], ['c', float("inf")],
-    ['ə', float("inf"), ['d', 'f']], ['ə', float("inf"), ['e']],
-    ['a', 1], ['b', 1], ['c', 1], ['ə', 1, ['d', 'f']], ['ə', 1, ['e']]]
+        ['a', float("inf")], ['b', float("inf")], ['c', float("inf")],
+        ['ə', float("inf"), ['d', 'f']], ['ə', float("inf"), ['e']],
+        ['a', 1], ['b', 1], ['c', 1], ['ə', 1, ['d', 'f']], ['ə', 1, ['e']]]
     # tear down
     hp.tqdm = tqdm
     remove(path2test_scdictbase)
@@ -764,7 +776,7 @@ def test_rank_closest():
             howmany=float("inf"),
             inv=None)
     assert str(inventorymissingerror_mock.value
-    ) == "define phoneme inventory or forms.csv"
+               ) == "define phoneme inventory or forms.csv"
 
     # set up2: mock pick_minmax
     with patch("loanpy.helpers.pick_minmax") as pick_minmax_mock:
@@ -775,7 +787,7 @@ def test_rank_closest():
             self=mocketym, ph="d", inv=[
                 "a", "b", "c"]) == "b, a, c"
 
-    #assert calls
+    # assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
     pick_minmax_mock.assert_called_with(
         [('a', 1), ('b', 0), ('c', 2)], float("inf"))
@@ -790,7 +802,7 @@ def test_rank_closest():
             self=mocketym, ph="d", inv=[
                 "a", "b", "c"], howmany=2) == "b, a"
 
-    #assert calls
+    # assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
     pick_minmax_mock.assert_called_with([('a', 1), ('b', 0), ('c', 2)], 2)
 
@@ -807,7 +819,7 @@ def test_rank_closest():
             inv=None,
             howmany=1) == "b"
 
-    #assert calls
+    # assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
     pick_minmax_mock.assert_called_with([('a', 1), ('b', 0), ('c', 2)], 1)
 
@@ -822,7 +834,7 @@ def test_rank_closest_phonotactics():
     mocketym = EtymMonkey()
     mocketym.phonotactic_inventory = None
     with raises(InventoryMissingError) as inventorymissingerror_mock:
-        #assert error is raised
+        # assert error is raised
         Etym.rank_closest_phonotactics(
             self=mocketym,
             struc="CV",
@@ -830,7 +842,7 @@ def test_rank_closest_phonotactics():
     # assert error message
     assert str(
         inventorymissingerror_mock.value
-        ) == "define phonotactic inventory or forms.csv"
+    ) == "define phonotactic inventory or forms.csv"
 
     # set up: create instance of empty mock class,
     #  plug in inventory of phonotactic structures,
@@ -838,7 +850,7 @@ def test_rank_closest_phonotactics():
     mocketym = EtymMonkey()
     mocketym.phonotactic_inventory = ["CVC", "CVCVCC"]
     with patch("loanpy.helpers.edit_distance_with2ops", side_effect=[
-    1, 0.98]) as edit_distance_with2ops_mock:
+            1, 0.98]) as edit_distance_with2ops_mock:
         with patch("loanpy.helpers.pick_minmax") as pick_minmax_mock:
             pick_minmax_mock.return_value = ["CVCVCC", "CVC"]
 
@@ -846,7 +858,7 @@ def test_rank_closest_phonotactics():
             assert Etym.rank_closest_phonotactics(
                 self=mocketym, struc="CVCV") == "CVCVCC, CVC"
 
-    #assert calls
+    # assert calls
     edit_distance_with2ops_mock.assert_has_calls(
         [call("CVCV", "CVC"), call("CVCV", "CVCVCC")])
     pick_minmax_mock.assert_called_with(
@@ -866,12 +878,17 @@ def test_gensim_multiword():
         donor_transl=0.1,
         return_wordpair=False) == -1
     # test first break with returning wordpair
-    assert gensim_multiword(recip_transl=None, donor_transl=0.1,
-    return_wordpair=True) == (-1, "!<class 'NoneType'>!", "!<class 'float'>!")
+    assert gensim_multiword(recip_transl=None,
+                            donor_transl=0.1,
+                            return_wordpair=True) == (-1,
+                                                      "!<class 'NoneType'>!",
+                                                      "!<class 'float'>!")
 
     class GensimMonkey:
         def __init__(self): pass
+
         def similarity(self, word1, word2): return 0
+
         def has_index_for(self, w): return True
     # set up: mock gensim.api.load:
     with patch("loanpy.helpers.load") as load_mock:
@@ -883,7 +900,7 @@ def test_gensim_multiword():
         # assert api would have loadad the correct model
         assert hp.model == mockgensim
 
-        #assert call
+        # assert call
         load_mock.assert_called_with("word2vec-google-news-300")
 
         # tear down hp.model
@@ -895,10 +912,10 @@ def test_gensim_multiword():
         # assert api would have loadad the correct model
         assert hp.model == mockgensim
 
-    #assert call
+    # assert call
     load_mock.assert_called_with("somemodel")
 
-        # todo: find out how to mock a MemoryError
+    # todo: find out how to mock a MemoryError
 
     # set up2: plug in a mock word2vec model from gensim's test suite
     hp.model = word2vec.Word2Vec(common_texts, min_count=1).wv
@@ -923,7 +940,7 @@ def test_gensim_multiword():
         'human',
         'interface')
 
-    #assert KeyError is skipped
+    # assert KeyError is skipped
     assert gensim_multiword("human, missingword",
                             "interface") == float32(0.10940766334533691)
     assert gensim_multiword(
@@ -937,16 +954,23 @@ def test_gensim_multiword():
     # assert missing words result in similarity score of -1
     assert gensim_multiword("human, computer", "missingword") == float32(-1)
 
-    #assert missing src word shows right warning if wordpairs are returned
-    assert gensim_multiword("human, computer", "missingword",
-    return_wordpair=True) == (float32(-1), '', 'source word not in model')
-    #assert missing tgt word shows right warning if wordpairs are returned
-    assert gensim_multiword("missingword", "human, computer",
-    return_wordpair=True) == (float32(-1), 'target word not in model', '')
-    #assert right warning if both words are missing
-    assert gensim_multiword("missing1", "missing2",
-    return_wordpair=True) == (float32(-1),
-    'target word not in model', 'source word not in model')
+    # assert missing src word shows right warning if wordpairs are returned
+    assert gensim_multiword("human, computer",
+                            "missingword",
+                            return_wordpair=True) == (float32(-1),
+                                                      '',
+                                                      'source word \
+not in model')
+    # assert missing tgt word shows right warning if wordpairs are returned
+    assert gensim_multiword("missingword",
+                            "human, computer",
+                            return_wordpair=True) == (float32(-1),
+                                                      'target word \
+not in model',
+                                                      '')
+    # assert right warning if both words are missing
+    assert gensim_multiword("missing1", "missing2", return_wordpair=True) == (
+        float32(-1), 'target word not in model', 'source word not in model')
 
     # assert loop is interrupted as soon as similarity score == 1
     # loop is certainly broken because "1" is not a numpy.float32
@@ -1010,7 +1034,7 @@ def test_edit_distance_with2ops():
     assert edit_distance_with2ops("ajka", "Rajka", w_ins=90) == 90
     assert edit_distance_with2ops("Rajka", "ajka", w_ins=90) == 100
     assert edit_distance_with2ops(
-    "Debrecen", "Mosonmagyaróvár", w_ins=90) == 1960
+        "Debrecen", "Mosonmagyaróvár", w_ins=90) == 1960
 
 
 def test_get_mtx():
@@ -1033,7 +1057,7 @@ def test_get_mtx():
         # assert
         assert_array_equal(get_mtx("Bécs", "Pécs"), exp)
 
-    #assert call
+    # assert call
     zeros_mock.assert_called_with((5, 5))
 
     # tear down
@@ -1084,10 +1108,10 @@ def test_mtx2graph():
         assert outtuple[1] == 3
         assert outtuple[2] == 3  # the width.
 
-    #assert call
+    # assert call
     get_mtx_mock.assert_called_with("ló", "hó")
 
-    #set up2: assert weights are passed on correctly
+    # set up2: assert weights are passed on correctly
     with patch("loanpy.helpers.get_mtx") as get_mtx_mock:
         get_mtx_mock.return_value = array([[0., 1., 2.],
                                            [1., 2., 3.],
@@ -1120,7 +1144,7 @@ def test_mtx2graph():
         assert outtuple[1] == 3
         assert outtuple[2] == 3  # the width.
 
-    #assert call
+    # assert call
     get_mtx_mock.assert_called_with("ló", "hó")
 
     # tear down
@@ -1143,14 +1167,16 @@ def test_tuples2editops():
     ]
 
     with patch("loanpy.helpers.subtract", side_effect=[
-    array([0, 1]), array([1, 0]), array([0, 1]), array([1, 1])]
+        array([0, 1]), array([1, 0]), array([0, 1]), array([1, 1])]
     ) as subtract_mock:
         with patch("loanpy.helpers.array_equiv", side_effect=[
-        False, True, False, False, True, True, True]) as array_equiv_mock:
+                False, True, False, False,
+                True, True, True]) as array_equiv_mock:
 
             # assert list of tuples is correctly converted to list of strings
             assert tuples2editops([(0, 0), (0, 1), (1, 1), (2, 2)],
-            "ló", "hó") == ['substitute l by h', 'keep ó']
+                                  "ló", "hó") == ['substitute l by h',
+                                                    'keep ó']
 
     # assert calls
     subtract_mock.assert_has_calls([
@@ -1197,12 +1223,12 @@ def test_editops():
         with patch("loanpy.helpers.shortest_path") as shortest_path_mock:
             shortest_path_mock.return_value = [(2, 2), (1, 1), (0, 1), (0, 0)]
             with patch("loanpy.helpers.tuples2editops", side_effect=[
-            ['substitute l by h', 'keep ó']]) as tuples2editops_mock:
+                    ['substitute l by h', 'keep ó']]) as tuples2editops_mock:
 
                 # assert that 2 strings are correctly converted to editops
                 assert editops("ló", "hó") == [('substitute l by h', 'keep ó')]
 
-    #assert calls
+    # assert calls
     mtx2graph_mock.assert_called_with("ló", "hó", 100, 49)
     shortest_path_mock.assert_called_with(
         G, (2, 2), (0, 0), weight="weight")
@@ -1213,11 +1239,13 @@ def test_editops():
     with patch("loanpy.helpers.mtx2graph") as mtx2graph_mock2:
         mtx2graph_mock2.return_value = (G, 3, 4)
         with patch("loanpy.helpers.all_shortest_paths"
-        ) as all_shortest_paths_mock:
+                   ) as all_shortest_paths_mock:
             all_shortest_paths_mock.return_value = [
-            [(2, 3), (1, 2), (0, 1), (0, 0)], [(2, 3), (1, 2), (1, 1), (0, 0)]]
+                [(2, 3), (1, 2), (0, 1), (0, 0)],
+                [(2, 3), (1, 2), (1, 1), (0, 0)]]
             with patch("loanpy.helpers.tuples2editops", side_effect=[
-            ['delete C', 'keep C', 'keep V'], ['keep C', 'delete C', 'keep V']]
+                ['delete C', 'keep C', 'keep V'],
+                ['keep C', 'delete C', 'keep V']]
             ) as tuples2editops_mock:
 
                 # assert that both paths are extracted
@@ -1225,38 +1253,40 @@ def test_editops():
                     ('delete C', 'keep C', 'keep V'),
                     ('keep C', 'delete C', 'keep V')]
 
-    #assert calls
+    # assert calls
     mtx2graph_mock2.assert_called_with("CCV", "CV", 100, 49)
     all_shortest_paths_mock.assert_called_with(
         G, (2, 3), (0, 0), weight="weight")
     tuples2editops_mock.assert_has_calls([
-    call([(0, 0), (0, 1), (1, 2), (2, 3)], "CCV", "CV"),
-    call([(0, 0), (1, 1), (1, 2), (2, 3)], "CCV", "CV")])
+        call([(0, 0), (0, 1), (1, 2), (2, 3)], "CCV", "CV"),
+        call([(0, 0), (1, 1), (1, 2), (2, 3)], "CCV", "CV")])
 
     # set up3: assert weights are passed on correctly
     with patch("loanpy.helpers.mtx2graph") as mtx2graph_mock2:
         mtx2graph_mock2.return_value = (G, 3, 4)
         with patch("loanpy.helpers.all_shortest_paths"
-        ) as all_shortest_paths_mock:
+                   ) as all_shortest_paths_mock:
             all_shortest_paths_mock.return_value = [
-            [(2, 3), (1, 2), (0, 1), (0, 0)], [(2, 3), (1, 2), (1, 1), (0, 0)]]
+                [(2, 3), (1, 2), (0, 1), (0, 0)],
+                [(2, 3), (1, 2), (1, 1), (0, 0)]]
             with patch("loanpy.helpers.tuples2editops", side_effect=[
-            ['delete C', 'keep C', 'keep V'], ['keep C', 'delete C', 'keep V']]
+                ['delete C', 'keep C', 'keep V'],
+                ['keep C', 'delete C', 'keep V']]
             ) as tuples2editops_mock:
 
                 # assert that both paths are extracted
                 assert editops("CCV", "CV", howmany_paths=2,
-                w_del=4, w_ins=35) == [
+                               w_del=4, w_ins=35) == [
                     ('delete C', 'keep C', 'keep V'),
                     ('keep C', 'delete C', 'keep V')]
 
-    #assert calls
+    # assert calls
     mtx2graph_mock2.assert_called_with("CCV", "CV", 4, 35)
     all_shortest_paths_mock.assert_called_with(
         G, (2, 3), (0, 0), weight="weight")
     tuples2editops_mock.assert_has_calls([
-    call([(0, 0), (0, 1), (1, 2), (2, 3)], "CCV", "CV"),
-    call([(0, 0), (1, 1), (1, 2), (2, 3)], "CCV", "CV")])
+        call([(0, 0), (0, 1), (1, 2), (2, 3)], "CCV", "CV"),
+        call([(0, 0), (1, 1), (1, 2), (2, 3)], "CCV", "CV")])
 
     # tear down
     del G
@@ -1266,7 +1296,7 @@ def test_apply_edit():
     """test if editoperations are correctly applied to words"""
     assert apply_edit("ló", ('substitute l by h', 'keep ó')) == ['h', 'ó']
     assert apply_edit(["l", "ó"],
-    ('substitute l by h', 'keep ó')) == ['h', 'ó']
+                      ('substitute l by h', 'keep ó')) == ['h', 'ó']
     assert apply_edit(['f', 'ɛ', 'r', 'i', 'h', 'ɛ', 'ɟ'],
                       ('insert d',
                        'insert u',
@@ -1280,9 +1310,14 @@ def test_apply_edit():
                        'delete h',
                        'delete ɛ',
                        'substitute ɟ by t')
-                       ) == ['d', 'u', 'n', 'ɒ', 'p', 'ɒ', 'r', 't']
-    assert apply_edit(['t͡ʃ', 'ø', 't͡ʃ'], ("substitute t͡ʃ by f", "insert r",
-    "keep ø", "substitute t͡ʃ by t͡ʃː")) == ['f', 'r', 'ø', 't͡ʃː']
+                      ) == ['d', 'u', 'n', 'ɒ', 'p', 'ɒ', 'r', 't']
+    assert apply_edit(['t͡ʃ',
+                       'ø',
+                       't͡ʃ'],
+                      ("substitute t͡ʃ by f",
+                       "insert r",
+                       "keep ø",
+                       "substitute t͡ʃ by t͡ʃː")) == ['f', 'r', 'ø', 't͡ʃː']
 
 
 def test_get_howmany():
@@ -1303,33 +1338,33 @@ output tuple are not higher than the two last numbers of the input tuple"""
 def test_pick_minmax():
     """test if correct number of mins/maxs is picked"""
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf")
-    ) == ["c", "a", "b"]
+                       ) == ["c", "a", "b"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1) == ["c"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2) == ["c", "a"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3) == ["c", "a", "b"]
-    #test with max
+    # test with max
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"),
-    max) == ["b", "a", "c"]
+                       max) == ["b", "a", "c"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, max) == ["b"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, max) == ["b", "a"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3,
-    max) == ["b", "a", "c"]
+                       max) == ["b", "a", "c"]
 
-    #test with return_all=True
+    # test with return_all=True
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"), True
-    ) == ["c", "a", "b"]
+                       ) == ["c", "a", "b"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, min, True
-    ) == ["c", "a", "b"]
+                       ) == ["c", "a", "b"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, min, True
-    ) == ["c", "a", "b"]
+                       ) == ["c", "a", "b"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3, min, True
-    ) == ["c", "a", "b"]
-    #test with max
+                       ) == ["c", "a", "b"]
+    # test with max
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"),
-    max, True) == ["b", "a", "c"]
+                       max, True) == ["b", "a", "c"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, max, True
-    ) == ["b", "a", "c"]
+                       ) == ["b", "a", "c"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, max, True
-    ) == ["b", "a", "c"]
+                       ) == ["b", "a", "c"]
     assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3,
-    max, True) == ["b", "a", "c"]
+                       max, True) == ["b", "a", "c"]

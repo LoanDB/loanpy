@@ -11,24 +11,26 @@ from pandas.testing import assert_frame_equal
 from pytest import raises
 
 from loanpy.helpers import (
-Etym,
-InventoryMissingError,
-cldf2pd,
-editops,
-gensim_multiword,
-get_mtx,
-combine_ipalists,
-clusterise,
-mtx2graph,
-read_cvfb,
-read_dst,
-read_forms,
-tuples2editops)
+    Etym,
+    InventoryMissingError,
+    cldf2pd,
+    editops,
+    gensim_multiword,
+    get_mtx,
+    combine_ipalists,
+    clusterise,
+    mtx2graph,
+    read_cvfb,
+    read_dst,
+    read_forms,
+    tuples2editops)
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms.csv"
 
+
 def test_plug_in_model():
-    pass #unittest = integration test
+    pass  # unittest = integration test
+
 
 def test_read_cvfb():
     """reading in cvfb.txt which is always in the same place"""
@@ -44,8 +46,8 @@ def test_read_cvfb():
     assert all(cvfb[0][val] in ["C", "V"] for val in cvfb[0])
     assert all(cvfb[1][val] in ["F", "B", "V"] for val in cvfb[1])
 
-    #verify that the dict is actually based on ipa_all.csv
-    #and that "C" corresponds to "+" and "V" "-" in col "ipa".
+    # verify that the dict is actually based on ipa_all.csv
+    # and that "C" corresponds to "+" and "V" "-" in col "ipa".
     dfipa = read_csv(Path(__file__).parent.parent / "ipa_all.csv")
     for i, c in zip(dfipa.ipa, dfipa.cons):
         if c == "+":
@@ -57,8 +59,10 @@ def test_read_cvfb():
 
     del dfipa, cvfb
 
+
 def test_read_forms():
-    #test first break
+    """test if cldf's forms.csv is read in correctly"""
+    # test first break
     assert read_forms(None) is None
 
     # set up
@@ -69,8 +73,9 @@ def test_read_forms():
     assert read_forms(None) is None
     assert_frame_equal(read_forms(PATH2FORMS), dfexp)
 
-    #tear down
+    # tear down
     del dfexp
+
 
 def test_cldf2pd():
     """test if the cldf format is correctly tranformed to a pandas dataframe"""
@@ -83,35 +88,43 @@ def test_cldf2pd():
 
     # assert
     assert cldf2pd(None, source_language="whatever",
-    target_language="wtvr2") is None
+                   target_language="wtvr2") is None
     assert_frame_equal(cldf2pd(dfin, source_language=1,
-    target_language=2), dfexp)
+                               target_language=2), dfexp)
 
     # tear down
     del dfexp, dfin
 
+
 def test_read_dst():
+    """test if input-string is correctly mapped to
+    method of panphon.distance.Distance"""
     out = read_dst("weighted_feature_edit_distance")
     assert ismethod(out)
 
+
 def test_flatten():
-    pass # unittest == integration test
+    pass  # unittest == integration test
+
 
 def test_combine_ipalists():
+    """test if combinatorics is correctly applied to phonemes (#odometer)"""
     inlist = [[["k", "g"], ["i", "e"]], [["b", "p"], ["u", "o"]]]
     out = ["ki", "ke", "gi", "ge", "bu", "bo", "pu", "po"]
     assert combine_ipalists(inlist) == out
     del inlist, out
 
+
 def test_form2list():
-    pass #unit == integration test
+    pass  # unit == integration test
+
 
 def test_init():
-
+    """test if class Etym is initiated correctly"""
     # set up: initiate without args
     mocketym = Etym()
 
-    #assert that the right number of class attributes were instanciated
+    # assert that the right number of class attributes were instanciated
     assert len(mocketym.__dict__) == 8
 
     # assert phon2cv was read correctly
@@ -128,7 +141,7 @@ def test_init():
     assert mocketym.phon2cv["o"] == "V"
     assert mocketym.phon2cv["u"] == "V"
 
-    #assert vow2fb was read correctly
+    # assert vow2fb was read correctly
     assert isinstance(mocketym.vow2fb, dict)
     assert len(mocketym.vow2fb) == 1240
     assert mocketym.vow2fb["e"] == "F"
@@ -136,21 +149,21 @@ def test_init():
     assert mocketym.vow2fb["o"] == "B"
     assert mocketym.vow2fb["u"] == "B"
 
-    #assert the other 5 attributes were read correctly
+    # assert the other 5 attributes were read correctly
     assert mocketym.dfety is None
     assert mocketym.phoneme_inventory is None
     assert mocketym.cluster_inventory is None
     assert mocketym.phonotactic_inventory is None
     ismethod(mocketym.distance_measure)
 
-    #tear down
+    # tear down
     del mocketym
 
-    #set up2: run with advanced parameters
-    #input vars for init params
+    # set up2: run with advanced parameters
+    # input vars for init params
     mocketym = Etym(forms_csv=PATH2FORMS, source_language=1, target_language=2)
 
-    #assert right number of attributes was initiated (7)
+    # assert right number of attributes was initiated (7)
     assert len(mocketym.__dict__) == 8
 
     # (1) assert phon2cv was read correctly
@@ -177,102 +190,117 @@ def test_init():
 
     # (3) assert dfety was read correctly
     assert_frame_equal(mocketym.dfety, DataFrame(
-    {"Target_Form": ["xyz"], "Source_Form": ["abc"], "Cognacy": [1]}))
+        {"Target_Form": ["xyz"], "Source_Form": ["abc"], "Cognacy": [1]}))
 
-    #assert the other 4 attributes were read correctly
+    # assert the other 4 attributes were read correctly
     assert mocketym.phoneme_inventory == {'x', 'y', 'z'}
     assert mocketym.cluster_inventory == {'x', 'y', 'z'}
     assert mocketym.phonotactic_inventory == {"CVC"}
     ismethod(mocketym.distance_measure)
 
-    #tear down
+    # tear down
     del mocketym
 
+
 def test_read_inventory():
-    #assert first two exceptions: inv is not None and inv and forms are None
+    """test if phoneme/cluster inventory is read in correctly"""
+    # assert first two exceptions: inv is not None and inv and forms are None
     etym = Etym()
     etym.forms_target_language = "some_inv"
     assert etym.read_inventory("some_formscsv") == "some_formscsv"
-    assert etym.read_inventory(None) == set("someinv") #tokeniser drops "_"
+    assert etym.read_inventory(None) == set("someinv")  # tokeniser drops "_"
     etym.forms_target_language = None
     assert etym.read_inventory(None, None) is None
 
-    #assert calculations
+    # assert calculations
     etym.forms_target_language = ["a", "aab", "bc"]
     assert etym.read_inventory(None) == set(['a', 'b', 'c'])
     etym.forms_target_language = ["a", "ab", "baac"]
     assert etym.read_inventory(None, clusterise
-    ) == set(['aa', 'bb', 'c'])
+                               ) == set(['aa', 'bb', 'c'])
+
 
 def test_get_inventories():
-    #set up instancce
+    """test if phoneme/cluster/phonotactic inventories are read in well"""
+    # set up instancce
     etym = Etym()
-    #run func, assert output
+    # run func, assert output
     etym.get_inventories() == (None, None, None)
 
-    #rerun with non-default args
-    #create instancce
+    # rerun with non-default args
+    # create instancce
     etym = Etym()
-    #run func, assert output
+    # run func, assert output
     etym.get_inventories("param1", "param2", "param3", 4) == (
-    "param1", "param2", "param3")
+        "param1", "param2", "param3")
 
-    #rerun with real etym instnace
+    # rerun with real etym instnace
     etym = Etym(PATH2FORMS, source_language=1, target_language=2)
-    #run func
+    # run func
     etym.get_inventories()
-    #assert assigned attributes
+    # assert assigned attributes
     assert etym.phoneme_inventory == {'x', 'y', 'z'}
     assert etym.cluster_inventory == {'x', 'y', 'z'}
     assert etym.phonotactic_inventory == {'CVC'}
 
-    #tear down
+    # tear down
     del etym
 
-def test_read_phonotacticsinv():
+
+def test_read_phonotactic_inv():
+    """test if phonotactic inventory is read in correctly"""
     # set up rest
     etym = Etym()
-     # from forms.csv in cldf
+    # from forms.csv in cldf
     etym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
     # assert with different parameter combinations
-    assert etym.read_phonotacticsinv(phonotactic_inventory=["a", "b", "c"],
-                              ) == ["a", "b", "c"]
+    assert etym.read_phonotactic_inv(phonotactic_inventory=["a", "b", "c"],
+                                     ) == ["a", "b", "c"]
     etym.forms_target_language = None
-    assert etym.read_phonotacticsinv(phonotactic_inventory=None,
-                              ) is None
+    assert etym.read_phonotactic_inv(phonotactic_inventory=None,
+                                     ) is None
     etym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
     # now just read the most frquent 2 structures. VV is the 3rd frquent. so
     # not in the output.
-    assert etym.read_phonotacticsinv(phonotactic_inventory=None,
-                              howmany=2) == ["CC", "VC"]
+    assert etym.read_phonotactic_inv(phonotactic_inventory=None,
+                                     howmany=2) == {"CC", "VC"}
 
-    #tear down
+    # tear down
     del etym
 
-def test_word2struc():
+
+def test_word2phonotactics():
+    """test if the phonotactic profile of a word is correctly concluded"""
+
     etym = Etym()
-    assert etym.word2struc("t͡ʃɒlːoːkøz") == "CVCVCVC"
-    assert etym.word2struc("hortobaːɟ") == "CVCCVCVC"
+    assert etym.word2phonotactics("t͡ʃɒlːoːkøz") == "CVCVCVC"
+    assert etym.word2phonotactics("hortobaːɟ") == "CVCCVCVC"
     # hashtag is ignored
-    assert etym.word2struc("lɒk#sɒkaːlːɒʃ") == "CVCCVCVCVC"
-    assert etym.word2struc("boɟ!ɒ") == "CVCV" # exclam. mark is ignored
-    assert etym.word2struc("ɡɛlːeːr") == "CVCVC"
+    assert etym.word2phonotactics("lɒk#sɒkaːlːɒʃ") == "CVCCVCVCVC"
+    assert etym.word2phonotactics("boɟ!ɒ") == "CVCV"  # exclam. mark is ignored
+    assert etym.word2phonotactics("ɡɛlːeːr") == "CVCVC"
 
-    #tear down
+    # tear down
     del etym
+
 
 def test_word2phonotactics_keepcv():
+    """Not used in loanpy. Test if C and V is kept
+    during phonotactic profiling"""
     etym = Etym()
-    assert etym.word2struc(['C', 'V', 'C', 'V', 'k', 'ø', 'z']) == "CVCVCVC"
-    assert etym.word2struc(['h', 'o', 'r', 'C', 'V', 'C', 'V', 'ɟ'
-    ]) == "CVCCVCVC"
-    assert etym.word2struc(['l', 'V', 'k', 's', 'ɒ', 'k', 'V', 'C', 'V', 'ʃ'
-    ]) == "CVCCVCVCVC"
-    assert etym.word2struc(['C', 'o', '!', 'ɟ', 'V']) == "CVCV"
-    assert etym.word2struc(["C", "V", "lː", "eː", "r"]) == "CVCVC"
+    assert etym.word2phonotactics(['C', 'V', 'C', 'V', 'k', 'ø', 'z']) == "CVCVCVC"
+    assert etym.word2phonotactics(['h', 'o', 'r', 'C', 'V', 'C', 'V', 'ɟ'
+                            ]) == "CVCCVCVC"
+    assert etym.word2phonotactics(['l', 'V', 'k', 's', 'ɒ', 'k', 'V', 'C', 'V', 'ʃ'
+                            ]) == "CVCCVCVCVC"
+    assert etym.word2phonotactics(['C', 'o', '!', 'ɟ', 'V']) == "CVCV"
+    assert etym.word2phonotactics(["C", "V", "lː", "eː", "r"]) == "CVCVC"
     del etym
 
+
 def test_harmony():
+    """Test if it is detected correctly whether a word does or does not
+    have front-back vowel harmony"""
     etym = Etym()
     assert etym.harmony(['b', 'o', 't͡s', 'i', 'b', 'o', 't͡s', 'i']) is False
     assert etym.harmony("bot͡sibot͡si") is False
@@ -280,42 +308,49 @@ def test_harmony():
     assert etym.harmony("ʃɛfylɛʃɛ") is True
     del etym
 
-def test_adapt_harmony():
+
+def test_repair_harmony():
+    """test if words without front-back vowel harmony are repaired correctly"""
     etym = Etym()
-    assert etym.adapt_harmony(ipalist='kɛsthɛj') == [
-    ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
-    assert etym.adapt_harmony(ipalist='ɒlʃoːørʃ') == [
-    ['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
-    assert etym.adapt_harmony(ipalist=[
-    'b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p']) == [
-    ['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
-    assert etym.adapt_harmony(ipalist='bɒlɒtonkɛnɛʃɛ') == [
-    ['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'],
-    ['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
+    assert etym.repair_harmony(ipalist='kɛsthɛj') == [
+        ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
+    assert etym.repair_harmony(ipalist='ɒlʃoːørʃ') == [
+        ['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
+    assert etym.repair_harmony(ipalist=[
+        'b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p']) == [
+        ['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
+    assert etym.repair_harmony(ipalist='bɒlɒtonkɛnɛʃɛ') == [
+        ['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'],
+        ['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
     del etym
+
 
 def test_get_fb():
+    """test if front and back vowels are fetched correctly"""
     etym = Etym()
     assert etym.get_fb(ipalist=['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']) == [
-    'k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']
+        'k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']
     assert etym.get_fb(ipalist=[
-    'ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'], turnto="B") == [
-    'ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']
+        'ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'], turnto="B") == [
+        'ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']
     assert etym.get_fb(['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n',
-             'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], "B") == [
-    'b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']
+                        'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], "B") == [
+        'b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']
     assert etym.get_fb(['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n',
-             'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], "F") == [
-    'b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ']
+                        'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], "F") == [
+        'b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ']
     del etym
 
+
 def test_get_scdictbase():
-    #test with phoneme_inventory manually plugged in
+    """test if heuristic sound correspondence dictionary
+    is calculated correctly"""
+    # test with phoneme_inventory manually plugged in
     etym = Etym(phoneme_inventory=["a", "b", "c"])
     scdictbase = etym.get_scdictbase(write_to=False)
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
-    assert scdictbase["p"] == ["b", "c", "a"] #b is obv most similar to p
+    assert scdictbase["p"] == ["b", "c", "a"]  # b is obv most similar to p
     assert scdictbase["h"] == ["c", "b", "a"]
     assert scdictbase["e"] == ["a", "b", "c"]
     assert scdictbase["C"] == ["b", "c"]
@@ -324,12 +359,12 @@ def test_get_scdictbase():
     assert scdictbase["B"] == []
     del etym, scdictbase
 
-    #test with invetory extracted from forms.csv
+    # test with invetory extracted from forms.csv
     etym = Etym(PATH2FORMS, source_language=1, target_language=2)
     scdictbase = etym.get_scdictbase(write_to=False)
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
-    assert scdictbase["p"] == ["z", "x", "y"] #IPA z is most similar to IPA p
+    assert scdictbase["p"] == ["z", "x", "y"]  # IPA z is most similar to IPA p
     assert scdictbase["h"] == ["x", "z", "y"]
     assert scdictbase["e"] == ["y", "z", "x"]
     assert scdictbase["C"] == ["x", "z"]
@@ -338,19 +373,19 @@ def test_get_scdictbase():
     assert scdictbase["B"] == []
     del etym, scdictbase
 
-    #test if written correctly and if param most_common works
+    # test if written correctly and if param most_common works
 
-    #set up
+    # set up
     etym = Etym(phoneme_inventory=["a", "b", "c"])
     path2scdict_integr_test = Path(__file__).parent / "integr_test_scdict.txt"
     etym.get_scdictbase(write_to=path2scdict_integr_test, most_common=2)
     with open(path2scdict_integr_test, "r", encoding="utf-8") as f:
         scdictbase = literal_eval(f.read())
 
-    #assert
+    # assert
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
-    assert scdictbase["p"] == ["b", "c"] #b is obv most similar to p
+    assert scdictbase["p"] == ["b", "c"]  # b is obv most similar to p
     assert scdictbase["h"] == ["c", "b"]
     assert scdictbase["e"] == ["a", "b"]
     assert scdictbase["C"] == ["b", "c"]
@@ -358,57 +393,67 @@ def test_get_scdictbase():
     assert scdictbase["F"] == ["a"]
     assert scdictbase["B"] == []
 
-    #tear down
+    # tear down
     remove(path2scdict_integr_test)
     del etym, scdictbase, path2scdict_integr_test
 
-def test_rankclosest():
 
-    #assert error is being raised correctly
+def test_rankclosest():
+    """test if closest phonemes from inventory are ranked correctly"""
+    # assert error is being raised correctly
     etym = Etym()
     with raises(InventoryMissingError) as inventorymissingerror_mock:
         etym.rank_closest(ph="d", howmany=3, inv=None)
     assert str(inventorymissingerror_mock.value
-    ) == "define phoneme inventory or forms.csv"
+               ) == "define phoneme inventory or forms.csv"
     del etym
 
-    #assert phonemes are ranked correctly
+    # assert phonemes are ranked correctly
     etym = Etym(phoneme_inventory=["a", "b", "c"])
     assert etym.rank_closest(ph="d") == "b, c, a"
     assert etym.rank_closest(ph="d", howmany=2) == "b, c"
     assert etym.rank_closest(ph="d", inv=["r", "t", "l"], howmany=1) == "t"
     del etym
 
+
 def test_rankclosest_phonotactics():
-    #assert error is raised correctly if phoneme_inventory is missing
+    """test if most similar phonotactic profiles from inventory
+    are ranked up correctly"""
+    # assert error is raised correctly if phoneme_inventory is missing
     etym = Etym()
     with raises(InventoryMissingError) as inventorymissingerror_mock:
-        #assert error is raised
+        # assert error is raised
         etym.rank_closest_phonotactics(struc="CV", howmany=float("inf"))
         assert str(inventorymissingerror_mock.value
-            ) == "define phonotactic phoneme_inventory or forms.csv"
+                   ) == "define phonotactic phoneme_inventory or forms.csv"
     del etym
 
-    #assert structures are ranked correctly
+    # assert structures are ranked correctly
     etym = Etym(PATH2FORMS, source_language=1, target_language=2)
     # phonotactic_inventory is only lg2 aka "xyz"
     assert etym.rank_closest_phonotactics(struc="CVCV") == "CVC"
-    assert etym.rank_closest_phonotactics(struc="CVCV", howmany=3,
-    inv=["CVC", "CVCVV", "CCCC", "VVVVVV"]) == "CVCVV, CVC, CCCC"
+    assert etym.rank_closest_phonotactics(
+        struc="CVCV", howmany=3, inv=[
+            "CVC", "CVCVV", "CCCC", "VVVVVV"]) == "CVCVV, CVC, CCCC"
     del etym
 
+
 def test_gensim_multiword():
-    pass #checked in detail and unit == integration test (!)
+    pass  # checked in detail and unit == integration test (!)
+
 
 def test_list2regex():
-    pass #no patches in unittest
+    pass  # no patches in unittest
+
 
 def test_edit_distance_with2ops():
-    pass #no patches in unittest
+    pass  # no patches in unittest
+
 
 def test_get_mtx():
-
-    #assert error is raised if one of the input strings is empty
+    """Dynamic programming. Test if matrix of edit operations is
+    calculated correctly"""
+    # assert error is raised if one of the input strings is empty
     with raises(IndexError) as indexerror_mock:
         get_mtx("a", "")
     assert str(indexerror_mock.value == "list index out of range")
@@ -421,143 +466,147 @@ def test_get_mtx():
         get_mtx("", "")
     assert str(indexerror_mock.value == "list index out of range")
 
-    #illustration with small examples
-    assert_array_equal(get_mtx("a", "a"),
-    array([[0., 1.],
-           [1., 0.]]))  # anchor is 0 if first chars are same
+    # illustration with small examples
+    # anchor is 0 if first chars are same
+    assert_array_equal(get_mtx("a", "a"), array([[0., 1.], [1., 0.]]))
 
-    assert_array_equal(get_mtx("b", "a"),
-    array([[0., 1.],
-           [1., 2.]]))  # anchor is 2 if first chars are different
+    # anchor is 2 if first chars are different
+    assert_array_equal(get_mtx("b", "a"), array([[0., 1.], [1., 2.]]))
 
     assert_array_equal(get_mtx("xy", "y"),
-    array([[0., 1., 2.],
-           [1., 2., 1.]]))  # 1 insertion
+                       array([[0., 1., 2.],
+                              [1., 2., 1.]]))  # 1 insertion
 
     assert_array_equal(get_mtx("y", "xy"),
-    array([[0., 1.],
-           [1., 2.],
-           [2., 1.]]))  # 1 deletion
+                       array([[0., 1.],
+                              [1., 2.],
+                              [2., 1.]]))  # 1 deletion
 
     assert_array_equal(get_mtx("z", "xy"),
-    array([[0., 1.],
-           [1., 2.],
-           [2., 3.]]))  # 1 del + 2 ins = 3 esit ops
+                       array([[0., 1.],
+                              [1., 2.],
+                              [2., 3.]]))  # 1 del + 2 ins = 3 esit ops
 
     assert_array_equal(get_mtx("Bécs", "Pécs"),
-    array([[0., 1., 2., 3., 4.],
-           [1., 2., 3., 4., 5.],
-           [2., 3., 2., 3., 4.],
-           [3., 4., 3., 2., 3.],
-           [4., 5., 4., 3., 2.]]))  # delete B insert P: 2 editops
+                       # delete B insert P: 2 editops
+                       array([[0., 1., 2., 3., 4.],
+                              [1., 2., 3., 4., 5.],
+                              [2., 3., 2., 3., 4.],
+                              [3., 4., 3., 2., 3.],
+                              [4., 5., 4., 3., 2.]]))
 
     assert_array_equal(get_mtx("Komárom", "Révkomárom"),
-    array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.],
-           [ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.],
-           [ 2.,  3.,  4.,  5.,  6.,  7.,  8.,  9.],
-           [ 3.,  4.,  5.,  6.,  7.,  8.,  9., 10.],
-           [ 4.,  5.,  6.,  7.,  8.,  9., 10., 11.],
-           [ 5.,  6.,  5.,  6.,  7.,  8.,  9., 10.],
-           [ 6.,  7.,  6.,  5.,  6.,  7.,  8.,  9.],
-           [ 7.,  8.,  7.,  6.,  5.,  6.,  7.,  8.],
-           [ 8.,  9.,  8.,  7.,  6.,  5.,  6.,  7.],
-           [ 9., 10.,  9.,  8.,  7.,  6.,  5.,  6.],
-           [10., 11., 10.,  9.,  8.,  7.,  6.,  5.]]))
+                       array([[0., 1., 2., 3., 4., 5., 6., 7.],
+                              [1., 2., 3., 4., 5., 6., 7., 8.],
+                              [2., 3., 4., 5., 6., 7., 8., 9.],
+                              [3., 4., 5., 6., 7., 8., 9., 10.],
+                              [4., 5., 6., 7., 8., 9., 10., 11.],
+                              [5., 6., 5., 6., 7., 8., 9., 10.],
+                              [6., 7., 6., 5., 6., 7., 8., 9.],
+                              [7., 8., 7., 6., 5., 6., 7., 8.],
+                              [8., 9., 8., 7., 6., 5., 6., 7.],
+                              [9., 10., 9., 8., 7., 6., 5., 6.],
+                              [10., 11., 10., 9., 8., 7., 6., 5.]]))
 
     assert_array_equal(get_mtx("Révkomárom", "Komárom"),
-    array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10.],
-           [ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11.],
-           [ 2.,  3.,  4.,  5.,  6.,  5.,  6.,  7.,  8.,  9., 10.],
-           [ 3.,  4.,  5.,  6.,  7.,  6.,  5.,  6.,  7.,  8.,  9.],
-           [ 4.,  5.,  6.,  7.,  8.,  7.,  6.,  5.,  6.,  7.,  8.],
-           [ 5.,  6.,  7.,  8.,  9.,  8.,  7.,  6.,  5.,  6.,  7.],
-           [ 6.,  7.,  8.,  9., 10.,  9.,  8.,  7.,  6.,  5.,  6.],
-           [ 7.,  8.,  9., 10., 11., 10.,  9.,  8.,  7.,  6.,  5.]]))
+                       array([[0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10.],
+                              [1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11.],
+                              [2., 3., 4., 5., 6., 5., 6., 7., 8., 9., 10.],
+                              [3., 4., 5., 6., 7., 6., 5., 6., 7., 8., 9.],
+                              [4., 5., 6., 7., 8., 7., 6., 5., 6., 7., 8.],
+                              [5., 6., 7., 8., 9., 8., 7., 6., 5., 6., 7.],
+                              [6., 7., 8., 9., 10., 9., 8., 7., 6., 5., 6.],
+                              [7., 8., 9., 10., 11., 10., 9., 8., 7., 6., 5.]
+                              ]))
 
     assert_array_equal(get_mtx("Tata", "Tatbánya"),
-    array([[0., 1., 2., 3., 4.],
-           [1., 0., 1., 2., 3.],
-           [2., 1., 0., 1., 2.],
-           [3., 2., 1., 0., 1.],
-           [4., 3., 2., 1., 2.],
-           [5., 4., 3., 2., 3.],
-           [6., 5., 4., 3., 4.],
-           [7., 6., 5., 4., 5.],
-           [8., 7., 6., 5., 4.]]))
+                       array([[0., 1., 2., 3., 4.],
+                              [1., 0., 1., 2., 3.],
+                              [2., 1., 0., 1., 2.],
+                              [3., 2., 1., 0., 1.],
+                              [4., 3., 2., 1., 2.],
+                              [5., 4., 3., 2., 3.],
+                              [6., 5., 4., 3., 4.],
+                              [7., 6., 5., 4., 5.],
+                              [8., 7., 6., 5., 4.]]))
 
     assert_array_equal(get_mtx("Budapest", "Debrecen"),
-    array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.],
-           [ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9.],
-           [ 2.,  3.,  4.,  5.,  6.,  7.,  6.,  7.,  8.],
-           [ 3.,  4.,  5.,  6.,  7.,  8.,  7.,  8.,  9.],
-           [ 4.,  5.,  6.,  7.,  8.,  9.,  8.,  9., 10.],
-           [ 5.,  6.,  7.,  8.,  9., 10.,  9., 10., 11.],
-           [ 6.,  7.,  8.,  9., 10., 11., 10., 11., 12.],
-           [ 7.,  8.,  9., 10., 11., 12., 11., 12., 13.],
-           [ 8.,  9., 10., 11., 12., 13., 12., 13., 14.]]))
+                       array([[0., 1., 2., 3., 4., 5., 6., 7., 8.],
+                              [1., 2., 3., 4., 5., 6., 7., 8., 9.],
+                              [2., 3., 4., 5., 6., 7., 6., 7., 8.],
+                              [3., 4., 5., 6., 7., 8., 7., 8., 9.],
+                              [4., 5., 6., 7., 8., 9., 8., 9., 10.],
+                              [5., 6., 7., 8., 9., 10., 9., 10., 11.],
+                              [6., 7., 8., 9., 10., 11., 10., 11., 12.],
+                              [7., 8., 9., 10., 11., 12., 11., 12., 13.],
+                              [8., 9., 10., 11., 12., 13., 12., 13., 14.]]))
 
     assert_array_equal(get_mtx("Debrecen", "Beregszász"),
-    array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.],
-           [ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9.],
-           [ 2.,  3.,  2.,  3.,  4.,  5.,  6.,  7.,  8.],
-           [ 3.,  4.,  3.,  4.,  3.,  4.,  5.,  6.,  7.],
-           [ 4.,  5.,  4.,  5.,  4.,  3.,  4.,  5.,  6.],
-           [ 5.,  6.,  5.,  6.,  5.,  4.,  5.,  6.,  7.],
-           [ 6.,  7.,  6.,  7.,  6.,  5.,  6.,  7.,  8.],
-           [ 7.,  8.,  7.,  8.,  7.,  6.,  7.,  8.,  9.],
-           [ 8.,  9.,  8.,  9.,  8.,  7.,  8.,  9., 10.],
-           [ 9., 10.,  9., 10.,  9.,  8.,  9., 10., 11.],
-           [10., 11., 10., 11., 10.,  9., 10., 11., 12.]]))
+                       array([[0., 1., 2., 3., 4., 5., 6., 7., 8.],
+                              [1., 2., 3., 4., 5., 6., 7., 8., 9.],
+                              [2., 3., 2., 3., 4., 5., 6., 7., 8.],
+                              [3., 4., 3., 4., 3., 4., 5., 6., 7.],
+                              [4., 5., 4., 5., 4., 3., 4., 5., 6.],
+                              [5., 6., 5., 6., 5., 4., 5., 6., 7.],
+                              [6., 7., 6., 7., 6., 5., 6., 7., 8.],
+                              [7., 8., 7., 8., 7., 6., 7., 8., 9.],
+                              [8., 9., 8., 9., 8., 7., 8., 9., 10.],
+                              [9., 10., 9., 10., 9., 8., 9., 10., 11.],
+                              [10., 11., 10., 11., 10., 9., 10., 11., 12.]]))
 
-    assert_array_equal(get_mtx("Szentpétervár", "Vlagyivosztok"),
-array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13.],
-       [ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13., 14.],
-       [ 2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13., 14., 15.],
-       [ 3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13., 14., 15., 16.],
-       [ 4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13., 14., 15., 16., 17.],
-       [ 5.,  6.,  7.,  8.,  9., 10., 11., 12., 13., 14., 15., 16., 17., 18.],
-       [ 6.,  7.,  8.,  9., 10., 11., 12., 13., 14., 15., 16., 17., 18., 19.],
-       [ 7.,  8.,  9., 10., 11., 12., 13., 14., 15., 16., 17., 16., 17., 18.],
-       [ 8.,  9., 10., 11., 12., 13., 14., 15., 16., 17., 18., 17., 18., 19.],
-       [ 9., 10., 11., 12., 13., 14., 15., 16., 17., 18., 19., 18., 19., 20.],
-       [10., 11., 10., 11., 12., 13., 14., 15., 16., 17., 18., 19., 20., 21.],
-       [11., 12., 11., 12., 13., 12., 13., 14., 15., 16., 17., 18., 19., 20.],
-       [12., 13., 12., 13., 14., 13., 14., 15., 16., 17., 18., 19., 20., 21.],
-       [13., 14., 13., 14., 15., 14., 15., 16., 17., 18., 19., 20., 21., 22.]]
-       ))
+    assert_array_equal(
+        get_mtx("Szentpétervár", "Vlagyivosztok"),
+ array([[0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13.],
+        [1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14.],
+        [2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.],
+        [3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.],
+        [4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16., 17.],
+        [5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16., 17., 18.],
+        [6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16., 17., 18., 19.],
+        [7., 8., 9., 10., 11., 12., 13., 14., 15., 16., 17., 16., 17., 18.],
+        [8., 9., 10., 11., 12., 13., 14., 15., 16., 17., 18., 17., 18., 19.],
+        [9., 10., 11., 12., 13., 14., 15., 16., 17., 18., 19., 18., 19., 20.],
+        [10., 11., 10., 11., 12., 13., 14., 15., 16., 17., 18., 19., 20., 21.],
+        [11., 12., 11., 12., 13., 12., 13., 14., 15., 16., 17., 18., 19., 20.],
+        [12., 13., 12., 13., 14., 13., 14., 15., 16., 17., 18., 19., 20., 21.],
+        [13., 14., 13., 14., 15., 14., 15., 16., 17., 18., 19., 20., 21., 22.]
+        ]))
 
-    assert_array_equal(get_mtx("Vlagyivosztok", "az óperenciás tengeren túl"),
-array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13.],
-       [ 1.,  2.,  3.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12.],
-       [ 2.,  3.,  4.,  3.,  4.,  5.,  6.,  7.,  8.,  9.,  8.,  9., 10., 11.],
-       [ 3.,  4.,  5.,  4.,  5.,  6.,  7.,  8.,  9., 10.,  9., 10., 11., 12.],
-       [ 4.,  5.,  6.,  5.,  6.,  7.,  8.,  9., 10., 11., 10., 11., 12., 13.],
-       [ 5.,  6.,  7.,  6.,  7.,  8.,  9., 10., 11., 12., 11., 12., 13., 14.],
-       [ 6.,  7.,  8.,  7.,  8.,  9., 10., 11., 12., 13., 12., 13., 14., 15.],
-       [ 7.,  8.,  9.,  8.,  9., 10., 11., 12., 13., 14., 13., 14., 15., 16.],
-       [ 8.,  9., 10.,  9., 10., 11., 12., 13., 14., 15., 14., 15., 16., 17.],
-       [ 9., 10., 11., 10., 11., 12., 13., 14., 15., 16., 15., 16., 17., 18.],
-       [10., 11., 12., 11., 12., 13., 14., 15., 16., 17., 16., 17., 18., 19.],
-       [11., 12., 13., 12., 13., 14., 13., 14., 15., 16., 17., 18., 19., 20.],
-       [12., 13., 14., 13., 14., 15., 14., 15., 16., 17., 18., 19., 20., 21.],
-       [13., 14., 15., 14., 15., 16., 15., 16., 17., 16., 17., 18., 19., 20.],
-       [14., 15., 16., 15., 16., 17., 16., 17., 18., 17., 18., 19., 20., 21.],
-       [15., 16., 17., 16., 17., 18., 17., 18., 19., 18., 19., 18., 19., 20.],
-       [16., 17., 18., 17., 18., 19., 18., 19., 20., 19., 20., 19., 20., 21.],
-       [17., 18., 19., 18., 19., 20., 19., 20., 21., 20., 21., 20., 21., 22.],
-       [18., 19., 20., 19., 18., 19., 20., 21., 22., 21., 22., 21., 22., 23.],
-       [19., 20., 21., 20., 19., 20., 21., 22., 23., 22., 23., 22., 23., 24.],
-       [20., 21., 22., 21., 20., 21., 22., 23., 24., 23., 24., 23., 24., 25.],
-       [21., 22., 23., 22., 21., 22., 23., 24., 25., 24., 25., 24., 25., 26.],
-       [22., 23., 24., 23., 22., 23., 24., 25., 26., 25., 26., 25., 26., 27.],
-       [23., 24., 25., 24., 23., 24., 25., 26., 27., 26., 27., 26., 27., 28.],
-       [24., 25., 26., 25., 24., 25., 26., 27., 28., 27., 28., 27., 28., 29.],
-       [25., 26., 27., 26., 25., 26., 27., 28., 29., 28., 29., 28., 29., 30.],
-       [26., 27., 26., 27., 26., 27., 28., 29., 30., 29., 30., 29., 30., 31.]]
-       ))
+    assert_array_equal(
+        get_mtx("Vlagyivosztok", "az óperenciás tengeren túl"),
+array([[0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13.],
+      [1., 2., 3., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.],
+      [2., 3., 4., 3., 4., 5., 6., 7., 8., 9., 8., 9., 10., 11.],
+      [3., 4., 5., 4., 5., 6., 7., 8., 9., 10., 9., 10., 11., 12.],
+      [4., 5., 6., 5., 6., 7., 8., 9., 10., 11., 10., 11., 12., 13.],
+      [5., 6., 7., 6., 7., 8., 9., 10., 11., 12., 11., 12., 13., 14.],
+      [6., 7., 8., 7., 8., 9., 10., 11., 12., 13., 12., 13., 14., 15.],
+      [7., 8., 9., 8., 9., 10., 11., 12., 13., 14., 13., 14., 15., 16.],
+      [8., 9., 10., 9., 10., 11., 12., 13., 14., 15., 14., 15., 16., 17.],
+      [9., 10., 11., 10., 11., 12., 13., 14., 15., 16., 15., 16., 17., 18.],
+      [10., 11., 12., 11., 12., 13., 14., 15., 16., 17., 16., 17., 18., 19.],
+      [11., 12., 13., 12., 13., 14., 13., 14., 15., 16., 17., 18., 19., 20.],
+      [12., 13., 14., 13., 14., 15., 14., 15., 16., 17., 18., 19., 20., 21.],
+      [13., 14., 15., 14., 15., 16., 15., 16., 17., 16., 17., 18., 19., 20.],
+      [14., 15., 16., 15., 16., 17., 16., 17., 18., 17., 18., 19., 20., 21.],
+      [15., 16., 17., 16., 17., 18., 17., 18., 19., 18., 19., 18., 19., 20.],
+      [16., 17., 18., 17., 18., 19., 18., 19., 20., 19., 20., 19., 20., 21.],
+      [17., 18., 19., 18., 19., 20., 19., 20., 21., 20., 21., 20., 21., 22.],
+      [18., 19., 20., 19., 18., 19., 20., 21., 22., 21., 22., 21., 22., 23.],
+      [19., 20., 21., 20., 19., 20., 21., 22., 23., 22., 23., 22., 23., 24.],
+      [20., 21., 22., 21., 20., 21., 22., 23., 24., 23., 24., 23., 24., 25.],
+      [21., 22., 23., 22., 21., 22., 23., 24., 25., 24., 25., 24., 25., 26.],
+      [22., 23., 24., 23., 22., 23., 24., 25., 26., 25., 26., 25., 26., 27.],
+      [23., 24., 25., 24., 23., 24., 25., 26., 27., 26., 27., 26., 27., 28.],
+      [24., 25., 26., 25., 24., 25., 26., 27., 28., 27., 28., 27., 28., 29.],
+      [25., 26., 27., 26., 25., 26., 27., 28., 29., 28., 29., 28., 29., 30.],
+      [26., 27., 26., 27., 26., 27., 28., 29., 30., 29., 30., 29., 30., 31.]]))
+
 
 def test_mtx2graph():
-    #similar to unittest, but 1 patch missing
+    """Test if matrix of edit distances is correctly transformed to a
+    directed graph object"""
+    # similar to unittest, but 1 patch missing
     expG = DiGraph()
     expG.add_weighted_edges_from([((2, 2), (2, 1), 100),
                                   ((2, 2), (1, 2), 49),
@@ -586,7 +635,7 @@ def test_mtx2graph():
     assert outtuple[1] == 3
     assert outtuple[2] == 3  # the width.
 
-    #set up2: assert weights are passed on correctly
+    # set up2: assert weights are passed on correctly
     expG = DiGraph()
     expG.add_weighted_edges_from([((2, 2), (2, 1), 11),
                                   ((2, 2), (1, 2), 7),
@@ -615,48 +664,34 @@ def test_mtx2graph():
     assert outtuple[1] == 3
     assert outtuple[2] == 3  # the width.
 
+
 def test_tuples2editops():
+    """Tuples correspond to points in the matrix (directed graph).
+    The list of tuples encodes the edit operations necessary
+    to get from string A to string B. Test if this list of tuples
+    is correctly converted to a human readable format."""
     assert tuples2editops([(0, 0), (0, 1), (1, 1), (2, 2)],
-    "ló", "hó") == ['substitute l by h', 'keep ó']
+                          "ló", "hó") == ['substitute l by h', 'keep ó']
+
 
 def test_editops():
+    """test if human-readable edit operations are concluded
+    correctly from two strings"""
     assert editops("ló", "hó") == [('substitute l by h', 'keep ó')]
     assert editops("CCV", "CV", howmany_paths=2) == [
         ('delete C', 'keep C', 'keep V'),
         ('keep C', 'delete C', 'keep V')]
 
+
 def test_apply_edit():
-    pass # unit == integration tests (no patches)
+    pass  # unit == integration tests (no patches)
+
 
 def test_get_howmany():
-    pass # unit == integration tests (no patches)
+    pass  # unit == integration tests (no patches)
+
 
 def test_pick_minmax():
-    pass # unit == integration tests (no patches)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    pass  # unit == integration tests (no patches)
 
     #
