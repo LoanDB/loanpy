@@ -91,7 +91,7 @@ the output
     >>> move_sc(sclistlist=[["x", "x"]], whichsound=0, out=[[]])
     ([["x"]], [["x"]])
     >>>  # Transfer phoneme #1 of list #0 from sclistlist to out
-    move_sc(sclistlist=[["x", "x"], ["y", "y"], ["z"]], whichsound=0, \
+    >>> move_sc(sclistlist=[["x", "x"], ["y", "y"], ["z"]], whichsound=0, \
 out=[["a"], ["b"], ["c"]])
     ([["x"], ["y", "y"], ["z"]], [["a", "x"], ["b"], ["c"]])
     >>>  # Transfer phoneme #1 of list #2 from sclistlist to out
@@ -112,9 +112,9 @@ qfysc.py and use it to predict loanword adaptations (lateral transfers) \
 and reconstructions (vertical transfers).
 
     The first 9 parameters are passed on to loanpy.qfysc.Qfy to inherit \
-11 attributes (of which 7 are inherited from loanpy.helpers.Etym). The last \
+12 attributes (of which 8 are inherited from loanpy.helpers.Etym). The last \
 parameter is passed on to __init__ to create 5 own attributes, \
-so 16 attributes \
+so 17 attributes \
 in total.
 
     Define own attributes:
@@ -157,7 +157,7 @@ most_frequent_phonotactics=2)
     OrderedDict()
     >>> len(adrc_obj.__dict__)  # 5 own + 11 attributes inherited \
 from loanpy.qfysc.Qfy
-    16
+    17
 
     """
     def __init__(self,  # 9 args for inheritance from from loanpy.qfysc.Qfy
@@ -287,7 +287,7 @@ sound can correspond.
         >>> from loanpy.adrc import Adrc, __file__
         >>> from pathlib import Path
         >>> path2folder = Path(__file__).parent / "tests" / \
-"integration" / "input_files"
+"input_files"
         >>> path2sc = path2folder / "sc_ad_handmade.txt"
         >>> adrc_obj = Adrc(scdictlist=path2sc)
         >>> adrc_obj.read_sc(ipa="dade", howmany=1)  # 1*1*1*1 = 1
@@ -411,7 +411,7 @@ the indicated number of predicted reconstructions
         >>> from loanpy.adrc import Adrc, __file__
         >>> from pathlib import Path
         >>> path2folder = Path(__file__).parent / "tests" / \
-"integration" / "input_files"
+"input_files"
         >>> path2sc = path2folder / "sc_rc_3cogs.txt"
         >>> adrc_obj = Adrc(scdictlist=path2sc, mode="reconstruct")
         >>> adrc_obj.reconstruct("kriekrie")  # clusterise, missing from data
@@ -503,17 +503,17 @@ vowelharmony_filter=True)  \
         return f"^{'$|^'.join(out)}$"  # turn list to regular expression
 
     def repair_phonotactics(self,
-                           ipastr,
-                           max_repaired_phonotactics=2,
-                           max_paths2repaired_phonotactics=1,
-                           deletion_cost=100,
-                           insertion_cost=49,
-                           show_workflow=False):
+                            ipastr,
+                            max_repaired_phonotactics=2,
+                            max_paths2repaired_phonotactics=1,
+                            deletion_cost=100,
+                            insertion_cost=49,
+                            show_workflow=False):
         """
         Called by loanpy.adrc.Adrc.adapt. \
 Repairs the phonotactic structure of a word.
 
-        :pararm ipastr: The input word. Will be tokenised if string.
+        :param ipastr: The input word. Will be tokenised if string.
         :type ipastr: list | str
 
         :param max_repaired_phonotactics: The maximum number of target \
@@ -545,7 +545,7 @@ phonotactic profile of the input-string and the predicted repaired structures.
         >>> from loanpy.adrc import Adrc, __file__
         >>> from pathlib import Path
         >>> path2folder = Path(__file__).parent / "tests" / \
-"integration" / "input_files"
+"input_files"
         >>> path2sc = path2folder / "sc_ad_handmade.txt"
         >>> path2forms = path2folder / "forms_3cogs_wot.csv"
         >>> adrc_obj = Adrc(\
@@ -555,7 +555,7 @@ source_language="WOT", \
 target_language="EAH")
         >>> adrc_obj.repair_phonotactics(ipastr="kiki", \
 max_repaired_phonotactics=1)
-        [['k', 'i', 'k', 'i']]
+        [['k', 'i', 'k']]
         >>> adrc_obj.repair_phonotactics(ipastr="kiki", \
 max_repaired_phonotactics=2)
         [['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i']]
@@ -638,6 +638,28 @@ If the right prediction is among the guesses, it is the false positive \
 rate plus one.
         :type howmany: int, default=1
 
+        :param cluster_filter: Throws out all words that \
+contain vowel or consonant clusters that are not documented in the target \
+language.
+        :type cluster_filter: bool, default=False
+
+        :param phonotactics_filter: Indicate whether words \
+should be filtered out \
+from the final result if their phonotactic profile does not occur in the \
+phonotactic inventory of target language.
+        :type phonotactics_filter: bool, default=False
+
+        :param repair_vowelharmony: Indicate whether violations of front-back \
+vowelharmony should be repaired.
+        :type repair_vowelharmony: bool, default=False
+
+        :param sort_by_nse: Indicate whether results should \
+be sorted by their \
+likelihood. Can be costly to calculate. If bool is passed, all or no \
+        words will be sorted. If int is passed, only that many words will be sorted \
+        in the beginning of the list, the rest remains unsorted.
+        :type sort_by_nse: bool, int, default=False
+
         :param max_repaired_phonotactics: Indicate howmany of \
 the most similar \
 available profiles \
@@ -657,28 +679,6 @@ deleted.
         :param insertion_cost: The cost of inserting a phoneme
         :type insertion_cost: int | float, default=49
 
-        :param repair_vowelharmony: Indicate whether violations of front-back \
-vowelharmony should be repaired.
-        :type repair_vowelharmony: bool, default=False
-
-        :param cluster_filter: Throws out all words that \
-contain vowel or consonant clusters that are not documented in the target \
-language.
-        :type cluster_filter: bool, default=False
-
-        :param sort_by_nse: Indicate whether results should \
-be sorted by their \
-likelihood. Can be costly to calculate. If bool is passed, all or no \
-words will be sorted. If int is passed, only that many words will be sorted \
-in the beginning of the list, the rest remains unsorted.
-        :type sort_by_nse: bool, int, default=False
-
-        :param phonotactics_filter: Indicate whether words \
-should be filtered out \
-from the final result if their phonotactic profile does not occur in the \
-phonotactic inventory of target language.
-        :type phonotactics_filter: bool, default=False
-
         :param show_workflow: Indicate if the workflow should be attached \
 to the output. Useful for debugging and makes it less black-boxy. \
 The single steps are added as keys to the Adrc-attribute <workflow>. The \
@@ -692,12 +692,16 @@ set to greater than 0. Key "adapted_vowelharmony" is only added if \
 param <repair_vowelharmony> was set to True.
         :type show_workflow: bool, default=False
 
+        :returns: Approximately as many predictions as indicated in param \
+ <howmany>, separated by ", "
+        :rtype: str
+
         :Example:
 
         >>> from loanpy.adrc import Adrc, __file__
         >>> from pathlib import Path
         >>> path2folder = Path(__file__).parent / "tests" / \
-"integration" / "input_files"
+"input_files"
         >>> path2sc = path2folder / "sc_ad_handmade.txt"
         >>> path2forms = path2folder / "forms_3cogs_wot.csv"
         >>> adrc_obj = Adrc(\
@@ -745,7 +749,7 @@ ipastr="dade", howmany=6, max_repaired_phonotactics=2, \
 max_paths2repaired_phonotactics=2)
         "dajdæ, tʰajdæ, dujdy, tʰujdy, dadjæ, tʰadjæ"
         >>> # now let's filter out all clusters undocumented in forms.csv
-        >>> adrc_obj.clusters  # only these clusters are allowed
+        >>> adrc_obj.cluster_inventory  # only these clusters are allowed
         {'ld', 't͡ʃ', 'j', 'ɣ', 'a', 'n', 'ia'}
         >>> adrc_obj.adapt(cluster_filter=True, phonotactics_filter=True, \
 repair_vowelharmony=True, ipastr="dade", howmany=6, \
@@ -766,7 +770,7 @@ phonotactics_filter=True, \
 repair_vowelharmony=True, ipastr="dade", max_repaired_phonotactics=2, \
 max_paths2repaired_phonotactics=2)
         't͡ʃalda'
-        >>> adrc_obj.clusters.add("d")  # let's assume d was an allowed cluster
+        >>> adrc_obj.cluster_inventory.add("d")  # let's assume d was an allowed cluster
         >>> adrc_obj.adapt(howmany=1000, cluster_filter=True, \
 phonotactics_filter=True, repair_vowelharmony=True, ipastr="dade", \
 max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
@@ -877,17 +881,6 @@ show_workflow does not do anything if se=False.
         :param right: The string on the right side of the etymology to align.
         :type right: str
 
-        :param se: Calculations based on sum-of-examples dict. \
-If set to False, \
-examples dict will be accessed instead to add extra info \
-but make no calculations.
-        :type se: bool, default=True
-
-        :param show_workflow: If set to True, this \
-will output how the nse was \
-calculated.
-        :type show_workflow: bool, default=False
-
         :returns: int | list of int | tuple | list of list
 
         :Example:
@@ -895,7 +888,7 @@ calculated.
         >>> from loanpy.adrc import Adrc, __file__
         >>> from pathlib import Path
         >>> path2folder = Path(__file__).parent / "tests" / \
-"integration" / "input_files"
+"input_files"
         >>> path2sc = path2folder / "sc_ad_handmade.txt"
         >>> path2forms = path2folder / "forms_3cogs_wot.csv"
         >>> adrc_obj = Adrc(\
@@ -904,11 +897,7 @@ forms_csv=path2forms, \
 source_language="WOT", \
 target_language="EAH")
         >>> adrc_obj.get_nse("dade", "dady")
-        33.25
-        >>> adrc_obj.get_nse("dade", "dady", se=False)
-        [[1, 2], [0], [1, 2], [3]]
-        >>> adrc_obj.get_nse("dade", "dady", show_workflow=True)
-        (33.25, 133, [1, 6, 1, 125])
+        (33.25, 133, '[1, 6, 1, 125]', "['d<d', 'a<a', 'd<d', 'e<y']")
         """
         # self.align can't handle empty strings as input!
         if not left or not right:

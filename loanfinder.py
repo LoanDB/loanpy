@@ -420,7 +420,7 @@ similarity of phonological matches: "))
 in the output data frame with its most likely version.
 
         :param dfmatches: The entire data frame with potential loanwords
-        :type dfmatch: pandas.core.series.Series
+        :type dfmatches: pandas.core.series.Series
 
         :returns: the same dataframe but with likelier adaptations of donor \
 words
@@ -493,14 +493,14 @@ words
 and donor_ad-donor_segment, adds them together \
 and picks the word pair with the highest sum. Adds cols with bonus info.
 
-        :param recip_rc: a reconstructed word
-        :type recip_rc: str (regular expression)
-
         :param donor_ad: adapted words in the donor data frame
         :type donor_ad: str (not a regular expression, words separated by ", ")
 
+        :param recip_rc: a reconstructed word
+        :type recip_rc: str (regular expression)
+
         :param donor_segment: the original (non-adapted) donor word
-        :type donor_orig: str
+        :type donor_segment: str
 
         :param recip_segment: the original (non-reconstructed) recipient word
         :type recip_segment: str

@@ -49,19 +49,31 @@ def cache(method):
 given arguments. And to store the results in a csv-file. For more details \
 see loanpy.sanity.check_cache and loanpy.sanity.write_to_cache.
 
+    :param method: The function or method to decorate.
+    :type method: func
+
     :returns: Always returns None.
     :rtype: None
 
     :Example:
 
+    >>> # copy lines one by one, try-except throws indentation error \
+when bulk-copying this entire paragraph
     >>> from pathlib import Path
+    >>> from os import remove
     >>> from loanpy.sanity import cache, __file__
     >>> mockpath2cache = Path(__file__).parent / \
 "tests" / "output_files" / "mock_cache.csv"
-    >>> def mockfunc(*args, **kwargs): return "bla", (1, 2, 3), 4, 5
+    >>> try:
+    >>>     remove(mockpath2cache)  # delete leftovers from last time
+    >>> except FileNotFoundError:
+    >>>     pass
+    >>> def mockfunc(*args, **kwargs):
+    >>>     return "bla", (1, 2, 3), 4, 5
     >>> mockfunc = cache(mockfunc)
     >>> mockfunc(path2cache=mockpath2cache, a="hi", b="bye")
-    [Inspect results in mock_cache.csv in folder tests/output_files]
+    [Inspect results in mock_cache.csv in folder tests/output_files/\
+"mock_cache.csv"]
 
     """
     @wraps(method)
@@ -302,7 +314,7 @@ and best guess, which shows the closest guess (if \
     >>> eval_all(forms_csv=path2cog27, target_language="EAH", \
 source_language="WOT", \
 mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
-    [inspect result in folder output_files]
+    [inspect result in folder output_files/"eval_27cogs.csv"]
 
     """
     start = time()  # start timer
@@ -351,8 +363,8 @@ mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
 
 def loop_thru_data(*args):  # args range(14)
     """
-    Called by loanpy.sanity.eval_all.
-    Loops through the input data frame. Crossvalidates \
+    Called by loanpy.sanity.eval_all. Loops through the input \
+data frame. Crossvalidates \
 and writes down sound changes and inventories if indicated so. \
 Calls loanpy.sanity.eval_one after \
 concluding inventories and sound changes. \
@@ -369,15 +381,15 @@ passing them to loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct in \
 loanpy.sanity.eval_adapt and loanpy.santiy.eval_recon.
 
     :param args: Arguments 0-14 that were passed to loanpy.sanity.eval_all \
-    (14 not included)
+(14 not included)
     :type args: mixed, see details below
 
     :param args[0]: This is instanciated in loanpy.sanity.eval_all with its \
-    first 9 args
+first 9 args
     :type args[0]: loanpy.adrc.Adrc
 
     :param args[1:14]: See param <clusters> - <show_workflow> \
-    in loanpy.sanity.eval_all.
+in loanpy.sanity.eval_all.
     :type args[1:14]: bool, int
 
     :returns: The (cross-)validated predictions. Serves as input for \
@@ -386,17 +398,17 @@ loanpy.sanity.postprocess.
 
     :Example:
 
->>> from pathlib import Path
->>> from loanpy.adrc import Adrc
->>> from loanpy.sanity import loop_thru_data, __file__
->>> path2forms = Path(__file__).parent / "tests" / \
+    >>> from pathlib import Path
+    >>> from loanpy.adrc import Adrc
+    >>> from loanpy.sanity import loop_thru_data, __file__
+    >>> path2forms = Path(__file__).parent / "tests" / \
 "input_files" / "forms_3cogs_wot.csv"
->>> adrc_obj = Adrc(forms_csv=path2forms, source_language="WOT", \
+    >>> adrc_obj = Adrc(forms_csv=path2forms, source_language="WOT", \
 target_language="EAH")
->>> loop_thru_data(adrc_obj, 1, 1, 100, 49, \
+    >>> loop_thru_data(adrc_obj, 1, 1, 100, 49, \
 False, False, False, False, False, \
 [10, 50, 100, 500, 1000], 'adapt', False, True).dfety
-      Target_Form Source_Form  Cognacy  guesses best_guess
+    Target_Form Source_Form  Cognacy  guesses best_guess
     0     aɣat͡ʃi    aɣat͡ʃːɯ        1      inf   KeyError
     1       aldaɣ       aldaɣ        2      inf   KeyError
     2        ajan        ajan        3      inf   KeyError
@@ -1054,9 +1066,9 @@ def get_nse4df(adrc_obj, tgt_col):
 "input_files" / "sc_ad_3cogs.txt"
     >>> adrc_obj = Adrc(forms_csv=path2forms, source_language="WOT", \
 target_language="EAH", scdictlist=path2sc_ad)
-    >>> get_nse4df(adrc_obj, "Target_Form")
+    >>> get_nse4df(adrc_obj, "Target_Form").dfety
     [Similar large output as in the example for loanpy.sanity.postprocess,
-     just last two columns missing]
+     just last two columns missing, [3 rows x 7 columns]]
 
     """
 
@@ -1093,7 +1105,7 @@ def phonotactics_predicted(adrc_obj):
 
     :returns: The same object as inputted, but optionally with an \
     extra column "phonotactics_predicted".
-    :rytpe: loanpy.adrc.Adrc
+    :rtype: loanpy.adrc.Adrc
 
     :Example:
 
@@ -1144,7 +1156,7 @@ def get_dist(adrc_obj, col, dst_msrs=["fast_levenshtein_distance",
     :param dst_msrs: The list of distance measures that should be calculated. \
     For an exhaustive list of input options see param \
     <phondist_msr> in loanpy.loanfinder.Search.
-    :type dsst_msr: list of str
+    :type dst_msrs: list of str
 
     :returns: The same object as inputted but with the same amount of \
     extra columns as the list provided in param <dst_msrs> is long.
@@ -1348,7 +1360,8 @@ def plot_roc(guesslist, plot_to, tpr_fpr_opt, opt_howmany, opt_tpr,
 
     >>> from pathlib import Path
     >>> from loanpy.sanity import plot_roc
-    >>> path2mockplot = Path(__file__).parent / "output_files" / "mockplot.jpg"
+    >>> path2mockplot = Path(__file__).parent \
+/ "tests" / "output_files" / "mockplot.jpg"
     >>> plot_roc(guesslist=[1,2,3],
     >>> plot_to=path2mockplot,
     >>> tpr_fpr_opt=([0.0, 0.0, 0.1, 0.1, 0.3, 0.6, 0.7],

@@ -92,9 +92,9 @@ align clusterwise
 ~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: loanpy.qfysc.Qfy.align_clusterwise
 
-get structure correspondences
+get phonotactic correspondences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. automethod:: loanpy.qfysc.Qfy.get_struc_corresp
+.. automethod:: loanpy.qfysc.Qfy.get_phonotactics_corresp
 
 adrc.py
 ---------
@@ -115,9 +115,9 @@ read sound correspondences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: loanpy.adrc.Adrc.read_sc
 
-adapt structure
-~~~~~~~~~~~~~~~~~
-.. automethod:: loanpy.adrc.Adrc.adapt_struc
+repair phonotactics
+~~~~~~~~~~~~~~~~~~~~~
+.. automethod:: loanpy.adrc.Adrc.repair_phonotactics
 
 get normalised sum of examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,25 +126,69 @@ get normalised sum of examples
 sanity.py
 -----------
 
-check cache
+cache
 ~~~~~~~~~~~~~~~~~~
-.. autofunction:: loanpy.sanity.check_cache
+.. autofunction:: loanpy.sanity.cache
 
-get sound correspondences
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. autofunction:: loanpy.sanity.get_crossval_sc
+loop_thru_data
+~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.loop_thru_data
 
 evaluate one
 ~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.eval_one
 
+evaluate adapt
+~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.eval_adapt
+
+evaluate reconstruct
+~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.eval_recon
+
+get non-crossvalidated sound correspondences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.get_noncrossval_sc
+
+get crossvalidated data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.get_crossval_data
+
+postprocess
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.postprocess
+
+postprocess2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.postprocess2
+
+get normalised sum of examples for data frame
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.get_nse4df
+
+phonotactics predicted?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.phonotactics_predicted
+
+get distances
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.get_dist
+
 make statistics
 ~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.make_stat
 
-get true positive rate and false positive rate
+get true positive rate false positive rate, optimum
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. autofunction:: loanpy.sanity.gettprfpr
+.. autofunction:: loanpy.sanity.get_tpr_fpr_opt
+
+plot roc-curve
+~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.plot_roc
+
+check cache
+~~~~~~~~~~~~~~~~~~
+.. autofunction:: loanpy.sanity.check_cache
 
 write to cache
 ~~~~~~~~~~~~~~~~~~

@@ -138,10 +138,10 @@ For more details see loanpy.helpers.Etym.get_scdictbase.
 class Qfy(Etym):
     """
     Read etymological data and customise the way in which it \
-will be quantified later. Has 9 parameters and initiates 11 attributes.
+will be quantified later. Has 9 parameters and initiates 12 attributes.
 
     These 5 params will be passed on to loanpy.helpers.Etym \
-to inherit its 7 attributes:
+to inherit its 8 attributes:
 
     :param forms_csv: The path to cldf's forms.csv. For more details see \
 loanpy.helpers.read_forms, loanpy.helpers.cldf2pd and \
@@ -228,7 +228,7 @@ scdictbase={"a": ["e", "o"], "b": ["p", "v"]}, vfb="əœʌ")
     'əœʌ'
     >>> len(qfy_obj.__dict__)  # 4 own +7 attributes inherited \
 from loanpy.helpers.Etym
-    11
+    12
 
     """
     def __init__(self,
@@ -277,7 +277,7 @@ loanpy.qfysc.Qfy.align_lingpy and loanpy.qfysc.Qfy.align_clusterwise
         lingpy.align.pairwise.Pairwise and \
 lingpy.align.pairwise.Pairwise.align. \
 That feature is not supported in the current version \
-because they bload the script and \
+because they bloat the script and \
 find only little practical use at the moment. If necessary, \
 they have to be inserted \
 directly in the source code, where Pairwise() gets initiated and \
@@ -292,9 +292,9 @@ with one phoneme and it's aligned counter part in each row.
 
         >>> from loanpy.qfysc import Qfy
         >>> qfy_obj = Qfy()  # default mode is "adapt", so lingpy aligns
-        >>> qfy_obj.align("Budapest", "Budimpeʃta")
+        >>> qfy_obj.align("budapest", "budimpeʃta")
           keys vals
-        0    B    B
+        0    b    b
         1    u    u
         2    d    d
         3    i    a
@@ -307,10 +307,10 @@ with one phoneme and it's aligned counter part in each row.
 
 
         >>> qfy_obj = Qfy(mode="reconstruct")  # use own alignment
-        >>> qfy_obj.align("Budapest", "Budimpeʃta")
+        >>> qfy_obj.align("budapest", "budimpeʃta")
           keys vals  # left&right col is flipped b/c source&target is flipped
         0   #-    -
-        1   #B    B
+        1   #b    b
         2    u    u
         3    d    d
         4    a    i
@@ -370,9 +370,9 @@ gets flipped internally.)
 
         >>> from loanpy.qfysc import Qfy
         >>> qfy_obj = Qfy()
-        >>> qfy_obj.align_lingpy("Budapest", "Budimpeʃta")
+        >>> qfy_obj.align_lingpy("budapest", "budimpeʃta")
           keys vals
-        0    B    B
+        0    b    b
         1    u    u
         2    d    d
         3    i    a
@@ -382,9 +382,9 @@ gets flipped internally.)
         7    ʃ    s
         8    t    t
         9    a    V
-        >>> qfy_obj.align_lingpy("Budimpeʃta", "Budapest")
+        >>> qfy_obj.align_lingpy("budimpeʃta", "budapest")
           keys vals
-        0    B    B
+        0    b    b
         1    u    u
         2    d    d
         3    a    i
@@ -542,11 +542,6 @@ is involved, for details see loanpy.qfysc.Qfy.get_phonotactics_corresp.
         >>> qfy_obj = Qfy(forms_csv=path2forms, \
 source_language=1, target_language=2)
         >>> qfy_obj.get_sound_corresp()
-        [{'C': ['x'], 'a': ['y'], 'b': [''], \
-'c': ['z']}, {'C<b': 1, 'x<C': 1, \
-'y<a': 1, 'z<c': 1}, {'C<b': [1], 'x<C': [1], 'y<a': [1], 'z<c': [1]}, \
-{'VCC': ['CVC']}, {'CVC<VCC': 1}, {'CVC<VCC': [1]}]
-        >>> qfy_obj.scdict
         [{'C': ['x'], 'a': ['y'], 'b': [''], \
 'c': ['z']}, {'C<b': 1, 'x<C': 1, \
 'y<a': 1, 'z<c': 1}, {'C<b': [1], 'x<C': [1], 'y<a': [1], 'z<c': [1]}, \

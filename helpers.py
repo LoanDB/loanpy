@@ -129,7 +129,7 @@ Returns None if dff is None. So that class can be initiated without args too.
     >>> from pathlib import Path
     >>> from loanpy.helpers import __file__, read_forms
     >>> path2file = Path(__file__).parent / "tests" / \
-"integration" / "input_files" / "forms.csv"
+"input_files" / "forms.csv"
     >>> read_forms(path2file)
            Language_ID Segments  Cognacy
     0            1      abc        1
@@ -160,7 +160,7 @@ that cognate set is skipped.
     :param dfforms: Takes the output of read_forms() as input
     :type dfforms: <class 'pandas.core.frame.DataFrame'> | None
 
-:param source_language: The languages who's cognates go to \
+    :param source_language: The languages who's cognates go to \
 column "Source_Forms"
     :type source_language: <str>
 
@@ -265,8 +265,8 @@ def flatten(nested_list):
     Flatten a nested list and discard empty strings (to prevent feeding \
 empty strings to loanpy.adrc.Adrc.reconstruct, which would throw an Error)
 
-    :param t: a nested list
-    :type t: list of lists
+    :param nested_list: a nested list
+    :type nested_list: list of lists
 
     :return: flattened list without empty strings as elements
     :rtype: list
@@ -312,6 +312,10 @@ Get a list of words of a language from a forms.csv file.
 
     :param dff: forms.csv data frame (cldf)
     :type dff: pandas.core.frame.DataFrame
+
+    :param target_language: The language from which the phoneme, \
+phoneme cluster and phonotactic inventories will be extracted.
+    :type target_language: str
 
     :returns: a list of words in the target language
     :rtype: list | None
@@ -408,7 +412,7 @@ structures should we allow to be part of the phoneme inventory.
     >>> from pathlib import Path
     >>> from loanpy.helpers import Etym, __file__
     >>> path2forms = Path(__file__).parent / "tests" / \
-"integration" / "input_files" / "forms.csv"
+"input_files" / "forms.csv"
     >>> etym_obj = Etym(forms_csv=path2forms, source_language=1, \
 target_language=2)
     >>> etym_obj.phon2cv["k"]
@@ -427,7 +431,7 @@ target_language=2)
     >>> etym_obj.phonotactic_inventory
     {'CVC'}
     >>> len(etym_obj.__dict__)
-    7
+    8
     """
 
     def __init__(self,
@@ -486,6 +490,10 @@ will be extracted from the target language data.
 occuring phonotactic \
 structures should we allow to be part of the phoneme inventory.
         :type phonotactics_most_frquent: int
+
+        :returns: Tuple of three sets containing the phoneme, \
+phoneme cluster and phonotactic inventories of the target language.
+        :rtype: tuple(set, set, set)
         """
 
         return (self.read_inventory(phoneme_inventory),
@@ -504,9 +512,6 @@ manually plugged in.
 if inv is None, inv will be calculated from forms else inv will be returned.
         :type inv: set
 
-        :param forms: a list of words occuring in giving language
-        :type forms: list of str
-
         :param func: the tokeniser to split words into phonemes
         :type func: function
 
@@ -515,13 +520,12 @@ if inv is None, inv will be calculated from forms else inv will be returned.
 
         :Example:
 
-        >>> from loanpy.helpers import read_inventory
-        >>> read_inventory(None,  ["fdedaeda", "badea", "fdddedab"])
+        >>> from loanpy.helpers import Etym, clusterise
+        >>> etym_obj = Etym()
+        >>> etym_obj.forms_target_language = ["fdedaeda", "badea", "fdddedab"]
+        >>> etym_obj.read_inventory(None)
         {'b', 'd', 'f', 'a', 'e'}
-
-        >>> from loanpy.helpers import read_inventory, clusterise
-        >>> read_inventory(None,  ["fdedaeda", "badea", "fdddedab"], \
-clusterise)
+        >>> etym_obj.read_inventory(None, clusterise)
         {'b', 'ea', 'd', 'fd', 'a', 'ae', 'fddd', 'e'}
 
         """
@@ -545,19 +549,17 @@ will be returned.
 the phoneme_inventory manually.
         :type phonotactic_inventory: None | list | set | same type as input
 
-        :param forms: a list of words in a language
-        :type forms: list | None
-
         :param howmany: howmany most frequent structures should be added to \
 phoneme_inventory
         :type howmany: int
 
-        :pararm print_entire_inv: Indicate if logger should print the \
+        :param print_entire_inv: Indicate if logger should print the \
 entire inventory to the console. It is a collections.Counter object with \
 phonotactic profiles as keys and their frequencies as values. Inspecting \
 this information will help to figure out which integer best to pass to \
 param <howmany>. Best is to omit rare ones, but rare is relative to how \
 much data we have, therefore this has to be done manually.
+        :type print_entire_inv: bool, default=False
 
         :returns: all possible phonotactic structures documented in the data
         :rtype: list
@@ -565,20 +567,25 @@ much data we have, therefore this has to be done manually.
         :Example:
 
         >>> from loanpy.helpers import Etym
-        >>> etym = Etym()
-        >>> etym.read_phonotactic_inv(\
-forms=["ab", "ab", "aa", "bb", "bb", "bb"])
+        >>> etym_obj = Etym()
+        >>> etym_obj.forms_target_language = \
+["ab", "ab", "aa", "bb", "bb", "bb"]
+        >>> etym_obj.read_phonotactic_inv()
         {'VV', 'CC', 'VC'}
 
         >>> from loanpy.helpers import Etym
-        >>> etym, forms = Etym(), ["ab", "ab", "aa", "bb", "bb", "bb"]
-        >>> etym.read_phonotactic_inv(forms=forms, howmany=1)
-        ['CC'] # b/c that's the nr 1 most frequent structure
+        >>> etym_obj = Etym()
+        >>> etym_obj.forms_target_language = \
+["ab", "ab", "aa", "bb", "bb", "bb"]
+        >>> etym_obj.read_phonotactic_inv(howmany=1)
+        {'CC'} # b/c that's the nr 1 most frequent structure
 
         >>> from loanpy.helpers import Etym
-        >>> etym, forms = Etym(), ["ab", "ab", "aa", "bb", "bb", "bb"]
-        >>> etym.read_phonotactic_inv(forms=forms, howmany=2)
-        ['CC', 'VC'] # b/c that's the 2 most frequent structures
+        >>> etym_obj = Etym()
+        >>> etym_obj.forms_target_language = \
+["ab", "ab", "aa", "bb", "bb", "bb"]
+        >>> etym_obj.read_phonotactic_inv(howmany=2)
+        {'CC', 'VC'} # b/c that's the 2 most frequent structures
         """
 
         if phonotactic_inventory:
@@ -1071,22 +1078,32 @@ https://www.geeksforgeeks.org/edit-distance-and-lcs-longest-common-subsequence\
     :param string2: The second of two strings to be compared to each other
     :type string2: str
 
+    :param w_del: weight (cost) for deleting a phoneme. Default should \
+always stay 100, since only relative costs between inserting and deleting \
+counts.
+    :type w_del: int | float, default=100
+
+    :param w_ins: weight (cost) for inserting a phoneme. Default 49 \
+is in accordance with TCRS: 2 insertions (2*49) are cheaper than a deletion \
+(100).
+    :type w_ins: int | float, default=49.
+
     :returns: The distance between two input strings
-    :rtype: int
+    :rtype: int | float
 
     :Example:
 
     >>> from loanpy.helpers import edit_distance_with2ops
     >>> edit_distance_with2ops("hey","hey")
-    0.0
+    0
 
     >>> from loanpy.helpers import edit_distance_with2ops
     >>> edit_distance_with2ops("hey","he")
-    1.0
+    100
 
     >>> from loanpy.helpers import edit_distance_with2ops
     >>> edit_distance_with2ops("hey","heyy")
-    0.4
+    49
 
     """
 
@@ -1319,6 +1336,9 @@ all paths of cheapest edit operations between them.
 insertions are cheaper than 1 deletion by default.
     :type w_ins: int, default=49
 
+    :returns: Human-readable edit operations from string1 to string2
+    :rtype: list of tuples of str
+
     :Example:
 
     >>> from loanpy.helpers import editops
@@ -1459,6 +1479,13 @@ sorting the entire list and then taking only the slice we need.
     :param howmany: howmany minimums do we want to pick from input-list
     :type howmany: int
 
+    :param func: Indicate if minimums or maximums should be grabbed
+    :type func: max | min, default=min
+
+    :param return_all: Indicate whether only the sorted chunk should be \
+returned, or if it should be merged with the rest of the unsorted list.
+    :type return_all: bool, default=False
+
     :returns: The indicated number of minimal values
     :rtype: str (separated by ", ")
 
@@ -1466,11 +1493,11 @@ sorting the entire list and then taking only the slice we need.
 
     >>> from loanpy.helpers import pick_minmax
     >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"))
-    "c, a, b"
+    ["c", "a", "b"]
     >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1)
-    "c"
+    ["c"]
     >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2)
-    "c, a"
+    ["c", "a"]
     """
 
     # if we want to have at least as many elements as the list is long
