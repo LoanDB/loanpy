@@ -105,8 +105,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="loanpy.adrc.Adrc.adapt_phonotactics">
-<span class="sig-name descname"><span class="pre">adapt_phonotactics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.adapt_phonotactics" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="loanpy.adrc.Adrc.repair_phonotactics">
+<span class="sig-name descname"><span class="pre">repair_phonotactics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.repair_phonotactics" title="Permalink to this definition">¶</a></dt>
 <dd><p>adapt phonotactic structure of word</p>
 </dd></dl>
 
@@ -185,8 +185,8 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class that is based on 2 datasets: The first is static, and is ipa_all.csv from panphon, together with its “spinoff” cvfb.txt. The second has to be defined through the init args and will be data extracted from a forms.csv (cldf data standard, insert link here later). The class methods eventually all rely on panphon / data / “ipa_all.csv”. loanpy’s ipa_all.csv is slightly modified but I didn’t keep track of the modifications. I remember that I changed the status of the glottal stop at least. And added “C”, “V” to the bottom. Todo: Plug back in the original ipa_all.csv</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="loanpy.helpers.Etym.adapt_harmony">
-<span class="sig-name descname"><span class="pre">adapt_harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.adapt_harmony" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.repair_harmony">
+<span class="sig-name descname"><span class="pre">repair_harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.repair_harmony" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adapts the vowel harmony of a word by replacing wrong vowels by a “F” for any front vowel or “B” for any back vowel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -200,25 +200,25 @@
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">(</span><span class="s1">&#39;kɛsthɛj&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">repair_harmony</span><span class="p">(</span><span class="s1">&#39;kɛsthɛj&#39;</span><span class="p">)</span>
 <span class="go">[&#39;k&#39;, &#39;ɛ&#39;, &#39;s&#39;, &#39;t&#39;, &#39;h&#39;, &#39;ɛ&#39;, &#39;j&#39;]</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;oː&#39;</span><span class="p">,</span> <span class="s1">&#39;ø&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">repair_harmony</span><span class="p">([</span><span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;oː&#39;</span><span class="p">,</span> <span class="s1">&#39;ø&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">])</span>
 <span class="go">[&#39;ɒ&#39;, &#39;l&#39;, &#39;ʃ&#39;, &#39;oː&#39;, &#39;B&#39;, &#39;r&#39;, &#39;ʃ&#39;]</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;eː&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">repair_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;eː&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">])</span>
 <span class="go">[&#39;b&#39;, &#39;eː&#39;, &#39;l&#39;, &#39;F&#39;, &#39;t&#39;, &#39;ɛ&#39;, &#39;l&#39;, &#39;ɛ&#39;, &#39;p&#39;]</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">repair_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">])</span>
 <span class="go">[[&#39;b&#39;, &#39;F&#39;, &#39;l&#39;, &#39;F&#39;, &#39;t&#39;, &#39;F&#39;, &#39;n&#39;, &#39;k&#39;, &#39;ɛ&#39;, &#39;n&#39;, &#39;ɛ&#39;, &#39;ʃ&#39;, &#39;ɛ&#39;], [&#39;b&#39;, &#39;ɒ&#39;, &#39;l&#39;, &#39;ɒ&#39;, &#39;t&#39;, &#39;o&#39;, &#39;n&#39;, &#39;k&#39;, &#39;B&#39;, &#39;n&#39;, &#39;B&#39;, &#39;ʃ&#39;, &#39;B&#39;]]</span>
 </pre></div>
 </div>
@@ -361,8 +361,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="loanpy.helpers.Etym.read_phonotacticsinv">
-<span class="sig-name descname"><span class="pre">read_phonotacticsinv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phonotactics_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.read_phonotacticsinv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.read_phonotactic_inv">
+<span class="sig-name descname"><span class="pre">read_phonotactic_inv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phonotactics_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.read_phonotactic_inv" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns inventory of the most frequent x phonotactic structures</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -382,8 +382,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="loanpy.helpers.Etym.word2struc">
-<span class="sig-name descname"><span class="pre">word2struc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.word2struc" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.word2phonotactics">
+<span class="sig-name descname"><span class="pre">word2phonotactics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.word2phonotactics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the phonotactic profile of an ipa-string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Example</dt>
@@ -391,7 +391,7 @@
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">word2struc</span><span class="p">(</span><span class="s2">&quot;lol&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">word2phonotactics</span><span class="p">(</span><span class="s2">&quot;lol&quot;</span><span class="p">)</span>
 <span class="go">&#39;CVC&#39;</span>
 </pre></div>
 </div>
@@ -741,7 +741,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.helpers.read_cvfb">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">read_cvfb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.read_cvfb" title="Permalink to this definition">¶</a></dt>
-<dd><p>read file cvfb.txt that was generated based on ipa_all.csv. Its a tuple of two dictionaries. Keys are same as col “ipa” in ipa_all.csv. Vals of first dict are “C” if consonant and “V” if vowel (6358 keys). Vals of 2nd dict are “F” if front vowel and “B” if back vowel (1240 keys). Only called by Etym.__init__ to define self.phon2cv and self.vow2fb, which in turn is used by word2struc and many others. This file could be read directly when importing, but this way debugging is easier.</p>
+<dd><p>read file cvfb.txt that was generated based on ipa_all.csv. Its a tuple of two dictionaries. Keys are same as col “ipa” in ipa_all.csv. Vals of first dict are “C” if consonant and “V” if vowel (6358 keys). Vals of 2nd dict are “F” if front vowel and “B” if back vowel (1240 keys). Only called by Etym.__init__ to define self.phon2cv and self.vow2fb, which in turn is used by word2phonotactics and many others. This file could be read directly when importing, but this way debugging is easier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>(dict, dict)</p>

@@ -67,16 +67,16 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="qfysc.Qfy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qfysc.</span></span><span class="sig-name descname"><span class="pre">Qfy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">forms_csv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">most_frequent_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonotactic_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adapt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictbase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vfb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qfysc.Qfy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read etymological data and customise the way in which it shall be quantified later. Has 9 attributes.</p>
-<p>These 5 params will be passed on to loanpy.helpers.Etym to inherit its 7 attributes:</p>
+<dd><p>Read etymological data and customise the way in which it will be quantified later. Has 9 parameters and initiates 12 attributes.</p>
+<p>These 5 params will be passed on to loanpy.helpers.Etym to inherit its 8 attributes:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>forms_csv</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em><em>, </em><em>default=None</em>) – The path to cldf’s forms.csv. For more details see loanpy.helpers.read_forms</p></li>
-<li><p><strong>source_language</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational source language (can differ from linguistic source). This is the data FROM which we make predictions. For more details see loanpy.helpers.Etym.</p></li>
-<li><p><strong>target_language</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational target language (can again differ from linguistic one). This is the language INTO which we make predictions. For more details see loanpy.helpers.Etym.</p></li>
-<li><p><strong>most_frequent_phonotactics</strong> (<em>int</em><em>, </em><em>default=9999999</em>) – The n most frequent structures that we want to accept into the phonotactic inventory of the target language. Sometimes a good idea to omit rare ones.</p></li>
-<li><p><strong>phonotactic_inventory</strong> (<em>None</em><em> | </em><em>set</em><em> | </em><em>list</em><em>, </em><em>default=None</em>) – All possible phonotactic structures in the target language. Will be extracted from target language if set to None. For more details see loanpy.helpers.Etym.read_phonotacticsinv.</p></li>
+<li><p><strong>forms_csv</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em><em>, </em><em>default=None</em>) – The path to cldf’s forms.csv. For more details see loanpy.helpers.read_forms, loanpy.helpers.cldf2pd and loanpy.helpers.forms2list. If set to None, no etymological data will be read.</p></li>
+<li><p><strong>source_language</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational source language (can differ from linguistic source). This is the data FROM which we make predictions. For more details see loanpy.helpers.cldf2pd.</p></li>
+<li><p><strong>target_language</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational target language (can again differ from linguistic one). This is the language INTO which we make predictions. For more details see loanpy.helpers.cldf2pd.</p></li>
+<li><p><strong>most_frequent_phonotactics</strong> (<em>int</em><em>, </em><em>default=9999999</em>) – The n most frequent structures that we want to accept into the phonotactic inventory of the target language. Sometimes a good idea to omit rare ones. For more details see loanpy.helpers.read_phonotactic_inv.</p></li>
+<li><p><strong>phonotactic_inventory</strong> (<em>None</em><em> | </em><em>set</em><em> | </em><em>list</em><em>, </em><em>default=None</em>) – All possible phonotactic structures in the target language. Will be extracted from target language if set to None. For more details see loanpy.helpers.Etym.read_phonotactic_inv.</p></li>
 </ul>
 </dd>
 </dl>
@@ -106,7 +106,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">vfb</span>
 <span class="go">&#39;əœʌ&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">qfy_obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>  <span class="c1"># 4 own +7 attributes inherited from loanpy.helpers.Etym</span>
-<span class="go">11</span>
+<span class="go">12</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -117,7 +117,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="qfysc.Qfy.get_sound_corresp">
 <span class="sig-prename descclassname"><span class="pre">Qfy.</span></span><span class="sig-name descname"><span class="pre">get_sound_corresp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qfysc.Qfy.get_sound_corresp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert an etymological dictionary to a dictionary of sound and phonotactic correspondences, their number of occurences, and IDs of cognate sets in which they occur. If self.mode==”reconstruct” we don’t extract phonotactic correspondences because that dimension is already captured through the alignment. Since in adapt we don’t capture this, we need to extract phonotactic correspondences from the data to later repair the structure based on that before substituting. This has to do with the different nature of lateral vs horizontal transfers: loanwords meet certain constraints immediately and need to be repaired immediately. While historical sound changes happen over a long period of time and I am not aware of an optimality theory based model with constraint-changes for historical linguistics. If it existed however,we could make vertical predictions with loanpy.adrc.Adrc.adapt.</p>
+<dd><p>Convert an etymological dictionary to a dictionary of sound and phonotactic correspondences, their number of occurences, and IDs of cognate sets in which they occur. If self.mode==”reconstruct” phonotactic correspondences will not be extracted because that dimension is already captured through the alignment. Since adapt() does not capture this, phonotactic correspondences need to be extracted from the data to later repair the structures before substituting. This has to do with the different nature of lateral vs horizontal transfers: loanwords meet certain constraints immediately and need to be repaired immediately. While historical sound changes happen over a long period of time. (If there was an optimality theory based model with constraint-changes for historical linguistics, vertical predictions with loanpy.adrc.Adrc.adapt would be possible.)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>write_to</strong> (<em>None</em><em> | </em><em>pathlib.PosixPath</em><em> | </em><em>str</em><em>, </em><em>default=None</em>) – Indicate if results should be written to a text file. If yes, provide the path. None means that no file will be written.</p>
@@ -136,8 +136,6 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span> <span class="o">=</span> <span class="n">Qfy</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">get_sound_corresp</span><span class="p">()</span>
-<span class="go">[{&#39;C&#39;: [&#39;x&#39;], &#39;a&#39;: [&#39;y&#39;], &#39;b&#39;: [&#39;&#39;], &#39;c&#39;: [&#39;z&#39;]}, {&#39;C&lt;b&#39;: 1, &#39;x&lt;C&#39;: 1, &#39;y&lt;a&#39;: 1, &#39;z&lt;c&#39;: 1}, {&#39;C&lt;b&#39;: [1], &#39;x&lt;C&#39;: [1], &#39;y&lt;a&#39;: [1], &#39;z&lt;c&#39;: [1]}, {&#39;VCC&#39;: [&#39;CVC&#39;]}, {&#39;CVC&lt;VCC&#39;: 1}, {&#39;CVC&lt;VCC&#39;: [1]}]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">scdict</span>
 <span class="go">[{&#39;C&#39;: [&#39;x&#39;], &#39;a&#39;: [&#39;y&#39;], &#39;b&#39;: [&#39;&#39;], &#39;c&#39;: [&#39;z&#39;]}, {&#39;C&lt;b&#39;: 1, &#39;x&lt;C&#39;: 1, &#39;y&lt;a&#39;: 1, &#39;z&lt;c&#39;: 1}, {&#39;C&lt;b&#39;: [1], &#39;x&lt;C&#39;: [1], &#39;y&lt;a&#39;: [1], &#39;z&lt;c&#39;: [1]}, {&#39;VCC&#39;: [&#39;CVC&#39;]}, {&#39;CVC&lt;VCC&#39;: 1}, {&#39;CVC&lt;VCC&#39;: [1]}]</span>
 </pre></div>
 </div>
@@ -159,18 +157,19 @@
 </section>
 <section id="module-adrc">
 <span id="adrc-py"></span><h2>adrc.py<a class="headerlink" href="#module-adrc" title="Permalink to this headline">¶</a></h2>
-<p>Adapt or reconstruct words, i.e. surf horizontally and vertically through the network of life</p>
+<p>Adapt or reconstruct words, i.e. surf horizontally and vertically
+through the network of life</p>
 <section id="adrc">
 <h3>Adrc<a class="headerlink" href="#adrc" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="adrc.Adrc">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">adrc.</span></span><span class="sig-name descname"><span class="pre">Adrc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">forms_csv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">most_frequent_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonotactic_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictbase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vfb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scdictlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adrc.Adrc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read etymological data and information about it generated by loanpy.qfysc.py and use it to predict loanword adaptations (lateral transfers) and reconstructions (vertical transfers).</p>
-<p>The first 9 parameters are passed on to loanpy.qfysc.Qfy to inherit 11 attributes (of which 7 are inherited from loanpy.helpers.Etym). The last parameter is passed on to __init__ to create 5 own attributes, so 16 attributes in total</p>
+<p>The first 9 parameters are passed on to loanpy.qfysc.Qfy to inherit 12 attributes (of which 8 are inherited from loanpy.helpers.Etym). The last parameter is passed on to __init__ to create 5 own attributes, so 17 attributes in total.</p>
 <p>Define own attributes:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>scdictlist</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em>) – Path to data generated with loanpy.qfysc.Qfy.get_sound_corresp. (Dicts 0, 1, 2 capture phonological correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual correspondences, dict1/dict4: How often each correspondence occurs in the data, dict2/dict5: list of cognates in which each correspondence occurs.</p>
+<dd class="field-odd"><p><strong>scdictlist</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em>) – Path to data generated with loanpy.qfysc.Qfy.get_sound_corresp. (Dicts 0, 1, 2 capture phonological correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual correspondences, dict1/dict4: How often each correspondence occurs in the data, dict2/dict5: list of cognate sets in which each correspondence occurs.</p>
 </dd>
 <dt class="field-even">Exmaple</dt>
 <dd class="field-even"><p></p></dd>
@@ -192,7 +191,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">workflow</span>
 <span class="go">OrderedDict()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">adrc_obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>  <span class="c1"># 5 own + 11 attributes inherited from loanpy.qfysc.Qfy</span>
-<span class="go">16</span>
+<span class="go">17</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -203,29 +202,35 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="adrc.Adrc.adapt">
 <span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">adapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipastr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonotactics_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repair_vowelharmony</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by_nse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_repaired_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths2repaired_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deletion_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertion_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">49</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adrc.Adrc.adapt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes a word as input and makes predictions based on available data and heuristics how it could be repaired when entering target language as a loan.</p>
+<dd><p>Takes a word as input and makes predictions based on available data and heuristics how it will be repaired when entering target language as a loan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ipastr</strong> (<em>str</em>) – The non-tokenised input word. Should consist only of valid ipa-characters, as defined in ipa_all.csv’s column “ipa”, even though the tokeniser handles invalid characters quite well. Make sure this is not an empty string.</p></li>
-<li><p><strong>howmany</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate howmany guesses should be made.</p></li>
-<li><p><strong>max_repaired_phonotactics</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate howmany of the most similar available structures from the phonotactic inventory should be taken into consideration.</p></li>
-<li><p><strong>max_paths2repaired_phonotactics</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate in maximum howmany different ways each phonotactic structure should be repaired.</p></li>
+<li><p><strong>howmany</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate howmany guesses should be made. If all predictions are wrong, this is the same as the false positive rate. If the right prediction is among the guesses, it is the false positive rate plus one.</p></li>
+<li><p><strong>cluster_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Throws out all words that contain vowel or consonant clusters that are not documented in the target language.</p></li>
+<li><p><strong>phonotactics_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether words should be filtered out from the final result if their phonotactic profile does not occur in the phonotactic inventory of target language.</p></li>
+<li><p><strong>repair_vowelharmony</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether violations of front-back vowelharmony should be repaired.</p></li>
+<li><p><strong>sort_by_nse</strong> (<em>bool</em><em>, </em><em>int</em><em>, </em><em>default=False</em>) – Indicate whether results should be sorted by their likelihood. Can be costly to calculate. If bool is passed, all or no         words will be sorted. If int is passed, only that many words will be sorted         in the beginning of the list, the rest remains unsorted.</p></li>
+<li><p><strong>max_repaired_phonotactics</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate howmany of the most similar available profiles from the phonotactic inventory should be taken into consideration.</p></li>
+<li><p><strong>max_paths2repaired_phonotactics</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate in maximum howmany different ways each phonotactic profile should be repaired towards the same target. E.g. if source is “CCV” and target “CV”, the first or the second “C” can both be deleted.</p></li>
 <li><p><strong>deletion_cost</strong> (<em>int</em><em> | </em><em>float</em><em>, </em><em>default=100</em>) – The cost of deleting a phoneme</p></li>
 <li><p><strong>insertion_cost</strong> (<em>int</em><em> | </em><em>float</em><em>, </em><em>default=49</em>) – The cost of inserting a phoneme</p></li>
-<li><p><strong>repair_vowelharmony</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether violations of front-back repair_vowelharmony should be repaired.</p></li>
-<li><p><strong>cluster_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – This is a filter. It throws out all words that contain vowel or consonant clusters that are not documented in the target language.</p></li>
-<li><p><strong>sort_by_nse</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether results should be sorted by their likelihood. Can be costly to calculate.</p></li>
-<li><p><strong>phonotactics_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether words should be filtered out from the final result if their phonotactic profile does not occur in the phonotactic inventory of target language.</p></li>
 <li><p><strong>show_workflow</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if the workflow should be attached to the output. Useful for debugging and makes it less black-boxy. The single steps are added as keys to the Adrc-attribute &lt;workflow&gt;. The number of keys varies between 2-5, depending on the arguments passed on to this function. Keys “tokenised” and “adapted_phonotactics” are always there. Keys “donor_phonotactics” and “predicted_phonotactics” are only added if param &lt;max_repaired_phonotactics&gt; was set to greater than 0. Key “adapted_vowelharmony” is only added if param &lt;repair_vowelharmony&gt; was set to True.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Approximately as many predictions as indicated in param  &lt;howmany&gt;, separated by “, “</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 <dt class="field-even">Example</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.adrc</span> <span class="kn">import</span> <span class="n">Adrc</span><span class="p">,</span> <span class="vm">__file__</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;sc_ad_handmade.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;forms_3cogs_wot.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc</span><span class="p">,</span> <span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">)</span>
@@ -253,7 +258,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">phonotactics_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">repair_vowelharmony</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_paths2repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">&quot;dajdæ, tʰajdæ, dujdy, tʰujdy, dadjæ, tʰadjæ&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># now let&#39;s filter out all clusters undocumented in forms.csv</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">clusters</span>  <span class="c1"># only these clusters are allowed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">cluster_inventory</span>  <span class="c1"># only these clusters are allowed</span>
 <span class="go">{&#39;ld&#39;, &#39;t͡ʃ&#39;, &#39;j&#39;, &#39;ɣ&#39;, &#39;a&#39;, &#39;n&#39;, &#39;ia&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">cluster_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">phonotactics_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">repair_vowelharmony</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_paths2repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">&quot;wrong clusters&quot;</span>
@@ -264,7 +269,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># let&#39;s ramp up the combinatorics</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">howmany</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">cluster_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">phonotactics_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">repair_vowelharmony</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_paths2repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">&#39;t͡ʃalda&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">clusters</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>  <span class="c1"># let&#39;s assume d was an allowed cluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">cluster_inventory</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>  <span class="c1"># let&#39;s assume d was an allowed cluster</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">howmany</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">cluster_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">phonotactics_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">repair_vowelharmony</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_paths2repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">&#39;dalda, t͡ʃalda&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># now sort results by likelihood (nse) and document workflow</span>
@@ -282,17 +287,17 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="adrc.Adrc.reconstruct">
 <span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">reconstruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipastr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusterised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonotactics_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vowelharmony_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by_nse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#adrc.Adrc.reconstruct" title="Permalink to this definition">¶</a></dt>
-<dd><p>Predicts past forms of a word based on data. Should theoretically also work for forward reconstructions, but not tested yet. Word initial and word final sounds/clusters are tagged with an “#”. In addition to this, every word gets a “#-” and a “-#” slapped to its front and back, to capture prefixes and suffixes that may have appeared or disappeared. If parameters &lt;phonotactics_filter&gt;, &lt;vowelharmony_filter&gt; and &lt;sort_by_nse&gt; are all set to False, the output will be a regular expression of the type “^(a|b)(c|d)(e)$”. If one of those parameters is set to True, combinatorics will be applied and the outputted regular expression will be of the type “(^ace$|^ade$|^bce$|^bde$)”.</p>
+<dd><p>Predicts past forms of a word based on data. Should theoretically also work for forward reconstructions, but not tested yet. Word initial and word final sounds/clusters are tagged with a “#”. In addition to this, every word gets a “#-” and a “-#” slapped to its front and back, to capture prefixes and suffixes that may have appeared or disappeared. If parameters &lt;phonotactics_filter&gt;, &lt;vowelharmony_filter&gt; and &lt;sort_by_nse&gt; are all set to False or zero, the output will be a regular expression of the type “^(a|b)(c|d)(e)$”. If one of those parameters is set to True or non-zero, combinatorics will be applied and the outputted regular expression will be of the type “(^ace$|^ade$|^bce$|^bde$)”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ipastr</strong> (<em>str</em>) – The non-tokenised input word. Should consist only of valid ipa-characters, as defined in ipa_all.csv’s column “ipa”, even though the tokeniser handles invalid characters quite well. Make sure this is not an empty string.</p></li>
-<li><p><strong>howmany</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate howmany guesses should be made.</p></li>
-<li><p><strong>clusterised</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If set to True, this will slice up the input word into consonant and vowel clusters and look for those keys in the sound change dictionary.</p></li>
+<li><p><strong>howmany</strong> (<em>int</em><em>, </em><em>default=1</em>) – Indicate howmany guesses should be made. If all predictions are wrong, this is the same as the false positive rate. If the right prediction is among the guesses, it is the false positive rate plus one.</p></li>
+<li><p><strong>clusterised</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If set to True, this will slice up the input word into consonant and vowel clusters and look for them as keys in the sound change dictionary.</p></li>
 <li><p><strong>phonotactics_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether words should be filtered out from the final result if their phonotactic profile does not occur in the phonotactic inventory of target language.</p></li>
-<li><p><strong>vowelharmony_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether words violating the constraint front-back vowelharmony_filter (a word can contain only front or only back vowels) should be filtered.</p></li>
-<li><p><strong>sort_by_nse</strong> – Indicate whether results should be sorted by their normalised sum of examples (likelihood measure for etymologies). Can be costly to calculate but still cheaper and more elegant than replacing itertool’s product function, which does this (from its documentation): “The leftmost iterators are in the outermost for-loop, so the output tuples cycle in a manner similar to an odometer (with the rightmost element changing on every iteration)”         :type sort_by_nse: bool, default=False</p></li>
-<li><p><strong>args</strong> – This does nothing. Just so sanity.eval_one to be able         to pass on a consistent list of args to both adapt and reconstruct.</p></li>
+<li><p><strong>vowelharmony_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether words violating the constraint front-back vowelharmony (a word can contain only front or only back vowels) should be filtered.</p></li>
+<li><p><strong>sort_by_nse</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether results should be sorted by their normalised sum of examples (likelihood measure for etymologies). Can be costly to calculate but still cheaper and more elegant than replacing itertool’s product function, which does this (from its documentation): “The leftmost iterators are in the outermost for-loop, so the output tuples cycle in a manner similar to an odometer (with the rightmost element changing on every iteration)”</p></li>
+<li><p><strong>args</strong> – This does nothing. The purpose of this is for loanpy.sanity.eval_one to be able to pass on a consistent list of args to both adapt and reconstruct.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -306,7 +311,7 @@
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.adrc</span> <span class="kn">import</span> <span class="n">Adrc</span><span class="p">,</span> <span class="vm">__file__</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;sc_rc_3cogs.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reconstruct&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;kriekrie&quot;</span><span class="p">)</span>  <span class="c1"># clusterise, missing from data</span>
@@ -360,8 +365,8 @@
 <li><p><strong>target_language</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in     cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational target language.     Will be used to     initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.Etym.</p></li>
 <li><p><strong>source_language</strong> (<em>str</em><em> (</em><em>options are listed in column &quot;ID&quot; in     cldf / etc / languages.tsv</em><em>)</em><em>, </em><em>default=None</em>) – The computational source language.     Will be used to     initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.Etym.</p></li>
 <li><p><strong>mode</strong> (<em>&quot;adapt&quot;</em><em> | </em><em>&quot;reconstruct&quot;</em><em>, </em><em>default=&quot;adapt&quot;</em>) – Indicate whether predictions should be made with     loanpy.adrc.Adrc.reconstruct or loanpy.adrc.Adrc.adapt (also     sound correspondences     will be extracted with loanpy.qfysc.Qfy.get_sound_corresp in     the given mode).     See also loanpy.qfysc.Qfy for more details.</p></li>
-<li><p><strong>most_frequent_phonotactics</strong> (<em>int</em><em>, </em><em>default=9999999</em>) – The n most frequent structures     to accept into the target language’s phonotactic inventory.     For more details     see loanpy.helpers.Etym.read_phonotacticsinv.</p></li>
-<li><p><strong>phonotactic_inventory</strong> (<em>list</em><em>, </em><em>default=None</em>) – Chance to plug in phonotactic     inventory manually. If None,     will be extracted automatically from data. For more details     see loanpy.helpers.Etym.read_phonotacticsinv.</p></li>
+<li><p><strong>most_frequent_phonotactics</strong> (<em>int</em><em>, </em><em>default=9999999</em>) – The n most frequent structures     to accept into the target language’s phonotactic inventory.     For more details     see loanpy.helpers.Etym.read_phonotactic_inv.</p></li>
+<li><p><strong>phonotactic_inventory</strong> (<em>list</em><em>, </em><em>default=None</em>) – Chance to plug in phonotactic     inventory manually. If None,     will be extracted automatically from data. For more details     see loanpy.helpers.Etym.read_phonotactic_inv.</p></li>
 <li><p><strong>connector</strong> (<em>iterable of len 2</em>) – The string that connects the left side of an etymology     with the right side for adapting vs reconstructing. For more details see     loanpy.qfysc.read_connector</p></li>
 <li><p><strong>scdictbase</strong> (<em>None</em><em> | </em><em>pathlib.PosixPath</em><em> | </em><em>dict</em>) – Indicate whether sound correspondences based     on data should be combined with the (rather large) dictionary of     heuristic correspondences. For pitfalls see param &lt;writesc&gt;. Don’t     pass a boolean. None means no, pathlib.PosixPath, dict, or str means yes.</p></li>
 <li><p><strong>vfb</strong> – Indicate whether there should be placeholder vowels.     For more details see loanpy.qfysc.Qfy.</p></li>
@@ -374,7 +379,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>guesslist</strong> (<em>list of int</em>) – The list of number of guesses to be made. Will be     passed into loanpy.adrc.Adrc.adapt’s or loanpy.adrc.Adrc.reconstruct’s     parameter &lt;howmany&gt; in a loop. Loop breaks as soons as     prediction was correct.</p></li>
 <li><p><strong>clusters</strong> (<em>bool</em><em>, </em><em>def=False</em>) – Will be passed to loanpy.adrc.Adrc.adapt’s parameter     &lt;cluster_filter&gt; or loanpy.adrc.Adrc.reconstruct’s parameter     &lt;clusterised&gt;.     Indicate whether predictions that contain consonant or     vowel clusters that are not documented in the target language should be     filtered out if passed on to adapt() or if the tokeniser should     clusterise the input-word and look in the sound correspondence dictionary     for clusters as keys to predictions if passed on to reconstruct().</p></li>
-<li><p><strong>phonotactics_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if predictions made by     loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct     should be filtered out if they consist of a     phonotactic structure that is not contained in the language’s     phonotactic inventory. For more details see     loanpy.helpers.Etym.read_phonotacticsinv.</p></li>
+<li><p><strong>phonotactics_filter</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if predictions made by     loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct     should be filtered out if they consist of a     phonotactic structure that is not contained in the language’s     phonotactic inventory. For more details see     loanpy.helpers.Etym.read_phonotactic_inv.</p></li>
 <li><p><strong>vowelharmony</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Will be passed to loanpy.adrc.Adrc.adapt’s     parameter &lt;repair_vowelharmony&gt; or     loanpy.adrc.Adrc.reconstruct’s parameter &lt;vowelharmony_filter&gt;.     Indicate whether vowelharmony should be repaired     if passed on to adapt() or if results violating the constraint     “front-back     vowelharmony” should be filtered out if passed on to reconstruct().</p></li>
 <li><p><strong>sort_by_nse</strong> (<em>bool</em><em> | </em><em>int</em><em>, </em><em>default=False</em>) – Indicate if or howmany predictions     should be sorted by likelihood. True and False will sort all or none,     just like float(“inf”) and 0. Passing an Integer will not sort the entire     output. Instead it will pick as many     of the words with the highest NSE (likelihood) as indicated.     This can save quite some unnecessary calculations.</p></li>
 </ul>
@@ -416,7 +421,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2cog27</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span>     <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms_27cogs.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2out</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;output_files&quot;</span> <span class="o">/</span>     <span class="s2">&quot;eval_27cogs.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">eval_all</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2cog27</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reconstruct&quot;</span><span class="p">,</span> <span class="n">clusters</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort_by_nse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">write_to</span><span class="o">=</span><span class="n">path2out</span><span class="p">)</span>
-<span class="go">[inspect result in folder output_files]</span>
+<span class="go">[inspect result in folder output_files/&quot;eval_27cogs.csv&quot;]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -509,7 +514,8 @@
 <h1>For internal calls<a class="headerlink" href="#for-internal-calls" title="Permalink to this headline">¶</a></h1>
 <section id="module-loanpy.helpers">
 <span id="helpers-py"></span><h2>helpers.py<a class="headerlink" href="#module-loanpy.helpers" title="Permalink to this headline">¶</a></h2>
-<p>Contains helper functions and class Etym, which are called by other modules. But some functions may be useful for other linguistic tasks.</p>
+<p>Contains helper functions and class Etym, which are called by other modules.
+But some functions may be useful for other linguistic tasks.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="loanpy.helpers.Etym">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">Etym</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">forms_csv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phoneme_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonotactic_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_measure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'weighted_feature_edit_distance'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">most_frequent_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym" title="Permalink to this definition">¶</a></dt>
@@ -525,7 +531,7 @@
 <li><p><strong>cluster_inventory</strong> (<em>None</em><em> | </em><em>list</em><em> | </em><em>set</em>) – All consonant and vowel cluster_inventory that occur in the language. If None, will be automatically extracted from forms.csv</p></li>
 <li><p><strong>phonotactic_inventory</strong> (<em>None</em><em> | </em><em>list</em><em> | </em><em>set</em>) – All phonetic structures (“CVCV”) that occur in the language</p></li>
 <li><p><strong>distance_measure</strong> (<em>function</em>) – The distance measure. See help(read_dst)</p></li>
-<li><p><strong>phonotactics_most_frquent</strong> (<em>int</em>) – The how many most frequently occuring phonotactic structures should we allow to be part of the phoneme_inventory.</p></li>
+<li><p><strong>most_frquent_phonotactics</strong> – The how many most frequently occuring phonotactic structures should we allow to be part of the phoneme inventory.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Example</dt>
@@ -533,7 +539,7 @@
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span><span class="p">,</span> <span class="vm">__file__</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">phon2cv</span><span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">]</span>
 <span class="go">&#39;C&#39;</span>
@@ -551,44 +557,13 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">phonotactic_inventory</span>
 <span class="go">{&#39;CVC&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">etym_obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
-<span class="go">7</span>
+<span class="go">8</span>
 </pre></div>
 </div>
-<dl class="py method">
-<dt class="sig sig-object py" id="loanpy.helpers.Etym.adapt_harmony">
-<span class="sig-name descname"><span class="pre">adapt_harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.adapt_harmony" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.adrc.Adrc.adapt. Counts how many front and back vowels there are in a word. If there are more back than front vowels, all front vowels will be replaced by a “B”, if there are more front than back vowels, the back vowels will be replaced by “F”, and if the word has equally many front as back vowels, both options will be returned.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ipalist</strong> (<em>list of str</em><em> | </em><em>str</em>) – a list or a string of phonemes</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tokenised word with repaired vowelharmony</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list of listt of str</p>
-</dd>
-<dt class="field-even">Example</dt>
-<dd class="field-even"><p></p></dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">(</span><span class="s1">&#39;kɛsthɛj&#39;</span><span class="p">)</span>
-<span class="go">[[&#39;k&#39;, &#39;ɛ&#39;, &#39;s&#39;, &#39;t&#39;, &#39;h&#39;, &#39;ɛ&#39;, &#39;j&#39;]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;oː&#39;</span><span class="p">,</span> <span class="s1">&#39;ø&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">])</span>
-<span class="go">[[&#39;ɒ&#39;, &#39;l&#39;, &#39;ʃ&#39;, &#39;oː&#39;, &#39;B&#39;, &#39;r&#39;, &#39;ʃ&#39;]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;eː&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">])</span>
-<span class="go">[[&#39;b&#39;, &#39;eː&#39;, &#39;l&#39;, &#39;F&#39;, &#39;t&#39;, &#39;ɛ&#39;, &#39;l&#39;, &#39;ɛ&#39;, &#39;p&#39;]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">adapt_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">])</span>
-<span class="go">[[&#39;b&#39;, &#39;F&#39;, &#39;l&#39;, &#39;F&#39;, &#39;t&#39;, &#39;F&#39;, &#39;n&#39;, &#39;k&#39;, &#39;ɛ&#39;, &#39;n&#39;, &#39;ɛ&#39;, &#39;ʃ&#39;, &#39;ɛ&#39;], [&#39;b&#39;, &#39;ɒ&#39;, &#39;l&#39;, &#39;ɒ&#39;, &#39;t&#39;, &#39;o&#39;, &#39;n&#39;, &#39;k&#39;, &#39;B&#39;, &#39;n&#39;, &#39;B&#39;, &#39;ʃ&#39;, &#39;B&#39;]]</span>
-</pre></div>
-</div>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="loanpy.helpers.Etym.get_fb">
 <span class="sig-name descname"><span class="pre">get_fb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turnto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'F'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.get_fb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by adapt_harmony. Turns front vowels to back ones if turnto=”B”, but turns back vowels to front ones if turnto=”F”</p>
+<dd><p>Called by repair_harmony. Turns front vowels to back ones if turnto=”B”, but turns back vowels to front ones if turnto=”F”</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -616,7 +591,24 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="loanpy.helpers.Etym.get_inventories">
 <span class="sig-name descname"><span class="pre">get_inventories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phoneme_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phonotactic_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">most_frequent_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.get_inventories" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a tuple of three sets, each representing the inventory of the target language at the phoneme, phoneme-cluster, and phonotactic level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phoneme_inventory</strong> (<em>None</em><em> | </em><em>set</em><em> | </em><em>list</em><em> | </em><em>iterable</em>) – Chance to hard-code the phoneme inventory by passing a list or a set. If set to None it will be extracted from the target language data.</p></li>
+<li><p><strong>cluster_inventory</strong> (<em>None</em><em> | </em><em>set</em><em> | </em><em>list</em><em> | </em><em>iterable</em>) – Chance to hard-code the phoneme-cluster inventory by passing a list or a set. If set to None it will be extracted from the target language data.</p></li>
+<li><p><strong>phonotactic_inventory</strong> – Chance to hard-code the phonotactic inventory by passing a list or a set. If set to None it will be extracted from the target language data.</p></li>
+<li><p><strong>most_frquent_phonotactics</strong> – How many of the most frequently occuring phonotactic structures should we allow to be part of the phoneme inventory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple of three sets containing the phoneme, phoneme cluster and phonotactic inventories of the target language.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple(set, set, set)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="loanpy.helpers.Etym.get_scdictbase">
@@ -652,7 +644,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="loanpy.helpers.Etym.harmony">
 <span class="sig-name descname"><span class="pre">harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.harmony" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.helpers.Etym.adapt_harmony and loanpy.adrc.Adrc.reconstruct. Returns True if there are only front or only back vowels in a word else False.</p>
+<dd><p>Called by loanpy.helpers.Etym.repair_harmony and loanpy.adrc.Adrc.reconstruct. Returns True if there are only front or only back vowels in a word else False.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>ipalist</strong> (<em>{list of str</em><em>, </em><em>str}</em>) – the word that should be analysed</p>
@@ -751,8 +743,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>inv</strong> (<em>set</em>) – a set of phonemes that occure in given language.     if inv is None, inv will be calculated from forms else inv will be returned.</p></li>
-<li><p><strong>forms</strong> (<em>list of str</em>) – a list of words occuring in giving language</p></li>
+<li><p><strong>inv</strong> (<em>set</em>) – a set of phonemes that occure in given language. if inv is None, inv will be calculated from forms else inv will be returned.</p></li>
 <li><p><strong>func</strong> (<em>function</em>) – the tokeniser to split words into phonemes</p></li>
 </ul>
 </dd>
@@ -765,28 +756,27 @@
 <dt class="field-even">Example</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">read_inventory</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">read_inventory</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>  <span class="p">[</span><span class="s2">&quot;fdedaeda&quot;</span><span class="p">,</span> <span class="s2">&quot;badea&quot;</span><span class="p">,</span> <span class="s2">&quot;fdddedab&quot;</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span><span class="p">,</span> <span class="n">clusterise</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">forms_target_language</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fdedaeda&quot;</span><span class="p">,</span> <span class="s2">&quot;badea&quot;</span><span class="p">,</span> <span class="s2">&quot;fdddedab&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">read_inventory</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 <span class="go">{&#39;b&#39;, &#39;d&#39;, &#39;f&#39;, &#39;a&#39;, &#39;e&#39;}</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">read_inventory</span><span class="p">,</span> <span class="n">clusterise</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">read_inventory</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>  <span class="p">[</span><span class="s2">&quot;fdedaeda&quot;</span><span class="p">,</span> <span class="s2">&quot;badea&quot;</span><span class="p">,</span> <span class="s2">&quot;fdddedab&quot;</span><span class="p">],</span> <span class="n">clusterise</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">read_inventory</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">clusterise</span><span class="p">)</span>
 <span class="go">{&#39;b&#39;, &#39;ea&#39;, &#39;d&#39;, &#39;fd&#39;, &#39;a&#39;, &#39;ae&#39;, &#39;fddd&#39;, &#39;e&#39;}</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="loanpy.helpers.Etym.read_phonotacticsinv">
-<span class="sig-name descname"><span class="pre">read_phonotacticsinv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phonotactic_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.read_phonotacticsinv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.read_phonotactic_inv">
+<span class="sig-name descname"><span class="pre">read_phonotactic_inv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phonotactic_inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9999999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_entire_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.read_phonotactic_inv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Called by loanpy.helpers.Etym.__init__; Returns phoneme_inventory of the most frequent x phonotactic structures. Caveat: The map function seems to swallow errors that would be otherwise triggered by Counter. E.g. if you use a float (including float(“inf”)) for param &lt;howmany&gt;, an empty string will be returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>phonotactic_inventory</strong> (<em>None</em><em> | </em><em>list</em><em> | </em><em>set</em><em> | </em><em>same type as input</em>) – Possibility to plug in the phoneme_inventory manually.</p></li>
-<li><p><strong>forms</strong> (<em>list</em><em> | </em><em>None</em>) – a list of words in a language</p></li>
 <li><p><strong>howmany</strong> (<em>int</em>) – howmany most frequent structures should be added to phoneme_inventory</p></li>
+<li><p><strong>print_entire_inv</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if logger should print the entire inventory to the console. It is a collections.Counter object with phonotactic profiles as keys and their frequencies as values. Inspecting this information will help to figure out which integer best to pass to param &lt;howmany&gt;. Best is to omit rare ones, but rare is relative to how much data we have, therefore this has to be done manually.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -799,21 +789,81 @@
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">etym</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">etym</span><span class="o">.</span><span class="n">read_phonotacticsinv</span><span class="p">(</span><span class="n">forms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;aa&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">forms_target_language</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;aa&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">read_phonotactic_inv</span><span class="p">()</span>
 <span class="go">{&#39;VV&#39;, &#39;CC&#39;, &#39;VC&#39;}</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">etym</span><span class="p">,</span> <span class="n">forms</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">(),</span> <span class="p">[</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;aa&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">etym</span><span class="o">.</span><span class="n">read_phonotacticsinv</span><span class="p">(</span><span class="n">forms</span><span class="o">=</span><span class="n">forms</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">[&#39;CC&#39;] # b/c that&#39;s the nr 1 most frequent structure</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">forms_target_language</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;aa&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">read_phonotactic_inv</span><span class="p">(</span><span class="n">howmany</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">{&#39;CC&#39;} # b/c that&#39;s the nr 1 most frequent structure</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">etym</span><span class="p">,</span> <span class="n">forms</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">(),</span> <span class="p">[</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;aa&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">etym</span><span class="o">.</span><span class="n">read_phonotacticsinv</span><span class="p">(</span><span class="n">forms</span><span class="o">=</span><span class="n">forms</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">[&#39;CC&#39;, &#39;VC&#39;] # b/c that&#39;s the 2 most frequent structures</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">forms_target_language</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;aa&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">etym_obj</span><span class="o">.</span><span class="n">read_phonotactic_inv</span><span class="p">(</span><span class="n">howmany</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">{&#39;CC&#39;, &#39;VC&#39;} # b/c that&#39;s the 2 most frequent structures</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.repair_harmony">
+<span class="sig-name descname"><span class="pre">repair_harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.repair_harmony" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by loanpy.adrc.Adrc.adapt. Counts how many front and back vowels there are in a word. If there are more back than front vowels, all front vowels will be replaced by a “B”, if there are more front than back vowels, the back vowels will be replaced by “F”, and if the word has equally many front as back vowels, both options will be returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ipalist</strong> (<em>list of str</em><em> | </em><em>str</em>) – a list or a string of phonemes</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a tokenised word with repaired vowelharmony</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of listt of str</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">Etym</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">repair_harmony</span><span class="p">(</span><span class="s1">&#39;kɛsthɛj&#39;</span><span class="p">)</span>
+<span class="go">[[&#39;k&#39;, &#39;ɛ&#39;, &#39;s&#39;, &#39;t&#39;, &#39;h&#39;, &#39;ɛ&#39;, &#39;j&#39;]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">repair_harmony</span><span class="p">([</span><span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;oː&#39;</span><span class="p">,</span> <span class="s1">&#39;ø&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">])</span>
+<span class="go">[[&#39;ɒ&#39;, &#39;l&#39;, &#39;ʃ&#39;, &#39;oː&#39;, &#39;B&#39;, &#39;r&#39;, &#39;ʃ&#39;]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">repair_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;eː&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">])</span>
+<span class="go">[[&#39;b&#39;, &#39;eː&#39;, &#39;l&#39;, &#39;F&#39;, &#39;t&#39;, &#39;ɛ&#39;, &#39;l&#39;, &#39;ɛ&#39;, &#39;p&#39;]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">repair_harmony</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;ɒ&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">,</span> <span class="s1">&#39;ʃ&#39;</span><span class="p">,</span> <span class="s1">&#39;ɛ&#39;</span><span class="p">])</span>
+<span class="go">[[&#39;b&#39;, &#39;F&#39;, &#39;l&#39;, &#39;F&#39;, &#39;t&#39;, &#39;F&#39;, &#39;n&#39;, &#39;k&#39;, &#39;ɛ&#39;, &#39;n&#39;, &#39;ɛ&#39;, &#39;ʃ&#39;, &#39;ɛ&#39;], [&#39;b&#39;, &#39;ɒ&#39;, &#39;l&#39;, &#39;ɒ&#39;, &#39;t&#39;, &#39;o&#39;, &#39;n&#39;, &#39;k&#39;, &#39;B&#39;, &#39;n&#39;, &#39;B&#39;, &#39;ʃ&#39;, &#39;B&#39;]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.word2phonotactics">
+<span class="sig-name descname"><span class="pre">word2phonotactics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.word2phonotactics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by loanpy.helpers.Etym.__init__; loanpy.qfysc.Qfy.get_phonotactics_corresp, loanpy.adrc.Adrc.adapt, loanpy.adrc.Adrc.repair_phonotactics, loanpy.adrc.Adrc.reconstruct, and loanpy.santiy.write_workflow.</p>
+<p>Returns the phonotactic profile of an ipa-string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ipa_in</strong> (<em>str</em><em> | </em><em>list</em>) – a string or list consisting of IPA-characters. if input is string, it will be tokenised.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the phonotactic profile of the word</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">word2phonotactics</span><span class="p">(</span><span class="s2">&quot;lol&quot;</span><span class="p">)</span>
+<span class="go">&#39;CVC&#39;</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -834,32 +884,6 @@
 </div>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="loanpy.helpers.Etym.word2struc">
-<span class="sig-name descname"><span class="pre">word2struc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.word2struc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.helpers.Etym.__init__; loanpy.qfysc.Qfy.get_phonotactics_corresp, loanpy.adrc.Adrc.adapt, loanpy.adrc.Adrc.adapt_phonotactics, loanpy.adrc.Adrc.reconstruct, and loanpy.santiy.write_workflow.</p>
-<p>Returns the phonotactic profile of an ipa-string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ipa_in</strong> (<em>str</em><em> | </em><em>list</em>) – a string or list consisting of IPA-characters. if input is string, it will be tokenised.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the phonotactic profile of the word</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-<dt class="field-even">Example</dt>
-<dd class="field-even"><p></p></dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">word2struc</span><span class="p">(</span><span class="s2">&quot;lol&quot;</span><span class="p">)</span>
-<span class="go">&#39;CVC&#39;</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py exception">
@@ -872,7 +896,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.helpers.apply_edit">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">apply_edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">editops</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.apply_edit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.adrc.Adrc.adapt_phonotactics. Applies a list of human readable edit operations to a string.</p>
+<dd><p>Called by loanpy.adrc.Adrc.repair_phonotactics. Applies a list of human readable edit operations to a string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -903,36 +927,23 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.helpers.cldf2pd">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">cldf2pd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dfforms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.cldf2pd" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>Called by loanpy.helpers.Etym.__init__; Converts a cldf-csv to a pandas data frame. Returns None if dfforms is None, so class can be initiated without args too. Runs through forms.csv and creates a new data frame the following way: Checks if a cognate set contains words from both, source and target language. If yes: word from source lg goes to column “Source_Form”, word from target lg goes to column “Target_Form” and the number of the cognate set goes to column “Cognacy”. Note that if a cognate set doesn’t contain words from src and tgt lg, that cognate set is skipped.</p>
-<dl class="field-list simple">
-<dt class="field-odd">param dfforms</dt>
-<dd class="field-odd"><p>Takes the output of read_forms() as input</p>
-</dd>
-<dt class="field-even">type dfforms</dt>
-<dd class="field-even"><p>&lt;class ‘pandas.core.frame.DataFrame’&gt; | None</p>
-</dd>
-</dl>
-</div></blockquote>
+<dd><p>Called by loanpy.helpers.Etym.__init__; Converts a cldf-csv to a pandas data frame. Returns None if dfforms is None, so class can be initiated without args too. Runs through forms.csv and creates a new data frame the following way: Checks if a cognate set contains words from both, source and target language. If yes: word from source lg goes to column “Source_Form”, word from target lg goes to column “Target_Form” and the number of the cognate set goes to column “Cognacy”. Note that if a cognate set doesn’t contain words from src and tgt lg, that cognate set is skipped.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_language</strong> – <p>The languages who’s cognates go to column “Source_Forms”
-:type source_language: &lt;str&gt;</p>
-<dl class="field-list simple">
-<dt class="field-odd">param target_language</dt>
-<dd class="field-odd"><p>The languages who’s cognates go to column “Target_Forms”</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfforms</strong> (<em>&lt;class 'pandas.core.frame.DataFrame'&gt;</em><em> | </em><em>None</em>) – Takes the output of read_forms() as input</p></li>
+<li><p><strong>source_language</strong> (<em>&lt;str&gt;</em>) – The languages who’s cognates go to column “Source_Forms”</p></li>
+<li><p><strong>target_language</strong> (<em>&lt;str&gt;</em>) – The languages who’s cognates go to column “Target_Forms”</p></li>
+</ul>
 </dd>
-<dt class="field-even">type target_language</dt>
-<dd class="field-even"><p>&lt;str&gt;</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>forms.csv data frame with re-positioned information</p>
 </dd>
-<dt class="field-odd">returns</dt>
-<dd class="field-odd"><p>forms.csv data frame with re-positioned information</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>&lt;class ‘pandas.core.frame.DataFrame’&gt; | None</p>
 </dd>
-<dt class="field-even">rtype</dt>
-<dd class="field-even"><p>&lt;class ‘pandas.core.frame.DataFrame’&gt; | None</p>
-</dd>
-<dt class="field-odd">Example</dt>
-<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="vm">__file__</span><span class="p">,</span> <span class="n">cldf2pd</span><span class="p">,</span> <span class="n">read_forms</span>
@@ -943,9 +954,6 @@
 <span class="go">0         xyz         abc        1</span>
 </pre></div>
 </div>
-</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -981,30 +989,32 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>string1</strong> (<em>str</em>) – The first of two strings to be compared to each other</p></li>
 <li><p><strong>string2</strong> (<em>str</em>) – The second of two strings to be compared to each other</p></li>
+<li><p><strong>w_del</strong> (<em>int</em><em> | </em><em>float</em><em>, </em><em>default=100</em>) – weight (cost) for deleting a phoneme. Default should always stay 100, since only relative costs between inserting and deleting counts.</p></li>
+<li><p><strong>w_ins</strong> (<em>int</em><em> | </em><em>float</em><em>, </em><em>default=49.</em>) – weight (cost) for inserting a phoneme. Default 49 is in accordance with TCRS: 2 insertions (2*49) are cheaper than a deletion (100).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The distance between two input strings</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p>int | float</p>
 </dd>
 <dt class="field-even">Example</dt>
 <dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">edit_distance_with2ops</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edit_distance_with2ops</span><span class="p">(</span><span class="s2">&quot;hey&quot;</span><span class="p">,</span><span class="s2">&quot;hey&quot;</span><span class="p">)</span>
-<span class="go">0.0</span>
+<span class="go">0</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">edit_distance_with2ops</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edit_distance_with2ops</span><span class="p">(</span><span class="s2">&quot;hey&quot;</span><span class="p">,</span><span class="s2">&quot;he&quot;</span><span class="p">)</span>
-<span class="go">1.0</span>
+<span class="go">100</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">edit_distance_with2ops</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edit_distance_with2ops</span><span class="p">(</span><span class="s2">&quot;hey&quot;</span><span class="p">,</span><span class="s2">&quot;heyy&quot;</span><span class="p">)</span>
-<span class="go">0.4</span>
+<span class="go">49</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1012,7 +1022,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.helpers.editops">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">editops</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_del</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_ins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">49</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.editops" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.adrc.Adrc.adapt_phonotactics. Takes two strings and returns all paths of cheapest edit operations between them.</p>
+<dd><p>Called by loanpy.adrc.Adrc.repair_phonotactics. Takes two strings and returns all paths of cheapest edit operations between them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1022,6 +1032,12 @@
 <li><p><strong>w_del</strong> (<em>int</em><em>, </em><em>default=100</em>) – The weight (cost) of deletions</p></li>
 <li><p><strong>w_ins</strong> (<em>int</em><em>, </em><em>default=49</em>) – The weight (cost) of insertions, according to TCRS 2 insertions are cheaper than 1 deletion by default.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Human-readable edit operations from string1 to string2</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of tuples of str</p>
 </dd>
 <dt class="field-even">Example</dt>
 <dd class="field-even"><p></p></dd>
@@ -1042,11 +1058,11 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.helpers.flatten">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nested_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.flatten" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.adrc.Adrc.adapt_phonotactics and loanpy.adrc.Adrc.adapt.
+<dd><p>Called by loanpy.adrc.Adrc.repair_phonotactics and loanpy.adrc.Adrc.adapt.
 Flatten a nested list and discard empty strings (to prevent feeding empty strings to loanpy.adrc.Adrc.reconstruct, which would throw an Error)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>t</strong> (<em>list of lists</em>) – a nested list</p>
+<dd class="field-odd"><p><strong>nested_list</strong> (<em>list of lists</em>) – a nested list</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>flattened list without empty strings as elements</p>
@@ -1070,7 +1086,10 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <dd><p>Called by loanpy.helpers.Etym.__init__; Get a list of words of a language from a forms.csv file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dff</strong> (<em>pandas.core.frame.DataFrame</em>) – forms.csv data frame (cldf)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dff</strong> (<em>pandas.core.frame.DataFrame</em>) – forms.csv data frame (cldf)</p></li>
+<li><p><strong>target_language</strong> (<em>str</em>) – The language from which the phoneme, phoneme cluster and phonotactic inventories will be extracted.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a list of words in the target language</p>
@@ -1232,7 +1251,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.helpers.make_cvfb">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">make_cvfb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path2ipa_all</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path2out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.make_cvfb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Consonants, vowels, front vowels, backvowels.     Transforms the columns of ipa_all.csv to a tuple of two dictionaries.     The first returns “C” for consonants and “V” for vowels,     the second “F” for front vowels and “B” for back vowels.</p>
+<dd><p>Called manually only once ever.     This is how cvfb.txt was created from ipa_all.csv.     Good to keep this here, in case I decide to change ipa_all.csv     some time.     Consonants, vowels, front vowels, backvowels.     Transforms the columns of ipa_all.csv to a tuple of two dictionaries.     The first returns “C” for consonants and “V” for vowels,     the second “F” for front vowels and “B” for back vowels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1287,6 +1306,8 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_and_nr</strong> (<em>list of tuples</em>) – inventories and distances</p></li>
 <li><p><strong>howmany</strong> (<em>int</em>) – howmany minimums do we want to pick from input-list</p></li>
+<li><p><strong>func</strong> (<em>max</em><em> | </em><em>min</em><em>, </em><em>default=min</em>) – Indicate if minimums or maximums should be grabbed</p></li>
+<li><p><strong>return_all</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether only the sorted chunk should be returned, or if it should be merged with the rest of the unsorted list.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1300,11 +1321,11 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="n">pick_minmax</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pick_minmax</span><span class="p">([(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
-<span class="go">&quot;c, a, b&quot;</span>
+<span class="go">[&quot;c&quot;, &quot;a&quot;, &quot;b&quot;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pick_minmax</span><span class="p">([(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="mi">1</span><span class="p">)</span>
-<span class="go">&quot;c&quot;</span>
+<span class="go">[&quot;c&quot;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pick_minmax</span><span class="p">([(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="mi">2</span><span class="p">)</span>
-<span class="go">&quot;c, a&quot;</span>
+<span class="go">[&quot;c&quot;, &quot;a&quot;]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1352,7 +1373,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.helpers.read_cvfb">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">read_cvfb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.read_cvfb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.helpers.Etym.__init__;Reads file cvfb.txt that was generated based on ipa_all.csv by loanpy.helpers.make_cvfb. Its a tuple of two dictionaries. Keys are same as col “ipa” in ipa_all.csv. Vals of first dict are “C” if consonant and “V” if vowel (6358 keys). Vals of 2nd dict are “F” if front vowel and “B” if back vowel (1240 keys). Only called by Etym.__init__ to define self.phon2cv and self.vow2fb, which in turn is used by word2struc and many others. This file could be read directly when importing, but this way debugging is easier.</p>
+<dd><p>Called by loanpy.helpers.Etym.__init__;Reads file cvfb.txt that was generated based on ipa_all.csv by loanpy.helpers.make_cvfb. Its a tuple of two dictionaries. Keys are same as col “ipa” in ipa_all.csv. Vals of first dict are “C” if consonant and “V” if vowel (6358 keys). Vals of 2nd dict are “F” if front vowel and “B” if back vowel (1240 keys). Only called by Etym.__init__ to define self.phon2cv and self.vow2fb, which in turn is used by word2phonotactics and many others. This file could be read directly when importing, but this way debugging is easier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>two dictionaries, the first defining consonants and vowels (cv), the second defining front and back vowels (fb).</p>
@@ -1418,7 +1439,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.helpers</span> <span class="kn">import</span> <span class="vm">__file__</span><span class="p">,</span> <span class="n">read_forms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path2file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">read_forms</span><span class="p">(</span><span class="n">path2file</span><span class="p">)</span>
 <span class="go">       Language_ID Segments  Cognacy</span>
 <span class="go">0            1      abc        1</span>
@@ -1587,7 +1608,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </ul>
 </dd>
 </dl>
-<p>In an earlier version, some additional parameters were passed on to         lingpy.align.pairwise.Pairwise and lingpy.align.pairwise.Pairwise.align. That feature is not supported in the current version because they bload the script and find only little practical use at the moment. If necessary, they have to be inserted directly in the source code, where Pairwise() gets initiated and Pairwise.align() called.</p>
+<p>In an earlier version, some additional parameters were passed on to         lingpy.align.pairwise.Pairwise and lingpy.align.pairwise.Pairwise.align. That feature is not supported in the current version because they bloat the script and find only little practical use at the moment. If necessary, they have to be inserted directly in the source code, where Pairwise() gets initiated and Pairwise.align() called.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a pandas data frame with two columns named “keys” and “vals” with one phoneme and it’s aligned counter part in each row.</p>
@@ -1600,9 +1621,9 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.qfysc</span> <span class="kn">import</span> <span class="n">Qfy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span> <span class="o">=</span> <span class="n">Qfy</span><span class="p">()</span>  <span class="c1"># default mode is &quot;adapt&quot;, so lingpy aligns</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;Budapest&quot;</span><span class="p">,</span> <span class="s2">&quot;Budimpeʃta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;budapest&quot;</span><span class="p">,</span> <span class="s2">&quot;budimpeʃta&quot;</span><span class="p">)</span>
 <span class="go">  keys vals</span>
-<span class="go">0    B    B</span>
+<span class="go">0    b    b</span>
 <span class="go">1    u    u</span>
 <span class="go">2    d    d</span>
 <span class="go">3    i    a</span>
@@ -1615,10 +1636,10 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span> <span class="o">=</span> <span class="n">Qfy</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reconstruct&quot;</span><span class="p">)</span>  <span class="c1"># use own alignment</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;Budapest&quot;</span><span class="p">,</span> <span class="s2">&quot;Budimpeʃta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;budapest&quot;</span><span class="p">,</span> <span class="s2">&quot;budimpeʃta&quot;</span><span class="p">)</span>
 <span class="go">  keys vals  # left&amp;right col is flipped b/c source&amp;target is flipped</span>
 <span class="go">0   #-    -</span>
-<span class="go">1   #B    B</span>
+<span class="go">1   #b    b</span>
 <span class="go">2    u    u</span>
 <span class="go">3    d    d</span>
 <span class="go">4    a    i</span>
@@ -1655,9 +1676,9 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.qfysc</span> <span class="kn">import</span> <span class="n">Qfy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span> <span class="o">=</span> <span class="n">Qfy</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">align_lingpy</span><span class="p">(</span><span class="s2">&quot;Budapest&quot;</span><span class="p">,</span> <span class="s2">&quot;Budimpeʃta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">align_lingpy</span><span class="p">(</span><span class="s2">&quot;budapest&quot;</span><span class="p">,</span> <span class="s2">&quot;budimpeʃta&quot;</span><span class="p">)</span>
 <span class="go">  keys vals</span>
-<span class="go">0    B    B</span>
+<span class="go">0    b    b</span>
 <span class="go">1    u    u</span>
 <span class="go">2    d    d</span>
 <span class="go">3    i    a</span>
@@ -1667,9 +1688,9 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <span class="go">7    ʃ    s</span>
 <span class="go">8    t    t</span>
 <span class="go">9    a    V</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">align_lingpy</span><span class="p">(</span><span class="s2">&quot;Budimpeʃta&quot;</span><span class="p">,</span> <span class="s2">&quot;Budapest&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qfy_obj</span><span class="o">.</span><span class="n">align_lingpy</span><span class="p">(</span><span class="s2">&quot;budimpeʃta&quot;</span><span class="p">,</span> <span class="s2">&quot;budapest&quot;</span><span class="p">)</span>
 <span class="go">  keys vals</span>
-<span class="go">0    B    B</span>
+<span class="go">0    b    b</span>
 <span class="go">1    u    u</span>
 <span class="go">2    d    d</span>
 <span class="go">3    a    i</span>
@@ -1723,8 +1744,8 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </dd></dl>
 
 </section>
-<section id="get-structure-correspondences">
-<h3>get structure correspondences<a class="headerlink" href="#get-structure-correspondences" title="Permalink to this headline">¶</a></h3>
+<section id="get-phonotactic-correspondences">
+<h3>get phonotactic correspondences<a class="headerlink" href="#get-phonotactic-correspondences" title="Permalink to this headline">¶</a></h3>
 <dl class="py method">
 <dt class="sig sig-object py" id="loanpy.qfysc.Qfy.get_phonotactics_corresp">
 <span class="sig-prename descclassname"><span class="pre">Qfy.</span></span><span class="sig-name descname"><span class="pre">get_phonotactics_corresp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.qfysc.Qfy.get_phonotactics_corresp" title="Permalink to this definition">¶</a></dt>
@@ -1827,7 +1848,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <span class="gp">&gt;&gt;&gt; </span><span class="n">move_sc</span><span class="p">(</span><span class="n">sclistlist</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">]],</span> <span class="n">whichsound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="p">[[]])</span>
 <span class="go">([[&quot;x&quot;]], [[&quot;x&quot;]])</span>
 <span class="gp">&gt;&gt;&gt; </span> <span class="c1"># Transfer phoneme #1 of list #0 from sclistlist to out</span>
-<span class="go">move_sc(sclistlist=[[&quot;x&quot;, &quot;x&quot;], [&quot;y&quot;, &quot;y&quot;], [&quot;z&quot;]], whichsound=0, out=[[&quot;a&quot;], [&quot;b&quot;], [&quot;c&quot;]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">move_sc</span><span class="p">(</span><span class="n">sclistlist</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]],</span> <span class="n">whichsound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]])</span>
 <span class="go">([[&quot;x&quot;], [&quot;y&quot;, &quot;y&quot;], [&quot;z&quot;]], [[&quot;a&quot;, &quot;x&quot;], [&quot;b&quot;], [&quot;c&quot;]])</span>
 <span class="gp">&gt;&gt;&gt; </span> <span class="c1"># Transfer phoneme #1 of list #2 from sclistlist to out</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">move_sc</span><span class="p">(</span><span class="n">sclistlist</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;$&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;$&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;$&quot;</span><span class="p">]],</span> <span class="n">whichsound</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;o&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">]])</span>
@@ -1898,7 +1919,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.adrc</span> <span class="kn">import</span> <span class="n">Adrc</span><span class="p">,</span> <span class="vm">__file__</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;sc_ad_handmade.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">read_sc</span><span class="p">(</span><span class="n">ipa</span><span class="o">=</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># 1*1*1*1 = 1</span>
@@ -1914,18 +1935,16 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </dd></dl>
 
 </section>
-<section id="adapt-structure">
-<h3>adapt structure<a class="headerlink" href="#adapt-structure" title="Permalink to this headline">¶</a></h3>
+<section id="repair-phonotactics">
+<h3>repair phonotactics<a class="headerlink" href="#repair-phonotactics" title="Permalink to this headline">¶</a></h3>
 <dl class="py method">
-<dt class="sig sig-object py" id="loanpy.adrc.Adrc.adapt_phonotactics">
-<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">adapt_phonotactics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipastr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_repaired_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths2repaired_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deletion_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertion_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">49</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.adapt_phonotactics" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="loanpy.adrc.Adrc.repair_phonotactics">
+<span class="sig-prename descclassname"><span class="pre">Adrc.</span></span><span class="sig-name descname"><span class="pre">repair_phonotactics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipastr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_repaired_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_paths2repaired_phonotactics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deletion_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertion_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">49</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_workflow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.adrc.Adrc.repair_phonotactics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Called by loanpy.adrc.Adrc.adapt. Repairs the phonotactic structure of a word.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Pararm ipastr</dt>
-<dd class="field-odd"><p>The input word. Will be tokenised if string.</p>
-</dd>
-<dt class="field-even">Parameters</dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipastr</strong> (<em>list</em><em> | </em><em>str</em>) – The input word. Will be tokenised if string.</p></li>
 <li><p><strong>max_repaired_phonotactics</strong> (<em>int</em><em>, </em><em>default=2</em>) – The maximum number of target phonotactic structures into which we want to turn the source structure.</p></li>
 <li><p><strong>max_paths2repaired_phonotactics</strong> (<em>int</em><em>, </em><em>default=1</em>) – The maximum number of different cheapest ways to turn the source structure into the target structure</p></li>
 <li><p><strong>deletion_cost</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>default=100</em>) – The cost of deleting a segment</p></li>
@@ -1933,30 +1952,30 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <li><p><strong>show_workflow</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether 2 steps from this process should be added to self.workflow (useful for debugging): the calculated phonotactic profile of the input-string and the predicted repaired structures.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a list of phonotactically repaired words</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of phonotactically repaired words</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list of str</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of str</p>
 </dd>
-<dt class="field-odd">Example</dt>
-<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.adrc</span> <span class="kn">import</span> <span class="n">Adrc</span><span class="p">,</span> <span class="vm">__file__</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;sc_ad_handmade.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;forms_3cogs_wot.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc</span><span class="p">,</span> <span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt_phonotactics</span><span class="p">(</span><span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;kiki&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">[[&#39;k&#39;, &#39;i&#39;, &#39;k&#39;, &#39;i&#39;]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt_phonotactics</span><span class="p">(</span><span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;kiki&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">repair_phonotactics</span><span class="p">(</span><span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;kiki&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">[[&#39;k&#39;, &#39;i&#39;, &#39;k&#39;]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">repair_phonotactics</span><span class="p">(</span><span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;kiki&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">[[&#39;k&#39;, &#39;i&#39;, &#39;k&#39;], [&#39;k&#39;, &#39;i&#39;, &#39;C&#39;, &#39;k&#39;, &#39;i&#39;]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt_phonotactics</span><span class="p">(</span><span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;kiki&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_paths2repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">repair_phonotactics</span><span class="p">(</span><span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;kiki&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_paths2repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1">#C can get inserted before or after k</span>
 <span class="go">[[&#39;k&#39;, &#39;i&#39;, &#39;k&#39;], [&#39;k&#39;, &#39;i&#39;, &#39;C&#39;, &#39;k&#39;, &#39;i&#39;], [&#39;k&#39;, &#39;i&#39;, &#39;k&#39;, &#39;C&#39;, &#39;i&#39;]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">scdict_phonotactics</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># empty sound corresp data triggers heuristics</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt_phonotactics</span><span class="p">(</span><span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;kiki&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">show_workflow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">repair_phonotactics</span><span class="p">(</span><span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;kiki&quot;</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">show_workflow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">[[&#39;V&#39;, &#39;k&#39;, &#39;i&#39;, &#39;k&#39;, &#39;i&#39;], [&#39;i&#39;, &#39;k&#39;, &#39;i&#39;, &#39;C&#39;]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">workflow</span>
 <span class="go">OrderedDict([(&#39;donor_phonotactics&#39;, [&#39;CVCV&#39;]), (&#39;predicted_phonotactics&#39;, [[&#39;VCVCV&#39;, &#39;VCVC&#39;]])])</span>
@@ -1976,8 +1995,6 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>left</strong> (<em>str</em>) – The string on the left side of the etymology to align.</p></li>
 <li><p><strong>right</strong> (<em>str</em>) – The string on the right side of the etymology to align.</p></li>
-<li><p><strong>se</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Calculations based on sum-of-examples dict. If set to False, examples dict will be accessed instead to add extra info but make no calculations.</p></li>
-<li><p><strong>show_workflow</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If set to True, this will output how the nse was calculated.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1988,16 +2005,12 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.adrc</span> <span class="kn">import</span> <span class="n">Adrc</span><span class="p">,</span> <span class="vm">__file__</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;integration&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;sc_ad_handmade.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;forms_3cogs_wot.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc</span><span class="p">,</span> <span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">get_nse</span><span class="p">(</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="s2">&quot;dady&quot;</span><span class="p">)</span>
-<span class="go">33.25</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">get_nse</span><span class="p">(</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="s2">&quot;dady&quot;</span><span class="p">,</span> <span class="n">se</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="go">[[1, 2], [0], [1, 2], [3]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">get_nse</span><span class="p">(</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="s2">&quot;dady&quot;</span><span class="p">,</span> <span class="n">show_workflow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="go">(33.25, 133, [1, 6, 1, 125])</span>
+<span class="go">(33.25, 133, &#39;[1, 6, 1, 125]&#39;, &quot;[&#39;d&lt;d&#39;, &#39;a&lt;a&#39;, &#39;d&lt;d&#39;, &#39;e&lt;y&#39;]&quot;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2013,22 +2026,32 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simple decorator function to check if function was already run with given arguments. And to store the results in a csv-file. For more details see loanpy.sanity.check_cache and loanpy.sanity.write_to_cache.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Always returns None.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>method</strong> (<em>func</em>) – The function or method to decorate.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Always returns None.</p>
 </dd>
-<dt class="field-odd">Example</dt>
-<dd class="field-odd"><p></p></dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># copy lines one by one, try-except throws indentation error when bulk-copying this entire paragraph</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">remove</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.sanity</span> <span class="kn">import</span> <span class="n">cache</span><span class="p">,</span> <span class="vm">__file__</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mockpath2cache</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;output_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;mock_cache.csv&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">mockfunc</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;bla&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">remove</span><span class="p">(</span><span class="n">mockpath2cache</span><span class="p">)</span>  <span class="c1"># delete leftovers from last time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">mockfunc</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="s2">&quot;bla&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mockfunc</span> <span class="o">=</span> <span class="n">cache</span><span class="p">(</span><span class="n">mockfunc</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mockfunc</span><span class="p">(</span><span class="n">path2cache</span><span class="o">=</span><span class="n">mockpath2cache</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="s2">&quot;hi&quot;</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="s2">&quot;bye&quot;</span><span class="p">)</span>
-<span class="go">[Inspect results in mock_cache.csv in folder tests/output_files]</span>
+<span class="go">[Inspect results in mock_cache.csv in folder tests/output_files/&quot;mock_cache.csv&quot;]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2039,48 +2062,34 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.sanity.loop_thru_data">
 <span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">loop_thru_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.loop_thru_data" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>Called by loanpy.sanity.eval_all.
-Loops through the input data frame. Crossvalidates and writes down sound changes and inventories if indicated so. Calls loanpy.sanity.eval_one after concluding inventories and sound changes. If crossvalidation is chosen, the row for prediction is isolated from the training data from which sound changes and inventories are calculated. Isolation of that row is reversed at the end of the loop latest - i.e. the taken out elements are all plugged in again so the loop can continue. Last two args (12, 13) will be popped, so only 0-12 are passed on to eval_one. The first argument must be an instance of loanpy.adrc.Adrc. This will also be the return value. The sourcre word is inserted at index 1 of the list of arguments. This is necessary so that all positional arguments are in the right place when passing them to loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct in loanpy.sanity.eval_adapt and loanpy.santiy.eval_recon.</p>
+<dd><p>Called by loanpy.sanity.eval_all. Loops through the input data frame. Crossvalidates and writes down sound changes and inventories if indicated so. Calls loanpy.sanity.eval_one after concluding inventories and sound changes. If crossvalidation is chosen, the row for prediction is isolated from the training data from which sound changes and inventories are calculated. Isolation of that row is reversed at the end of the loop latest - i.e. the taken out elements are all plugged in again so the loop can continue. Last two args (12, 13) will be popped, so only 0-12 are passed on to eval_one. The first argument must be an instance of loanpy.adrc.Adrc. This will also be the return value. The sourcre word is inserted at index 1 of the list of arguments. This is necessary so that all positional arguments are in the right place when passing them to loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct in loanpy.sanity.eval_adapt and loanpy.santiy.eval_recon.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param args</dt>
-<dd class="field-odd"><p>Arguments 0-14 that were passed to loanpy.sanity.eval_all     (14 not included)</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>mixed</em><em>, </em><em>see details below</em>) – Arguments 0-14 that were passed to loanpy.sanity.eval_all (14 not included)</p></li>
+<li><p><strong>args</strong><strong>[</strong><strong>0</strong><strong>]</strong> (<em>loanpy.adrc.Adrc</em>) – This is instanciated in loanpy.sanity.eval_all with its first 9 args</p></li>
+<li><p><strong>args</strong><strong>[</strong><strong>1:14</strong><strong>]</strong> (<em>bool</em><em>, </em><em>int</em>) – See param &lt;clusters&gt; - &lt;show_workflow&gt; in loanpy.sanity.eval_all.</p></li>
+</ul>
 </dd>
-<dt class="field-even">type args</dt>
-<dd class="field-even"><p>mixed, see details below</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The (cross-)validated predictions. Serves as input for loanpy.sanity.postprocess.</p>
 </dd>
-<dt class="field-odd">param args[0]</dt>
-<dd class="field-odd"><p>This is instanciated in loanpy.sanity.eval_all with its     first 9 args</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>loanpy.adrc.Adrc</p>
 </dd>
-<dt class="field-even">type args[0]</dt>
-<dd class="field-even"><p>loanpy.adrc.Adrc</p>
-</dd>
-<dt class="field-odd">param args[1:14]</dt>
-<dd class="field-odd"><p>See param &lt;clusters&gt; - &lt;show_workflow&gt;     in loanpy.sanity.eval_all.</p>
-</dd>
-<dt class="field-even">type args[1:14]</dt>
-<dd class="field-even"><p>bool, int</p>
-</dd>
-<dt class="field-odd">returns</dt>
-<dd class="field-odd"><p>The (cross-)validated predictions. Serves as input for loanpy.sanity.postprocess.</p>
-</dd>
-<dt class="field-even">rtype</dt>
-<dd class="field-even"><p>loanpy.adrc.Adrc</p>
-</dd>
-<dt class="field-odd">Example</dt>
-<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><p></p></dd>
 </dl>
-</div></blockquote>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.adrc</span> <span class="kn">import</span> <span class="n">Adrc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.sanity</span> <span class="kn">import</span> <span class="n">loop_thru_data</span><span class="p">,</span> <span class="vm">__file__</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms_3cogs_wot.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">loop_thru_data</span><span class="p">(</span><span class="n">adrc_obj</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span> <span class="s1">&#39;adapt&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dfety</span>
-<span class="go">      Target_Form Source_Form  Cognacy  guesses best_guess</span>
-<span class="go">    0     aɣat͡ʃi    aɣat͡ʃːɯ        1      inf   KeyError</span>
-<span class="go">    1       aldaɣ       aldaɣ        2      inf   KeyError</span>
-<span class="go">    2        ajan        ajan        3      inf   KeyError</span>
+<span class="go">Target_Form Source_Form  Cognacy  guesses best_guess</span>
+<span class="go">0     aɣat͡ʃi    aɣat͡ʃːɯ        1      inf   KeyError</span>
+<span class="go">1       aldaɣ       aldaɣ        2      inf   KeyError</span>
+<span class="go">2        ajan        ajan        3      inf   KeyError</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2455,9 +2464,9 @@ Checks if target was hit by predictions made by     loanpy.adrc.Adrc.reconstruct
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms_3cogs_wot.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc_ad</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;sc_ad_3cogs.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">,</span> <span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc_ad</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">get_nse4df</span><span class="p">(</span><span class="n">adrc_obj</span><span class="p">,</span> <span class="s2">&quot;Target_Form&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_nse4df</span><span class="p">(</span><span class="n">adrc_obj</span><span class="p">,</span> <span class="s2">&quot;Target_Form&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dfety</span>
 <span class="go">[Similar large output as in the example for loanpy.sanity.postprocess,</span>
-<span class="go"> just last two columns missing]</span>
+<span class="go"> just last two columns missing, [3 rows x 7 columns]]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2476,7 +2485,7 @@ Checks if target was hit by predictions made by     loanpy.adrc.Adrc.reconstruct
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The same object as inputted, but optionally with an     extra column “phonotactics_predicted”.</p>
 </dd>
-<dt class="field-odd">Rytpe</dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>loanpy.adrc.Adrc</p>
 </dd>
 <dt class="field-even">Example</dt>
@@ -2510,7 +2519,7 @@ Calculates the Levenshtein Distance and the normalised Levenshtein     Distance 
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>adrc_obj</strong> (<em>loanpy.adrc.Adrc</em>) – The output value of loanpy.sanity.phonotactics_pred</p></li>
 <li><p><strong>col</strong> (<em>str</em>) – The name of the column with the words to which the     distance to the target     words should be calculated.</p></li>
-<li><p><strong>dst_msrs</strong> – The list of distance measures that should be calculated.     For an exhaustive list of input options see param     &lt;phondist_msr&gt; in loanpy.loanfinder.Search.</p></li>
+<li><p><strong>dst_msrs</strong> (<em>list of str</em>) – The list of distance measures that should be calculated.     For an exhaustive list of input options see param     &lt;phondist_msr&gt; in loanpy.loanfinder.Search.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2649,7 +2658,7 @@ Calculate  statistics from optimum, max nr of guesses and length     of input da
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy.sanity</span> <span class="kn">import</span> <span class="n">plot_roc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path2mockplot</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;output_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;mockplot.jpg&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path2mockplot</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;output_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;mockplot.jpg&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_roc</span><span class="p">(</span><span class="n">guesslist</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_to</span><span class="o">=</span><span class="n">path2mockplot</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tpr_fpr_opt</span><span class="o">=</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
@@ -2839,7 +2848,7 @@ Calculate  statistics from optimum, max nr of guesses and length     of input da
 <dd><p>Will replace every phonological match in the output data frame with its most likely version.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dfmatches</strong> – The entire data frame with potential loanwords</p>
+<dd class="field-odd"><p><strong>dfmatches</strong> (<em>pandas.core.series.Series</em>) – The entire data frame with potential loanwords</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the same dataframe but with likelier adaptations of donor words</p>
@@ -2866,7 +2875,7 @@ Calculate  statistics from optimum, max nr of guesses and length     of input da
 <span class="gp">&gt;&gt;&gt; </span><span class="n">search_obj</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">dfin</span><span class="p">)</span>
 <span class="go">postprocessing...</span>
 <span class="go">   recipdf_idx            Meaning_x  ...                      align_ad  nse_combined</span>
-<span class="go">0            0  computer, interface  ...  [&#39;b&lt;b&#39;, &#39;l&lt;l&#39;, &#39;u&lt;u&#39;, &#39;b&lt;b&#39;]          15.0</span>
+<span class="go">0            0  computer, interface  ...  [&#39;b&lt;b&#39;, &#39;l&lt;l&#39;, &#39;u&lt;u&#39;, &#39;b&lt;b&#39;]        15.0</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2881,9 +2890,9 @@ Calculate  statistics from optimum, max nr of guesses and length     of input da
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>recip_rc</strong> (<em>str</em><em> (</em><em>regular expression</em><em>)</em>) – a reconstructed word</p></li>
 <li><p><strong>donor_ad</strong> (<em>str</em><em> (</em><em>not a regular expression</em><em>, </em><em>words separated by &quot;</em><em>, </em><em>&quot;</em><em>)</em>) – adapted words in the donor data frame</p></li>
-<li><p><strong>donor_segment</strong> – the original (non-adapted) donor word</p></li>
+<li><p><strong>recip_rc</strong> (<em>str</em><em> (</em><em>regular expression</em><em>)</em>) – a reconstructed word</p></li>
+<li><p><strong>donor_segment</strong> (<em>str</em>) – the original (non-adapted) donor word</p></li>
 <li><p><strong>recip_segment</strong> (<em>str</em>) – the original (non-reconstructed) recipient word</p></li>
 </ul>
 </dd>
@@ -2907,8 +2916,8 @@ Calculate  statistics from optimum, max nr of guesses and length     of input da
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scdictlist_ad</span><span class="o">=</span><span class="n">PATH2SC_AD</span><span class="p">,</span> <span class="n">scdictlist_rc</span><span class="o">=</span><span class="n">PATH2SC_RC</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">search_obj</span><span class="o">.</span><span class="n">likeliestphonmatch</span><span class="p">(</span><span class="n">donor_ad</span><span class="o">=</span><span class="s2">&quot;a, blub, club&quot;</span><span class="p">,</span> <span class="n">recip_rc</span><span class="o">=</span><span class="s2">&quot;(b|c)?lub&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">donor_segment</span><span class="o">=</span><span class="s2">&quot;elub&quot;</span><span class="p">,</span> <span class="n">recip_segment</span><span class="o">=</span><span class="s2">&quot;dlub&quot;</span><span class="p">)</span>
-<span class="go">    match  nse_rc  se_rc  ...           distr_ad                             align_ad  nse_combined</span>
-<span class="go">    0  blub    10.0     50  ...  [0, 0, 10, 10, 0]  [&#39;e&lt;V&#39;, &#39;C&lt;b&#39;, &#39;l&lt;l&#39;, &#39;u&lt;u&#39;, &#39;b&lt;b&#39;]          14.0</span>
+<span class="go">    match  nse_rc  se_rc  ...           distr_ad            align_ad  nse_combined</span>
+<span class="go">    0  blub    10.0     50  ...  [0, 0, 10, 10, 0]              [&#39;e&lt;V&#39;, &#39;C&lt;b&#39;, &#39;l&lt;l&#39;, &#39;u&lt;u&#39;, &#39;b&lt;b&#39;]          14.0</span>
 <span class="go">    [1 rows x 10 columns]</span>
 </pre></div>
 </div>
@@ -3006,7 +3015,7 @@ Calculate  statistics from optimum, max nr of guesses and length     of input da
 <li><a class="reference internal" href="#align">align</a></li>
 <li><a class="reference internal" href="#align-with-lingpy">align with lingpy</a></li>
 <li><a class="reference internal" href="#align-clusterwise">align clusterwise</a></li>
-<li><a class="reference internal" href="#get-structure-correspondences">get structure correspondences</a></li>
+<li><a class="reference internal" href="#get-phonotactic-correspondences">get phonotactic correspondences</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#id2">adrc.py</a><ul>
@@ -3014,7 +3023,7 @@ Calculate  statistics from optimum, max nr of guesses and length     of input da
 <li><a class="reference internal" href="#move-sound-correspondences">move sound correspondences</a></li>
 <li><a class="reference internal" href="#get-difference">get difference</a></li>
 <li><a class="reference internal" href="#read-sound-correspondences">read sound correspondences</a></li>
-<li><a class="reference internal" href="#adapt-structure">adapt structure</a></li>
+<li><a class="reference internal" href="#repair-phonotactics">repair phonotactics</a></li>
 <li><a class="reference internal" href="#get-normalised-sum-of-examples">get normalised sum of examples</a></li>
 </ul>
 </li>
