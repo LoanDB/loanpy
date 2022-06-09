@@ -5,12 +5,19 @@ Intro
 
 For usage
 =================================
+This section describes classes, methods, and functions \
+that the user calls. It deals with the \
+the extraction, evaluation, and application of \
+patterns of correspondence \
+between phonemes, phoneme clusters, \
+and phonotactic profiles. In addition, it shows how to search for \
+semantically and phonologically matching pairs between two lists of words.
 
 qfysc.py
 -----------
 .. automodule:: qfysc
 
-Qfy
+Quantify
 ~~~~~~~~~~
 .. autoclass:: Qfy
 
@@ -22,8 +29,8 @@ adrc.py
 --------------
 .. automodule:: adrc
 
-Adrc
-~~~~~~~~
+Adapt/Reconstruct
+~~~~~~~~~~~~~~~~~~
 .. autoclass:: Adrc
 
 adapt
@@ -47,16 +54,27 @@ loanfinder.py
 .. automodule:: loanfinder
 
 Search
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: Search
 
 loans
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: Search.loans
 
 
 For internal calls
 ==========================
+
+This section covers classes, methods, and functions, which are mostly \
+called internally and are not intended to be called by the user. \
+Some functions, like loanpy.helpers.make_cvfb, do have to be called \
+by a user, but only under \
+special and rare circumstances, some others, like \
+loanpy.helpers.Etym.make_scdictbase only \
+once per investigated target language. \
+And yet some others, like loanpy.helpers.editops, \
+loanpy.helpers.Etym.has_harmony, or loanpy.helpers.Etym.repair_harmony \
+might turn out as a useful tool in a completely different context.
 
 helpers.py
 ------------
@@ -130,7 +148,7 @@ cache
 ~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.cache
 
-loop_thru_data
+loop through data
 ~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.loop_thru_data
 
@@ -146,19 +164,19 @@ evaluate reconstruct
 ~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.eval_recon
 
-get non-crossvalidated sound correspondences
+get non-cross-validated sound correspondences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.get_noncrossval_sc
 
-get crossvalidated data
+get cross-validated data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.get_crossval_data
 
-postprocess
+post-process
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.postprocess
 
-postprocess2
+post-process 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.postprocess2
 
@@ -178,11 +196,11 @@ make statistics
 ~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.make_stat
 
-get true positive rate false positive rate, optimum
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+get true positive rate, false positive rate, optimum
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.get_tpr_fpr_opt
 
-plot roc-curve
+plot ROC-curve
 ~~~~~~~~~~~~~~~~~~
 .. autofunction:: loanpy.sanity.plot_roc
 
@@ -198,29 +216,29 @@ loanfinder.py
 -------------------
 
 read data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 .. autofunction:: loanpy.loanfinder.read_data
 
 generator
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~
 .. autofunction:: loanpy.loanfinder.gen
 
-phonmatch
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+phonological matching
+~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: loanpy.loanfinder.Search.phonmatch
 
-postprocess
+post-process
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: loanpy.loanfinder.Search.postprocess
 
-likeliestphonmatch
+likeliest phonological match
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: loanpy.loanfinder.Search.likeliestphonmatch
 
-phonmatch_small
+phonological match small
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: loanpy.loanfinder.Search.phonmatch_small
 
-merge_with_rest
+merge with rest
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automethod:: loanpy.loanfinder.Search.merge_with_rest
