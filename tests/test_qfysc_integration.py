@@ -1,3 +1,5 @@
+"""integration test for loanpy.qfysc.py (2.0 BETA) for pytest 7.1.1"""
+
 from ast import literal_eval
 from inspect import ismethod
 from os import remove

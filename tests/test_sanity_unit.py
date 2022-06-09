@@ -1,3 +1,5 @@
+"""unit test for loanpy.sanity.py (2.0 BETA) for pytest 7.1.1"""
+
 from collections import OrderedDict
 from datetime import datetime
 from os import remove
@@ -113,7 +115,7 @@ def test_eval_all():
 
 
 def test_loop_thru_data():
-    """Is crossvalidation called and loop run?"""
+    """Is cross-validation called and loop run?"""
     # set up expected output
     df_exp = DataFrame({
         "guesses": [1], "best_guess": [2],

@@ -1,3 +1,5 @@
+"""unit test for loanpy.loanfinder.py (2.0 BETA) for pytest 7.1.1"""
+
 from inspect import ismethod
 from os import remove
 from pathlib import Path

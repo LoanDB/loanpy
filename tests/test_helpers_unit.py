@@ -1,4 +1,4 @@
-# Testing the module hp.py with pytest 7.1.1
+"""unit tests for loanpy.helpers.py (2.0 BETA) with pytest 7.1.1"""
 
 from unittest.mock import call, patch
 from pathlib import Path
@@ -74,7 +74,7 @@ def test_read_cvfb():
 
 
 def test_read_forms():
-    """Check if cldf's forms.csv is read in correctly"""
+    """Check if CLDF's forms.csv is read in correctly"""
 
     # set up
     dfin = DataFrame({"Segments": ["a b c", "d e f"],  # pull together later
@@ -101,7 +101,7 @@ def test_read_forms():
 
 
 def test_cldf2pd():
-    """test if the cldf format is correctly tranformed to a pandas dataframe"""
+    """test if the CLDF format is correctly tranformed to a pandas dataframe"""
 
     # set up
     dfin = DataFrame({"Segments": ["a", "b", "c", "d", "e", "f", "g"],
@@ -451,7 +451,8 @@ def test_word2phonotactics():
 
     # assert without mocking tokenise (input is tokenised already)
     # sounds missing from dict are ignored
-    assert Etym.word2phonotactics(self=mocketym, ipa_in=["a", "b", "c"]) == "VC"
+    assert Etym.word2phonotactics(self=mocketym,
+                                  ipa_in=["a", "b", "c"]) == "VC"
 
     # set up2
     with patch("loanpy.helpers.tokenise") as tokenise_mock:
@@ -485,14 +486,14 @@ def test_word2phonotactics_keepcv():
 
 
 def test_harmony():
-    """test if a words front-back vowelharmony is inferred correctly"""
+    """test if a words front-back vowel harmony is inferred correctly"""
 
     # set up1
     mocketym = EtymMonkey()
     mocketym.vow2fb = {"o": "B", "i": "F"}
 
     # assert without tokenisation
-    assert Etym.harmony(
+    assert Etym.has_harmony(
         self=mocketym,
         ipalist=['b', 'o', 't͡s', 'i', 'b', 'o', 't͡s', 'i']) is False
 
@@ -502,7 +503,7 @@ def test_harmony():
                                       'b', 'o', 't͡s', 'i']
 
         # assert with tokenisation
-        assert Etym.harmony(self=mocketym, ipalist="bot͡sibot͡si") is False
+        assert Etym.has_harmony(self=mocketym, ipalist="bot͡sibot͡si") is False
 
     # assert calls
     tokenise_mock.assert_called_with("bot͡sibot͡si")
@@ -510,13 +511,13 @@ def test_harmony():
     # set up 3: overwrite vow2fb
     mocketym.vow2fb = {"ɒ": "B"}
     # assert
-    assert Etym.harmony(self=mocketym, ipalist=['t', 'ɒ', 'r', 'k', 'ɒ'])
+    assert Etym.has_harmony(self=mocketym, ipalist=['t', 'ɒ', 'r', 'k', 'ɒ'])
     # set up 4: add mock tokeniser
     with patch("loanpy.helpers.tokenise") as tokenise_mock:
         tokenise_mock.return_value = ['t', 'ɒ', 'r', 'k', 'ɒ']
 
         # assert
-        assert Etym.harmony(self=mocketym, ipalist="tɒrkɒ") is True
+        assert Etym.has_harmony(self=mocketym, ipalist="tɒrkɒ") is True
 
     # assert call
     tokenise_mock.assert_called_with("tɒrkɒ")
@@ -524,7 +525,7 @@ def test_harmony():
     # set up 5: overwrite vow2fb
     mocketym.vow2fb = {"ɛ": "F", "y": "F"}
     # assert
-    assert Etym.harmony(
+    assert Etym.has_harmony(
         self=mocketym,
         ipalist=['ʃ', 'ɛ', 'f', 'y', 'l', 'ɛ', 'ʃ', 'ɛ'])
 
@@ -533,7 +534,7 @@ def test_harmony():
         tokenise_mock.return_value = ['ʃ', 'ɛ', 'f', 'y', 'l', 'ɛ', 'ʃ', 'ɛ']
 
         # assert
-        assert Etym.harmony(self=mocketym, ipalist="ʃɛfylɛʃɛ") is True
+        assert Etym.has_harmony(self=mocketym, ipalist="ʃɛfylɛʃɛ") is True
 
     # assert call
     tokenise_mock.assert_called_with("ʃɛfylɛʃɛ")
@@ -547,7 +548,7 @@ def test_repair_harmony():
 
     # set up1: custom class, create an instance of it, mock tokeniser
     class EtymMonkeyHarmonyTrue:
-        def harmony(self, ipalist):
+        def has_harmony(self, ipalist):
             self.called_with = ipalist
             return True
     mocketym = EtymMonkeyHarmonyTrue()
@@ -562,14 +563,14 @@ def test_repair_harmony():
     assert mocketym.called_with == ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']
     tokenise_mock.assert_called_with('kɛsthɛj')
 
-    # set up2: new custom class where harmony returns False,
+    # set up2: new custom class where has_harmony returns False,
     # overwrite mocketym with it, add vow2fb-dict to it, mock tokeniser
     class EtymMonkeyHarmonyFalse:
         def __init__(self, *get_fb_returns):
             self.get_fb_returns = iter([*get_fb_returns])
             self.get_fb_called_with = []
 
-        def harmony(self, ipalist):
+        def has_harmony(self, ipalist):
             self.harmony_called_with = ipalist
             return False
 
@@ -619,8 +620,8 @@ def test_repair_harmony():
 
     # assert words without vowelharmony with equally many front and back vowels
     # are repaired in both possible ways
-    assert Etym.repair_harmony(self=mocketym, ipalist=list('bɒlɒtonkɛnɛʃɛ')
-                              ) == [bkb, bkf]
+    assert Etym.repair_harmony(
+        self=mocketym, ipalist=list('bɒlɒtonkɛnɛʃɛ')) == [bkb, bkf]
 
     # assert calls
     assert mocketym.harmony_called_with == bk

@@ -1,3 +1,5 @@
+"""unit tests for loanpy.adrc.py 2.0 BETA with pytest 7.1.1"""
+
 from collections import OrderedDict
 from os import remove
 from pathlib import Path
@@ -375,7 +377,7 @@ def test_reconstruct():
             self.word2phonotactics_called_with.append([*args])
             return next(self.word2phonotactics_returns)
 
-        def harmony(self, *args):
+        def has_harmony(self, *args):
             self.harmony_called_with.append([*args])
             return next(self.harmony_returns)
 
@@ -556,7 +558,7 @@ def test_reconstruct():
             vowelharmony_filter=True,
             clusterised=False) == "^kihe$|^hihe$"
 
-    # assert 3 calls: tokenise, read_sc, harmony
+    # assert 3 calls: tokenise, read_sc, has_harmony
     tokenise_mock.assert_called_with("kiki")
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 3)]
@@ -587,7 +589,7 @@ def test_reconstruct():
             vowelharmony_filter=True,
             clusterised=False) == "wrong vowel harmony"
 
-    # assert 3 calls: tokenise, read_sc, harmony
+    # assert 3 calls: tokenise, read_sc, has_harmony
     tokenise_mock.assert_called_with("kiki")
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 3)]

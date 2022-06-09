@@ -33,7 +33,7 @@ loanpy.qfysc.Qfy.get_sound_corresp from a file.
     :type scdictlist: pathlib.PosixPath | str | None
 
     :returns: Only the first 4 of the 6 dicts because the last two are \
-not used in any computations at the moment. Returns 4 times None if \
+not necessary for any computations. Returns 4 times None if \
 input is None.
     :rtype: [None, None, None, None] | [dict, dict, dict, dict]
 
@@ -68,15 +68,15 @@ A list of stacks where param <whichsound> indicates \
 which stack to pick. Append its second element to out and pop its first.
 
     :param sclistlist: A word where every phoneme has been replaced with a \
-list of ALL possible sound correspondences ranked by likelihood, \
+list of **all** possible sound correspondences ranked by likelihood, \
 i.e. how often \
-each sound correspondence occured in the data. \
+each sound correspondence occurred in the data. \
 (Heuristic correspondences have frequency 0.)
     :type sclistlist: list of lists
 
     :param whichsound: The index of the phoneme to move from sclistlist to \
 the output
-    :type whichsound: index
+    :type whichsound: int
 
     :param out: The future output of loanpy.adrc.Adrc.adapt/reconstruct
     :type out: list of lists
@@ -122,11 +122,11 @@ in total.
     :param scdictlist: Path to data generated with \
 loanpy.qfysc.Qfy.get_sound_corresp. (\
 Dicts 0, 1, 2 capture phonological \
-correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual \
+correspondences, dicts 3, 4, 5 phonotactic ones. dict0/dict3: the actual \
 correspondences, dict1/dict4: How often each correspondence \
 occurs in the data, \
 dict2/dict5: list of cognate sets in which each correspondence occurs.
-    :type scdictlist: pathlib.PosixPath | str | None
+    :type scdictlist: pathlib.PosixPath | str | None, default=None
 
     :Exmaple:
 
@@ -190,20 +190,23 @@ from loanpy.qfysc.Qfy
         self.workflow = OrderedDict()  # will be filled by self.adapt()
 
     def get_diff(self, sclistlist, ipa):
-        """
-        Called by loanpy.adrc.Adrc.read_sc. \
-Tells how much it would cost to move each sound correspondence \
-by looking up the number of occurences of the current and the next phoneme \
-in the sum-of-example dictionary and subtracting the latter from the former. \
+        """Called by loanpy.adrc.Adrc.read_sc. \
+Tells how much it would cost to move each \
+sound correspondence \
+by looking up the number of occurences of the current \
+and the next phoneme \
+in the sum-of-example dictionary and subtracting the \
+latter from the former. \
 (They were sorted by decreasing frequency by \
 loanpy.qfysc.Qfy.get_sound_corresp) \
 The bigger the difference the greater the cost to move it. \
 Since the higher the sum \
-of examples for each phoneme in a word, the more credible its etymology.
+of examples for each phoneme in a word, the more \
+credible its etymology.
 
     :param sclistlist: A word where every phoneme has been replaced with a \
 list of possible sound correspondences ranked by likelihood, i.e. how often \
-each sound correspondence occured in the data.
+each sound correspondence occurred in the data.
     :type sclistlist: list of lists
 
     :param ipa: The tokenised/clusterised input string
@@ -262,7 +265,7 @@ that it can correspond \
 to, meeting following conditions: a. The product of the length of each list \
 is just minimally above the number indicated in \
 param <howmany> (leftover will \
-be sliced away later). b. Those phonemes are chosen that diminsh the sum of \
+be sliced away later). b. Those phonemes are chosen that diminish the sum of \
 examples of the predicted word the least. (Sum of example means \
 adding together how many times \
 each phoneme of the predicted reconstruction corresponded \
@@ -271,11 +274,12 @@ to the aligned phoneme of the source word in the etymological data.)
         :param ipa: a tokenised/clusterised word
         :type ipa: list
 
-        :param howmany: Howmany words would this be, if combinatorics were \
+        :param howmany: How many words would this be, if combinatorics were \
 applied. This is the false positive rate if the prediction is wrong but \
-the false positive rate -1 if the prediction is right. (Say I make \
-1 guess and its correct, then there are 0 false positives, i.e. howmany-1. \
-If I make one guess and it's wrong then I'll have 1 false positive.)
+the false positive rate -1 if the prediction is right. (Say \
+1 guess is made and it is correct, then there are 0 false positives, \
+i.e. howmany-1. \
+If 1 guess is made and it's wrong then there will be 1 false positive.)
         :type howmany: int, default=1
 
         :returns: The information to which sounds each input \
@@ -302,14 +306,14 @@ sound can correspond.
 ["a", "e", "i", "o", "u"], ["d", "tʰ", "t", "tː"], ["y", "u", "e"]]
         """
 
-        # grab all sound correspondences from dictionary
+        # pick all sound correspondences from dictionary
         sclistlist = [self.scdict[i] for i in ipa]
         # if howmany is bigger/equal than their product, return all of them.
         if howmany >= prod([len(scl) for scl in sclistlist]):
             return sclistlist
         # else add a stop sign to the end of each sound corresp list
         sclistlist = [sclist+["$"] for sclist in sclistlist]
-        # grab only 1st (=most likely/frequent) sound corresp for each phoneme
+        # pick only 1st (=most likely/frequent) sound corresp for each phoneme
         out = [[i[0]] for i in sclistlist]
         # decide which sound corresp to accept next. Stop if product reached
         while howmany > prod([len(scl) for scl in out]):
@@ -326,7 +330,7 @@ sound can correspond.
             idxpool = cycle(indices)  # ... and cycle through them...
             while (difflist2 == difflist and  # ... until diffs change, or:
                    howmany > prod([len(scl) for scl in out])):  # ">" (!)
-                # grab next sound correspondence
+                # pick next sound correspondence
                 sclistlist, out = move_sc(sclistlist, next(idxpool), out)
                 # check the differences all phonemes would make
                 difflist2 = self.get_diff(sclistlist, ipa)
@@ -347,7 +351,8 @@ sound can correspond.
 theoretically also work for forward reconstructions, but not tested yet. \
 Word initial and word final sounds/clusters are \
 tagged with a "#". In addition to \
-this, every word gets a "#-" and a "-#" slapped to its front and back, \
+this, every word gets a "#-" and a "-#" added to the front \
+and back of its list of tokens, \
 to capture \
 prefixes and suffixes that may have appeared or disappeared. \
 If parameters <phonotactics_filter>, <vowelharmony_filter> and <sort_by_nse> \
@@ -359,19 +364,19 @@ outputted regular expression will be of the type "(^ace$|^ade$|^bce$|^bde$)".
 
         :param ipastr: The non-tokenised input word. \
 Should consist only of \
-valid ipa-characters, as defined in ipa_all.csv's column "ipa", even though \
+valid IPA-characters, as defined in ipa_all.csv's column "ipa", even though \
 the tokeniser handles invalid characters quite well. Make sure this is not \
 an empty string.
         :type ipastr: str
 
-        :param howmany: Indicate howmany guesses should be made. If all \
+        :param howmany: Indicate how many guesses should be made. If all \
 predictions are wrong, this is the same as the false positive rate. \
 If the right prediction is among the guesses, it is the false positive \
 rate plus one.
         :type howmany: int, default=1
 
         :param clusterised: If set to True, this will slice up the input \
-word into consonant and vowel clusters and look for them as keys in the sound \
+word into consonant and vowel clusters to look for them as keys in the sound \
 change dictionary.
         :type clusterised: bool, default=True
 
@@ -382,9 +387,9 @@ phonotactic inventory of target language.
         :type phonotactics_filter: bool, default=False
 
         :param vowelharmony_filter: Indicate whether words violating the \
-constraint front-back vowelharmony (a word can contain only \
+constraint front-back vowel harmony (a word can contain only \
 front or only \
-back vowels) should be filtered.
+back vowels) should be filtered out.
         :type vowelharmony_filter: bool, default=False
 
         :param sort_by_nse: Indicate whether results \
@@ -402,8 +407,16 @@ output tuples cycle in a manner similar to an odometer \
 for loanpy.sanity.eval_one to be able \
 to pass on a consistent list of args to both adapt and reconstruct.
 
-        :returns: A regular expression approximating \
-the indicated number of predicted reconstructions
+        :returns: A regular expression **approximating** \
+the indicated number of predicted reconstructions, if \
+params <phonotactics_filter>, <vowelharmony_filter> and <sort_by_nse> \
+were all set to False or zero and the output thus is a regular expression \
+of the type "^(a|b)(c|d)(e)$". A regular expression **exactly** \
+the indicated number of predicted reconstructions, if one \
+of those aforementioned 3 parameters is set to True or non-zero, \
+thus combinatorics is applied and the \
+outputted regular expression is of the type "(^ace$|^ade$|^bce$|^bde$)".
+
         :rtype: str
 
         :Example:
@@ -487,7 +500,7 @@ vowelharmony_filter=True)  \
 
         # apply 2nd filter if indicated (wrong vowelharmony_filter out)
         if vowelharmony_filter is True:
-            out = [i for i in out if self.harmony(i)]
+            out = [i for i in out if self.has_harmony(i)]
             if out == []:
                 return "wrong vowel harmony"
 
@@ -518,7 +531,7 @@ Repairs the phonotactic structure of a word.
 
         :param max_repaired_phonotactics: The maximum number of target \
 phonotactic structures \
-into which we want to turn the source structure.
+into which to turn the source structure.
         :type max_repaired_phonotactics: int, default=2
 
         :param max_paths2repaired_phonotactics: The maximum number of \
@@ -527,17 +540,18 @@ turn the source structure into the target structure
         :type max_paths2repaired_phonotactics: int, default=1
 
         :param deletion_cost: The cost of deleting a segment
-        :type deletion_cost: int, float, default=100
+        :type deletion_cost: int | float, default=100
 
         :param insertion_cost: The cost of inserting a segment
-        :type insertion_cost: int, float, default=49
+        :type insertion_cost: int | float, default=49
 
         :param show_workflow: Indicate whether 2 steps from this process \
-should be added to self.workflow (useful for debugging): the calculated \
+should be added to the dictionary assigned to loanpy.adrc.Adrc.workflow \
+(useful for debugging): the calculated \
 phonotactic profile of the input-string and the predicted repaired structures.
         :type show_workflow: bool, default=False
 
-        :returns: a list of phonotactically repaired words
+        :returns: a list of phonotacticly repaired words
         :rtype: list of str
 
         :Example:
@@ -599,7 +613,7 @@ show_workflow=True)
         if show_workflow:
             self.workflow[
                 "predicted_phonotactics"] = str(predicted_phonotactics)
-        # get edit operations between strucs and apply them to input ipa-string
+        # get edit operations between strucs and apply them to input IPA-string
         return flatten([[apply_edit(ipastr, edop) for edop in
                          editops(
                                  donorstruc,
@@ -622,17 +636,17 @@ show_workflow=True)
               insertion_cost=49,
               show_workflow=False):
         """
-        Takes a word as input and makes predictions based on available data \
-and heuristics how it will be repaired when entering target \
-language as a loan.
+        Takes a word as input and uses available data \
+together with heuristics to make predictions about its transformation \
+when entering a target language as a loan.
 
         :param ipastr: The non-tokenised input word. Should consist only of \
-valid ipa-characters, as defined in ipa_all.csv's column "ipa", even though \
+valid IPA-characters, as defined in ipa_all.csv's column "ipa", even though \
 the tokeniser handles invalid characters quite well. Make sure this is not \
 an empty string.
         :type ipastr: str
 
-        :param howmany: Indicate howmany guesses should be made. If all \
+        :param howmany: Indicate how many guesses should be made. If all \
 predictions are wrong, this is the same as the false positive rate. \
 If the right prediction is among the guesses, it is the false positive \
 rate plus one.
@@ -649,27 +663,27 @@ from the final result if their phonotactic profile does not occur in the \
 phonotactic inventory of target language.
         :type phonotactics_filter: bool, default=False
 
-        :param repair_vowelharmony: Indicate whether violations of front-back \
-vowelharmony should be repaired.
+        :param repair_vowelharmony: Indicate whether violations of \
+constraint "front-back vowel harmony" should be repaired.
         :type repair_vowelharmony: bool, default=False
 
         :param sort_by_nse: Indicate whether results should \
 be sorted by their \
 likelihood. Can be costly to calculate. If bool is passed, all or no \
-        words will be sorted. If int is passed, only that many words will be sorted \
-        in the beginning of the list, the rest remains unsorted.
+words will be sorted. If int is passed, only that many words will be sorted \
+in the beginning of the list, the rest remains unsorted.
         :type sort_by_nse: bool, int, default=False
 
-        :param max_repaired_phonotactics: Indicate howmany of \
+        :param max_repaired_phonotactics: Indicate how many of \
 the most similar \
 available profiles \
 from the phonotactic inventory should be taken into consideration.
-        :type max_repaired_phonotactics: int, default=1
+        :type max_repaired_phonotactics: int, default=0
 
-        :param max_paths2repaired_phonotactics: Indicate in maximum howmany \
+        :param max_paths2repaired_phonotactics: Indicate in maximum how many \
 different ways \
 each phonotactic profile should be repaired towards the same target. E.g. if \
-source is "CCV" and target "CV", the first or the second "C" can both be \
+source is "CCV" and target "CV", the first or the second "C" can be \
 deleted.
         :type max_paths2repaired_phonotactics: int, default=1
 
@@ -679,9 +693,10 @@ deleted.
         :param insertion_cost: The cost of inserting a phoneme
         :type insertion_cost: int | float, default=49
 
-        :param show_workflow: Indicate if the workflow should be attached \
-to the output. Useful for debugging and makes it less black-boxy. \
-The single steps are added as keys to the Adrc-attribute <workflow>. The \
+        :param show_workflow: Indicate if the workflow should be \
+documented. Useful for debugging and makes it less black-boxy. \
+The single steps are added as keys to the dictionary assigned to \
+loanpy.adrc.Adrc.workflow. The \
 number of keys varies between 2-5, depending on the arguments \
 passed on to this function. \
 Keys "tokenised" and "adapted_phonotactics" are always there. \
@@ -692,7 +707,7 @@ set to greater than 0. Key "adapted_vowelharmony" is only added if \
 param <repair_vowelharmony> was set to True.
         :type show_workflow: bool, default=False
 
-        :returns: Approximately as many predictions as indicated in param \
+        :returns: As many predictions as indicated in param \
  <howmany>, separated by ", "
         :rtype: str
 
@@ -731,7 +746,7 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         "dad, tʰad, dajdæ, tʰajdæ, dujdy, tʰujdy"
         >>> # phonotactic inventory for phonotactics_filter is calculated \
 from forms.csv!
-        >>> # contains only structures of the 3 words occuring in \
+        >>> # contains only structures of the 3 words occurring in \
 the target lg EAH
         >>> adrc_obj.phonotactic_inventory  # this will filter out all results
         {'VCVC', 'VCVCV', 'VCCVC'}
@@ -770,7 +785,8 @@ phonotactics_filter=True, \
 repair_vowelharmony=True, ipastr="dade", max_repaired_phonotactics=2, \
 max_paths2repaired_phonotactics=2)
         't͡ʃalda'
-        >>> adrc_obj.cluster_inventory.add("d")  # let's assume d was an allowed cluster
+        >>> adrc_obj.cluster_inventory.add("d")  \
+# let's assume d was an allowed cluster
         >>> adrc_obj.adapt(howmany=1000, cluster_filter=True, \
 phonotactics_filter=True, repair_vowelharmony=True, ipastr="dade", \
 max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
@@ -863,17 +879,12 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         """
         Called by loanpy.adrc.Adrc.adapt, loanpy.adrc.Adrc.reconstruct, \
 loanpy.loanfinder.Search, loanpy.loanfinder.likeliestphonmatch. \
-Returns 0 if one of the sound correspondences is not documented \
-in the sound correspondence dictionary. \
-By default we are calculating the nse: Check in the sound correspondence \
-dictionary how often each sound correspondence occured, add them together, \
-divide by number of phonemes in the word. If show_workflow is set to True, \
-a tuple will be returned with (normalised sum of examples, sum of examples, \
-list of number of examples for each phoneme). If se=False, instead of \
-the number of examples, the list of cognate sets in which each sound \
-correspondence \
-occurs will be accessed. The return value then is a list of lists. \
-show_workflow does not do anything if se=False.
+Aligns two words (alignment type depends \
+on the mode defined when initiating \
+loanpy.adrc.Adrc), check in the sound correspondence \
+dictionary how often each aligned sound correspondence \
+occurred (0 if not in dict), sum up their number, and \
+divide it by the number of phoneme (clusters) in the word.
 
         :param left: The string on the left side of the etymology to align.
         :type left: str
@@ -881,7 +892,17 @@ show_workflow does not do anything if se=False.
         :param right: The string on the right side of the etymology to align.
         :type right: str
 
-        :returns: int | list of int | tuple | list of list
+        :returns: A tuple of four elements: First is the sum of examples \
+        divided by the number of phoneme \
+        (clusters) in the word, second is the sum \
+        of examples, i.e. how many other words in the etymological data go \
+        through the same sound substitution/ sound change as this word. \
+        Third is the distribution of sound correspondences, i.e. how many \
+        examples in other words are found for each phoneme in the data. \
+        Fourth is how the source and target word were aligned. Elements \
+        three and four need to be strings, since if they were lists, it would \
+        be difficult to build a data frame from them in sanity.py.
+        :rtype: (float, int, str, str)
 
         :Example:
 
