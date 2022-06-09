@@ -108,8 +108,7 @@ the second defining front and back vowels (fb).
     (two dictionaries of length 6358 and 1240)
 
     """
-    # todo: document the changes from this ipa_all.csv
-    # to the original in panphon.
+    
     path = Path(__file__).parent / "cvfb.txt"
     with open(path, "r", encoding="utf-8") as f:
         cvfb = literal_eval(f.read())
