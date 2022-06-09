@@ -1,3 +1,5 @@
+"""integration tests for loanpy.helpers.py (2.0 BETA) for pytest 7.1.1"""
+
 from ast import literal_eval
 from inspect import ismethod
 from os import remove
@@ -61,7 +63,7 @@ def test_read_cvfb():
 
 
 def test_read_forms():
-    """test if cldf's forms.csv is read in correctly"""
+    """test if CLDF's forms.csv is read in correctly"""
     # test first break
     assert read_forms(None) is None
 
@@ -78,7 +80,7 @@ def test_read_forms():
 
 
 def test_cldf2pd():
-    """test if the cldf format is correctly tranformed to a pandas dataframe"""
+    """test if the CLDF format is correctly tranformed to a pandas dataframe"""
 
     # set up
     dfin = read_csv(PATH2FORMS)
@@ -251,7 +253,7 @@ def test_read_phonotactic_inv():
     """test if phonotactic inventory is read in correctly"""
     # set up rest
     etym = Etym()
-    # from forms.csv in cldf
+    # from forms.csv in CLDF
     etym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
     # assert with different parameter combinations
     assert etym.read_phonotactic_inv(phonotactic_inventory=["a", "b", "c"],
@@ -288,11 +290,12 @@ def test_word2phonotactics_keepcv():
     """Not used in loanpy. Test if C and V is kept
     during phonotactic profiling"""
     etym = Etym()
-    assert etym.word2phonotactics(['C', 'V', 'C', 'V', 'k', 'ø', 'z']) == "CVCVCVC"
-    assert etym.word2phonotactics(['h', 'o', 'r', 'C', 'V', 'C', 'V', 'ɟ'
-                            ]) == "CVCCVCVC"
-    assert etym.word2phonotactics(['l', 'V', 'k', 's', 'ɒ', 'k', 'V', 'C', 'V', 'ʃ'
-                            ]) == "CVCCVCVCVC"
+    assert etym.word2phonotactics(
+        ['C', 'V', 'C', 'V', 'k', 'ø', 'z']) == "CVCVCVC"
+    assert etym.word2phonotactics(
+        ['h', 'o', 'r', 'C', 'V', 'C', 'V', 'ɟ']) == "CVCCVCVC"
+    assert etym.word2phonotactics(
+        ['l', 'V', 'k', 's', 'ɒ', 'k', 'V', 'C', 'V', 'ʃ']) == "CVCCVCVCVC"
     assert etym.word2phonotactics(['C', 'o', '!', 'ɟ', 'V']) == "CVCV"
     assert etym.word2phonotactics(["C", "V", "lː", "eː", "r"]) == "CVCVC"
     del etym
@@ -302,10 +305,11 @@ def test_harmony():
     """Test if it is detected correctly whether a word does or does not
     have front-back vowel harmony"""
     etym = Etym()
-    assert etym.harmony(['b', 'o', 't͡s', 'i', 'b', 'o', 't͡s', 'i']) is False
-    assert etym.harmony("bot͡sibot͡si") is False
-    assert etym.harmony("tɒrkɒ") is True
-    assert etym.harmony("ʃɛfylɛʃɛ") is True
+    assert etym.has_harmony(
+        ['b', 'o', 't͡s', 'i', 'b', 'o', 't͡s', 'i']) is False
+    assert etym.has_harmony("bot͡sibot͡si") is False
+    assert etym.has_harmony("tɒrkɒ") is True
+    assert etym.has_harmony("ʃɛfylɛʃɛ") is True
     del etym
 
 

@@ -1,3 +1,5 @@
+"""integration test for loanpy.sanity.py (2.0 BETA) for pytest 7.1.1"""
+
 from ast import literal_eval
 from datetime import datetime
 from os import remove
@@ -632,7 +634,7 @@ def test_get_crossval_data():
 
 
 def test_loop_thru_data():
-    """Is crossvalidation called and loop run?"""
+    """Is cross-validation called and loop run?"""
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH")
     # assert output is correct
@@ -782,7 +784,7 @@ def test_gettprfpr():
 def test_plot_roc():
     """Is result plotted correctly to .jpg? Check result manually at
     output_files / "mockplot.jpg!"""
-    
+
     path2mockplot = Path(__file__).parent / "output_files" / "mockplot.jpg"
 
     plot_roc(guesslist=[1, 2, 3],

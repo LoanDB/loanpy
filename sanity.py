@@ -1,7 +1,4 @@
-"""
-Check how sane the model is by evaluating predictions.
-
-"""
+"""Check how sane the model is by evaluating predictions."""
 
 from collections import OrderedDict
 from datetime import datetime
@@ -46,13 +43,20 @@ already run once. Classical cache thing.
 def cache(method):
     """
     Simple decorator function to check if function was already run with \
-given arguments. And to store the results in a csv-file. For more details \
-see loanpy.sanity.check_cache and loanpy.sanity.write_to_cache.
+given arguments and to store the results in a CSV-file. For more details \
+see loanpy.sanity.check_cache and loanpy.sanity.write_to_cache. Intended \
+to decorate loanpy.sanity.eval_all.
 
-    :param method: The function or method to decorate.
+    :param method: The function or method to decorate. \
+    Designed for loanpy.sanity.eval_all.
     :type method: func
 
-    :returns: Always returns None.
+    :raises ArgumentsAlreadyTested: for more details see \
+    loanpy.sanity.check_cache
+
+    :returns: Raises an exception or writes a file, but return value \
+    itself is always None. Uncomment "# return result" to change this \
+    behaviour and return the return value of the decorated function instead.
     :rtype: None
 
     :Example:
@@ -70,10 +74,11 @@ when bulk-copying this entire paragraph
     >>>     pass
     >>> def mockfunc(*args, **kwargs):
     >>>     return "bla", (1, 2, 3), 4, 5
-    >>> mockfunc = cache(mockfunc)
+    >>> mockfunc = cache(mockfunc)  # decorate
     >>> mockfunc(path2cache=mockpath2cache, a="hi", b="bye")
     [Inspect results in mock_cache.csv in folder tests/output_files/\
 "mock_cache.csv"]
+
 
     """
     @wraps(method)
@@ -83,6 +88,7 @@ when bulk-copying this entire paragraph
         check_cache(path2cache, init_args)
         result = method(*args, **kwargs)
         write_to_cache(path2cache, init_args, result[1], result[2], result[3])
+        # return result
     return wrapped
 
 
@@ -91,7 +97,7 @@ def eval_all(
                 forms_csv,  # etymological data to evaluate (cldf's forms.csv)
                 target_language,  # computational target language in forms.csv
                 source_language,  # computational source language in forms.csv
-                mode="adapt",  # should we adapt or reconstruct?
+                mode="adapt",  # adapt or reconstruct?
                 most_frequent_phonotactics=9999999,  # howmany most freq
                 phonotactic_inventory=None,  # chance to hard-code inventory
                 connector=None,  # by default "<" for adapt &  "<*" 4 reconstr.
@@ -110,21 +116,21 @@ def eval_all(
                 insertion_cost=49,  # cost for inserting a phoneme (TCRS)
                 show_workflow=False,  # should workflow be displayed (adapt)
                 # These 4 are for internal use
-                path2cache=False,  # path to cache (optimal parameters)
+                path2cache=None,  # path to cache (optimal parameters)
                 crossval=True,  # bool: Isolate word from training data?
                 writesc=False,  # write sound corresp files? (for debugging)
                 write_to=None  # "pathname.csv" to write and plot results
                 ):
     """
 
-    Trains crossvalidated models, evaluates and visualises predictions. \
-    23 args in total, only 3 positional. Best to run this from a loop \
+    Trains cross-validated models, evaluates and visualises predictions. \
+    23 arguments in total, only 3 positional. Best to run this from a loop \
     with different parameter settings and decorated with @loanpy.sanity.cache
 
     The first 9 args are passed on to \
     loanpy.adrc.Adrc.__init__, out of which the first 3 are positional:
 
-    :param forms_csv: The path to cldf's forms.csv of the etymological \
+    :param forms_csv: The path to CLDF's forms.csv of the etymological \
     dictionary. Will be used to initiate loanpy.adrc.Adrc. For more details \
     see \
     loanpy.helpers.read_forms.
@@ -134,13 +140,13 @@ def eval_all(
     Will be used to \
     initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.Etym.
     :type target_language: str (options are listed in column "ID" in \
-    cldf / etc / languages.tsv), default=None
+    cldf / etc / languages.tsv)
 
     :param source_language: The computational source language. \
     Will be used to \
     initiate loanpy.adrc.Adrc. For more details see loanpy.helpers.Etym.
     :type source_language: str (options are listed in column "ID" in \
-    cldf / etc / languages.tsv), default=None
+    cldf / etc / languages.tsv)
 
     :param mode: Indicate whether predictions should be made with \
     loanpy.adrc.Adrc.reconstruct or loanpy.adrc.Adrc.adapt (also \
@@ -158,42 +164,50 @@ def eval_all(
 
     :param phonotactic_inventory: Chance to plug in phonotactic \
     inventory manually. If None, \
-    will be extracted automatically from data. For more details \
+    will be extracted automatically from target language. For more details \
     see loanpy.helpers.Etym.read_phonotactic_inv.
     :type phonotactic_inventory: list, default=None
 
     :param connector: The string that connects the left side of an etymology \
-    with the right side for adapting vs reconstructing. For more details see \
+    with the right side for adapting vs. reconstructing. For more details see \
     loanpy.qfysc.read_connector
-    :type connector: iterable of len 2
+    :type connector: iterable of len 2 | None, default=None
 
     :param scdictbase: Indicate whether sound correspondences based \
     on data should be combined with the (rather large) dictionary of \
     heuristic correspondences. For pitfalls see param <writesc>. Don't \
     pass a boolean. None means no, pathlib.PosixPath, dict, or str means yes.
-    :type scdictbase: None | pathlib.PosixPath | dict
+    :type scdictbase: None | pathlib.PosixPath | dict, default=None
 
     :param vfb: Indicate whether there should be placeholder vowels. \
     For more details see loanpy.qfysc.Qfy.
+    :type vfb: iterable of len 3 | None, default=None
 
     The next 5 args are passed on to loanpy.adrc.Adrc.adapt if \
     mode="adapt" but to loanpy.adrc.Adrc.reconstruct if mode="reconstruct":
 
     :param guesslist: The list of number of guesses to be made. Will be \
     passed into loanpy.adrc.Adrc.adapt's or loanpy.adrc.Adrc.reconstruct's \
-    parameter <howmany> in a loop. Loop breaks as soons as \
-    prediction was correct.
-    :type guesslist: list of int
+    parameter <howmany> in a loop. Loop breaks as soon as \
+    prediction was correct. \
+    If results are plotted, this will serve as the x-axis, representing \
+    the false positive rate. Each element of the list will be displayed \
+    as a percentage of the last, i.e. highest element. For the default \
+    setting this means [1%, 5%, 10%, 50%, 100%]. These values will also \
+    be used to calculate the optimum of the ROC-curve.
+    :type guesslist: list of int, default=[10, 50, 100, 500, 1000]
 
     :param clusters: Will be passed to loanpy.adrc.Adrc.adapt's parameter \
     <cluster_filter> or loanpy.adrc.Adrc.reconstruct's parameter \
     <clusterised>. \
     Indicate whether predictions that contain consonant or \
     vowel clusters that are not documented in the target language should be \
-    filtered out if passed on to adapt() or if the tokeniser should \
+    filtered out if passed on to loanpy.adrc.Adrc.adapt or \
+    if the tokeniser should \
     clusterise the input-word and look in the sound correspondence dictionary \
-    for clusters as keys to predictions if passed on to reconstruct().
-    :type clusters: bool, def=False
+    for clusters as keys to predictions if passed on to \
+    loanpy.adrc.Adrc.reconstruct.
+    :type clusters: bool, default=False
 
     :param phonotactics_filter: Indicate if predictions made by \
     loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct \
@@ -206,18 +220,19 @@ def eval_all(
     :param vowelharmony: Will be passed to loanpy.adrc.Adrc.adapt's \
     parameter <repair_vowelharmony> or \
     loanpy.adrc.Adrc.reconstruct's parameter <vowelharmony_filter>. \
-    Indicate whether vowelharmony should be repaired \
-    if passed on to adapt() or if results violating the constraint \
+    Indicate whether vowel harmony should be repaired \
+    if passed on to loanpy.adrc.Adrc.adapt or if results \
+    violating the constraint \
     "front-back \
-    vowelharmony" should be filtered out if passed on to reconstruct().
+    vowelharmony" should be filtered out if passed \
+    on to loanpy.adrc.Adrc.reconstruct.
     :type vowelharmony: bool, default=False
 
-    :param sort_by_nse: Indicate if or howmany predictions \
+    :param sort_by_nse: Indicate if or how many predictions \
     should be sorted by likelihood. True and False will sort all or none, \
-    just like float("inf") and 0. Passing an Integer will not sort the entire \
+    just like float("inf") and 0. Passing an integer will not sort the entire \
     output. Instead it will pick as many \
-    of the words with the highest NSE (likelihood) as indicated. \
-    This can save quite some unnecessary calculations.
+    of the words with the highest NSE (likelihood) as indicated.
     :type sort_by_nse: bool | int, default=False
 
     The next 5 args are passed on to loanpy.adrc.Adrc.adapt if \
@@ -225,14 +240,14 @@ def eval_all(
     mode="reconstruct" they will not be used.
 
     :param max_repaired_phonotactics: The maximum number of phonotactic \
-    strucutres into which \
-    the original string should be transformed. Will be passed into \
+    profiles into which \
+    the original string should be transformed. Will be passed on to \
     loanpy.adrc.Adrc.adapt's parameter <max_repaired_phonotactics>
     :type max_repaired_phonotactics: int, default=1
 
     :param max_paths2repaired_phonotactics: The maximum number of \
     cheapest paths through which a \
-    phonotactic structure can be repaired. Will be passed into \
+    phonotactic structure can be repaired. Will be passed on to \
     loanpy.adrc.Adrc.adapt's parameter <max_paths2repaired_phonotactics>
     :type max_paths2repaired_phonotactics: int, default=1
 
@@ -243,39 +258,43 @@ def eval_all(
     :type insertion_cost: int, float, default=49
 
     :param show_workflow: Indicate whether the workflow should be \
-    displayed in the output of loanpy.adrc.Adrc.adapt. Useful for debugging.
+    displayed in the output of loanpy.sanity.eval_adapt. Useful for debugging.
     :type show_workflow: bool, default=False
 
     The next 4 args are not passed on but will be used in this module.
 
-    :param path2cache: The path to the csv-file in which information \
+    :param path2cache: The path to the CSV-file in which information \
     about input-parameters and evaluated results is stored. If path points to \
     a non-existent file, the indicated file will be created. \
-    If set to None, it will be written to cldf's folder "etc" (concluded from \
+    If set to None, it will be written to CLDF's folder "etc" (concluded from \
     the path provided in parameter <forms_csv>) and will be called \
     f"opt_param_{target_language}_{source_language}". \
-    If set to False, this file will be ignored and no data written to it. \
-    Only passed to cache if its written around this function as a decorator.\
+    If loanpy.sanity.cache is written as a decorator around this function, \
+    it will receive this keyword argument, else it will be ignored. \
     For more information see loanpy.sanity.cache.
-    :type path2cache: pathlib.PosixPath | str, None, False, default=False
+    :type path2cache: pathlib.PosixPath | str | None, default=None
 
-    :param crossval: Indicate if results should be cross-validated. If true, \
-    the model with which we predict an adaptation or a reconstruction \
+    :param crossval: Indicate whether results should \
+    be cross-validated. If true, \
+    the model with which to predict an adaptation or a reconstruction \
     of a word will be trained without that word. That means that all 3 \
     inventories (phoneme, clusters, phonotactic) are also concluded \
-    from data that excludes that specific row.
-    :type crossval: bool
+    from data that excludes the specific row in the data frame, \
+    where the word in question occurs. \
+    Pitfall: If a word occurs multiple times in one data set, \
+    this might blu the cross-validation.
+    :type crossval: bool, default=True
 
     :param writesc: Indicate if loanpy.qfysc.Qfy.get_sound_corresp should \
     write its output to a file. If yes and if crossval is True, \
-    provide a path to a *folder* (!). If yes and crossval is False, \
+    provide a path to a **folder** (!). If yes and crossval is False, \
     provide a path to a file. \
     This is useful for debugging. \
     Careful: Since one file will be written in every \
     round of the cross-validation loop (as many iterations as there are \
     predictions to evaluate), the total storage room taken up by \
     the files can \
-    get large. E.g. if we want to evaluate 500 words and scdictbase is \
+    get large. E.g. if 500 words should be evaluated and scdictbase is \
     1.6MB, the entire folder will take up 500*1.6MB. There are two ways to \
     avoid this: If writesc=True, make sure to set either crossval=False, \
     this will \
@@ -284,10 +303,10 @@ def eval_all(
     the part that takes up the most storage. Predictions will be blurred \
     in both \
     cases but for debugging this is usually enough.
-    :type writesc: bool, def=False
+    :type writesc: bool, default=False
 
     :param write_to: Indicate whether results should be written to a \
-    csv-file and plotted to a jpg. If yes, provide the path to the file \
+    CSV-file and plotted to a jpg. If yes, provide the path to the file \
     including the ".csv"-extension. \
     None means that no file \
     will be written.
@@ -295,12 +314,9 @@ def eval_all(
 
     :returns: Adds two columns to the input data frame: "guesses", \
     which indicate \
-    howmany guesses were necessary to make the correct prediction (if inf, \
+    how many guesses were necessary to make the correct prediction (if inf, \
     all predictions were wrong) \
-and best guess, which shows the closest guess (if \
-    combinatorics were applied, this is \
-1 word, in case of (a)(b)(c) type regexes \
-    the entire regex is just kept.
+and best guess, which shows the closest guess.
     :rtype: pandas.core.frame.DataFrame
 
     :Example:
@@ -314,7 +330,7 @@ and best guess, which shows the closest guess (if \
     >>> eval_all(forms_csv=path2cog27, target_language="EAH", \
 source_language="WOT", \
 mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
-    [inspect result in folder output_files/"eval_27cogs.csv"]
+    [inspect result in folder tests/output_files/"eval_27cogs.csv"]
 
     """
     start = time()  # start timer
@@ -364,12 +380,12 @@ mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
 def loop_thru_data(*args):  # args range(14)
     """
     Called by loanpy.sanity.eval_all. Loops through the input \
-data frame. Crossvalidates \
-and writes down sound changes and inventories if indicated so. \
+data frame. cross-validates \
+and writes down sound correspondences and inventories if indicated so. \
 Calls loanpy.sanity.eval_one after \
-concluding inventories and sound changes. \
-If crossvalidation is chosen, the row for prediction is isolated \
-from the training data from which sound changes and inventories are \
+concluding inventories and sound correspondences. \
+If cross-validation is chosen, the row for prediction is isolated \
+from the training data from which sound correspondences and inventories are \
 calculated. Isolation of that row is \
 reversed at the end of the loop latest - i.e. the taken out elements \
 are all plugged in again so the loop can continue. Last two args (12, 13) \
@@ -384,11 +400,13 @@ loanpy.sanity.eval_adapt and loanpy.santiy.eval_recon.
 (14 not included)
     :type args: mixed, see details below
 
-    :param args[0]: This is instanciated in loanpy.sanity.eval_all with its \
+    :param args[0]: This instance is created in \
+loanpy.sanity.eval_all with its \
 first 9 args
     :type args[0]: loanpy.adrc.Adrc
 
-    :param args[1:14]: See param <clusters> - <show_workflow> \
+    :param args[1:14]: See documentation of params \
+from <clusters> until <show_workflow> \
 in loanpy.sanity.eval_all.
     :type args[1:14]: bool, int
 
@@ -446,17 +464,18 @@ False, False, False, False, False, \
 def eval_one(tgtwrd, *args):  # in: args 0-11 (incl). out: dict
     """
     Called by loanpy.sanity.loop_thru_data.
-    Loop through the guesslist and adapts/reconstructs (depending on mode) \
+    Loops through the guesslist and adapts/reconstructs (depending on mode) \
 until either the correct prediction was made or the guesslist has reached \
 its end. Arguments <guesslist> and <mode> are removed from list of args, \
 <howmany> is inserted at index 2.
 
     :param tgtwrd: The target word. This needs to be hit by the predictions. \
-    By hit we mean prediction and target must be identical, \
+    *Hit* means prediction and target must be identical, \
     i.e. with an edit distance of zero.
     :type tgtwrd: str
 
-    :param args[0]: This is instanciated in loanpy.sanity.eval_all with its \
+    :param args[0]: This instance is created in \
+    loanpy.sanity.eval_all with its \
     first 9 args and passed on to this function via \
     loanpy.sanity.loop_thru_data. It will be passed on to \
     loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct as param <self> \
@@ -475,9 +494,9 @@ its end. Arguments <guesslist> and <mode> are removed from list of args, \
     :param args[2:6]: These 4 args will go to both, \
     loanpy.adrc.Adrc.adapt and loanpy.adrc.Adrc.reconstruct via \
     loanpy.sanity.eval_adapt and loanpy.sanity.eval_recon. For more details \
-    see param <clusters> - <sort_by_nse> \
+    see params from <clusters> to <sort_by_nse> \
     in loanpy.sanity.eval_all.
-    :type args[2-5]: [bool, bool, bool, (bool | int)]
+    :type args[2:6]: [bool, bool, bool, (bool | int)]
 
     :param args[6:11]: These 5 args will go only to \
     loanpy.adrc.Adrc.adapt via \
@@ -485,9 +504,9 @@ its end. Arguments <guesslist> and <mode> are removed from list of args, \
     "adapt" in loanpy.santiy.eval_all (the default setting). \
     If mode was set to "reconstruct", these args will not be passed on. \
     For more details \
-    see param <max_repaired_phonotactics> - <show_workflow> \
+    see params <max_repaired_phonotactics> until <show_workflow> \
     in loanpy.sanity.eval_all.
-    :type args[2-5]: [int, int, int, int, bool]
+    :type args[6:11]: [int, int, int, int, bool]
 
     :returns: A dictionary with at least two keys: Key "guesses" tells \
     either the index of the target word in the list of predictions, or, \
@@ -497,16 +516,17 @@ its end. Arguments <guesslist> and <mode> are removed from list of args, \
     to make the correct prediction. Infinity means the target \
     was not hit, either due to a KeyError, or because of wrong predictions. \
     KeyErrors are more common when param <crossvalidate> = True, since \
-    certain phonemes, clusters, or structures occur only in the word that \
+    certain phonemes, clusters, or phonotactic profiles \
+    occur only in the word that \
     is being isolated, i.e. they are missing from the training data and \
     therefore their keys are missing from the trained model. \
     Key "best_guess" shows the target word \
     if target word was hit, else it shows the first guess in the list of \
     predictions if predictions were made but target missed, \
     else it shows "KeyError" in case \
-    param  <mode> was set to "adapt" (default) and a KeyError occured \
+    param  <mode> was set to "adapt" (default) and a KeyError occurred \
     (This commonly happens if param  <scdictbase> in loanpy.sanity.eval_all \
-    is set to None or {} (default), else ipa characters missing from the \
+    is set to None or {} (default), else IPA characters missing from the \
     trained model would be caught by the heuristics in scdictbase, which \
     is generated separately with loanpy.helpers.Etym.get_scdictbase) else \
     if mode was set to "reconstruct" it shows the characters missing from \
@@ -517,7 +537,8 @@ its end. Arguments <guesslist> and <mode> are removed from list of args, \
     guesses remain unsorted to save time and energy. \
     If param <show_workflow> was set to "True" the dictionary will contain \
     additional keys that show the single steps through which the input word \
-    was transformed. The number of workflow-keys varies, depending on the \
+    was transformed. The number of workflow-keys varies \
+    between 2-5, depending on the \
     settings passed on to loanpy.adrc.Adrc.adapt.
     :rtype: dict
 
@@ -569,6 +590,8 @@ def eval_adapt(tgtwrd, *args):  # in: args 0+howmany+ args1-9(incl)
 
     :param args[3:]: Remaining args that need to be passed on to \
     loanpy.adrc.Adrc.adapt.
+    :type args[3:]: str, int, bool, bool, bool, (bool | int), int, int, \
+    (int | float), (int | float), bool
 
     :returns: A dictionary with at least two keys: Key "guesses" tells \
     the index of the target word in the list of predictions. \
@@ -582,9 +605,9 @@ def eval_adapt(tgtwrd, *args):  # in: args 0+howmany+ args1-9(incl)
     if target word was hit, else it shows the first guess in the list of \
     predictions if predictions were made but target missed, \
     else it shows the string "KeyError" in case \
-    a KeyError occured \
+    a KeyError occurred \
     (This commonly happens if param  <scdictbase> in loanpy.sanity.eval_all \
-    is set to None or {} (default), else ipa characters missing from the \
+    is set to None or {} (default), else IPA characters missing from the \
     trained model would be caught by the heuristics in scdictbase, which \
     is generated separately with loanpy.helpers.Etym.get_scdictbase). \
     The best setting for param <sort_by_nse> = 1: The \
@@ -659,12 +682,12 @@ def eval_recon(tgtwrd, *args):
 
     :param args[3:7]: Remaining args that need to be passed on to \
     loanpy.adrc.Adrc.reconstruct.
-    :type args[3:7]: mixed
+    :type args[3:7]: str, int, bool, bool, bool, (bool | int)
 
     :param args[7:]: These do nothing. It's just slicker to pass \
     on all args to loanpy.adrc.Adrc.reconstruct \
     than having to slice them first.
-    :type args[7:]: mixed
+    :type args[7:]: irrelevant
 
     :returns: A dictionary with exactly two keys: Key "guesses" tells \
     either the index of the target word in the list of predictions, or, \
@@ -680,8 +703,10 @@ def eval_recon(tgtwrd, *args):
     Key "best_guess" shows the target word \
     if target word was hit, else it shows the first guess in the list of \
     predictions if predictions were made but target missed, \
-    else if a KeyError occured, it shows the characters missing from \
+    else if a KeyError occurred, it shows the characters missing from \
     the trained model together with the string "not old." \
+    If target was hit through a reg-ex of the type ^(a|b)(c|d)$, \
+    the entire reg-ex will be returned as "best_guess". \
     The best setting for param <sort_by_nse> = 1: The \
     actual best guess goes to the beginning of the list and will show \
     up in this dictionary, the rest of the \
@@ -707,7 +732,7 @@ target_language="EAH", scdictlist=path2sc_rc)
     # make prediction
     pred = Adrc.reconstruct(*args)
     # define two conditions with which the output will be evaluated
-    # is pred-regex IN tgtwrd?
+    # is pred-reg-ex IN tgtwrd?
     short_regex, target_hit = "(" in pred, bool(search(pred, tgtwrd))
     # return output based on those 2 conditions
     if short_regex and target_hit:
@@ -728,20 +753,21 @@ target_language="EAH", scdictlist=path2sc_rc)
 def get_noncrossval_sc(adrc_obj, writesc):
     """
     Called by loanpy.sanity.loop_thru_data. \
-    Get non-crossvalidated sound changes.
+    Get non-crossvalidated sound correspondences.
 
-    :param adrc_obj: This is instanciated in loanpy.sanity.eval_all with its \
+    :param adrc_obj: This instance is created \
+in loanpy.sanity.eval_all with its \
     first 9 args
     :type adrc_obj: loanpy.adrc.Adrc
 
-    :param writesc: Should sound changes be written? \
+    :param writesc: Should sound correspondences be written? \
     Provide a path to a *folder* (!) if yes. For pitfalls see \
     sanity.eval_all param <writesc>.
 
-    :returns: an Adrc object with sound correspondences \
-    plugged into attribute \
-    <scdict>, sum of examples into <sedict> and phonotactic correspondecnes \
-    into <scdict_phonotactics>.
+    :returns: a loanpy.adrc.Adrc object with sound correspondences \
+    assigned to its attribute \
+    <scdict>, sum of examples to <sedict> and phonotactic correspondences \
+    to <scdict_phonotactics>.
     :rtype: loanpy.adrc.Adrc
 
     :Example:
@@ -765,7 +791,7 @@ target_language="EAH")
      'VCVC': ['VCVC', 'VCCVC', 'VCVCV'],
      'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']}
     """
-    # if we don't crossvalidate we just get sound corresp from big file
+    # if not crossvalidate just get sound corresp from big file
     (adrc_obj.scdict, adrc_obj.sedict, _,  # get sound correspondences
      adrc_obj.scdict_phonotactics, _, _) = adrc_obj.get_sound_corresp(writesc)
     return adrc_obj
@@ -774,30 +800,35 @@ target_language="EAH")
 def get_crossval_data(adrc_obj, idx, writesc=None):
     """
     Called by loanpy.sanity.loop_thru_data. \
-Get sound changes by dropping the indicated row to isolate from \
-the dataframe, \
-and extracting sound correspondences from the data without the dropped row.
+Get sound correspondences by dropping the indicated row to isolate from \
+the data frame, \
+and extracting sound correspondences and inventories \
+from the data without the dropped row. \
+Pitfall: If same row occurs multiple times, cross-validation is blurred.
 
     :param adrc_obj: loanpy.adrc.Adrc. Contains \
-self.dfety, which is the etymological data for training.
+attribute <dfety>, which is the etymological data for training \
+(type: pandas.core.frame.DataFrame).
     :type adrc_obj: loanpy.adrc.Adrc
 
     :param idx: Index of the row to drop from the etymological data
     :type idx: int
 
-    :param writesc: Indicate whether the sound correspondece \
+    :param writesc: Indicate whether the sound correspondence \
     files (results of \
 training) should be written. If None, they will not be written. \
 If they should \
 be written, a path to a *folder* has to be provided since this function \
 will be called for every round of the main loop in \
 loanpy.sanity.eval_all and \
-multiple files will be written. See param writesc in eval_all for more details.
-    :type writesc: None | pathlib.PosixPath (to folder!) | str
+multiple files will be written. See param writesc in eval_all for pitfalls.
+    :type writesc: None | pathlib.PosixPath (to folder!) | str, default=None
 
-    :returns: The same instance of the Adrc-class but \
+    :returns: The same instance of loanpy.adrc.Adrc that was passed \
+to param <adrc_obj> but \
 with the cross-validated \
-model passed into its attributes for looking up sound correspondences.
+model passed into its attributes for looking up sound correspondences \
+(i.e. <scdict>, <sedict>, <scdict_struc>).
     :rtype: loanpy.adrc.Adrc
 
     :Example:
@@ -852,24 +883,36 @@ target_language="EAH")
 def postprocess(adrc_obj):
     """
     Called by loanpy.sanity.eval_all. \
+    Evaluates the consistency and quality of both, \
+    the etymological data, and the predictions. \
     Takes the return value of sanity.loop_thru_data as input. Needs columns \
     "guesses" and "best guess" to make calculations, which are: \
-    a) Calculates the nses between Source and Target words, as well as \
-    Source words and best guesses. This results in 2*4=8 columns, since \
-    workflow will be returned as well. b) Checks if the correct phonotactics \
+    a) Calculates the NSEs between source and target words, as well as \
+    source words and best guesses. This results in 2*4=8 columns, since \
+    each of the 4 elements of the tuple returned by loanpy.adrc.Adrc.get_nse. \
+    gets its own column. b) Checks if the correct phonotactics \
     were predicted or not, \
-    in case param <show_workflow> = True \
-and <max_repaired_phonotactics> > 0 in \
+    in case param <show_workflow> is True \
+    and <max_repaired_phonotactics> is greater than zero in \
     loanpy.sanity.eval_all. \
-    c) calculates the Levenshtein Distance and its \
-    normalised version between Source words and best guesses.
+    c) Calculates the Levenshtein Distance and its \
+    normalised version between target words and best guesses. \
+    This is an alternative way of measuring by how much the target \
+    was missed, than the false positive rate. \
+    Useful when comparing the results of the rule-based model with an AI,
+    since AIs usually only make 1 guess, so there is no false positive rate \
+    for evaluation there. Currently, there is no formula of how to convert \
+    the Levenshtein Distance into a number of false positives. The keyword \
+    here is "Levenshtein Distance neighbourhood problem".
+
 
     :param adrc_obj: This is returned by sanity.loop_thru_data
     :type adrc_obj: loanpy.adrc.Adrc
 
-    :returns: An adrc_obj with 10-11 additional columns: 2*4=8 about nse. \
+    :returns: An adrc_obj with 10+ additional columns: 2*4=8 about NSE. \
     1 optional one called "phonotactics_predicted" \
-and 2 about the Levenshtein distances.
+and n (default: 2) about the phonological distances by which the \
+predictions missed the target.
     :rtype: loanpy.adrc.Adrc
 
     :Example:
@@ -957,7 +1000,7 @@ dtype: float64
 def postprocess2(adrc_obj, guesslist, mode, write_to=None):
     """
     Called by loanpy.sanity.eval_all.
-    2nd postprocessing. Calls loanpy.sanity.get_tpr_fpr_opt to get the \
+    2nd post-processing. Calls loanpy.sanity.get_tpr_fpr_opt to get the \
     true positive rate, false positive rate and the optimum. Calculates \
     statistics from that, writes output files as .csv and .jpg if \
     indicated so.
@@ -973,7 +1016,7 @@ def postprocess2(adrc_obj, guesslist, mode, write_to=None):
     :type guesslist: list of int
 
     :param mode: Defined in loanpy.sanity.eval_all.
-    :type mode: "adapt" (default), "reconstruct"
+    :type mode: "adapt" | "reconstruct", default="adapt"
 
     :param write_to: None, if no output should be written - this is the \
     preferred setting if loanpy.sanity.eval_all is run from a loop. \
@@ -1040,14 +1083,14 @@ target_language="EAH", scdictlist=path2sc_ad)
 def get_nse4df(adrc_obj, tgt_col):
     """
     Called by loanpy.sanity.postprocess. \
-    Calcuclates nse between column Source_Form and given target column
+    Calcuclates NSE between column Source_Form and given target column
 
     :param adrc_obj: The return value of loanpy.sanity.loop_thru_data
     :type adrc_obj: loanpy.adrc.Adrc
 
     :param tgt_col: The name of the target column \
-    if adrc_obj.dfety, to which to compare its column \
-    "Source_Form" to, to establish the normalised sum of examples (nse).
+    in adrc_obj.dfety, to which to compare its column \
+    "Source_Form" to, to establish the normalised sum of examples (NSE).
     :type tgt_col: str
 
     :returns: The same adrc object as the input was but with 4 columns added: \
@@ -1127,7 +1170,8 @@ def phonotactics_predicted(adrc_obj):
 
     try:
         adrc_obj.dfety[
-            "phonotactics_predicted"] = [True if adrc_obj.word2phonotactics(actual)
+            "phonotactics_predicted"] = [True if
+                                         adrc_obj.word2phonotactics(actual)
                                          in pred else False for actual, pred
                                          in zip(adrc_obj.dfety["Target_Form"],
                                                 adrc_obj.dfety[
@@ -1156,7 +1200,8 @@ def get_dist(adrc_obj, col, dst_msrs=["fast_levenshtein_distance",
     :param dst_msrs: The list of distance measures that should be calculated. \
     For an exhaustive list of input options see param \
     <phondist_msr> in loanpy.loanfinder.Search.
-    :type dst_msrs: list of str
+    :type dst_msrs: list of str, default=["fast_levenshtein_distance", \
+    "fast_levenshtein_distance_div_maxlen"]
 
     :returns: The same object as inputted but with the same amount of \
     extra columns as the list provided in param <dst_msrs> is long.
@@ -1195,29 +1240,30 @@ dtype: float64
 
 
     """
-    dist = Distance()
-    for dst_msr in dst_msrs:
+    dist = Distance()  # PanPhon
+    for dst_msr in dst_msrs:  # all chosen distance measures get a col
         new_col = []
-        msr = getattr(dist, dst_msr)
-        for idx, row in adrc_obj.dfety.iterrows():
-            bg, tf = row[col], row["Target_Form"]
-            if any(ban in bg for ban in BANNED):
-                new_col.append(float("inf"))
+        msr = getattr(dist, dst_msr)  # turn str into method of Distance obj
+        for idx, row in adrc_obj.dfety.iterrows():  # loop thru df
+            bg, tf = row[col], row["Target_Form"]  # best guess, target form
+            if any(ban in bg for ban in BANNED):  # red flags to ignore
+                new_col.append(float("inf"))  # means no distance calculable
             else:
-                new_col.append(round(msr(bg, tf), 2))
-        adrc_obj.dfety[f"{dst_msr}_{col}_Target_Form"] = new_col
+                new_col.append(round(msr(bg, tf), 2))  # calculate distance
+        adrc_obj.dfety[f"{dst_msr}_{col}_Target_Form"] = new_col  # add to col
 
-    return adrc_obj
+    return adrc_obj  # same as input obj but with new cols in adrc_obj.dfety
 
 
 def make_stat(opt_fp, opt_tp, max_fp, len_df):
     """
     Called by loanpy.sanity.postprocess2.
-    Calculate  statistics from optimum, max nr of guesses and length \
+    Calculates  statistics from optimum, max nr of guesses and length \
     of input data frame.
 
     :param opt_fp: The optimal false positive rate as a fraction of the \
-    maximal false positive rate.
+    maximal false positive rate, i.e. last (=highest) element of \
+    list passed to param <guesslist> in loanpy.sanity.eval_all.
     :type opt_fp: float
 
     :param opt_tp: The optimal true positive rate as a fraction of the \
@@ -1227,7 +1273,7 @@ def make_stat(opt_fp, opt_tp, max_fp, len_df):
     :param max_fp: The maximal false positive rate is the \
     highest number of possible guesses, i.e. the last element of the list \
     passed to param <guesslist> in loanpy.sanity.eval_all.
-    :type max_fp: int, float
+    :type max_fp: int | float
 
     :param len_df: The total number of input words for predictions.
     :type len_df: int
@@ -1348,11 +1394,11 @@ def plot_roc(guesslist, plot_to, tpr_fpr_opt, opt_howmany, opt_tpr,
     there were to make predictions for
     :type len_df: int
 
-    :param mode: If we were reconstructing or adapting (horizontal vs. \
+    :param mode: If reconstructing or adapting (horizontal vs. \
     vertical transfers)
-    :type mode: "adapt" (default) or "reconstruct"
+    :type mode: "adapt" | "reconstruct", default="adapt"
 
-    :returns: Plots an ROC curve and writes it to a file
+    :returns: Plots an ROC-curve and writes it to a file
     :rtype: None.
 
 
@@ -1369,7 +1415,7 @@ def plot_roc(guesslist, plot_to, tpr_fpr_opt, opt_howmany, opt_tpr,
     >>> (0.501, 0.6, 0.099)),
     >>> opt_howmany=1,
     >>> opt_tpr=0.6, len_df=3, mode="adapt")
-    [inspect result in output_file / "mockplot.jpg"]
+    [inspect result in tests/output_file / "mockplot.jpg"]
 
     .. image:: ../../tests/output_files/mockplot.jpg
     """
@@ -1393,26 +1439,25 @@ if yes: checks whether init_args occur in one of its rows. If yes: \
 Error is raised. If no, nothing happens. Input args are the output args of \
 loanpy.sanity.eval_all.
 
-    :param path2cache: The path to the csv-file in which information \
+    :param path2cache: The path to the CSV-file in which information \
     about input-parameters and evaluated results is stored. If path points to \
     a non-existent file, the correct file will be created. \
-    If set to None, it will be written to cldf's folder etc (concluded from \
+    If set to None, it will be written to CLDF's folder etc (concluded from \
     the path provided in parameter <forms_csv>) and will be called \
     f"opt_param_{tgt_lg}_{src_lg}". \
     For more information see loanpy.sanity.check_cache.
     :type path2cache: pathlib.PosixPath | str
 
     :param init_args: Dictionary where keys are the arguments of \
-loanpy.sanity.eval_all and vals their assigned value. Generated by locals(). \
+loanpy.sanity.eval_all and values their \
+assigned value. Generated by locals(). \
 See help(locals).
     :type init_args: dict
 
     :raises ArgumentsAlreadyTested: If these arguments were already passed \
 to loanpy.sanity.eval_all once, they won't be calculated again. \
-To solve this error, change the value of some input args, or provide a path \
-to a different cache, or delete the current cache, or delete the particular \
-row that was tested already from the current test (The error message \
-explicitely mentions which row contains the identical args.)
+To solve this error, simply don't decorate the function in question with \
+loanpy.sanity.cache
 
     :returns: Just raises an Error or writes an empty cache under \
 certain conditions, else no action
@@ -1442,9 +1487,9 @@ already, see {path2cache} line {idx+1}! (start counting at 1 in 1st row)")
 
 def write_to_cache(path2cache, init_args, stat, start, end):
     """
-    Writes the results of loanpy.sanity.eval_all to a csv and sorts it \
-    by column "opt_tpr". So that on the top of the .csv we will have \
-    the parameter settings that give us the most accurate predictions.
+    Writes the results of loanpy.sanity.eval_all to a CSV and sorts it \
+    by column "opt_tpr". So that on the top of the .csv will be \
+    the parameter settings that give the most accurate predictions.
 
     :param path2cache: The path to which the cache should be written.
     :type path2cache: pathlib.PosixPath | str
@@ -1463,7 +1508,7 @@ def write_to_cache(path2cache, init_args, stat, start, end):
     :type end: float
 
     :returns: Stores the args with which loanpy.sanity_eval_all was run \
-    and the resultst in a csv-file.
+    and its results in a CSV-file.
     :rtype: None
     """
 

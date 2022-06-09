@@ -231,7 +231,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ipalist</strong> (<em>list</em>) – a tokenised ipa-string</p></li>
+<li><p><strong>ipalist</strong> (<em>list</em>) – a tokenised IPA-string</p></li>
 <li><p><strong>turnto</strong> (<em>{&quot;F&quot;</em><em>, </em><em>&quot;B</em>) – turn back vowels to front ones or vice verse</p></li>
 </ul>
 </dd>
@@ -277,8 +277,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="loanpy.helpers.Etym.harmony">
-<span class="sig-name descname"><span class="pre">harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.harmony" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="loanpy.helpers.Etym.has_harmony">
+<span class="sig-name descname"><span class="pre">has_harmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipalist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.has_harmony" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tells if a word has front-back vowel harmony or not</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -292,13 +292,13 @@
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">harmony</span><span class="p">(</span><span class="s2">&quot;bot͡sibot͡si&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">has_harmony</span><span class="p">(</span><span class="s2">&quot;bot͡sibot͡si&quot;</span><span class="p">)</span>
 <span class="go">False</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">loanpy</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">Etym</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">harmony</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;ɒ&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;ɒ&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hp</span><span class="o">.</span><span class="n">has_harmony</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;ɒ&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;ɒ&quot;</span><span class="p">])</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -316,7 +316,7 @@
 <li><p><strong>inv</strong> (<em>list</em><em> | </em><em>set</em>) – To plug in phoneme inventory manually if necessary</p></li>
 </ul>
 </dd>
-<dt class="field-even">Rytpe</dt>
+<dt class="field-even">Rtype</dt>
 <dd class="field-even"><p>str</p>
 </dd>
 <dt class="field-odd">Example</dt>
@@ -384,7 +384,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="loanpy.helpers.Etym.word2phonotactics">
 <span class="sig-name descname"><span class="pre">word2phonotactics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.word2phonotactics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the phonotactic profile of an ipa-string.</p>
+<dd><p>Returns the phonotactic profile of an IPA-string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Example</dt>
 <dd class="field-odd"><p></p></dd>
@@ -400,7 +400,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="loanpy.helpers.Etym.word2phonotactics_keepcv">
 <span class="sig-name descname"><span class="pre">word2phonotactics_keepcv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ipa_in</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.Etym.word2phonotactics_keepcv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the phonotactic profile of an ipa-string while keeping Cs and Vs. Originally written for sanity.py but currently not used anywhere.</p>
+<dd><p>Returns the phonotactic profile of an IPA-string while keeping Cs and Vs. Originally written for sanity.py but currently not used anywhere.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Example</dt>
 <dd class="field-odd"><p></p></dd>
@@ -430,7 +430,7 @@
 <dt class="sig sig-object py" id="loanpy.helpers.cldf2pd">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">cldf2pd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dfforms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srclg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgtlg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.cldf2pd" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
-<div><p>Converts a cldf-csv to a pandas data frame. Only called by Etym.__init__. Returns None if dfforms is None, so class can be initiated without args too. Runs through forms.csv and creates a new data frame the following way: Checks if a cognate set contains words from both, source and target language. If yes: word from source lg goes to column “Source_Form”, word from target lg goes to column “Target_Form” and the number of the cognate set goes to column “Cognacy”. Note that if a cognate set doesn’t contain words from src and tgt lg, that cognate set is skipped.</p>
+<div><p>Converts a CLDF-csv to a pandas data frame. Only called by Etym.__init__. Returns None if dfforms is None, so class can be initiated without args too. Runs through forms.csv and creates a new data frame the following way: Checks if a cognate set contains words from both, source and target language. If yes: word from source lg goes to column “Source_Form”, word from target lg goes to column “Target_Form” and the number of the cognate set goes to column “Cognacy”. Note that if a cognate set doesn’t contain words from src and tgt lg, that cognate set is skipped.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param dfforms</dt>
 <dd class="field-odd"><p>Takes the output of read_forms() as input</p>
@@ -622,7 +622,7 @@
 <li><p><strong>recip_transl</strong> (<em>str</em><em>, </em><em>words are separated by &quot;</em><em>, </em><em>&quot;</em>) – translation of the recipient word</p></li>
 <li><p><strong>donor_transl</strong> (<em>str</em><em>, </em><em>words are separated by &quot;</em><em>, </em><em>&quot;</em>) – translations of the donor word</p></li>
 <li><p><strong>return_wordpair</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate whether the word pair itself should be returned too.</p></li>
-<li><p><strong>wordvectors</strong> (<em>str</em>) – The name of the pretrained wordvector model to use. For a complete list of loadable models see gensim’s documentation.</p></li>
+<li><p><strong>wordvectors</strong> (<em>str</em>) – The name of the pre-trained wordvector model to use. For a complete list of loadable models see gensim’s documentation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -842,7 +842,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inv</strong> (<em>set</em>) – a set of phonemes that occure in given language. if inv is None, inv will be calculated from forms else inv will be returned.</p></li>
-<li><p><strong>forms</strong> (<em>list of str</em>) – a list of words occuring in giving language</p></li>
+<li><p><strong>forms</strong> (<em>list of str</em>) – a list of words occurring in giving language</p></li>
 <li><p><strong>func</strong> (<em>function</em>) – the tokeniser to split words into phonemes</p></li>
 </ul>
 </dd>
@@ -1023,7 +1023,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dfetymology</strong> (<em>str</em><em>, </em><em>default=&quot;dfuralonet.csv&quot;</em>) – The name of the etymological dictionary. Has to be         stored in a csv-file.</p></li>
+<li><p><strong>dfetymology</strong> (<em>str</em><em>, </em><em>default=&quot;dfuralonet.csv&quot;</em>) – The name of the etymological dictionary. Has to be         stored in a CSV-file.</p></li>
 <li><p><strong>left</strong> (<em>str</em><em>, </em><em>default=&quot;New&quot;</em>) – The column containing the reflexes or donorwords</p></li>
 <li><p><strong>right</strong> (<em>str</em><em>, </em><em>default=&quot;Old&quot;</em>) – The column containing the roots or loanwords</p></li>
 <li><p><strong>layer</strong> (<em>str</em><em>, </em><em>e.g. {&quot;&quot;</em><em>, </em><em>&quot;U&quot;</em><em>, </em><em>&quot;FU&quot;</em><em>, </em><em>&quot;Ug&quot;}</em><em>, </em><em>default=&quot;&quot;</em>) – Indicate from which historical layer sound changes         should be extracted, Uralic (‘U’), Finno-Ugric (‘FU’), or Ugric (‘Ug’).         By default all three are taken into consideration simultaneously.</p></li>
@@ -1079,7 +1079,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dfetymology</strong> (<em>str</em><em>, </em><em>default=&quot;dfuralonet.csv&quot;</em>) – The name of the etymological dictionary. Has to be         stored in a csv-file.</p></li>
+<li><p><strong>dfetymology</strong> (<em>str</em><em>, </em><em>default=&quot;dfuralonet.csv&quot;</em>) – The name of the etymological dictionary. Has to be         stored in a CSV-file.</p></li>
 <li><p><strong>left</strong> (<em>str</em><em>, </em><em>default=&quot;New&quot;</em>) – The column containing the reflexes or donorwords</p></li>
 <li><p><strong>right</strong> (<em>str</em><em>, </em><em>default=&quot;Old&quot;</em>) – The column containing the roots or loanwords</p></li>
 <li><p><strong>layer</strong> (<em>str</em><em>, </em><em>e.g. {&quot;&quot;</em><em>, </em><em>&quot;U&quot;</em><em>, </em><em>&quot;FU&quot;</em><em>, </em><em>&quot;Ug&quot;}</em><em>, </em><em>default=&quot;&quot;</em>) – Indicate from which historical layer sound changes         should be extracted, Uralic (‘U’), Finno-Ugric (‘FU’), or Ugric (‘Ug’).         By default all three are taken into consideration simultaneously.</p></li>

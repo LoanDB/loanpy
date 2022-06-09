@@ -1,3 +1,5 @@
+"""unit test for loanpy.qfysc.py (2.0 BETA) for pytest 7.1.1"""
+
 from ast import literal_eval
 from os import remove
 from pathlib import Path
@@ -362,9 +364,9 @@ def test_get_sound_corresp():
         for act, exp in zip(
             concat_mock.call_args_list[0][0][0], [
                 mockqfy.df1, mockqfy.df2]):
-            # first [0] grabs the only call from list of calls
+            # first [0] picks the only call from list of calls
             # second [0] converts call object to tuple
-            # third [0] grabs the first element of the tuple (2nd is empty),
+            # third [0] picks the first element of the tuple (2nd is empty),
             # which is a list of two dataframes
             assert_frame_equal(act, exp)
 
@@ -376,9 +378,9 @@ def test_get_sound_corresp():
     for act, exp in zip(
         concat_mock.call_args_list[1][0][0], [
             mockqfy2.df1, mockqfy2.df2]):
-        # first [0] grabs the only call from list of calls
+        # first [0] picks the only call from list of calls
         # second [0] converts call object to tuple
-        # third [0] grabs the first element of the tuple (2nd is empty),
+        # third [0] picks the first element of the tuple (2nd is empty),
         # which is a list of two dataframes
         assert_frame_equal(act, exp)
 

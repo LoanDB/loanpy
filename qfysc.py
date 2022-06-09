@@ -25,8 +25,8 @@ def read_mode(mode):
     Called by loanpy.qfysc.Qfy.__init__
 
     :param mode: The mode in which the data should be quantified. If set \
-to "None", default mode jumps to "adapt". This option is available if there \
-is no time to think and we're setting all params we can to None.
+to "None", default mode jumps to "adapt". This option is useful if there \
+is no time to think so all params are quickly set to None.
     :type mode: None | "adapt" | "reconstruct"
 
     :raises WrongModeError: The mode can only be "adapt" or "reconstruct"
@@ -61,8 +61,8 @@ def read_connector(connector, mode):
     Called by loanpy.qfysc.Qfy.__init__
 
     :param connector: An iterable that defines the two symbols that connect \
-the words on the left and the right side of the etymology if we are adapting \
-vs. when we are reconstructing. If None is passed, \
+the words on the left and the right side of the etymology when adapting \
+vs. reconstructing. If None is passed, \
 "<" is used for adapting and \
 "<\*" for reconstructing.
     :type connector: iterable of str
@@ -96,14 +96,16 @@ def read_scdictbase(scdictbase):
     """
     Called by loanpy.qfysc.Qfy.__init__
 
-    :param scdictbase: The sound change dictionary base. Has to be generated \
+    :param scdictbase: The sound correspondence dictionary base. \
+Has to be generated \
 with loanpy.helpers.Etym.get_scdictbase first. Can be plugged in via a file, \
-by directly providing a dictionary, or by letting get_scdictbase \
-assign the vairable to self.
-    :type scdictbase: Provide the path to the file - this is the preferred \
-setting since the file is rather large (1.6MB) and should \
-therefore be generated \
-only once.
+by directly providing a dictionary, or accessing loanpy.qfysc.Qfy.scdictbase \
+(since loanpy.helpers.Etym.get_scdictbase always assigns the dictionary to \
+its attribute scdictbase, which is then inherited by loanpy.qfysc.Qfy.) \
+The preferred setting is to provide the path to the file, since \
+it is rather large (~1.6MB) and should therefore be generated \
+only once for any target language.
+    :type scdictbase: None | pathlib.PosixPath | str
 
     :returns: A dictionary representing a heuristic approach to sound \
 substitution. Returns empty dictionary if set to None. \
@@ -137,33 +139,33 @@ For more details see loanpy.helpers.Etym.get_scdictbase.
 
 class Qfy(Etym):
     """
-    Read etymological data and customise the way in which it \
-will be quantified later. Has 9 parameters and initiates 12 attributes.
+    Read etymological data and customise the way in which to \
+quantify it. Has 9 parameters and initiates 12 attributes.
 
     These 5 params will be passed on to loanpy.helpers.Etym \
 to inherit its 8 attributes:
 
-    :param forms_csv: The path to cldf's forms.csv. For more details see \
+    :param forms_csv: The path to CLDF's forms.csv. For more details see \
 loanpy.helpers.read_forms, loanpy.helpers.cldf2pd and \
 loanpy.helpers.forms2list. If set to None, no etymological data will be read.
     :type forms_csv: pathlib.PosixPath | str | None, default=None
 
     :param source_language: The computational source language \
 (can differ from linguistic \
-source). This is the data FROM which we make predictions. \
+source). This is the data **from** which predictions are made. \
 For more details see loanpy.helpers.cldf2pd.
     :type source_language: str (options are listed in column "ID" in \
 cldf / etc / languages.tsv), default=None
 
     :param target_language: The computational target language \
 (can again differ from \
-linguistic one). This is the language INTO which we make predictions. \
+linguistic one). This is the language **into** which predictions are made. \
 For more details see loanpy.helpers.cldf2pd.
     :type target_language: str (options are listed in column "ID" in \
 cldf / etc / languages.tsv), default=None
 
     :param most_frequent_phonotactics: The n most frequent structures \
-that we want to accept into the phonotactic inventory of the \
+to accept into the phonotactic inventory of the \
 target language. \
 Sometimes a good idea \
 to omit rare ones. For more details see loanpy.helpers.read_phonotactic_inv.
@@ -181,13 +183,14 @@ see loanpy.helpers.Etym.read_phonotactic_inv.
     :param mode: The mode in which sound correspondences will be \
 extracted. Differences between the two modes: Different connectors, \
 source and target gets flipped, different alignment. No phonotactic \
-correspondences extracted if mode == "reconstruct". \
-Flows into self.mode. For more details see loanpy.qfysc.read_mode.
+correspondences extracted if mode="reconstruct". \
+Flows into attribute loanpy.qfysc.Qfy.mode. \
+For more details see loanpy.qfysc.read_mode.
     :type mode: "adapt" | "reconstruct", default="adapt"
 
     :param connector: The strings that connect the linguistic (!) source word \
 with the target adapted or reconstructed one. \
-Flows into self.connector. Set to None if \
+Flows into attribute loanpy.qfysc.Qfy.connector. Set to None if \
 default settings ("<" and "<\*") should be used. For more details see \
 loanpy.qfysc.read_connector.
     :type connector: tuple, default=None
@@ -197,13 +200,13 @@ a heuristic approach \
 for predicting sound substitutions. loanpy.qfysc.Qfy.get_sound_corresp \
 will combine sound substitutions gathered from etymological data with \
 this dictionary. If combination should be skipped, set to None or {}. \
-Flows into self.scdictbase. \
+Flows into attribute loanpy.qfysc.Qfy.scdictbase. \
 For more details see loanpy.helpers.Etym.get_scdictbase.
     :type scdictbase: None | dict | pathlib.PosixPath, default=None
 
     :param vfb: Placeholders for "any vowel", "any front vowel", "any \
 back vowel", as these can occur in etymological dictionaries. \
-Tokeniser can only handle IPA-characters. Therefore placeholders \
+Tokeniser can only handle IPA-characters. Therefore, placeholders \
 have to be IPA-characters as well. Best is to choose IPA-characters that \
 don't occur in the phoneme inventory. By default, no placeholders \
 are used. For a list \
@@ -246,7 +249,7 @@ from loanpy.helpers.Etym
                     # for "any vowel", "any front vowel", or "any back vowel".
                     # Those have to be designated by ipa characters that are
                     # not used in the language. Because the tokeniser
-                    # accepts only ipa-characters.
+                    # accepts only IPA-characters.
 
         super().__init__(
                          forms_csv=forms_csv,
@@ -263,8 +266,8 @@ from loanpy.helpers.Etym
     def align(self, left, right):
         """
         Called by loanpy.qfysc.Qfy.get_sound_corresp. \
-Selects alignment with lingpy if we are adapting and its own alignment \
-if we are reconstructing. The alignment function/wrapper can be looked up at \
+Selects alignment with lingpy if adapting and its own alignment \
+if reconstructing. The alignment function/wrapper can be looked up at \
 loanpy.qfysc.Qfy.align_lingpy and loanpy.qfysc.Qfy.align_clusterwise
 
         :param left: The string on the left side of the etymology to align.
@@ -273,8 +276,9 @@ loanpy.qfysc.Qfy.align_lingpy and loanpy.qfysc.Qfy.align_clusterwise
         :param right: The string on the right side of the etymology to align.
         :type right: str
 
-        In an earlier version, some additional parameters were passed on to \
-        lingpy.align.pairwise.Pairwise and \
+        Note: In an earlier version, some additional \
+parameters were passed on to \
+lingpy.align.pairwise.Pairwise and \
 lingpy.align.pairwise.Pairwise.align. \
 That feature is not supported in the current version \
 because they bloat the script and \
@@ -285,7 +289,7 @@ Pairwise.align() called.
 
         :returns: a pandas data frame with \
 two columns named "keys" and "vals" \
-with one phoneme and it's aligned counter part in each row.
+with one phoneme (cluster) and its aligned counterpart in each row.
         :rtype: pandas.core.frame.DataFrame
 
         :Example:
@@ -318,9 +322,6 @@ with one phoneme and it's aligned counter part in each row.
         6    e    e
         7  st#   ʃt
         8   -#    a
-
-
-
         """
 
         if self.mode == "reconstruct":
@@ -333,8 +334,10 @@ with one phoneme and it's aligned counter part in each row.
         Called by loanpy.qfysc.Qfy.align. \
 Initiate a lingpy.align.pairwise.Pairwise object with the two strings \
 to align. Turn the resulting string into two lists and insert them into two \
-columns of a data frame. The columns are called keys and vals because these \
-are going to be the future keys in the sound change dictionary. \
+columns of a pandas data frame. \
+The columns are called "keys" and "vals" because these \
+are going to be the future keys and values in the \
+sound correspondence dictionary. \
 This alignment \
 is intended for predicting loanword adaptation. Therefore the keys are equal \
 to the phonemes of the donor word, which usually stands on the right side \
@@ -350,16 +353,16 @@ if the corresponding other sound is a consonant and "V" if it's a vowel.
         :type right: str
 
         :returns: data frame where the phonemes of the word on the right \
-go to the column on the left ("keys") because those are the phonemes we \
-want to look up later in scdict to make predictions, i.e. \
+go to the column on the left ("keys") because those are the phonemes \
+to look up later in the sound correspondence dict to make predictions, i.e. \
 computational source \
 is on the right, target on the left. (An alternative \
 solution for this problem \
 would have been to flip the connector and have the computational source \
 always on the left, already when inputting. But the problem with this is that \
 the star would have to move \
-in the reconstructions: "kiki<\*hihi" is ok but if we want to flip this, \
-we can't just flip left and right and flip the connector because \
+in the reconstructions: "kiki<\*hihi" is ok but to flip this, \
+left and right can't be just flipped and the connector mirrored because \
 "hihi\*>kiki" would be wrong notation. It would have to be "\*hihi>kiki". \
 And moving around this star is unexpectedly tricky. That's why the \
 computational source is once on the left side, once on the right, and \
@@ -411,57 +414,55 @@ gets flipped internally.)
                                                      leftright[1])]
 
         # the word on the right has to go into the keys
-        # b/c it's the phonemes of the donor word (right) that we'll look up
+        # b/c it's the phonemes of the donor word (right) to look up
         # in the scdict later.
         return DataFrame({"keys": leftright[1], "vals": leftright[0]})
 
     def align_clusterwise(self, left, right):
         """
-        Called by loanpy.qfysc.Qfy.align. \
-Align with own formula: \
-1. split string into consonant and vowel cluster_inventory. \
-2. Tag first and last cluster with "#" to indicate its word initial \
-or word final position. \
-3. Slap "#-" and "-#" to front and back of list of cluster_inventory \
-to capture affixes that might have disappeared or appeared. \
-4. If one string starts with a consonant and the other with a vowel, \
-shift the one \
-starting with a consonant by one, so that the first vowel cluster \
-serves as an anchor. \
-5. Sequentially align the upcomming cluster_inventory \
-with each other until the shorter \
-word ends. \
-6. Squeeze leftover phonemes into one string.
+        Called by loanpy.qfysc.Qfy.align. Align with own formula: \
+        1. split string into consonant and vowel clusters. \
+        2. Tag first and last cluster with "#" to indicate its word initial \
+        or word final position. \
+        3. Add "#-" and "-#" to front and back of list of clusters \
+        to capture affixes that might have disappeared or appeared. \
+        4. If one string starts with a consonant and the other with a vowel, \
+        shift the one \
+        starting with a consonant by one, so that the first vowel cluster \
+        serves as an anchor. \
+        5. Sequentially align the upcoming clusters \
+        with each other until the shorter \
+        word ends. \
+        6. Squeeze leftover phonemes into one string.
 
-    :param left: The string on the left side of the connecting symbol \
-of an etymology, e.g. "kiki" if the etymology is "kiki<\*hihi".
-    :type left: str
+        :param left: The string on the left side of the connecting symbol \
+        of an etymology, e.g. "kiki" if the etymology is "kiki<\*hihi".
+        :type left: str
 
-    :param right: The string on the right side of the connecting symbol \
-of an etymology, e.g. "kiki" if the etymology is "hihi<kiki".
-    :type left: str
+        :param right: The string on the right side of the connecting symbol \
+        of an etymology, e.g. "kiki" if the etymology is "hihi<kiki".
+        :type left: str
 
-    :returns: data frame where the phonemes of the word on the left \
-go to the column on the left ("keys") because those are the phonemes we \
-want to look up later in scdict to make predictions, \
-i.e. computational source \
-is on the left, target on the right.
-    :rtype: pandas.core.frame.DataFrame
+        :returns: data frame where the phonemes of the word on the left \
+        go to the column on the left ("keys") because those are the phonemes \
+        to look up later in the sound correspondence dict \
+        to make predictions, \
+        i.e. computational source \
+        is on the left, target on the right.
+        :rtype: pandas.core.frame.DataFrame
 
-    :Example:
+        :Example:
 
-    >>> from loanpy.qfysc import Qfy
-    >>> qfy_obj = Qfy()
-    >>> qfy_obj.align_clusterwise("budapestt", "uadast")
+        >>> from loanpy.qfysc import Qfy
+        >>> qfy_obj = Qfy()
+        >>> qfy_obj.align_clusterwise("budapestt", "uadast")
         keys vals
-    0     #b    -
-    1      u   ua
-    2      d    d
-    3      a    a
-    4      p   st
-    5  estt#    -
-
-
+        0     #b    -
+        1      u   ua
+        2      d    d
+        3      a    a
+        4      p   st
+        5  estt#    -
         """
         keys, vals = clusterise(left), clusterise(right)
 
@@ -472,7 +473,7 @@ is on the left, target on the right.
         keys, vals = ["#-"] + keys, ["-"] + vals  # nut keys AND vals get this
 
         # if one starts with C and the other with V, move the C-cluster
-        # into the empty start character we created above
+        # into the empty start character created above
         # check if e.g. the "t͡ʃː" in ["#-", "#t͡ʃːr", "o"] is a "C" or a "V":
         # note that this almost never happens in our current data
         # only imad-vimad, öt-wöt, etc
@@ -502,13 +503,13 @@ is on the left, target on the right.
     def get_sound_corresp(self, write_to=None):
 
         """
-        Convert an etymological dictionary to a dictionary of sound \
+        Convert an etymological dictionary to a dictionary of sound (cluster) \
 and phonotactic correspondences, \
-their number of occurences, and IDs of cognate sets in which they occur. \
-If self.mode=="reconstruct" phonotactic correspondences \
+their number of occurrences, and IDs of cognate sets in which they occur. \
+If loanpy.qfysc.Qfy.mode=="reconstruct" phonotactic correspondences \
 will not be extracted \
 because that dimension is already captured through the alignment. \
-Since adapt() does not capture this, phonotactic \
+Since loanpy.adrc.Adrc.adapt does not capture this, phonotactic \
 correspondences need to be extracted from the data to \
 later repair the structures \
 before substituting. This has to do with the different nature of lateral \
@@ -524,11 +525,12 @@ text file. If yes, provide the path. None means that no file will be written.
         :type write_to: None | pathlib.PosixPath | str, default=None
 
         :returns: list of 6 dicts. Dicts 0, 1, 2 capture phonological \
-correspondences, dicts 3, 4, 5 phonotactical ones. dict0/dict3: the actual \
+correspondences, dicts 3, 4, 5 phonotactic ones. dict0/dict3: the actual \
 correspondences, dict1/dict4: How often each \
 correspondence occurs in the data, \
 dict2/dict5: list of cognates in which each correspondence occurs. \
-Dicts 4, 5, 6 will be empty if self.mode=="reconstruct". Set mode in \
+Dicts 4, 5, 6 will be empty if loanpy.qfysc.Qfy.mode=="reconstruct". \
+Set mode in \
 loanpy.qfysc.Qfy. Note: dictionary 5 contains some randomness because set() \
 is involved, for details see loanpy.qfysc.Qfy.get_phonotactics_corresp.
         :rtype: [dict, dict, dict, dict, dict, dict]
@@ -578,10 +580,10 @@ source_language=1, target_language=2, mode="reconstruct")
         dfsoundchange = concat(soundchange)  # one big df of sound corresp
         # cognate set where it happened
         dfsoundchange["wordchange"] = wordchange
-        dfsoundchange["e"] = 1  # every sound change occurs once. will be added
+        dfsoundchange["e"] = 1  # every sound corr. occurs once. will be added
 
-        # flip keys and vals if we are adapting!
-        # important! since for rc we're predicting backwards
+        # flip keys and vals if adapting!
+        # important! since backwards predictions for rc
         if self.mode == "adapt":
             dfsoundchange["soundchange"] = (dfsoundchange["vals"] +
                                             self.connector +
@@ -593,13 +595,13 @@ source_language=1, target_language=2, mode="reconstruct")
                                             dfsoundchange["vals"])
             # join source and target with connector
 
-# create the first 3 elements of the output from the big df of sound changes
+# create the first 3 elements of the output from the big df of sound corresp
 # create 1st element of output. Sort correspondence list by frequency
         dfsc = dfsoundchange.groupby("keys")["vals"].apply(
             lambda x: [n[0] for n in Counter(x).most_common()]).reset_index()
-# create 2nd element of output. Sum up how often each corresp occured
+# create 2nd element of output. Sum up how often each corresp occurred
         dfse = dfsoundchange.groupby("soundchange")["e"].sum().reset_index()
-# create 3rd element of output. List up cognate sets where each corresp occured
+# create 3rd elem. of output. List up cognate sets where each corresp occurred
         dfe = dfsoundchange.groupby("soundchange")[
             "wordchange"].apply(lambda x: sorted(set(x))).reset_index()
 
@@ -623,13 +625,13 @@ source_language=1, target_language=2, mode="reconstruct")
                             self.vfb[2] not in scdict[i]):
                         scdict[i].append(self.vfb[2])
 
-# in loanpy.qfysc.Qfy.align_lingpy we used "C" and "V" instead of "-"
+# in loanpy.qfysc.Qfy.align_lingpy "C" and "V" instead of "-" used
 # to mark that a sound disappeared. So has to be removed here again.
         if self.mode == "adapt":
             for k in scdict:
                 scdict[k] = ["" if j == "C" or j == "V" else j
                              for j in scdict[k]]
-# if we are adapting, we have to merge the data with the heuristics
+# if adapting, merge data with heuristics
             # loop through keys of both dicts combined
             for i in self.scdictbase | scdict:
                 # combine keys that are in both
@@ -639,10 +641,10 @@ source_language=1, target_language=2, mode="reconstruct")
                 # if key missing from scdict but is in scdictbase
                 elif i in self.scdictbase:
                     scdict[i] = self.scdictbase[i]  # then add it to scdict
-# like this we make sure that no non-ipa chars are taken
+# like this it is ensured that no non-ipa chars are taken
 
         out = [scdict, sedict, edict]  # first 3 elements of output
-        # the other 3 are only generated if we are adapting
+        # the other 3 are only generated if adapting
         out += self.get_phonotactics_corresp() if self.mode == "\
 adapt" else [{}, {}, {}]
 
@@ -657,14 +659,14 @@ adapt" else [{}, {}, {}]
         """
         Called by loanpy.qfysc.Qfy.get_sound_corresp. \
 Similar to loanpy.qfysc.get_sound_corresp but here, no alignment \
-is needed. We just capture which phonotactic profile turns into which \
+is needed. Just capture which phonotactic profile turns into which \
 in the data, how often that happens and in which cognate sets.
 
         :param write_to: Indicate if results should be written to a \
 text file. If yes, provide the path. None means that no file will be written.
         :type write_to: None | pathlib.PosixPath | str, default=None
 
-        :returns: list of 3 dicts that capture phonotactical correspondences, \
+        :returns: list of 3 dicts that capture phonotactic correspondences, \
 how often each correspondence occurs in the data and in which cognate sets \
 each correspondence occurs.
         :rtype: [dict, dict, dict]
@@ -705,7 +707,7 @@ target_language=2, mode="reconstruct")
                                   columns=["keys", "vals", "wordchange"])
         dfstrucchange["e"] = 1  # each change happened one time. add later.
 
-        #  important to flip keys and vals if we are adapting!
+        #  important to flip keys and vals if adapting!
         if self.mode == "adapt":
             dfstrucchange["strucchange"] = (dfstrucchange["vals"] +
                                             self.connector +
@@ -715,14 +717,14 @@ target_language=2, mode="reconstruct")
                                             self.connector +
                                             dfstrucchange["vals"])
 
-# create the first 3 elements of the output from the big df of sound changes
+# create the first 3 elements of the output from the big df of sound corresp
 # create 1st element of output. Sort correspondence list by frequency
         dfsc = dfstrucchange.groupby("keys")[
             "vals"].apply(lambda x: [n[0]
                           for n in Counter(x).most_common()]).reset_index()
-# create 2nd element of output. Sum up how often each corresp occured
+# create 2nd element of output. Sum up how often each corresp occurred
         dfse = dfstrucchange.groupby("strucchange")["e"].sum().reset_index()
-# create 3rd element of output. List up cognate sets where each corresp occured
+# create 3rd elem. of output. List up cognate sets where each corresp occurred
         dfe = dfstrucchange.groupby("strucchange")["wordchange"].\
             apply(list).reset_index()
 
