@@ -1,7 +1,5 @@
-|ImageLink|_
-
-.. |ImageLink| image:: https://zenodo.org/badge/428920599.svg
-.. _ImageLink: https://zenodo.org/record/6628976
+.. image:: https://zenodo.org/badge/428920599.svg
+   :target: https://zenodo.org/record/6628976
 
 |ImageLink|_
 
