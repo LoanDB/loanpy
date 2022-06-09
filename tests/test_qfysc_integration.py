@@ -28,7 +28,7 @@ def test_read_scdictbase():
     # setup
     base = {"a": ["e", "o"], "b": ["p", "v"]}
     path = Path(__file__).parent / "test_read_scdictbase.txt"
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         f.write(str(base))
 
     # assert
@@ -277,7 +277,7 @@ def test_get_sound_corresp():
     assert out == exp
 
     # repeat steps from block above but read same results from file
-    with open(path2test_sc, "r") as f:
+    with open(path2test_sc, "r", encoding="utf-8") as f:
         out = literal_eval(f.read())
     outpop = out.pop(3)  # we popped exp already above, don't do it again
     for s_out, s_exp in zip(outpop, exppop):
@@ -309,7 +309,7 @@ def test_get_phonotactics_corresp():
     assert out[1:] == exp[1:]
 
     # assert output was written correctly to file
-    with open(path2test_sc, "r") as f:
+    with open(path2test_sc, "r", encoding="utf-8") as f:
         out = literal_eval(f.read())
     for s_out, s_exp in zip(out[0], exp[0]):
         assert set(out[0][s_out]) == set(exp[0][s_exp])

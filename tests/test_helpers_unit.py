@@ -740,8 +740,7 @@ def test_get_scdictbase():
     # assert calls
     assert_series_equal(hp.tqdm.called_with, Series(
         ["a", "b", "c"], name="ipa"))
-    read_csv_mock.assert_called_with(
-        Path(__file__).parent.parent / "ipa_all.csv")
+    read_csv_mock.assert_called()
     assert mocketym.rank_closest_called_with == [
         ['a', float("inf")], ['b', float("inf")], ['c', float("inf")],
         ['ə', float("inf"), ['d', 'f']], ['ə', float("inf"), ['e']],

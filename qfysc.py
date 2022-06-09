@@ -122,7 +122,8 @@ For more details see loanpy.helpers.Etym.get_scdictbase.
     >>> from pathlib import Path
     >>> from os import remove
     >>> path = Path(__file__).parent / "test_read_scdictbase.txt"
-    >>> with open(path, "w") as f: f.write(str(base))  # write test file
+    >>> with open(path, "w", encoding="utf-8") as f: f.write(str(base))  \
+# write test file
     >>> read_scdictbase(path)  # read dictionary from file
     {"a": ["e", "o"], "b": ["p", "v"]}
     >>> remove(path)  # delete the test file again
@@ -559,7 +560,7 @@ source_language=1, target_language=2, mode="reconstruct")
         [{'#x': ['-'], '-#': ['-'], 'y': ['a'], 'z#': ['bc']}, \
 {'#x<*-': 1, '-#<*-': 1, 'y<*a': 1, 'z#<*bc': 1}, \
 {'#x<*-': [1], '-#<*-': [1], 'y<*a': [1], 'z#<*bc': [1]}, {}, {}, {}]
-        >>> literal_eval(open(path2scdict, "r").read())
+        >>> literal_eval(open(path2scdict, "r", encoding="utf-8").read())
         [{'#x': ['-'], '-#': ['-'], 'y': ['a'], 'z#': ['bc']}, \
 {'#x<*-': 1, '-#<*-': 1, 'y<*a': 1, 'z#<*bc': 1}, \
 {'#x<*-': [1], '-#<*-': [1], 'y<*a': [1], 'z#<*bc': [1]}, {}, {}, {}]
@@ -690,7 +691,7 @@ target_language=2)
 target_language=2, mode="reconstruct")
         >>> qfy_obj.get_phonotactics_corresp(write_to=path2scdict)
         [{'VCC': ['CVC']}, {'VCC<*CVC': 1}, {'VCC<*CVC': [1]}]
-        >>> literal_eval(open(path2scdict, "r").read())
+        >>> literal_eval(open(path2scdict, "r", encoding="utf-8").read())
         [{'VCC': ['CVC']}, {'VCC<*CVC': 1}, {'VCC<*CVC': [1]}]
         >>> remove(path2scdict)
 

@@ -491,7 +491,7 @@ def test_get_noncrossval_sc():
     # run function
     adrc_obj_out = get_noncrossval_sc(adrc_obj, path2noncrossval)
     # read and assert result
-    out = literal_eval(open(path2noncrossval).read())
+    out = literal_eval(open(path2noncrossval, encoding="utf-8").read())
     # phonotactic inventory has randomness
     assert set(out.pop(3)) == {'VCVC', 'VCVCV', 'VCCVC'}
     assert out == [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'],
@@ -620,7 +620,8 @@ def test_get_crossval_data():
         'ɣ<*t͡ʃ': 1}
     assert adrc_obj_out.scdict_phonotactics == {}
     # assert file written correctly
-    assert literal_eval(open(path2outfolder / "sc2isolated.txt").read()) == [
+    assert literal_eval(open(path2outfolder / "sc2isolated.txt",
+                        encoding="utf-8").read()) == [
         {'#-': ['-'], '#a': ['aː'], 'a': ['uː'], 'at͡ʃi#': ['-'],
          'ld': ['ɟ'], 'ɣ': ['t͡ʃ'], 'ɣ#': ['-']},
         {'#-<*-': 2, '#a<*aː': 2, 'a<*uː': 1,

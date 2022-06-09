@@ -26,7 +26,7 @@ def test_read_scdictlist():
     dict1 = {"dict1": "cső"}
     out = [dict0, dict1, dict0, dict1]
     path = Path(__file__).parent / "test_read_scdictlist.txt"
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         f.write(str(out))
 
     # set up: mock literal_eval
