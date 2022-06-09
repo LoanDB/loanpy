@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/428920599.svg)](https://zenodo.org/record/6628976) [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://app.circleci.com/pipelines/github/martino-vic/loanpy/7/workflows/11df30f3-5e69-4a35-8d82-2e1fae5d248d/jobs/7)
+
 Installation
 ============
 
@@ -13,7 +15,7 @@ https://martino-vic.github.io/loanpy/documentation.html
 Citation
 ==========
 
-https://zenodo.org/record/4127115#.YHCQwej7SLQ
+https://zenodo.org/record/6628976
 
 License
 ==========
