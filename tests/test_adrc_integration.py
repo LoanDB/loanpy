@@ -27,7 +27,7 @@ def test_read_scdictlist():
     dict1 = {"dict1": "cső"}
     out = [dict0, dict1, dict0, dict1]
     PATH2SC_TEST = Path(__file__).parent / "test_read_scdictlist.txt"
-    with open(PATH2SC_TEST, "w") as f:
+    with open(PATH2SC_TEST, "w", encoding="utf-8") as f:
         f.write(str(out))
 
     # assert mock dict list is read in correctly

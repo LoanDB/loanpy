@@ -108,7 +108,7 @@ the second defining front and back vowels (fb).
     (two dictionaries of length 6358 and 1240)
 
     """
-    
+
     path = Path(__file__).parent / "cvfb.txt"
     with open(path, "r", encoding="utf-8") as f:
         cvfb = literal_eval(f.read())
@@ -1599,5 +1599,5 @@ def make_cvfb(path2ipa_all, path2out):
         if vow2fb0[i]:
             vow2fb[i] = vow2fb0[i]
 
-    with open(path2out, "w") as f:
+    with open(path2out, "w", encoding="utf-8") as f:
         f.write(str((phon2cv, vow2fb)))

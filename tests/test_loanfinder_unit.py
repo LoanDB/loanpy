@@ -650,7 +650,7 @@ postprocessed,mwr\nkiki,99,edge,sharp,0.8,postprobla,mwrbla\n'
                         merge_with_rest=True),
                     exp2)
                 # assert file was written correctly
-                with open(path, "r") as f:
+                with open(path, "r", encoding="utf-8") as f:
                     assert f.read() == exp_read
 
     # assert mocked pandas.read_csv was called with the right args

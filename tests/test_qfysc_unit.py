@@ -126,7 +126,7 @@ def test_read_scdictbase():
     # setup
     base = {"a": ["e", "o"], "b": ["p", "v"]}
     path = Path(__file__).parent / "test_read_scdictbase.txt"
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         f.write(str(base))
 
     with patch("loanpy.qfysc.literal_eval") as literal_eval_mock:
@@ -353,7 +353,7 @@ def test_get_sound_corresp():
             self=mockqfy2,
             write_to=path2test_get_sound_corresp) == exp2
         # assert that file was written
-        with open(path2test_get_sound_corresp, "r") as f:
+        with open(path2test_get_sound_corresp, "r", encoding="utf-8") as f:
             assert literal_eval(f.read()) == exp2
 
         # assert calls from assert while mode == "adapt"
@@ -426,7 +426,8 @@ def test_get_phonotactics_corresp():
         assert Qfy.get_phonotactics_corresp(
             self=mockqfy, write_to=path2test_get_phonotactics_corresp) == exp
         # assert file was written
-        with open(path2test_get_phonotactics_corresp, "r") as f:
+        with open(path2test_get_phonotactics_corresp, "r",
+                  encoding="utf-8") as f:
             assert literal_eval(f.read()) == exp
 
     # assert calls
