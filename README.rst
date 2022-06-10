@@ -4,7 +4,7 @@
 |ImageLink|_
 
 .. |ImageLink| image:: https://circleci.com/gh/circleci/circleci-docs.svg?style=svg
-.. _ImageLink: https://app.circleci.com/pipelines/github/martino-vic/loanpy/7/workflows/11df30f3-5e69-4a35-8d82-2e1fae5d248d/jobs/7
+.. _ImageLink: https://app.circleci.com/pipelines/github/martino-vic/loanpy?branch=2.0-beta&filter=all
 
 Installation
 ============
