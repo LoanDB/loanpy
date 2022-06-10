@@ -402,7 +402,7 @@ gets flipped internally.)
         """
         pw = Pairwise(seqs=left, seqB=right, merge_vowels=False)
         pw.align()
-        leftright = [i.split("\t") for i in str(pw).split("\n")[:-1]]
+        leftright = [pw.alignments[0], pw.alignments[1]]
         leftright[0] = ["C" if new == "-" and self.phon2cv.get(old, "") == "C"
                         else "V" if (new == "-" and
                                      self.phon2cv.get(old, "")) == "V"
