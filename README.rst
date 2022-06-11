@@ -1,3 +1,11 @@
+.. image:: https://zenodo.org/badge/428920599.svg
+   :target: https://zenodo.org/record/6628976
+
+|ImageLink|_
+
+.. |ImageLink| image:: https://circleci.com/gh/circleci/circleci-docs.svg?style=svg
+.. _ImageLink: https://app.circleci.com/pipelines/github/martino-vic/loanpy?branch=2.0-beta&filter=all
+
 Installation
 ============
 
@@ -13,7 +21,7 @@ https://martino-vic.github.io/loanpy/documentation.html
 Citation
 ==========
 
-https://zenodo.org/record/4127115#.YHCQwej7SLQ
+https://zenodo.org/record/6628976
 
 License
 ==========
