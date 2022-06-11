@@ -14,9 +14,9 @@ jobs:
           command: choco install python --version=3.9.12
 
       - run:
-          name: "Install Deps"
+          name: "Install dependencies"
           command: pip install --user -r requirements.txt
 
       - run:
-          name: "python/test"
+          name: "Run unit and integration tests"
           command: python -m pytest
