@@ -102,3 +102,4 @@ Dependencies
     unicodecsv==0.14.1
     uritemplate==4.1.1
     pytest==7.1.2
+    loanpy==2.0.2
