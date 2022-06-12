@@ -50,7 +50,8 @@ def test_read_cvfb():
 
     # verify that the dict is actually based on ipa_all.csv
     # and that "C" corresponds to "+" and "V" "-" in col "ipa".
-    dfipa = read_csv(Path(__file__).parent.parent / "ipa_all.csv")
+    dfipa = read_csv(Path(__file__).parent.parent / "\
+src" / "loanpy"/ "ipa_all.csv")
     for i, c in zip(dfipa.ipa, dfipa.cons):
         if c == "+":
             assert cvfb[0][i] == "C"
