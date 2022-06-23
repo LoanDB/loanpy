@@ -25,7 +25,7 @@ from pandas import DataFrame, concat, read_csv
 from panphon.distance import Distance
 from tqdm import tqdm
 
-from loanpy.helpers import Etym, get_howmany
+from loanpy.helpers import Etym, get_howmany, prosodic_string
 from loanpy.adrc import Adrc
 
 BANNED = ["KeyError", "not old", "wrong phonotactics",
@@ -1171,7 +1171,7 @@ def phonotactics_predicted(adrc_obj):
     try:
         adrc_obj.dfety[
             "phonotactics_predicted"] = [True if
-                                         adrc_obj.word2phonotactics(actual)
+                                         prosodic_string(actual)
                                          in pred else False for actual, pred
                                          in zip(adrc_obj.dfety["Target_Form"],
                                                 adrc_obj.dfety[

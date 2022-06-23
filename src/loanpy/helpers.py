@@ -15,6 +15,7 @@ from pathlib import Path
 
 from gensim.downloader import load
 from ipatok import clusterise, tokenise
+from linpgy import prosodic_string
 from networkx import DiGraph, all_shortest_paths, shortest_path
 from numpy import array_equiv, isnan, subtract, zeros
 from pandas import DataFrame, read_csv
@@ -25,6 +26,7 @@ logger = getLogger(__name__)
 model = None
 tokenise = partial(tokenise, replace=True)
 clusterise = partial(clusterise, replace=True)
+prosodic_string = partial(prosodic_string, _output="cv")
 
 
 class InventoryMissingError(Exception):
@@ -610,7 +612,7 @@ much data is available, therefore this has to be done manually.
             return phonotactic_inventory
         if self.forms_target_language is None:
             return None
-        strucs = list(map(self.word2phonotactics, self.forms_target_language))
+        strucs = list(map(prosodic_string, self.forms_target_language))
         if howmany == 9999999:
             return set(strucs)
         if print_entire_inv is True:
