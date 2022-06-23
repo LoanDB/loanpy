@@ -14,6 +14,10 @@ jobs:
           command: choco install python --version=3.9.12
 
       - run:
+          name: "Install newest version of loanpy from git"
+          command: pip install git+https://github.com/martino-vic/loanpy/tree/2.0-beta
+
+      - run:
           name: "Install dependencies"
           command: pip install --user -r requirements.txt
 
