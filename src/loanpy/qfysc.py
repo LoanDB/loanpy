@@ -12,6 +12,7 @@ from pandas import DataFrame, concat
 from tqdm import tqdm
 
 from loanpy.helpers import Etym, clusterise, tokenise
+from loanpy.helpers import prosodic_string  # functool.partial included!
 
 
 class WrongModeError(Exception):
@@ -698,8 +699,8 @@ target_language=2, mode="reconstruct")
         """
 
         # get the phonotactic profile of both strings
-        keys = [self.word2phonotactics(i) for i in self.dfety["Source_Form"]]
-        vals = [self.word2phonotactics(i) for i in self.dfety["Target_Form"]]
+        keys = [prosodic_string(i) for i in self.dfety["Source_Form"]]
+        vals = [prosodic_string(i) for i in self.dfety["Target_Form"]]
         wordchange = self.dfety["Cognacy"]
 
         # create one big data frame out of structural changes
