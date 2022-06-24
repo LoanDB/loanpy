@@ -56,7 +56,7 @@ and historical reconstructions',
           ],
   extras_require={
   "test": ["pytest==7.1.2"], "dev": ["wheel", "twine", "sphinx"]
-  }
+  },
   keywords=['borrowing detection',
             'computational linguistics',
             'loanword adaptation',
