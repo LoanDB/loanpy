@@ -72,8 +72,7 @@ and historical reconstructions',
     'Natural Language :: English',
     'Operating System :: OS Independent',
     'Programming Language :: Python :: 3.9'
-  ]
-
+  ],
 
   url='https://github.com/martino-vic/loanpy',
   download_url='https://github.com/martino-vic/loanpy/archive/v.2.0-beta.tar.gz',
