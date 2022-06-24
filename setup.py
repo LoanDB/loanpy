@@ -9,7 +9,7 @@ setup(
   name='loanpy',
   description='a linguistic toolkit for predicting loanword adaptation \
 and historical reconstructions',
-  long_description=("README.rst").read(),
+  long_description=open("README.rst").read(),
   author='Viktor Martinović',
   author_email='viktor.martinovic@hotmail.com',
   version='2.0.3',
