@@ -14,8 +14,8 @@ setup(
   url='https://github.com/martino-vic/loanpy',
   download_url='https://github.com/martino-vic/loanpy/archive/v.2.0-beta.tar.gz',    # I explain this later on
   keywords=['linguistics', 'loanword', 'historical', 'Hungarian'],
-  package_data={"loanpy": ["*", "tests/*",
-  "tests/output_files/*", "tests/input_files/*", "tests/expected_files/*"]},
+#  package_data={"loanpy": ["*", "tests/*",
+#  "tests/output_files/*", "tests/input_files/*", "tests/expected_files/*"]},
   setup_requires=['pytest-runner'],
   tests_require=['pytest', 'flake8'],
   install_requires=[
