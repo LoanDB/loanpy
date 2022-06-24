@@ -13,7 +13,7 @@ and historical reconstructions',
   author='Viktor Martinović',
   author_email='viktor.martinovic@hotmail.com',
   version='2.0.3',
-  packages=find_packages(where="src")
+  packages=find_packages(where="src"),
   package_dir={"": "src"}
   install_requires=[
     "appdirs==1.4.4",
