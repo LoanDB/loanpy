@@ -1,4 +1,8 @@
-from distutils.core import setup
+"""
+Setup-Script for loanpy
+"""
+
+from setuptools import setup, find_packages
 from pathlib import Path
 
 setup(
