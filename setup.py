@@ -15,7 +15,6 @@ and historical reconstructions',
   version='2.0.3',
   packages=find_packages(where="src"),
   package_dir={"": "src"},
-  package_data={"loanpy": ["src/loanpy/*"},
   install_requires=[
     "appdirs==1.4.4",
     "attrs==21.4.0",
@@ -78,5 +77,7 @@ and historical reconstructions',
   url='https://github.com/martino-vic/loanpy',
   download_url='https://github.com/martino-vic/loanpy/archive/v.2.0-beta.tar.gz',
   license='afl-3.0',  # https://help.github.com/articles/licensing-a-repository
-  platforms=["unix", "linux", "windows"]
+  platforms=["unix", "linux", "windows"],
+  include_package_data=True,
+  exclude_package_data={},
 )
