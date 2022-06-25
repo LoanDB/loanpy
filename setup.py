@@ -15,6 +15,7 @@ and historical reconstructions',
   version='2.0.3',
   packages=find_packages(where="src"),
   package_dir={"": "src"},
+  package_data={"loanpy": ["src/loanpy/*"},
   install_requires=[
     "appdirs==1.4.4",
     "attrs==21.4.0",
