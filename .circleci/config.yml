@@ -15,7 +15,7 @@ jobs:
 
       - run:
           name: "Install newest version of loanpy from git"
-          command: pip install git+https://github.com/martino-vic/loanpy/tree/2.0-beta
+          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0-beta
 
       - run:
           name: "Install dependencies"
