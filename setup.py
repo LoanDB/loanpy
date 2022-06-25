@@ -79,5 +79,5 @@ and historical reconstructions',
   license='afl-3.0',  # https://help.github.com/articles/licensing-a-repository
   platforms=["unix", "linux", "windows"],
   include_package_data=True,
-  exclude_package_data={},
+  exclude_package_data={}, 
 )
