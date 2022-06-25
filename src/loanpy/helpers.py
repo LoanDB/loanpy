@@ -15,7 +15,7 @@ from pathlib import Path
 
 from gensim.downloader import load
 from ipatok import clusterise, tokenise
-from linpgy import prosodic_string
+from lingpy import prosodic_string
 from networkx import DiGraph, all_shortest_paths, shortest_path
 from numpy import array_equiv, isnan, subtract, zeros
 from pandas import DataFrame, read_csv
