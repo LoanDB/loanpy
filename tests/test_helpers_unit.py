@@ -416,9 +416,9 @@ def test_read_phonotactic_inv():
                 ["VV", "VC", "VC", "CC", "CC", "CC"])
             self.called_with = []
 
-        def word2phonotactics(self, word):
-            self.called_with.append(word)
-            return next(self.phonotactics_readstrucinv)
+    #    def word2phonotactics(self, word):
+    #        self.called_with.append(word)
+    #        return next(self.phonotactics_readstrucinv)
 
     # set up rest
     mocketym = EtymMonkeyReadstrucinv()
@@ -432,11 +432,14 @@ def test_read_phonotactic_inv():
     mocketym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
     # now just read the most frquent 2 structures. VV is the 3rd frquent. so
     # not in the output.
-    assert Etym.read_phonotactic_inv(self=mocketym, phonotactic_inventory=None,
+    with patch("loanpy.helpers.prosodic_string",
+        side_effect=["VV", "VC", "VC", "CC", "CC", "CC"]) as prosodic_string_mock:
+        assert Etym.read_phonotactic_inv(self=mocketym, phonotactic_inventory=None,
                                      howmany=2) == {"CC", "VC"}
 
     # assert calls
-    assert mocketym.called_with == mocketym.forms_target_language
+    prosodic_string_mock.assert_has_calls(
+        list(map(call, mocketym.forms_target_language)))
 
     # tear down
     del mocketym, EtymMonkeyReadstrucinv
