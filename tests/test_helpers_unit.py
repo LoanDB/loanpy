@@ -412,13 +412,6 @@ def test_read_phonotactic_inv():
     class EtymMonkeyReadstrucinv:
         def __init__(self):
             self.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
-            self.phonotactics_readstrucinv = iter(
-                ["VV", "VC", "VC", "CC", "CC", "CC"])
-            self.called_with = []
-
-    #    def word2phonotactics(self, word):
-    #        self.called_with.append(word)
-    #        return next(self.phonotactics_readstrucinv)
 
     # set up rest
     mocketym = EtymMonkeyReadstrucinv()
@@ -439,7 +432,13 @@ def test_read_phonotactic_inv():
 
     # assert calls
     prosodic_string_mock.assert_has_calls(
-        list(map(call, mocketym.forms_target_language)))
+        [call(['a', 'b']),
+         call(['a', 'b']),
+         call(['a', 'a']),
+         call(['b', 'b']),
+         call(['b', 'b']),
+         call(['b', 'b'])]
+         )
 
     # tear down
     del mocketym, EtymMonkeyReadstrucinv
