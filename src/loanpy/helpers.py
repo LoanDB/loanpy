@@ -612,7 +612,7 @@ much data is available, therefore this has to be done manually.
             return phonotactic_inventory
         if self.forms_target_language is None:
             return None
-        strucs = list(map(prosodic_string, self.forms_target_language))
+        strucs = [prosodic_string(tokenise(i)) for i in self.forms_target_language]
         if howmany == 9999999:
             return set(strucs)
         if print_entire_inv is True:
