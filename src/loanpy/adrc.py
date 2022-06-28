@@ -494,7 +494,7 @@ vowelharmony_filter=True)  \
 
         # apply first filter if indicated (wrong phontactics out)
         if phonotactics_filter is True:
-            out = [i for i in out if prosodic_string(i) in
+            out = [i for i in out if prosodic_string(tokenise(i)) in
                    self.phonotactic_inventory]
             if out == []:
                 return "wrong phonotactics"
@@ -599,6 +599,7 @@ show_workflow=True)
         if max_repaired_phonotactics == 0:
             return [ipastr]
         donorstruc = prosodic_string(ipastr)
+
         # append to workflow if indicated, to check if this went correctly
         if show_workflow:
             self.workflow["donor_phonotactics"] = str(donorstruc)
@@ -855,7 +856,7 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         # phonotactics repaired, still: 1 phoneme can correspond to +-1 phoneme
         # structure not in target lg's phonotactic inventory
         if phonotactics_filter:
-            out = [i for i in out if prosodic_string(i)
+            out = [i for i in out if prosodic_string(tokenise(i))
                    in self.phonotactic_inventory]
             #  indicate empty filter and return if necessary
             if out == []:
