@@ -383,34 +383,77 @@ def test_repair_phonotactics():
                                               ['k', 'i', 'k', 'C', 'i']]
 
     # test with different input strings now
+    # prosodic_string: j=C except when between two Cs then it's V
+    # so "alkjpqf" is"VCCVCCC" but "ja" would be "CV"
+    # same story with "r, m, n, w" btw.
     assert adrc_inst.repair_phonotactics(
         ipastr="alkjpqf", max_repaired_phonotactics=5, show_workflow=True) == [
         [
-            'a', 'l', 'k', 'V', 'j'], [
+            'a', 'l', 'k', 'j', 'f'], [
+                'a', 'l', 'j', 'f'], [
+                    'a', 'l', 'V', 'k', 'j']]
+    assert adrc_inst.workflow == OrderedDict(
+        [('donor_phonotactics', 'VCCVCCC'),
+         ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
+
+    # same input str, higher max_rep.ph., add max_p2rep.
+    assert adrc_inst.repair_phonotactics(ipastr="alkjpqf",
+                                        max_repaired_phonotactics=10,
+                                        max_paths2repaired_phonotactics=10,
+                                        show_workflow=True) == [
+                                             ['a', 'l', 'k', 'j', 'f'],
+                                             ['a', 'l', 'k', 'j', 'q'],
+                                             ['a', 'l', 'k', 'j', 'p'],
+                                             ['a', 'k', 'j', 'f'],
+                                             ['a', 'k', 'j', 'q'],
+                                             ['a', 'k', 'j', 'p'],
+                                             ['a', 'l', 'j', 'f'],
+                                             ['a', 'l', 'j', 'q'],
+                                             ['a', 'l', 'j', 'p'],
+                                             ['a', 'k', 'j', 'f', 'V'],
+                                             ['a', 'k', 'j', 'q', 'V'],
+                                             ['a', 'k', 'j', 'p', 'V'],
+                                             ['a', 'k', 'j', 'p', 'V'],
+                                             ['a', 'k', 'j', 'p', 'V'],
+                                             ['a', 'l', 'j', 'f', 'V'],
+                                             ['a', 'l', 'j', 'q', 'V'],
+                                             ['a', 'l', 'j', 'p', 'V'],
+                                             ['a', 'l', 'j', 'p', 'V'],
+                                             ['a', 'l', 'j', 'p', 'V']
+                                        ]
+    assert adrc_inst.workflow == OrderedDict(
+        [('donor_phonotactics', 'VCCVCCC'),
+         ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
+
+    # almost same input str, just "j" replaced by "t" so it's always "C"
+    assert adrc_inst.repair_phonotactics(
+        ipastr="alktpqf", max_repaired_phonotactics=5, show_workflow=True) == [
+        [
+            'a', 'l', 'k', 'V', 't'], [
                 'a', 'l', 'V', 'f'], [
                     'a', 'l', 'V', 'f', 'V']]
     assert adrc_inst.workflow == OrderedDict(
         [('donor_phonotactics', 'VCCCCCC'),
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
-    assert adrc_inst.repair_phonotactics(ipastr="alkjpqf",
+    assert adrc_inst.repair_phonotactics(ipastr="alktpqf",
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10,
                                         show_workflow=True) == [
-        ['a', 'p', 'q', 'V', 'f'], ['a', 'j', 'q', 'V', 'f'],
-        ['a', 'j', 'p', 'V', 'f'], ['a', 'j', 'p', 'V', 'q'],
+        ['a', 'p', 'q', 'V', 'f'], ['a', 't', 'q', 'V', 'f'],
+        ['a', 't', 'p', 'V', 'f'], ['a', 't', 'p', 'V', 'q'],
         ['a', 'k', 'q', 'V', 'f'], ['a', 'k', 'p', 'V', 'f'],
-        ['a', 'k', 'p', 'V', 'q'], ['a', 'k', 'j', 'V', 'f'],
-        ['a', 'k', 'j', 'V', 'q'], ['a', 'k', 'j', 'V', 'q'],
+        ['a', 'k', 'p', 'V', 'q'], ['a', 'k', 't', 'V', 'f'],
+        ['a', 'k', 't', 'V', 'q'], ['a', 'k', 't', 'V', 'q'],
         ['a', 'q', 'V', 'f'], ['a', 'p', 'V', 'f'], ['a', 'p', 'V', 'q'],
-        ['a', 'j', 'V', 'f'], ['a', 'j', 'V', 'q'], ['a', 'j', 'V', 'q'],
-        ['a', 'j', 'V', 'f'], ['a', 'j', 'V', 'p'], ['a', 'k', 'V', 'f'],
+        ['a', 't', 'V', 'f'], ['a', 't', 'V', 'q'], ['a', 't', 'V', 'q'],
+        ['a', 't', 'V', 'f'], ['a', 't', 'V', 'p'], ['a', 'k', 'V', 'f'],
         ['a', 'k', 'V', 'q'], ['a', 'q', 'V', 'f', 'V'],
         ['a', 'p', 'V', 'f', 'V'],
-        ['a', 'p', 'V', 'q', 'V'], ['a', 'j', 'V', 'f', 'V'],
-        ['a', 'j', 'V', 'q', 'V'], ['a', 'j', 'V', 'q', 'V'],
-        ['a', 'j', 'V', 'f', 'V'], ['a', 'j', 'V', 'p', 'V'],
-        ['a', 'j', 'V', 'p', 'V'], ['a', 'j', 'V', 'p', 'V']]
+        ['a', 'p', 'V', 'q', 'V'], ['a', 't', 'V', 'f', 'V'],
+        ['a', 't', 'V', 'q', 'V'], ['a', 't', 'V', 'q', 'V'],
+        ['a', 't', 'V', 'f', 'V'], ['a', 't', 'V', 'p', 'V'],
+        ['a', 't', 'V', 'p', 'V'], ['a', 't', 'V', 'p', 'V']]
     assert adrc_inst.workflow == OrderedDict(
         [('donor_phonotactics', 'VCCCCCC'),
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
@@ -507,27 +550,59 @@ def test_repair_phonotactics():
     # test with different input strings now
     assert adrc_inst.repair_phonotactics(
         ipastr="alkjpqf", max_repaired_phonotactics=5) == [
-        ['a', 'l', 'k', 'V', 'j'], ['a', 'l', 'V', 'f'],
+        ['a', 'l', 'k', 'j', 'f'], ['a', 'l', 'j', 'f'],
+        ['a', 'l', 'V', 'k', 'j']]
+
+    # almost same as before, just "j" replaced with "t" so it's always "C"
+    assert adrc_inst.repair_phonotactics(
+        ipastr="alktpqf", max_repaired_phonotactics=5) == [
+        ['a', 'l', 'k', 'V', 't'], ['a', 'l', 'V', 'f'],
         ['a', 'l', 'V', 'f', 'V']]
 
     assert adrc_inst.repair_phonotactics(ipastr="alkjpqf",
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10
                                         ) == [
-        ['a', 'p', 'q', 'V', 'f'], ['a', 'j', 'q', 'V', 'f'],
-        ['a', 'j', 'p', 'V', 'f'], ['a', 'j', 'p', 'V', 'q'],
+                                         ['a', 'l', 'k', 'j', 'f'],
+                                         ['a', 'l', 'k', 'j', 'q'],
+                                         ['a', 'l', 'k', 'j', 'p'],
+                                         ['a', 'k', 'j', 'f'],
+                                         ['a', 'k', 'j', 'q'],
+                                         ['a', 'k', 'j', 'p'],
+                                         ['a', 'l', 'j', 'f'],
+                                         ['a', 'l', 'j', 'q'],
+                                         ['a', 'l', 'j', 'p'],
+                                         ['a', 'k', 'j', 'f', 'V'],
+                                         ['a', 'k', 'j', 'q', 'V'],
+                                         ['a', 'k', 'j', 'p', 'V'],
+                                         ['a', 'k', 'j', 'p', 'V'],
+                                         ['a', 'k', 'j', 'p', 'V'],
+                                         ['a', 'l', 'j', 'f', 'V'],
+                                         ['a', 'l', 'j', 'q', 'V'],
+                                         ['a', 'l', 'j', 'p', 'V'],
+                                         ['a', 'l', 'j', 'p', 'V'],
+                                         ['a', 'l', 'j', 'p', 'V']]
+
+
+    # almost same as before, just "j" replaced with "t" so it's always "C"
+    assert adrc_inst.repair_phonotactics(ipastr="alktpqf",
+                                        max_repaired_phonotactics=10,
+                                        max_paths2repaired_phonotactics=10
+                                        ) == [
+        ['a', 'p', 'q', 'V', 'f'], ['a', 't', 'q', 'V', 'f'],
+        ['a', 't', 'p', 'V', 'f'], ['a', 't', 'p', 'V', 'q'],
         ['a', 'k', 'q', 'V', 'f'], ['a', 'k', 'p', 'V', 'f'],
-        ['a', 'k', 'p', 'V', 'q'], ['a', 'k', 'j', 'V', 'f'],
-        ['a', 'k', 'j', 'V', 'q'], ['a', 'k', 'j', 'V', 'q'],
+        ['a', 'k', 'p', 'V', 'q'], ['a', 'k', 't', 'V', 'f'],
+        ['a', 'k', 't', 'V', 'q'], ['a', 'k', 't', 'V', 'q'],
         ['a', 'q', 'V', 'f'], ['a', 'p', 'V', 'f'], ['a', 'p', 'V', 'q'],
-        ['a', 'j', 'V', 'f'], ['a', 'j', 'V', 'q'], ['a', 'j', 'V', 'q'],
-        ['a', 'j', 'V', 'f'], ['a', 'j', 'V', 'p'], ['a', 'k', 'V', 'f'],
+        ['a', 't', 'V', 'f'], ['a', 't', 'V', 'q'], ['a', 't', 'V', 'q'],
+        ['a', 't', 'V', 'f'], ['a', 't', 'V', 'p'], ['a', 'k', 'V', 'f'],
         ['a', 'k', 'V', 'q'], ['a', 'q', 'V', 'f', 'V'],
         ['a', 'p', 'V', 'f', 'V'],
-        ['a', 'p', 'V', 'q', 'V'], ['a', 'j', 'V', 'f', 'V'],
-        ['a', 'j', 'V', 'q', 'V'], ['a', 'j', 'V', 'q', 'V'],
-        ['a', 'j', 'V', 'f', 'V'], ['a', 'j', 'V', 'p', 'V'],
-        ['a', 'j', 'V', 'p', 'V'], ['a', 'j', 'V', 'p', 'V']]
+        ['a', 'p', 'V', 'q', 'V'], ['a', 't', 'V', 'f', 'V'],
+        ['a', 't', 'V', 'q', 'V'], ['a', 't', 'V', 'q', 'V'],
+        ['a', 't', 'V', 'f', 'V'], ['a', 't', 'V', 'p', 'V'],
+        ['a', 't', 'V', 'p', 'V'], ['a', 't', 'V', 'p', 'V']]
 
     assert adrc_inst.repair_phonotactics(
         ipastr="aaa", max_repaired_phonotactics=10,

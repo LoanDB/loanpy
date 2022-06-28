@@ -905,9 +905,16 @@ def test_phonotactics_predicted():
 
     adrc_monkey = AdrcMonkey()
     # assert output
-    assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
+    with patch("loanpy.sanity.tokenise",
+    side_effect=[["a", "b", "c"], ["d", "e", "f"], ["g", "h", "i"]]) as tokenise_mock:
+        with patch("loanpy.sanity.prosodic_string",
+        side_effect=["VCC", "CVC", "CCV"]) as prosodic_string_mock:
+
+            assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
     # assert call
-    assert adrc_monkey.word2phonotactics_called_with == ["abc", "def", "ghi"]
+    tokenise_mock.assert_has_calls([call("abc"), call("def"), call("ghi")])
+    prosodic_string_mock.assert_has_calls(
+    [call(["a", "b", "c"]), call(["d", "e", "f"]), call(["g", "h", "i"])])
 
     # test break - return input if KeyError, i.e. if col is missing from df
     adrc_monkey = AdrcMonkey()

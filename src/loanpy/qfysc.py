@@ -403,7 +403,8 @@ gets flipped internally.)
         """
         pw = Pairwise(seqs=left, seqB=right, merge_vowels=False)
         pw.align()
-        leftright = [pw.alignments[0], pw.alignments[1]]
+        print(pw.alignments)
+        leftright = [pw.alignments[0][0], pw.alignments[0][1]]
         leftright[0] = ["C" if new == "-" and self.phon2cv.get(old, "") == "C"
                         else "V" if (new == "-" and
                                      self.phon2cv.get(old, "")) == "V"
@@ -699,8 +700,8 @@ target_language=2, mode="reconstruct")
         """
 
         # get the phonotactic profile of both strings
-        keys = [prosodic_string(i) for i in self.dfety["Source_Form"]]
-        vals = [prosodic_string(i) for i in self.dfety["Target_Form"]]
+        keys = [prosodic_string(tokenise(i)) for i in self.dfety["Source_Form"]]
+        vals = [prosodic_string(tokenise(i)) for i in self.dfety["Target_Form"]]
         wordchange = self.dfety["Cognacy"]
 
         # create one big data frame out of structural changes

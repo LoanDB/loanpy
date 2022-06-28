@@ -29,12 +29,11 @@ class QfyMonkey:
 
 class PairwiseMonkey:
     def __init__(self, *args):
+        self.alignments = [("kala", "hal-")]
         self.align_called_with = []
 
     def align(self, *args):
         self.align_called_with.append([*args])
-
-    def __str__(self): return 'k\ta\tl\ta\nh\ta\tl\t-\n13.7'
 
 # used in multiple places
 
@@ -51,7 +50,6 @@ class QfyMonkeyGetSoundCorresp:
         self.df2 = alignreturns2
         self.align_returns = iter([self.df1, self.df2])
         self.align_called_with = []
-        self.word2phonotactics_called_with = []
         self.rank_closest_phonotactics_called_with = []
         self.dfety = DataFrame({"Target_Form": ["kiki", "buba"],
                                 "Source_Form": ["hehe", "pupa"],
@@ -75,10 +73,6 @@ class QfyMonkeyGetSoundCorresp:
     def align(self, left, right):
         self.align_called_with.append((left, right))
         return next(self.align_returns)
-
-    def word2phonotactics(self, word):
-        self.word2phonotactics_called_with.append(word)
-        return "CVCV"
 
     def rank_closest_phonotactics(self, struc):
         self.rank_closest_phonotactics_called_with.append(struc)
@@ -182,7 +176,6 @@ def test_init():
                         phonotactic_inventory=None)
                     read_mode_mock.assert_called_with("adapt")
                     read_connector_mock.assert_called_with(None, "adapt")
-                    # read_nsedict_mock.assert_called_with(None)
                     read_scdictbase_mock.assert_called_with(None)
 
     # tear down
@@ -359,7 +352,6 @@ def test_get_sound_corresp():
         # assert calls from assert while mode == "adapt"
         assert mockqfy.align_called_with == [
             ("kiki", "hehe"), ("buba", "pupa")]
-        assert mockqfy.word2phonotactics_called_with == []  # not called
         assert mockqfy.rank_closest_phonotactics_called_with == []  # no called
         for act, exp in zip(
             concat_mock.call_args_list[0][0][0], [
@@ -373,7 +365,6 @@ def test_get_sound_corresp():
     # assert calls of assert while mode == "reconstruct"
     assert mockqfy2.align_called_with == [
         ("kiki", "hehe"), ("buba", "pupa")]
-    assert mockqfy2.word2phonotactics_called_with == []  # not called
     assert mockqfy2.rank_closest_phonotactics_called_with == []  # not called
     for act, exp in zip(
         concat_mock.call_args_list[1][0][0], [
@@ -418,23 +409,24 @@ def test_get_phonotactics_corresp():
         __file__).parent / "phonotctchange.txt"
 
     with patch("loanpy.qfysc.DataFrame") as DataFrame_mock:
-        DataFrame_mock.return_value = DataFrame(
-            {"keys": ["CVCV"] * 2, "vals": ["CVCV"] * 2,
-             "wordchange": [12, 13]})
+        with patch("loanpy.qfysc.prosodic_string") as prosodic_string_mock:
+            prosodic_string_mock.return_value = "CVCV"
+            DataFrame_mock.return_value = DataFrame(
+                {"keys": ["CVCV"] * 2, "vals": ["CVCV"] * 2,
+                 "wordchange": [12, 13]})
 
-        # assert
-        assert Qfy.get_phonotactics_corresp(
-            self=mockqfy, write_to=path2test_get_phonotactics_corresp) == exp
-        # assert file was written
-        with open(path2test_get_phonotactics_corresp, "r",
-                  encoding="utf-8") as f:
-            assert literal_eval(f.read()) == exp
+            # assert
+            assert Qfy.get_phonotactics_corresp(
+                self=mockqfy, write_to=path2test_get_phonotactics_corresp) == exp
+            # assert file was written
+            with open(path2test_get_phonotactics_corresp, "r",
+                      encoding="utf-8") as f:
+                assert literal_eval(f.read()) == exp
 
     # assert calls
     assert list(DataFrame_mock.call_args_list[0][0][0]) == exp_call1
     assert DataFrame_mock.call_args_list[0][1] == exp_call2
-    assert mockqfy.word2phonotactics_called_with == [
-        'hehe', 'pupa', 'kiki', 'buba']
+    prosodic_string_mock.assert_has_calls([call(list(i)) for i in ['hehe', 'pupa', 'kiki', 'buba']])
     assert mockqfy.rank_closest_phonotactics_called_with == ["CVCV"]
 
     # tear down
