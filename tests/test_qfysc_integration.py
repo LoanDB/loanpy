@@ -45,13 +45,9 @@ def test_init():
     qfy = Qfy()
 
     # assert number of attributes (super() + rest)
-    assert len(qfy.__dict__) == 12
+    assert len(qfy.__dict__) == 10
 
-    # 8 attributes inherited from Etym
-    assert isinstance(qfy.phon2cv, dict)
-    assert len(qfy.phon2cv) == 6358
-    assert isinstance(qfy.vow2fb, dict)
-    assert len(qfy.vow2fb) == 1240
+    # 6 attributes inherited from Etym
     assert qfy.dfety is None
     assert qfy.phoneme_inventory is None
     assert qfy.cluster_inventory is None

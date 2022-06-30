@@ -8,6 +8,7 @@ from functools import partial
 
 from ipatok import clusterise
 from lingpy.align.pairwise import Pairwise
+from lingpy.sequence.sound_classes import token2class
 from pandas import DataFrame, concat
 from tqdm import tqdm
 
@@ -405,14 +406,14 @@ gets flipped internally.)
         pw.align()
         print(pw.alignments)
         leftright = [pw.alignments[0][0], pw.alignments[0][1]]
-        leftright[0] = ["C" if new == "-" and self.phon2cv.get(old, "") == "C"
+        leftright[0] = ["C" if new == "-" and token2class(old, "cv") == "C"
                         else "V" if (new == "-" and
-                                     self.phon2cv.get(old, "")) == "V"
+                                     token2class(old, "cv")) == "V"
                         else new for new, old in zip(leftright[0],
                                                      leftright[1])]
-        leftright[1] = ["C" if old == "-" and self.phon2cv.get(new, "") == "C"
+        leftright[1] = ["C" if old == "-" and token2class(new, "cv") == "C"
                         else "V" if (old == "-" and
-                                     self.phon2cv.get(new, "")) == "V"
+                                     token2class(new, "cv")) == "V"
                         else old for new, old in zip(leftright[0],
                                                      leftright[1])]
 
@@ -480,14 +481,14 @@ gets flipped internally.)
         # check if e.g. the "t͡ʃː" in ["#-", "#t͡ʃːr", "o"] is a "C" or a "V":
         # note that this almost never happens in our current data
         # only imad-vimad, öt-wöt, etc
-        if (self.phon2cv[tokenise(keys[1][1:])[0]] == "V" and
-                self.phon2cv[tokenise(vals[1])[0]] == "C"):
-                vals = vals[1:]
+        if (token2class(tokenise(keys[1][1:])[0], "cv") == "V" and
+                token2class(tokenise(vals[1])[0], "cv") == "C"):
+            vals = vals[1:]
         # now check if e.g.
         # the "t͡ʃː" in ["-", "t͡ʃːr", "o"] (!) is a "C" or a "V":
-        elif (self.phon2cv[tokenise(keys[1][1:])[0]] == "C" and
-                self.phon2cv[tokenise(vals[1])[0]] == "V"):
-                    keys = keys[1:]
+        elif (token2class(tokenise(keys[1][1:])[0], "cv") == "C" and
+                token2class(tokenise(vals[1])[0], "cv") == "V"):
+              keys = keys[1:]
 
         # go sequentially and squeeze the leftover together to one suffix
         # e.g. "a,b","c,d,e,f,g->"a,b,-#","c,d,efg
