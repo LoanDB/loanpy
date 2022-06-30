@@ -17,9 +17,11 @@ from loanpy.helpers import (
     editops,
     flatten,
     get_howmany,
+    has_harmony,
     list2regex,
     pick_minmax,
     prosodic_string,
+    repair_harmony,
     tokenise)
 from loanpy.qfysc import Qfy
 
@@ -501,7 +503,7 @@ vowelharmony_filter=True)  \
 
         # apply 2nd filter if indicated (wrong vowelharmony_filter out)
         if vowelharmony_filter is True:
-            out = [i for i in out if self.has_harmony(i)]
+            out = [i for i in out if has_harmony(i)]
             if out == []:
                 return "wrong vowel harmony"
 
@@ -838,7 +840,7 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
             self.workflow["adapted_phonotactics"] = str(out)
 
         if repair_vowelharmony:  # repair vowel harmony if indicated
-            out = flatten(map(self.repair_harmony, out))
+            out = flatten(map(repair_harmony, out))
             # document how repair_vowelharmony was repaired if indicated
             if show_workflow:
                 self.workflow["adapted_vowelharmony"] = str(out)

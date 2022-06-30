@@ -17,14 +17,17 @@ from loanpy.helpers import (
     InventoryMissingError,
     cldf2pd,
     editops,
+    get_front_back_vowels,
     gensim_multiword,
     get_mtx,
+    has_harmony,
     combine_ipalists,
     clusterise,
     mtx2graph,
     read_cvfb,
     read_dst,
     read_forms,
+    repair_harmony,
     tuples2editops)
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms.csv"
@@ -302,49 +305,44 @@ def test_word2phonotactics_keepcv():
     del etym
 
 
-def test_harmony():
+def test_has_harmony():
     """Test if it is detected correctly whether a word does or does not
     have front-back vowel harmony"""
-    etym = Etym()
-    assert etym.has_harmony(
+    assert has_harmony(
         ['b', 'o', 't͡s', 'i', 'b', 'o', 't͡s', 'i']) is False
-    assert etym.has_harmony("bot͡sibot͡si") is False
-    assert etym.has_harmony("tɒrkɒ") is True
-    assert etym.has_harmony("ʃɛfylɛʃɛ") is True
-    del etym
+    assert has_harmony("bot͡sibot͡si") is False
+    assert has_harmony("tɒrkɒ") is True
+    assert has_harmony("ʃɛfylɛʃɛ") is True
 
 
 def test_repair_harmony():
     """test if words without front-back vowel harmony are repaired correctly"""
-    etym = Etym()
-    assert etym.repair_harmony(ipalist='kɛsthɛj') == [
+    assert repair_harmony('kɛsthɛj') == [
         ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
-    assert etym.repair_harmony(ipalist='ɒlʃoːørʃ') == [
+    assert repair_harmony('ɒlʃoːørʃ') == [
         ['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
-    assert etym.repair_harmony(ipalist=[
+    assert repair_harmony([
         'b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p']) == [
         ['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
-    assert etym.repair_harmony(ipalist='bɒlɒtonkɛnɛʃɛ') == [
+    assert repair_harmony('bɒlɒtonkɛnɛʃɛ') == [
         ['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'],
         ['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
-    del etym
 
 
-def test_get_fb():
+def test_get_front_back_vowels():
     """test if front and back vowels are fetched correctly"""
-    etym = Etym()
-    assert etym.get_fb(ipalist=['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']) == [
-        'k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']
-    assert etym.get_fb(ipalist=[
-        'ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'], turnto="B") == [
-        'ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']
-    assert etym.get_fb(['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n',
-                        'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], "B") == [
-        'b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']
-    assert etym.get_fb(['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n',
-                        'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], "F") == [
-        'b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ']
-    del etym
+    assert get_front_back_vowels(['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']) == [
+        'k', 'F', 's', 't', 'h', 'F', 'j']
+    assert get_front_back_vowels([
+    'ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ']) == [
+    'B', 'l', 'ʃ', 'B', 'F', 'r', 'ʃ']
+    assert get_front_back_vowels(['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n',
+                        'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ']) == [
+        'b', 'B', 'l', 'B', 't', 'B', 'n', 'k', 'F', 'n', 'F', 'ʃ', 'F']
+    assert get_front_back_vowels(['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n',
+                        'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ']) == [
+                        'b', 'B', 'l', 'B', 't', 'B', 'n',
+                            'k', 'F', 'n', 'F', 'ʃ', 'F']
 
 
 def test_get_scdictbase():

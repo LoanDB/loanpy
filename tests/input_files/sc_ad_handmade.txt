@@ -7,5 +7,5 @@
 {'a<a': [0], 'a<e': [0], 'a<i': [0, 1], 'a<o': [0, 1], 'a<u': [0, 1, 2],
 'd<d': [1, 2], 'd<tʰ': [0, 2], 'd<t': [0], 'd<tː': [2],
 'e<y': [3], 'e<u': [0, 2], 'e<e': [3]},
-{"CVCV": ["CVC", "CVCCV"]}, {"CVCV<CVC": 5, "CVCV<CVCCV": 5}
+{"CVCV": ["CVC", "CVCCV"], "CVCVCV": ["CVCVCV", "CVC"]}, {"CVCV<CVC": 5, "CVCV<CVCCV": 5, "CVCVCV<CVCVCV": 1, "CVCVCV<CVC": 2}
 ]
