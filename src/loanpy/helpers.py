@@ -16,6 +16,7 @@ from pathlib import Path
 from gensim.downloader import load
 from ipatok import clusterise, tokenise
 from lingpy import prosodic_string
+from lingpy.sequence.sound_classes import token2class
 from networkx import DiGraph, all_shortest_paths, shortest_path
 from numpy import array_equiv, isnan, subtract, zeros
 from pandas import DataFrame, read_csv
@@ -675,111 +676,6 @@ Originally written for sanity.py but currently not used anywhere.
         return "".join([self.phon2cv.get(i, "") if i not in "CV"
                         else i for i in ipa_in])
 
-    def has_harmony(self, ipalist):
-        """
-        Called by loanpy.helpers.Etym.repair_harmony and \
-loanpy.adrc.Adrc.reconstruct. \
-Returns True if there are only front or only back vowels in a word else False.
-
-        :param ipalist: the word that should be analysed
-        :type ipalist: list of str | str
-
-        :returns: Does the word have front-back vowel harmony?
-        :rtype: bool
-
-        :Example:
-
-        >>> from loanpy import helpers
-        >>> hp = helpers.Etym()
-        >>> hp.has_harmony("bot͡sibot͡si")
-        False
-
-        >>> from loanpy import helpers
-        >>> hp = helpers.Etym()
-        >>> hp.has_harmony(["t", "ɒ", "r", "k", "ɒ"])
-        True
-
-        """
-        if isinstance(ipalist, str):
-            ipalist = tokenise(ipalist)
-        vowels = set(j for j in [self.vow2fb.get(i, "") for i in ipalist] if j)
-        return vowels in ({"F"}, {"B"}, set())
-
-    def repair_harmony(self, ipalist):
-        """
-        Called by loanpy.adrc.Adrc.adapt. \
-Counts how many front and back vowels there are in a word. If there \
-are more back than front vowels, all front vowels will be replaced by a "B", \
-if there are more front than back vowels, the back vowels will be replaced by \
-"F", and if the word has equally \
-many front as back vowels, both options will be returned.
-
-        :param ipalist: a list or a string of phonemes
-        :type ipalist: list of str | str
-
-        :returns: a tokenised word with repaired vowel harmony
-        :rtype: list of list of str
-
-        :Example:
-
-        >>> from loanpy.helpers import Etym
-        >>> hp = Etym()
-        >>> hp.repair_harmony('kɛsthɛj')
-        [['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
-        >>> hp.repair_harmony(['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'])
-        [['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
-        >>> hp.repair_harmony(['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p'])
-        [['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
-        >>> hp.repair_harmony(\
-['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'])
-        [['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], \
-['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
-
-        """
-        if isinstance(ipalist, str):
-            ipalist = tokenise(ipalist)
-
-        if self.has_harmony(ipalist) and "V" not in ipalist:
-            return [ipalist]
-
-        out = [j for j in [self.vow2fb.get(i, "") for i in ipalist] if j]
-        if out.count("F") > out.count("B"):
-            out = [self.get_fb(ipalist, turnto="F")]
-        elif out.count("B") > out.count("F"):
-            out = [self.get_fb(ipalist, turnto="B")]
-        else:
-            out = [self.get_fb(ipalist, "F"), self.get_fb(ipalist, "B")]
-
-        return out
-
-    def get_fb(self, ipalist, turnto="F"):
-        """
-        Called by loanpy.helpers.Etym.repair_harmony. \
-Turns front vowels to back ones if turnto="B", \
-but turns back vowels to front ones if turnto="F"
-
-        :param ipalist: a tokenised IPA-string
-        :type ipalist: list
-
-        :param turnto: turn back vowels to front ones or vice versa
-        :type turnto: "F" | "B", default="F"
-
-        :returns: a tokenised word with some vowels replaced by "F" or "B".
-        :rtype: list
-
-        :Example:
-
-        >>> from loanpy import helpers
-        >>> hp = helpers.Etym()
-        >>> hp.get_fb(['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'], turnto="B")
-        ['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']
-        """
-
-        checkfor = "F" if turnto == "B" else "B"
-
-        return [turnto if self.vow2fb.get(i, "") == checkfor or i == "V"
-                else i for i in ipalist]
-
     def get_scdictbase(self, write_to=None, most_common=float("inf")):
         """
         Call manually in the beginning. \
@@ -943,6 +839,79 @@ or forms.csv")
 
         strucs_and_dist = [(i, edit_distance_with2ops(struc, i)) for i in inv]
         return ", ".join(pick_minmax(strucs_and_dist, howmany))
+
+def get_front_back_vowels(segments):
+    """
+    Take a list of phonemes and replace front vowels with "F"
+    and back vowels with "B"
+    y"""
+    out = []
+    for i in segments:
+# https://en.wikipedia.org/wiki/Automated_Similarity_Judgment_Program#ASJPcode
+        fb = token2class(i, "asjp")
+        #exchange front vowels with "F" and back ones with "B".
+        if fb in "ieE":  # front vowels
+            out.append("F")
+        elif fb in "uo":  # back vowels
+            out.append("B")
+        else:
+            out.append(i)
+    #return " ".join(out)
+    return out
+
+def has_harmony(segments):
+    """if "F" AND "B" are in segments, the word has NO vowel harmony"""
+    return not all(i in get_front_back_vowels(segments) for i in "FB")
+
+def repair_harmony(ipalist):
+    """
+    Called by loanpy.adrc.Adrc.adapt. \
+Counts how many front and back vowels there are in a word. If there \
+are more back than front vowels, all front vowels will be replaced by a "B", \
+if there are more front than back vowels, the back vowels will be replaced by \
+"F", and if the word has equally \
+many front as back vowels, both options will be returned.
+
+    :param ipalist: a list or a string of phonemes
+    :type ipalist: list of str | str
+
+    :returns: a tokenised word with repaired vowel harmony
+    :rtype: list of list of str
+
+    :Example:
+
+    >>> from loanpy.helpers import Etym
+    >>> hp = Etym()
+    >>> hp.repair_harmony('kɛsthɛj')
+    [['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
+    >>> hp.repair_harmony(['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'])
+    [['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
+    >>> hp.repair_harmony(['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p'])
+    [['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
+    >>> hp.repair_harmony(\
+['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'])
+    [['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], \
+['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
+
+    """
+    if isinstance(ipalist, str):
+        ipalist = tokenise(ipalist)
+
+    if has_harmony(ipalist) and "V" not in ipalist:
+        return [ipalist]
+
+    fb_profile = "".join(get_front_back_vowels(ipalist))
+    if fb_profile.count("F") > fb_profile.count("B"):
+        ipalist = [["F" if token2class(i, "asjp") in "ou" else i for i in ipalist]]
+    elif fb_profile.count("B") > fb_profile.count("F"):
+        ipalist = [["B" if token2class(i, "asjp") in "ieE" else i for i in ipalist]]
+    else:
+        ipalist = [
+        ["F" if token2class(i, "asjp") in "ou" else i for i in ipalist],
+        ["B" if token2class(i, "asjp") in "ieE" else i for i in ipalist]
+        ]
+
+    return ipalist
 
 
 def gensim_multiword(recip_transl, donor_transl, return_wordpair=False,

@@ -288,18 +288,14 @@ def test_reconstruct():
         ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
         vowelharmony_filter=True) == "^anaat͡ʃi$|^anaɣ$"
 
-    # let's assume "i" was a back vowel
-    adrc_inst.vow2fb["i"] = "B"
-    # would would filter ^anaat͡ʃi$ out, since it has back and front vow
+    #filters out ^anuat͡ʃi$ out, since it has back and front vow
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=2,
-        phonotactics_filter=False, vowelharmony_filter=True) == "^anaɣ$"
+        ipastr="aːru", clusterised=True, howmany=2,
+        phonotactics_filter=False, vowelharmony_filter=True) == "^anuɣ$"
     # test vowelharmony_filter=True, result is empty
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=1, phonotactics_filter=False,
+        ipastr="aːru", clusterised=True, howmany=1, phonotactics_filter=False,
         vowelharmony_filter=True) == "wrong vowel harmony"
-    # vtear down
-    adrc_inst.vow2fb["i"] = "F"
 
     # vtest sort_by_nse=True assert reconstr works and sorts the result by nse
     assert adrc_inst.reconstruct(
@@ -680,27 +676,29 @@ def test_adapt():
         insertion_cost=0.98
     ) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
 
-    # let's assume e is a back vowel and repair vowel harmony
-    adrc_inst.vow2fb["e"] = "B"
+    # o is a back vowel and will be replaced by "F"
+    # which in turn turns to æ
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="dededo",
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         repair_vowelharmony=True
-    ) == "dad, tʰad, dajdæ, tʰajdæ, dujdy, tʰujdy"
+    # dyd, tʰyd is twice because since paths2repaired_phonotactics=2
+    # and "ded" can be reached by deleting "edo" from "dededo" OR "de.o"
+    ) == "dydydæ, tʰydydæ, dyd, tʰyd, dyd, tʰyd"
 
     # let's assume 'CVCCV' was an allowed structure
-    adrc_inst.phonotactic_inventory.add('CVCCV')
+    adrc_inst.phonotactic_inventory.add('CVCVCV')
     # apply filter where unallowed structures are filtered out
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="dededo",
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         repair_vowelharmony=True,
         phonotactics_filter=True
-        ) == "dajdæ, tʰajdæ, dujdy, tʰujdy, dadjæ, tʰadjæ"
+        ) == "dydydæ, tʰydydæ"
 
     # test with cluster_filter=True
     adrc_inst = Adrc(
