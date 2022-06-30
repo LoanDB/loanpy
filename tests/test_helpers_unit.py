@@ -36,7 +36,6 @@ from loanpy.helpers import (
     mtx2graph,
     pick_minmax,
     plug_in_model,
-    read_cvfb,
     read_dst,
     read_forms,
     repair_harmony,
@@ -54,26 +53,6 @@ def test_plug_in_model():
     assert hp.model == "xyz"
     plug_in_model(None)
     assert hp.model is None
-
-
-def test_read_cvfb():
-    """check if cvfb.txt, a tuple of 2 long dicts is correctly read in"""
-
-    # set up
-    with patch("loanpy.helpers.literal_eval") as literal_eval_mock:
-        literal_eval_mock.return_value = [
-            {"a": "V", "b": "C"}, {"e": "F", "o": "B"}]
-
-        # assert
-        assert read_cvfb() == ({"a": "V", "b": "C"}, {"e": "F", "o": "B"})
-
-        # assert calls
-        literal_eval_mock.assert_called()
-        assert isinstance(literal_eval_mock.call_args_list[0][0][0], str)
-        assert len(literal_eval_mock.call_args_list[0][0][0]) == 92187
-        assert literal_eval_mock.call_args_list[0][0][0][:
-                                                         20] == "[\
-{'q': 'C', 'q̟': 'C"
 
 
 def test_read_forms():
@@ -210,45 +189,38 @@ def test_init():
         read_forms_mock.return_value = None
         with patch("loanpy.helpers.forms2list") as forms2list_mock:
             forms2list_mock.return_value = None
-            with patch("loanpy.helpers.read_cvfb") as read_cvfb_mock:
-                read_cvfb_mock.return_value = ({"d1": 123}, {"d2": 456})
-                with patch("loanpy.helpers.cldf2pd") as cldf2pd_mock:
-                    cldf2pd_mock.return_value = None
-                    with patch("loanpy.helpers.Etym.get_inventories"
-                               ) as get_inventories_mock:
-                        get_inventories_mock.return_value = (None, None, None)
-                        with patch("loanpy.helpers.read_dst"
-                                   ) as read_dst_mock:
-                            read_dst_mock.return_value = "distfunc"
+            with patch("loanpy.helpers.cldf2pd") as cldf2pd_mock:
+                cldf2pd_mock.return_value = None
+                with patch("loanpy.helpers.Etym.get_inventories"
+                           ) as get_inventories_mock:
+                    get_inventories_mock.return_value = (None, None, None)
+                    with patch("loanpy.helpers.read_dst"
+                               ) as read_dst_mock:
+                        read_dst_mock.return_value = "distfunc"
 
-                            # initiate without args
-                            mocketym = Etym()
+                        # initiate without args
+                        mocketym = Etym()
 
-                            # assert if initiation went correctly
-                            assert mocketym.phon2cv == {"d1": 123}
-                            assert mocketym.vow2fb == {"d2": 456}
-                            assert mocketym.dfety is None
-                            assert mocketym.phoneme_inventory is None
-                            assert mocketym.cluster_inventory is None
-                            assert mocketym.phonotactic_inventory is None
-                            assert mocketym.distance_measure == "distfunc"
+                        # assert if initiation went correctly
+                        assert mocketym.dfety is None
+                        assert mocketym.phoneme_inventory is None
+                        assert mocketym.cluster_inventory is None
+                        assert mocketym.phonotactic_inventory is None
+                        assert mocketym.distance_measure == "distfunc"
 
-                            # double check with __dict__
-                            assert len(mocketym.__dict__) == 8
-                            assert mocketym.__dict__ == {
-                                'cluster_inventory': None,
-                                'phoneme_inventory': None,
-                                'dfety': None,
-                                'distance_measure': 'distfunc',
-                                'forms_target_language': None,
-                                'phon2cv': {'d1': 123},
-                                'phonotactic_inventory': None,
-                                'vow2fb': {'d2': 456}}
+                        # double check with __dict__
+                        assert len(mocketym.__dict__) == 6
+                        assert mocketym.__dict__ == {
+                            'cluster_inventory': None,
+                            'phoneme_inventory': None,
+                            'dfety': None,
+                            'distance_measure': 'distfunc',
+                            'forms_target_language': None,
+                            'phonotactic_inventory': None}
 
     # assert calls
     read_forms_mock.assert_called_with(None)
     forms2list_mock.assert_called_with(None, None)
-    read_cvfb_mock.assert_called_with()
     cldf2pd_mock.assert_called_with(
         None, None, None)
     get_inventories_mock.assert_called_with(None, None, None, 9999999)
@@ -266,47 +238,40 @@ def test_init():
         read_forms_mock.return_value = dfmk
         with patch("loanpy.helpers.forms2list") as forms2list_mock:
             forms2list_mock.return_value = ["abc", "pou"]
-            with patch("loanpy.helpers.read_cvfb") as read_cvfb_mock:
-                read_cvfb_mock.return_value = ("sth1", "sth2")
-                with patch("loanpy.helpers.cldf2pd") as cldf2pd_mock:
-                    cldf2pd_mock.return_value = "sth3"
-                    with patch("loanpy.helpers.Etym.get_inventories"
-                               ) as get_inventories_mock:
-                        get_inventories_mock.return_value = (
-                            "sth4", "sth5", "sth6")
-                        with patch("loanpy.helpers.read_dst") as read_dst_mock:
-                            read_dst_mock.return_value = "sth7"
+            with patch("loanpy.helpers.cldf2pd") as cldf2pd_mock:
+                cldf2pd_mock.return_value = "sth3"
+                with patch("loanpy.helpers.Etym.get_inventories"
+                           ) as get_inventories_mock:
+                    get_inventories_mock.return_value = (
+                        "sth4", "sth5", "sth6")
+                    with patch("loanpy.helpers.read_dst") as read_dst_mock:
+                        read_dst_mock.return_value = "sth7"
 
-                            # initiate with pseudo arguments
-                            mocketym = Etym(
-                                forms_csv="path", source_language="lg1",
-                                target_language="lg2")
+                        # initiate with pseudo arguments
+                        mocketym = Etym(
+                            forms_csv="path", source_language="lg1",
+                            target_language="lg2")
 
-                            # assert if initiation went right
-                            assert mocketym.phon2cv == "sth1"
-                            assert mocketym.vow2fb == "sth2"
-                            assert mocketym.dfety == "sth3"
-                            assert mocketym.phoneme_inventory == "sth4"
-                            assert mocketym.cluster_inventory == "sth5"
-                            assert mocketym.phonotactic_inventory == "sth6"
-                            assert mocketym.distance_measure == "sth7"
+                        # assert if initiation went right
+                        assert mocketym.dfety == "sth3"
+                        assert mocketym.phoneme_inventory == "sth4"
+                        assert mocketym.cluster_inventory == "sth5"
+                        assert mocketym.phonotactic_inventory == "sth6"
+                        assert mocketym.distance_measure == "sth7"
 
-                            # double check with __dict__
-                            assert len(mocketym.__dict__) == 8
-                            assert mocketym.__dict__ == {
-                                'cluster_inventory': "sth5",
-                                'phoneme_inventory': "sth4",
-                                'dfety': "sth3",
-                                'distance_measure': 'sth7',
-                                'forms_target_language': ['abc', 'pou'],
-                                'phon2cv': "sth1",
-                                'phonotactic_inventory': "sth6",
-                                'vow2fb': "sth2"}
+                        # double check with __dict__
+                        assert len(mocketym.__dict__) == 6
+                        assert mocketym.__dict__ == {
+                            'cluster_inventory': "sth5",
+                            'phoneme_inventory': "sth4",
+                            'dfety': "sth3",
+                            'distance_measure': 'sth7',
+                            'forms_target_language': ['abc', 'pou'],
+                            'phonotactic_inventory': "sth6"}
 
     # assert calls
     read_forms_mock.assert_called_with("path")
     forms2list_mock.assert_called_with(dfmk, "lg2")
-    read_cvfb_mock.assert_called_with()
     cldf2pd_mock.assert_called_with(dfmk, "lg1", "lg2")
     get_inventories_mock.assert_called_with(None, None, None, 9999999)
     read_dst_mock.assert_called_with(
@@ -445,49 +410,6 @@ def test_read_phonotactic_inv():
 
     # tear down
     del mocketym, EtymMonkeyReadstrucinv
-
-
-def test_word2phonotactics():
-    """test is the phonotactic structure of a word is returned correctly"""
-
-    # set up1
-    mocketym = EtymMonkey()  # empty global mockclass
-    mocketym.phon2cv = {"a": "V", "b": "C"}  # lets say "c" is missing
-
-    # assert without mocking tokenise (input is tokenised already)
-    # sounds missing from dict are ignored
-    assert Etym.word2phonotactics(self=mocketym,
-                                  ipa_in=["a", "b", "c"]) == "VC"
-
-    # set up2
-    with patch("loanpy.helpers.tokenise") as tokenise_mock:
-        tokenise_mock.return_value = ['a', 'b', 'c']
-
-        # assert if it works with tokenisation as well
-        assert Etym.word2phonotactics(self=mocketym, ipa_in="abc") == "VC"
-
-        # assert call
-        tokenise_mock.assert_called_with("abc")
-
-    # tear down
-    del mocketym
-
-
-def test_word2phonotactics_keepcv():
-    """test if phonotactic structure is returned while C and V stay the same"""
-
-    # set up
-    mocketym = EtymMonkey()
-    mocketym.phon2cv = {"a": "V", "b": "C"}
-
-    # assert
-    assert Etym.word2phonotactics_keepcv(
-        self=mocketym, ipa_in=[
-            'a', 'b', 'c', 'C', 'V']) == "VCCV"
-    # the "c" is ignored bc it's not in phon2cv
-
-    # tear down
-    del mocketym
 
 
 def test_get_front_back_vowels():

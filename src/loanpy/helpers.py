@@ -20,6 +20,7 @@ from lingpy.sequence.sound_classes import token2class
 from networkx import DiGraph, all_shortest_paths, shortest_path
 from numpy import array_equiv, isnan, subtract, zeros
 from pandas import DataFrame, read_csv
+from panphon import __file__ as path2panphon
 from panphon.distance import Distance
 from tqdm import tqdm
 
@@ -81,41 +82,6 @@ call help(gensim.downloader.load)
 
     global model
     model = word2vec_model
-
-
-def read_cvfb():
-    """
-    Called by loanpy.helpers.Etym.__init__; \
-Reads file cvfb.txt that was generated based on ipa_all.csv \
-by loanpy.helpers.make_cvfb. \
-It's a tuple of two dictionaries. Keys are same as col "ipa" in ipa_all.csv. \
-Values of first dictionary are "C" if consonant and "V" if vowel (6358 keys). \
-Values of 2nd dictionary are "F" if front vowel \
-and "B" if back vowel (1240 keys). \
-Only called by Etym.__init__ to define loanpy.helpers.Etym.phon2cv and \
-loanpy.helpers.Ety.vow2fb, \
-which in turn is used by loanpy.helpers.Etym.word2phonotactics, \
-loanpy.helpers.Etym.has_harmony and others. \
-This file could be read directly when importing, but this way things \
-feel more stable.
-
-    :returns: two dictionaries, the first defining consonants \
-and vowels (cv), \
-the second defining front and back vowels (fb).
-    :rtype: (dict, dict)
-
-    :Example:
-
-    >>> from loanpy.helpers import read_cvfb
-    >>> read_cvfb()
-    (two dictionaries of length 6358 and 1240)
-
-    """
-
-    path = Path(__file__).parent / "cvfb.txt"
-    with open(path, "r", encoding="utf-8") as f:
-        cvfb = literal_eval(f.read())
-    return cvfb[0], cvfb[1]
 
 
 def read_forms(dff):
@@ -461,7 +427,6 @@ target_language=2)
                  most_frequent_phonotactics=9999999):
 
         # independent of other attributes
-        self.phon2cv, self.vow2fb = read_cvfb()
         self.distance_measure = read_dst(distance_measure)
         # read data frame forms, turn words of target language to list
         dff = read_forms(forms_csv)
@@ -621,60 +586,6 @@ much data is available, therefore this has to be done manually.
             logger.warning(Counter(strucs))
         return set(map(lambda x: x[0], Counter(strucs).most_common(howmany)))
 
-    def word2phonotactics(self, ipa_in):
-        """
-        Called by loanpy.helpers.Etym.__init__; \
-loanpy.qfysc.Qfy.get_phonotactics_corresp, \
-loanpy.adrc.Adrc.adapt, loanpy.adrc.Adrc.repair_phonotactics, \
-loanpy.adrc.Adrc.reconstruct, \
-and loanpy.santiy.write_workflow.
-
-        Returns the phonotactic profile of an IPA-string.
-
-        :param ipa_in: a string or list consisting of IPA-characters. \
-if input is string, it will be tokenised.
-        :type ipa_in: str | list
-
-        :returns: the phonotactic profile of the word
-        :rtype: str
-
-        :Example:
-
-        >>> from loanpy import helpers
-        >>> hp = helpers.Etym()
-        >>> hp.word2phonotactics("lol")
-        'CVC'
-
-        """
-        if isinstance(ipa_in, str):
-            ipa_in = tokenise(ipa_in)
-
-        return "".join([self.phon2cv.get(i, "") for i in ipa_in])
-
-    def word2phonotactics_keepcv(self, ipa_in):
-        """
-        Not called by any function. Returns the phonotactic profile of an \
-IPA-string while keeping \
-Cs and Vs, otherwise same as loanpy.helpers.Etym.word2phonotactics. \
-Originally written for sanity.py but currently not used anywhere.
-
-        :param ipa_in: a string or list consisting of IPA-characters, \
-"C"s and "V"s.
-        :type ipa_in: list
-
-        :returns: the phonotactic profile of the word
-        :rtype: str
-
-        :Example:
-
-        >>> from loanpy import helpers
-        >>> hp = helpers.Etym()
-        >>> hp.word2phonotactics_keepcv("CloVl")
-        'CCVVC'
-
-        """
-        return "".join([self.phon2cv.get(i, "") if i not in "CV"
-                        else i for i in ipa_in])
 
     def get_scdictbase(self, write_to=None, most_common=float("inf")):
         """
@@ -724,7 +635,7 @@ ranked according to similarity)
         ["y", "x", "z"]
         """
 
-        ipa_all = read_csv(Path(__file__).parent / "ipa_all.csv")
+        ipa_all = read_csv(Path(path2panphon).parent / "data" / "ipa_all.csv")
         ipa_all["substi"] = [self.rank_closest(ph, most_common)
                              for ph in tqdm(ipa_all["ipa"])]
         scdictbase = dict(zip(ipa_all["ipa"],
@@ -732,18 +643,18 @@ ranked according to similarity)
 
         # pick the most unmarked C
         cons_inv = [i for i in self.phoneme_inventory
-                    if self.phon2cv.get(i, "") == "C"]
+                    if token2class(i, "cv") == "C"]
         scdictbase["C"] = self.rank_closest("ə", most_common,
                                             cons_inv).split(", ")
         # pick the most unmarked V
         vow_inv = [i for i in self.phoneme_inventory
-                   if self.phon2cv.get(i, "") == "V"]
+                   if token2class(i, "cv") == "V"]
         scdictbase["V"] = self.rank_closest("ə", most_common,
                                             vow_inv).split(", ")
         scdictbase["F"] = [i for i in self.phoneme_inventory
-                           if self.vow2fb.get(i, "") == "F"]
+                           if token2class(i, "asjp") in "ieE"]
         scdictbase["B"] = [i for i in self.phoneme_inventory
-                           if self.vow2fb.get(i, "") == "B"]
+                           if token2class(i, "asjp") == "ou"]
 
         self.scdictbase = scdictbase
 

@@ -47,7 +47,7 @@ def test_init():
 
     # check if initiation without args works fine
     adrc_inst = Adrc()
-    assert len(adrc_inst.__dict__) == 17
+    assert len(adrc_inst.__dict__) == 15
 
     # 5 attributes initiated in Adrc, rest inherited
     assert adrc_inst.scdict is None
@@ -62,11 +62,7 @@ def test_init():
     assert adrc_inst.scdictbase == {}
     assert adrc_inst.vfb is None
 
-    # 8 attributes inherited from Etym via Qfy
-    assert isinstance(adrc_inst.phon2cv, dict)
-    assert len(adrc_inst.phon2cv) == 6358
-    assert isinstance(adrc_inst.vow2fb, dict)
-    assert len(adrc_inst.vow2fb) == 1240
+    # 6 attributes inherited from Etym via Qfy
     assert adrc_inst.dfety is None
     assert adrc_inst.phoneme_inventory is None
     assert adrc_inst.cluster_inventory is None
@@ -93,7 +89,7 @@ def test_init():
         mode="reconstruct",
         most_frequent_phonotactics=2)
 
-    assert len(adrc_inst.__dict__) == 17
+    assert len(adrc_inst.__dict__) == 15
 
     # assert initiation went correctly
     assert adrc_inst.scdict == d0
@@ -108,11 +104,7 @@ def test_init():
     assert adrc_inst.scdictbase == {}
     assert adrc_inst.vfb is None
 
-    # 8 attributes inherited from Etym via Qfy
-    assert isinstance(adrc_inst.phon2cv, dict)
-    assert len(adrc_inst.phon2cv) == 6358
-    assert isinstance(adrc_inst.vow2fb, dict)
-    assert len(adrc_inst.vow2fb) == 1240
+    # 6 attributes inherited from Etym via Qfy
     assert_frame_equal(
         adrc_inst.dfety, DataFrame(
             {"Target_Form": ["aɣat͡ʃi", "aldaɣ", "ajan"],

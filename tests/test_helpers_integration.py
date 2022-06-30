@@ -24,7 +24,6 @@ from loanpy.helpers import (
     combine_ipalists,
     clusterise,
     mtx2graph,
-    read_cvfb,
     read_dst,
     read_forms,
     repair_harmony,
@@ -35,35 +34,6 @@ PATH2FORMS = Path(__file__).parent / "input_files" / "forms.csv"
 
 def test_plug_in_model():
     pass  # unittest = integration test
-
-
-def test_read_cvfb():
-    """reading in cvfb.txt which is always in the same place"""
-    cvfb = read_cvfb()
-    assert isinstance(cvfb, tuple)
-    assert len(cvfb) == 2
-    # extremely long dictionary, so just type is checked
-    assert isinstance(cvfb[0], dict)
-    assert isinstance(cvfb[1], dict)
-    # extremely long dictionary, here's how long
-    assert len(cvfb[0]) == 6358
-    assert len(cvfb[1]) == 1240
-    assert all(cvfb[0][val] in ["C", "V"] for val in cvfb[0])
-    assert all(cvfb[1][val] in ["F", "B", "V"] for val in cvfb[1])
-
-    # verify that the dict is actually based on ipa_all.csv
-    # and that "C" corresponds to "+" and "V" "-" in col "ipa".
-    dfipa = read_csv(Path(__file__).parent.parent / "\
-src" / "loanpy"/ "ipa_all.csv")
-    for i, c in zip(dfipa.ipa, dfipa.cons):
-        if c == "+":
-            assert cvfb[0][i] == "C"
-        elif c == "-":
-            assert cvfb[0][i] == "V"
-        else:
-            assert cvfb[0].get(i, "notindict") == "notindict"
-
-    del dfipa, cvfb
 
 
 def test_read_forms():
@@ -131,29 +101,7 @@ def test_init():
     mocketym = Etym()
 
     # assert that the right number of class attributes were instanciated
-    assert len(mocketym.__dict__) == 8
-
-    # assert phon2cv was read correctly
-    assert isinstance(mocketym.phon2cv, dict)
-    assert len(mocketym.phon2cv) == 6358
-    assert mocketym.phon2cv["k"] == "C"
-    assert mocketym.phon2cv["p"] == "C"
-    assert mocketym.phon2cv["l"] == "C"
-    assert mocketym.phon2cv["w"] == "C"
-    assert mocketym.phon2cv["C"] == "C"
-    assert mocketym.phon2cv["a"] == "V"
-    assert mocketym.phon2cv["e"] == "V"
-    assert mocketym.phon2cv["i"] == "V"
-    assert mocketym.phon2cv["o"] == "V"
-    assert mocketym.phon2cv["u"] == "V"
-
-    # assert vow2fb was read correctly
-    assert isinstance(mocketym.vow2fb, dict)
-    assert len(mocketym.vow2fb) == 1240
-    assert mocketym.vow2fb["e"] == "F"
-    assert mocketym.vow2fb["i"] == "F"
-    assert mocketym.vow2fb["o"] == "B"
-    assert mocketym.vow2fb["u"] == "B"
+    assert len(mocketym.__dict__) == 6
 
     # assert the other 5 attributes were read correctly
     assert mocketym.dfety is None
@@ -170,29 +118,7 @@ def test_init():
     mocketym = Etym(forms_csv=PATH2FORMS, source_language=1, target_language=2)
 
     # assert right number of attributes was initiated (7)
-    assert len(mocketym.__dict__) == 8
-
-    # (1) assert phon2cv was read correctly
-    assert isinstance(mocketym.phon2cv, dict)
-    assert len(mocketym.phon2cv) == 6358
-    assert mocketym.phon2cv["k"] == "C"
-    assert mocketym.phon2cv["p"] == "C"
-    assert mocketym.phon2cv["l"] == "C"
-    assert mocketym.phon2cv["w"] == "C"
-    assert mocketym.phon2cv["C"] == "C"
-    assert mocketym.phon2cv["a"] == "V"
-    assert mocketym.phon2cv["e"] == "V"
-    assert mocketym.phon2cv["i"] == "V"
-    assert mocketym.phon2cv["o"] == "V"
-    assert mocketym.phon2cv["u"] == "V"
-
-    # (2) assert vow2fb was read correctly
-    assert isinstance(mocketym.vow2fb, dict)
-    assert len(mocketym.vow2fb) == 1240
-    assert mocketym.vow2fb["e"] == "F"
-    assert mocketym.vow2fb["i"] == "F"
-    assert mocketym.vow2fb["o"] == "B"
-    assert mocketym.vow2fb["u"] == "B"
+    assert len(mocketym.__dict__) == 6
 
     # (3) assert dfety was read correctly
     assert_frame_equal(mocketym.dfety, DataFrame(
@@ -274,37 +200,6 @@ def test_read_phonotactic_inv():
     # tear down
     del etym
 
-
-def test_word2phonotactics():
-    """test if the phonotactic profile of a word is correctly concluded"""
-
-    etym = Etym()
-    assert etym.word2phonotactics("t͡ʃɒlːoːkøz") == "CVCVCVC"
-    assert etym.word2phonotactics("hortobaːɟ") == "CVCCVCVC"
-    # hashtag is ignored
-    assert etym.word2phonotactics("lɒk#sɒkaːlːɒʃ") == "CVCCVCVCVC"
-    assert etym.word2phonotactics("boɟ!ɒ") == "CVCV"  # exclam. mark is ignored
-    assert etym.word2phonotactics("ɡɛlːeːr") == "CVCVC"
-
-    # tear down
-    del etym
-
-
-def test_word2phonotactics_keepcv():
-    """Not used in loanpy. Test if C and V is kept
-    during phonotactic profiling"""
-    etym = Etym()
-    assert etym.word2phonotactics(
-        ['C', 'V', 'C', 'V', 'k', 'ø', 'z']) == "CVCVCVC"
-    assert etym.word2phonotactics(
-        ['h', 'o', 'r', 'C', 'V', 'C', 'V', 'ɟ']) == "CVCCVCVC"
-    assert etym.word2phonotactics(
-        ['l', 'V', 'k', 's', 'ɒ', 'k', 'V', 'C', 'V', 'ʃ']) == "CVCCVCVCVC"
-    assert etym.word2phonotactics(['C', 'o', '!', 'ɟ', 'V']) == "CVCV"
-    assert etym.word2phonotactics(["C", "V", "lː", "eː", "r"]) == "CVCVC"
-    del etym
-
-
 def test_has_harmony():
     """Test if it is detected correctly whether a word does or does not
     have front-back vowel harmony"""
@@ -349,16 +244,16 @@ def test_get_scdictbase():
     """test if heuristic sound correspondence dictionary
     is calculated correctly"""
     # test with phoneme_inventory manually plugged in
-    etym = Etym(phoneme_inventory=["a", "b", "c"])
+    etym = Etym(phoneme_inventory=["e", "b", "c"])
     scdictbase = etym.get_scdictbase(write_to=False)
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
-    assert scdictbase["p"] == ["b", "c", "a"]  # b is obv most similar to p
-    assert scdictbase["h"] == ["c", "b", "a"]
-    assert scdictbase["e"] == ["a", "b", "c"]
+    assert scdictbase["p"] == ["b", "c", "e"]  # b is obv most similar to p
+    assert scdictbase["h"] == ["c", "b", "e"]
+    assert scdictbase["e"] == ["e", "b", "c"]
     assert scdictbase["C"] == ["b", "c"]
-    assert scdictbase["V"] == ["a"]
-    assert scdictbase["F"] == ["a"]
+    assert scdictbase["V"] == ["e"]
+    assert scdictbase["F"] == ["e"]
     assert scdictbase["B"] == []
     del etym, scdictbase
 
@@ -379,7 +274,7 @@ def test_get_scdictbase():
     # test if written correctly and if param most_common works
 
     # set up
-    etym = Etym(phoneme_inventory=["a", "b", "c"])
+    etym = Etym(phoneme_inventory=["e", "b", "c"])
     path2scdict_integr_test = Path(__file__).parent / "integr_test_scdict.txt"
     etym.get_scdictbase(write_to=path2scdict_integr_test, most_common=2)
     with open(path2scdict_integr_test, "r", encoding="utf-8") as f:
@@ -390,10 +285,10 @@ def test_get_scdictbase():
     assert len(scdictbase) == 6371
     assert scdictbase["p"] == ["b", "c"]  # b is obv most similar to p
     assert scdictbase["h"] == ["c", "b"]
-    assert scdictbase["e"] == ["a", "b"]
+    assert scdictbase["e"] == ["e", "b"]
     assert scdictbase["C"] == ["b", "c"]
-    assert scdictbase["V"] == ["a"]
-    assert scdictbase["F"] == ["a"]
+    assert scdictbase["V"] == ["e"]
+    assert scdictbase["F"] == ["e"]
     assert scdictbase["B"] == []
 
     # tear down
