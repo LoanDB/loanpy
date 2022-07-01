@@ -24,7 +24,7 @@ https://zenodo.org/record/6628976
 License
 ==========
 
-Academic Free License (AFL)
+GNU GENERAL PUBLIC LICENSE
 
 Description
 ============
