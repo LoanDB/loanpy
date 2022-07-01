@@ -5,21 +5,134 @@ Quantify sound correspondences from etymological data.
 from ast import literal_eval
 from collections import Counter
 from functools import partial
+from pathlib import Path
 
 from ipatok import clusterise
+from lingpy import prosodic_string
 from lingpy.align.pairwise import Pairwise
 from lingpy.sequence.sound_classes import token2class
-from pandas import DataFrame, concat
+from numpy import isnan
+from pandas import DataFrame, concat, read_csv
+from panphon import __file__ as path2panphon
+from panphon.distance import Distance
 from tqdm import tqdm
 
-from loanpy.helpers import Etym, clusterise, tokenise
-from loanpy.helpers import prosodic_string  # functool.partial included!
+from loanpy.helpers import clusterise, tokenise, edit_distance_with2ops, pick_minmax
+
+prosodic_string = partial(prosodic_string, _output="cv")
 
 
 class WrongModeError(Exception):
     """Raised in loanpy.qfysc.read_mode if mode is neither \
 "adapt" nor "reconstruct" nor None/""/False/[]/0/ etc"""
     pass
+
+class InventoryMissingError(Exception):
+    """
+    Called by lonapy.helpers.Etym.rank_closest and \
+loanpy.helpers.Etym.rank_closest_phonotactics if neither forms.csv \
+is defined nor the phonotactic/phoneme inventory is plugged in.
+    """
+    pass
+
+def read_forms(dff):
+    """
+    Called by loanpy.helpers.Etym.__init__; Reads forms.csv (cldf), \
+keeps only columns "Segement", "Cognacy" and \
+"Language ID", drops spaces in Segments to internally re-tokenise later. \
+Only called by Etym.__init__ to create local variable dff (data frame forms). \
+Returns None if dff is None. So that class can be initiated without args too.
+
+    :param dff: path to forms.csv
+    :type dff: pathlib.PosixPath | str | None
+
+    :returns: a workable version of forms.csv as a pandas data frame
+    :rtype: pandas.core.frame.DataFrame | None
+
+    :Example:
+
+    >>> from pathlib import Path
+    >>> from loanpy.helpers import __file__, read_forms
+    >>> path2file = Path(__file__).parent / "tests" / \
+"input_files" / "forms.csv"
+    >>> read_forms(path2file)
+           Language_ID Segments  Cognacy
+    0            1      abc        1
+    1            2      xyz        1
+
+    """
+
+    if not dff:
+        return None
+    dff = read_csv(dff, usecols=["Segments", "Cognacy", "Language_ID"])
+    dff["Segments"] = [i.replace(" ", "") for i in dff.Segments]
+    return dff
+
+
+def cldf2pd(dfforms, source_language=None, target_language=None):
+    """
+    Called by loanpy.helpers.Etym.__init__; \
+Converts a CLDF based forms.csv to a pandas data frame. \
+Returns None if dfforms is None, so class can be initiated without args too. \
+Runs through forms.csv and creates a new data frame the following way: \
+Checks if a cognate set contains words from both, source and target language. \
+If yes: word from source lg goes to column "Source_Form", \
+word from target lg goes to column "Target_Form" and \
+the number of the cognate set goes to column "Cognacy". \
+Note that if a cognate set doesn't contain words from source and target \
+language, \
+that cognate set is skipped.
+
+    :param dfforms: Takes the output of read_forms() as input
+    :type dfforms: pandas.core.frame.DataFrame | None
+
+    :param source_language: The language who's cognates go to \
+column "Source_Forms"
+    :type source_language: str, default=None
+
+    :param target_language: The language who's cognates go to \
+column "Target_Forms"
+    :type target_language: str, default=None
+
+    :returns: forms.csv data frame with re-positioned information
+    :rtype: pandas.core.frame.DataFrame | None
+
+    :Example:
+
+    >>> from pathlib import Path
+    >>> from loanpy.helpers import __file__, cldf2pd, read_forms
+    >>> path2forms = Path(__file__).parent / "tests" \
+/ "input_files" / "forms.csv"
+    >>> forms = read_forms(path2forms)
+    >>> cldf2pd(forms, source_language=1, target_language=2)
+          Target_Form Source_Form  Cognacy
+    0         xyz         abc        1
+
+    """
+
+    if dfforms is None:
+        return None
+    target_form, source_form, cognacy, dfetymology = [], [], [], DataFrame()
+
+    # bugfix: col Cognacy is sometimes empty. if so, fill it
+    if all(isnan(i) for i in dfforms.Cognacy):
+        dfforms["Cognacy"] = list(range(len(dfforms)))
+
+    for cog in range(1, int(list(dfforms["Cognacy"])[-1])+1):
+        dfformsdrop = dfforms[dfforms["Cognacy"] == cog]
+        if all(lg in list(dfformsdrop["Language_ID"])
+               for lg in [target_language, source_language]):
+            cognacy.append(cog)
+            for idx, row in dfformsdrop.iterrows():
+                if row["Language_ID"] == target_language:
+                    target_form.append(row["Segments"])
+                if row["Language_ID"] == source_language:
+                    source_form.append(row["Segments"])
+
+    dfetymology["Target_Form"] = target_form
+    dfetymology["Source_Form"] = source_form
+    dfetymology["Cognacy"] = cognacy
+    return dfetymology
 
 
 def read_mode(mode):
@@ -139,8 +252,84 @@ For more details see loanpy.helpers.Etym.get_scdictbase.
     with open(scdictbase, "r", encoding="utf-8") as f:
         return literal_eval(f.read())
 
+def forms2list(dff, target_language):
+    """
+    Called by loanpy.helpers.Etym.__init__; \
+Get a list of words of a language from a forms.csv file.
 
-class Qfy(Etym):
+    :param dff: forms.csv data frame (cldf)
+    :type dff: pandas.core.frame.DataFrame
+
+    :param target_language: The language from which the phoneme, \
+phoneme cluster and phonotactic inventories will be extracted.
+    :type target_language: str
+
+    :returns: a list of words in the target language
+    :rtype: list | None
+
+    :Example:
+
+    >>> from pathlib import Path
+    >>> from loanpy.helpers import __file__, forms2list, read_forms
+    >>> path2forms = Path(__file__).parent / "tests" \
+/ "input_files" / "forms.csv"
+    >>> forms = read_forms(path2forms)
+    >>> forms2list(forms, target_language=2)
+    ['xyz']
+    """
+    return None if dff is None else list(
+        dff[dff["Language_ID"] == target_language]["Segments"])
+
+def read_dst(dst_msr):
+    """
+    Called by loanpy.helpers.Etym.__init__; \
+Returns a function that calculates the phonological distance between strings \
+from panphon.distance.Distance. This will be used to calculate the most \
+similar phonemes of the phoneme inventory compared to \
+a given phoneme from ipa_all.csv
+
+    :param dst_msr: The name of the distance measure, which has to be \
+a method \
+of panphon.distance.Distance
+    :type dst_msr: None, \
+"doglo_prime_distance" | \
+"dolgo_prime_distance_div_maxlen" | \
+"fast_levenshtein_distance" | \
+"fast_levenshtein_distance_div_maxlen" | \
+"feature_difference" | \
+"feature_edit_distance" | \
+"feature_edit_distance_div_maxlen" | \
+"hamming_feature_edit_distance" | \
+"hamming_feature_edit_distance_div_maxlen" | \
+"hamming_substitution_cost" | \
+"jt_feature_edit_distance" | \
+"jt_feature_edit_distance_div_maxlen" | \
+"jt_hamming_feature_edit_distance" | \
+"jt_hamming_feature_edit_distance_div_maxlen" | \
+"jt_weighted_feature_edit_distance" | \
+"jt_weighted_feature_edit_distance_div_maxlen" | \
+"levenshtein_distance"
+
+    :returns: a function that calculates the phonological distance between \
+IPA-strings
+    :rtype: function | None
+
+    :Example:
+
+    >>> from loanpy.helpers import read_dst
+    >>> read_dst("fast_levenshtein_distance")
+    <bound method Distance.fast_levenshtein_distance of \
+<panphon.distance.Distance object at 0x7f7f21fe95b0>>
+
+    For more information see PanPhon's documentation:
+
+    >>> from panphon.distance import Distance
+    >>> help(Distance)
+
+    """
+    return None if not dst_msr else getattr(Distance(), dst_msr)
+
+class Etym:
     """
     Read etymological data and customise the way in which to \
 quantify it. Has 9 parameters and initiates 12 attributes.
@@ -248,23 +437,341 @@ from loanpy.helpers.Etym
                  mode="adapt",  # or: "reconstruct"
                  connector=None,  # will automatically get defined
                  scdictbase=None,  # big file, so not generated every time
+                 distance_measure="weighted_feature_edit_distance",
+                 phoneme_inventory=None,
+                 cluster_inventory=None,
                  vfb=None):  # etymological data sometimes has placeholders
                     # for "any vowel", "any front vowel", or "any back vowel".
                     # Those have to be designated by ipa characters that are
                     # not used in the language. Because the tokeniser
                     # accepts only IPA-characters.
-
-        super().__init__(
-                         forms_csv=forms_csv,
-                         source_language=source_language,
-                         target_language=target_language,
-                         most_frequent_phonotactics=most_frequent_phonotactics,
-                         phonotactic_inventory=phonotactic_inventory)
-
         self.mode = read_mode(mode)
         self.connector = read_connector(connector, mode)
         self.scdictbase = read_scdictbase(scdictbase)
         self.vfb = vfb
+        self.distance_measure = read_dst(distance_measure)
+        # read data frame forms, turn words of target language to list
+        dff = read_forms(forms_csv)
+        # conclude dfety from dff
+        self.dfety = cldf2pd(dff, source_language, target_language)
+        # conclude 3 inventories from forms_target_language
+        self.forms_target_language = forms2list(dff, target_language)
+        (self.phoneme_inventory, self.cluster_inventory,
+         self.phonotactic_inventory) = self.get_inventories(
+                                                    phoneme_inventory,
+                                                    cluster_inventory,
+                                                    phonotactic_inventory,
+                                                    most_frequent_phonotactics
+                                                    )
+
+    def get_inventories(self,
+                        phoneme_inventory=None,
+                        cluster_inventory=None,
+                        phonotactic_inventory=None,
+                        most_frequent_phonotactics=9999999):
+        """
+        Called by loanpy.helpers.Etym.__init__. \
+Returns a tuple of three sets, each representing the inventory \
+of the target language at the phoneme, phoneme-cluster, and phonotactic level.
+
+        :param phoneme_inventory: Chance to hard-code the phoneme inventory \
+by passing a list or a set. If None, it will be extracted from the \
+target language data.
+        :type phoneme_inventory: None | set | list | iterable, default=None
+
+        :param cluster_inventory: Chance to hard-code the phoneme-\
+cluster inventory by passing a list or a set. If None, it \
+will be extracted from the \
+target language data.
+        :type cluster_inventory: None | set | list | iterable, default=None
+
+        :param phonotactic_inventory: Chance to hard-code the phonotactic \
+inventory by passing a list or a set. If None, it \
+will be extracted from the target language data.
+        :type phonotactic_inventory: None | set | list | iterable, default=None
+
+        :param most_frequent_phonotactics: This many of the most frequently \
+occurring phonotactic \
+structures will be part of the phoneme inventory.
+        :type most_frequent_phonotactics: int, default=9999999
+
+        :returns: Tuple of three sets containing the phoneme, \
+phoneme cluster and phonotactic inventories of the target language.
+        :rtype: (set, set, set)
+        """
+
+        return (self.read_inventory(phoneme_inventory),
+                self.read_inventory(cluster_inventory, clusterise),
+                self.read_phonotactic_inv(phonotactic_inventory,
+                                          most_frequent_phonotactics))
+
+    def read_inventory(self, inv, func=tokenise):
+        """
+        Called by loanpy.helpers.Etym.__init__; \
+    Calculates and returns phoneme inventory from a list of words. \
+    Param <inv> is if given inventory should not be calculated but \
+manually plugged in.
+
+        :param inv: a set of phonemes that occur in given language.
+        :type inv: set
+
+        :param func: The tokeniser to split a word into a list \
+        of phonemes or phoneme clusters. \
+        Theoretically possible to plug in own tokeniser function here as well.
+        :type func: ipatok.tokenise | ipatok.clusterise, \
+        default=ipatok.tokenise
+
+        :returns: The phoneme / consonant + vowel cluster \
+        inventory of the language
+        :rtype: set | None | same as input type
+
+        :Example:
+
+        >>> from loanpy.helpers import Etym, clusterise
+        >>> etym_obj = Etym()
+        >>> etym_obj.forms_target_language = ["fdedaeda", "badea", "fdddedab"]
+        >>> etym_obj.read_inventory(None)
+        {'b', 'd', 'f', 'a', 'e'}
+        >>> etym_obj.read_inventory(None, clusterise)
+        {'b', 'ea', 'd', 'fd', 'a', 'ae', 'fddd', 'e'}
+
+        """
+        return inv if inv else set(func("".join(
+            self.forms_target_language
+            ))) if self.forms_target_language else None
+
+    def read_phonotactic_inv(self,
+                             phonotactic_inventory=None, howmany=9999999,
+                             print_entire_inv=False):
+        """
+        Called by loanpy.helpers.Etym.__init__; Returns \
+phonotactic inventory of the n \
+most frequent phonotactic structures. \
+Caveat: The map function seems to swallow errors that would be otherwise \
+triggered by collections.Counter. E.g. if a float is used \
+(including float("inf")) for param <howmany>, an empty string \
+will be returned.
+
+        :param phonotactic_inventory: Possibility to plug in \
+the phonotactic inventory manually.
+        :type phonotactic_inventory: None | list | set, \
+        default=None
+
+        :param howmany: how many most frequent structures should be added to \
+phonotactic inventory
+        :type howmany: int, default=9999999
+
+        :param print_entire_inv: Indicate if logger should print the \
+entire inventory to the console. It is a collections.Counter object with \
+phonotactic profiles as keys and their frequencies as values. Inspecting \
+this information will help to figure out which integer best to pass to \
+param <howmany>. Best is to omit rare ones, but rare is relative to how \
+much data is available, therefore this has to be done manually.
+        :type print_entire_inv: bool, default=False
+
+        :returns: all possible phonotactic structures documented in the data
+        :rtype: list
+
+        :Example:
+
+        >>> from loanpy.helpers import Etym
+        >>> etym_obj = Etym()
+        >>> etym_obj.forms_target_language = \
+["ab", "ab", "aa", "bb", "bb", "bb"]
+        >>> etym_obj.read_phonotactic_inv()
+        {'VV', 'CC', 'VC'}
+
+        >>> from loanpy.helpers import Etym
+        >>> etym_obj = Etym()
+        >>> etym_obj.forms_target_language = \
+["ab", "ab", "aa", "bb", "bb", "bb"]
+        >>> etym_obj.read_phonotactic_inv(howmany=1)
+        {'CC'} # b/c that's the nr 1 most frequent structure
+
+        >>> from loanpy.helpers import Etym
+        >>> etym_obj = Etym()
+        >>> etym_obj.forms_target_language = \
+["ab", "ab", "aa", "bb", "bb", "bb"]
+        >>> etym_obj.read_phonotactic_inv(howmany=2)
+        {'CC', 'VC'} # b/c that's the 2 most frequent structures
+        """
+
+        if phonotactic_inventory:
+            return phonotactic_inventory
+        if self.forms_target_language is None:
+            return None
+        strucs = [prosodic_string(tokenise(i)) for i in self.forms_target_language]
+        #strucs = list(map(prosodic_string, self.forms_target_language))
+        if howmany == 9999999:
+            return set(strucs)
+        if print_entire_inv is True:
+            logger.warning(Counter(strucs))
+        return set(map(lambda x: x[0], Counter(strucs).most_common(howmany)))
+
+
+    def get_scdictbase(self, write_to=None, most_common=float("inf")):
+        """
+        Call manually in the beginning. \
+Loop through ipa_all.csv and rank most similar phonemes \
+from phoneme_inventory. \
+Could also turn ipa_all.csv into a square of 6358*6358 phonemes and just use \
+that file for all future cases but that would use an estimated 500MB per \
+type of distance measure. So more economical to calculate it this way. \
+Will still, depending on size of phoneme inventory, \
+take up about 2MB. \
+The result is returned, assigned to loanpy.helpers.Etym.scdictbase \
+and optionally also written. \
+Usually there is very little data available \
+on sound substitutions and the ones available give only very small insight \
+into all possibilities. \
+The idea here is therefore that any sound \
+that is not contained in a language's phoneme inventory \
+will be replaced by \
+the most similar available one(s). The available sound substitutions \
+based on etymological data can optionally be combined with \
+this heuristics in a way that heuristics are only \
+applied if for a particular sound (cluster) no more data is available any more.
+
+        :param write_to: If or where the output should be written.
+        :type write_to: None | pathlib.PosixPath | str, default=None
+
+        :param most_common: Add only this many most similar phonemes to \
+scdictbase. By default, the entire phoneme inventory will be ranked.
+        :type most_common: int | float, default=float("inf")
+
+        :returns: A heuristic approach to sound substitution in loanword \
+adaptation
+        :rtype: dict
+
+        :Example:
+
+        >>> from pathlib import Path
+        >>> from loanpy.helpers import Etym, __file__
+        >>> etym_obj = Etym(forms_csv=Path(__file__).parent / "tests" / \
+"integration" / "input_files" / "forms.csv", source_language=1, \
+target_language=2)
+        >>> etym_obj.get_scdictbase()
+        (returns the entire dictionary with phoneme_inventory \
+ranked according to similarity)
+        >>> etym_obj.scdictbase["i"]
+        ["y", "x", "z"]
+        """
+
+        ipa_all = read_csv(Path(path2panphon).parent / "data" / "ipa_all.csv")
+        ipa_all["substi"] = [self.rank_closest(ph, most_common)
+                             for ph in tqdm(ipa_all["ipa"])]
+        scdictbase = dict(zip(ipa_all["ipa"],
+                              ipa_all["substi"].str.split(", ")))
+
+        # pick the most unmarked C
+        cons_inv = [i for i in self.phoneme_inventory
+                    if token2class(i, "cv") == "C"]
+        scdictbase["C"] = self.rank_closest("ə", most_common,
+                                            cons_inv).split(", ")
+        # pick the most unmarked V
+        vow_inv = [i for i in self.phoneme_inventory
+                   if token2class(i, "cv") == "V"]
+        scdictbase["V"] = self.rank_closest("ə", most_common,
+                                            vow_inv).split(", ")
+        scdictbase["F"] = [i for i in self.phoneme_inventory
+                           if token2class(i, "asjp") in "ieE"]
+        scdictbase["B"] = [i for i in self.phoneme_inventory
+                           if token2class(i, "asjp") == "ou"]
+
+        self.scdictbase = scdictbase
+
+        if write_to:
+            with open(write_to, "w", encoding="utf-8") as f:
+                f.write(str(scdictbase))
+
+        return scdictbase
+
+    def rank_closest(self, ph, howmany=float("inf"), inv=None):
+        """
+        Called by loanpy.helpers.Etym.get_scdictbase. \
+Sort self.phoneme_inventory by distance to input-phoneme.
+
+        :param ph: phoneme to which to rank the phoneme inventory
+        :type ph: str (valid chars: col "ipa" in ipa_all.csv)
+
+        :param howmany: howmany of the most similar phonemes to pick \
+for the ranking.
+        :type howmany: int | float("inf"), default=float("inf")
+
+        :param inv: To plug in phoneme inventory manually if necessary
+        :type inv: None | list | set, default=None
+
+        :returns: the phoneme inventory \
+ranked by similarity (most similar \
+first)
+        :rtype: str (elements separates by ", ")
+
+        :Example:
+
+        >>> from pathlib import Path
+        >>> from loanpy.helpers import Etym, __file__
+        >>> etym_obj = Etym()
+        >>> etym_obj.rank_closest(ph="d", inv=["r", "t", "l"], howmany=1)
+        't'
+        >>> etym_obj = Etym(phoneme_inventory=["a", "b", "c"])
+        >>> etym_obj.rank_closest(ph="d")
+        'b, c, a'
+
+        """
+        if self.phoneme_inventory is None and inv is None:
+            raise InventoryMissingError("define phoneme inventory \
+or forms.csv")
+        if inv is None:
+            inv = self.phoneme_inventory
+
+        phons_and_dist = [(i, self.distance_measure(ph, i)) for i in inv]
+        return ", ".join(pick_minmax(phons_and_dist, howmany))
+
+    # DONT merge this func into rank_closest. It makes things more complicated
+    def rank_closest_phonotactics(self, struc, howmany=9999999, inv=None):
+        """
+        Called by loanpy.qfysc.Qfy.get_phonotactics_corresp. \
+Sort loanpy.helpers.Etym.phonotactic_inventory by distance to given \
+phonotactic structure using loanpy.helpers.edit_distance_with2ops \
+(cost for insertion: 49, cost for deletion: 100).
+
+        :param struc: The phonotactic structure to which \
+to rank the phoneme_inventory
+        :type struc: str (consisting of "C"s and "V"s only)
+
+        :param howmany: How many of the most similar \
+profiles should be picked
+        :type howmany: int | float("inf"), default=float("inf")
+
+        :param inv: To plug in the phonotactic inventory \
+manually if necessary
+        :type inv: None | list | set, default=None
+
+        :returns: the phonotactic inventory ranked \
+by similarity (most similar \
+first)
+        :rtype: str (elements separates by ", ")
+
+        >>> from pathlib import Path
+        >>> from loanpy.helpers import Etym, __file__
+        >>> etym_obj = Etym(phonotactic_inventory=\
+["CVC", "CVCVV", "CCCC", "VVVVVV"])
+        >>> etym_obj.rank_closest_phonotactics(struc="CVCV", howmany=1)
+        'CVCVV'
+        >>> etym_obj = Etym()
+        >>> etym_obj.rank_closest_phonotactics(struc="CVCV", howmany=3,\
+inv=["CVC", "CVCVV", "CCCC", "VVVVVV"])
+        "CVCVV, CVC, CCCC"
+
+        """
+        if self.phonotactic_inventory is None and inv is None:
+            raise InventoryMissingError("define phonotactic inventory \
+or forms.csv")
+        if inv is None:
+            inv = self.phonotactic_inventory
+
+        strucs_and_dist = [(i, edit_distance_with2ops(struc, i)) for i in inv]
+        return ", ".join(pick_minmax(strucs_and_dist, howmany))
 
     def align(self, left, right):
         """

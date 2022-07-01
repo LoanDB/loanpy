@@ -8,7 +8,7 @@ from unittest.mock import patch, call
 from pandas import DataFrame
 
 from loanpy.adrc import Adrc, read_scdictlist, move_sc
-from loanpy.qfysc import Qfy
+from loanpy.qfysc import Etym
 
 
 class AdrcMonkey:
@@ -73,7 +73,7 @@ def test_init():
     # set up: mock super() method and read_scdictlist
     # define side_effect of read_scdictlist in vars
     # initiate the real class
-    with patch("loanpy.adrc.Qfy.__init__") as super_method_mock:
+    with patch("loanpy.adrc.Etym.__init__") as super_method_mock:
         with patch("loanpy.adrc.read_scdictlist") as read_scdictlist_mock:
             read_scdictlist_mock.return_value = [None] * 4
             monkey_adrc = Adrc()
@@ -110,7 +110,7 @@ def test_init():
     # set up: mock super() method and read_scdictlist
     # define side_effect of read_scdictlist in vars
     # initiate the real class
-    with patch("loanpy.adrc.Qfy.__init__") as super_method_mock:
+    with patch("loanpy.adrc.Etym.__init__") as super_method_mock:
         d0, d1, d2, d3 = {"d0": None}, {"d1": None}, {
             "d2": None}, {"d3": None}
 

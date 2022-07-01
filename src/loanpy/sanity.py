@@ -25,7 +25,8 @@ from pandas import DataFrame, concat, read_csv
 from panphon.distance import Distance
 from tqdm import tqdm
 
-from loanpy.helpers import Etym, get_howmany, prosodic_string, tokenise
+from loanpy.helpers import get_howmany, tokenise
+from loanpy.qfysc import prosodic_string
 from loanpy.adrc import Adrc
 
 BANNED = ["KeyError", "not old", "wrong phonotactics",
