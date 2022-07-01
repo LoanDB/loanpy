@@ -35,7 +35,7 @@ def get_front_back_vowels(segments):
     y"""
     out = []
     for i in segments:
-        # https://en.wikipedia.org/wiki/Automated_Similarity_Judgment_Program#ASJPcode
+# https://en.wikipedia.org/wiki/Automated_Similarity_Judgment_Program#ASJPcode
         fb = token2class(i, "asjp")
         # exchange front vowels with "F" and back ones with "B".
         if fb in "ieE":  # front vowels
