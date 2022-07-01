@@ -27,6 +27,85 @@ model = None
 tokenise = partial(tokenise, replace=True)
 clusterise = partial(clusterise, replace=True)
 
+
+def get_front_back_vowels(segments):
+    """
+    Take a list of phonemes and replace front vowels with "F"
+    and back vowels with "B"
+    y"""
+    out = []
+    for i in segments:
+        # https://en.wikipedia.org/wiki/Automated_Similarity_Judgment_Program#ASJPcode
+        fb = token2class(i, "asjp")
+        # exchange front vowels with "F" and back ones with "B".
+        if fb in "ieE":  # front vowels
+            out.append("F")
+        elif fb in "uo":  # back vowels
+            out.append("B")
+        else:
+            out.append(i)
+    # return " ".join(out)
+    return out
+
+
+def has_harmony(segments):
+    """if "F" AND "B" are in segments, the word has NO vowel harmony"""
+    return not all(i in get_front_back_vowels(segments) for i in "FB")
+
+
+def repair_harmony(ipalist):
+    """
+    Called by loanpy.adrc.Adrc.adapt. \
+Counts how many front and back vowels there are in a word. If there \
+are more back than front vowels, all front vowels will be replaced by a "B", \
+if there are more front than back vowels, the back vowels will be replaced by \
+"F", and if the word has equally \
+many front as back vowels, both options will be returned.
+
+    :param ipalist: a list or a string of phonemes
+    :type ipalist: list of str | str
+
+    :returns: a tokenised word with repaired vowel harmony
+    :rtype: list of list of str
+
+    :Example:
+
+    >>> from loanpy.helpers import Etym
+    >>> hp = Etym()
+    >>> hp.repair_harmony('kɛsthɛj')
+    [['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
+    >>> hp.repair_harmony(['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'])
+    [['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
+    >>> hp.repair_harmony(['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p'])
+    [['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
+    >>> hp.repair_harmony(\
+['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'])
+    [['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], \
+['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
+
+    """
+    if isinstance(ipalist, str):
+        ipalist = tokenise(ipalist)
+
+    if has_harmony(ipalist) and "V" not in ipalist:
+        return [ipalist]
+
+    fb_profile = "".join(get_front_back_vowels(ipalist))
+    if fb_profile.count("F") > fb_profile.count("B"):
+        ipalist = [
+            ["F" if token2class(i, "asjp") in "ou" else i for i in ipalist]]
+    elif fb_profile.count("B") > fb_profile.count("F"):
+        ipalist = [
+            ["B" if token2class(i, "asjp") in "ieE" else i for i in ipalist]]
+    else:
+        ipalist = [
+            ["F" if token2class(i, "asjp") in "ou" else i for i in ipalist],
+            ["B" if token2class(i, "asjp") in "ieE" else i for i in ipalist]
+        ]
+
+    return ipalist
+
+
 def plug_in_model(word2vec_model):
     """
     Allows to plug in a pre-trained word2vec model into global variable \
@@ -69,127 +148,6 @@ call help(gensim.downloader.load)
 
     global model
     model = word2vec_model
-
-
-def flatten(nested_list):
-    """
-    Called by loanpy.adrc.Adrc.repair_phonotactics and loanpy.adrc.Adrc.adapt.
-    Flatten a nested list and discard empty strings (to prevent feeding \
-empty strings to loanpy.adrc.Adrc.reconstruct, which would throw an Error)
-
-    :param nested_list: a nested list
-    :type nested_list: list of lists
-
-    :return: flattened list without empty strings as elements
-    :rtype: list
-
-    :Example:
-
-    >>> from loanpy.helpers import flatten
-    >>> flatten([["wrd1", "wrd2", ""], ["wrd3", "", ""]])
-    ['wrd1', 'wrd2', 'wrd3']
-    """
-    # empty strings would trigger an error in the tokeniser
-    # sometimes both phonemes of a 2-phoneme-word can be replaced with "".
-    # so some entire words can be substituted by "". Discard those.
-    return [item for sublist in nested_list for item in sublist if item]
-
-
-def combine_ipalists(wrds):
-    """
-    Called by loanpy.adrc.Adrc.adapt. \
-Combines and flattens a list of lists of sound correspondence lists.
-
-    :param wrds: list of words consisting of lists of sound correspondence \
-    lists.
-    :type wrds: list of lists of lists of str
-
-    :returns: a list of words without empty strings as elements
-    :rtype: list of strings
-
-    :Example:
-
-    >>> from loanpy.helpers import combine_ipalists
-    >>> combine_ipalists([[["a", "b"], ["c"], ["d"]], [["e", "f"], \
-["g"], ["h"]]])
-    ['acd', 'bcd', 'egh', 'fgh']
-    """
-
-    return flatten([list(map("".join, product(*wrd))) for wrd in wrds])
-
-
-def get_front_back_vowels(segments):
-    """
-    Take a list of phonemes and replace front vowels with "F"
-    and back vowels with "B"
-    y"""
-    out = []
-    for i in segments:
-# https://en.wikipedia.org/wiki/Automated_Similarity_Judgment_Program#ASJPcode
-        fb = token2class(i, "asjp")
-        #exchange front vowels with "F" and back ones with "B".
-        if fb in "ieE":  # front vowels
-            out.append("F")
-        elif fb in "uo":  # back vowels
-            out.append("B")
-        else:
-            out.append(i)
-    #return " ".join(out)
-    return out
-
-def has_harmony(segments):
-    """if "F" AND "B" are in segments, the word has NO vowel harmony"""
-    return not all(i in get_front_back_vowels(segments) for i in "FB")
-
-def repair_harmony(ipalist):
-    """
-    Called by loanpy.adrc.Adrc.adapt. \
-Counts how many front and back vowels there are in a word. If there \
-are more back than front vowels, all front vowels will be replaced by a "B", \
-if there are more front than back vowels, the back vowels will be replaced by \
-"F", and if the word has equally \
-many front as back vowels, both options will be returned.
-
-    :param ipalist: a list or a string of phonemes
-    :type ipalist: list of str | str
-
-    :returns: a tokenised word with repaired vowel harmony
-    :rtype: list of list of str
-
-    :Example:
-
-    >>> from loanpy.helpers import Etym
-    >>> hp = Etym()
-    >>> hp.repair_harmony('kɛsthɛj')
-    [['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
-    >>> hp.repair_harmony(['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'])
-    [['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
-    >>> hp.repair_harmony(['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p'])
-    [['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
-    >>> hp.repair_harmony(\
-['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'])
-    [['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'], \
-['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
-
-    """
-    if isinstance(ipalist, str):
-        ipalist = tokenise(ipalist)
-
-    if has_harmony(ipalist) and "V" not in ipalist:
-        return [ipalist]
-
-    fb_profile = "".join(get_front_back_vowels(ipalist))
-    if fb_profile.count("F") > fb_profile.count("B"):
-        ipalist = [["F" if token2class(i, "asjp") in "ou" else i for i in ipalist]]
-    elif fb_profile.count("B") > fb_profile.count("F"):
-        ipalist = [["B" if token2class(i, "asjp") in "ieE" else i for i in ipalist]]
-    else:
-        ipalist = [
-        ["F" if token2class(i, "asjp") in "ou" else i for i in ipalist],
-        ["B" if token2class(i, "asjp") in "ieE" else i for i in ipalist]
-        ]
-
-    return ipalist
 
 
 def gensim_multiword(recip_transl, donor_transl, return_wordpair=False,
@@ -293,37 +251,6 @@ and use RAM-saving browser")
             if modsim > topsim:
                 topsim, rtr, dtr = modsim, rectr, dontr
     return (topsim, rtr, dtr) if return_wordpair else topsim
-
-
-def list2regex(sclist):
-    """
-    Called by loanpy.adrc.Adrc.reconstruct. \
-Turns a list of phonemes into a regular expression.
-
-    :param sclist: a list of phonemes
-    :type sclist: list of str
-
-    :returns: The phonemes from the input list separated by a pipe. "-" is \
-removed and replaced with a question mark at the end.
-    :rtype: str
-
-    :Example:
-
-    >>> from loanpy.helpers import list2regex
-    >>> list2regex(["b", "k", "v"])
-    '(b|k|v)'
-
-    >>> from loanpy.helpers import list2regex
-    >>> list2regex(["b", "k", "-", "v"])
-    '(b|k|v)?'
-
-    """
-
-    if sclist == ["-"]:
-        return ""
-    if "-" in sclist:
-        return "("+"|".join([i for i in sclist if i != "-"]) + ")?"
-    return "("+"|".join(sclist) + ")"
 
 
 def edit_distance_with2ops(string1, string2, w_del=100, w_ins=49):
@@ -454,8 +381,8 @@ substring to the other (only delete and insert with cost 1 for both)
 
     """
     #  build matrix of correct size
-    target = ['#']+[k for k in target]  # add hashtag as starting value
-    source = ['#']+[k for k in source]  # starting value is always zero
+    target = ['#'] + [k for k in target]  # add hashtag as starting value
+    source = ['#'] + [k for k in source]  # starting value is always zero
     # matrix consists of zeros at first. sol stands for solution.
     sol = zeros((len(source), len(target)))
     # first row of matrix is 1,2,3,4,5,... as long as the target word is
@@ -472,9 +399,10 @@ substring to the other (only delete and insert with cost 1 for both)
         for r in range(1, len(source)):
             if target[c] != source[r]:  # when the two letters are different
                 # pick minimum of the 2 boxes to the left and above and add 1
-                sol[r, c] = min(sol[r-1, c], sol[r, c-1]) + 1
+                sol[r, c] = min(sol[r - 1, c], sol[r, c - 1]) + 1
             else:  # but if the letters are different
-                sol[r, c] = sol[r-1, c-1]  # pick the letter diagonally up left
+                # pick the letter diagonally up left
+                sol[r, c] = sol[r - 1, c - 1]
 
     # returns the entire matrix. min edit distance in bottom right corner jff.
     return sol
@@ -524,18 +452,18 @@ is in accordance with the "Threshold Principle": \
     h, w = mtx.shape
 
     for r in reversed(range(h)):  # create vertical edges
-        for c in reversed(range(w-1)):
-            G.add_edge((r, c+1), (r, c), weight=w_del)
+        for c in reversed(range(w - 1)):
+            G.add_edge((r, c + 1), (r, c), weight=w_del)
 
-    for r in reversed(range(h-1)):  # create horizontal edges
+    for r in reversed(range(h - 1)):  # create horizontal edges
         for c in reversed(range(w)):
-            G.add_edge((r+1, c), (r, c), weight=w_ins)
+            G.add_edge((r + 1, c), (r, c), weight=w_ins)
 
-    for r in reversed(range(h-1)):  # add diagonal edges where cost=0
-        for c in reversed(range(w-1)):
-            if mtx[r+1, c+1] == mtx[r, c]:
-                if s1[c+1] == s2[r+1]:
-                    G.add_edge((r+1, c+1), (r, c), weight=0)
+    for r in reversed(range(h - 1)):  # add diagonal edges where cost=0
+        for c in reversed(range(w - 1)):
+            if mtx[r + 1, c + 1] == mtx[r, c]:
+                if s1[c + 1] == s2[r + 1]:
+                    G.add_edge((r + 1, c + 1), (r, c), weight=0)
 
     return G, h, w
 
@@ -577,25 +505,27 @@ substitution.
     # (1, 1), (2, 2): move 1 diagonally = keep the sound
 
     """
-    s1, s2 = "#"+s1, "#"+s2
+    s1, s2 = "#" + s1, "#" + s2
     out = []
     for i, todo in enumerate(op_list):
         if i == 0:  # so that i-i won't be out of range
             continue
         # where does the arrow point?
-        direction = subtract(todo, op_list[i-1])
+        direction = subtract(todo, op_list[i - 1])
         if array_equiv(direction, [1, 1]):  # if diagonal
             out.append(f"keep {s1[todo[1]]}")
         elif array_equiv(direction, [0, 1]):  # if horizontal
             if i > 1:  # if previous was verical -> substitute
-                if array_equiv(subtract(op_list[i-1], op_list[i-2]), [1, 0]):
+                if array_equiv(
+                        subtract(op_list[i - 1], op_list[i - 2]), [1, 0]):
                     out = out[:-1]
                     out.append(f"substitute {s1[todo[1]]} by {s2[todo[0]]}")
                     continue
             out.append(f"delete {s1[todo[1]]}")
         elif array_equiv(direction, [1, 0]):  # if vertical
             if i > 1:  # if previous was horizontal -> substitute
-                if array_equiv(subtract(op_list[i-1], op_list[i-2]), [0, 1]):
+                if array_equiv(
+                        subtract(op_list[i - 1], op_list[i - 2]), [0, 1]):
                     out = out[:-1]
                     out.append(f"substitute {s1[todo[1]]} by {s2[todo[0]]}")
                     continue
@@ -650,9 +580,9 @@ is in accordance with the "Threshold Principle": \
     """
 
     G, h, w = mtx2graph(s1, s2, w_del, w_ins)  # get directed graph
-    paths = [shortest_path(G, (h-1, w-1), (0, 0),
+    paths = [shortest_path(G, (h - 1, w - 1), (0, 0),
              weight='weight')] if howmany_paths == 1 else all_shortest_paths(
-                 G, (h-1, w-1), (0, 0), weight='weight')
+                 G, (h - 1, w - 1), (0, 0), weight='weight')
     out = [tuples2editops(list(reversed(i)), s1, s2) for i in paths]
     return list(dict.fromkeys(map(tuple, out)))[:howmany_paths]
 
@@ -689,12 +619,90 @@ Applies a list of human readable edit operations to a string.
             elif "delete" in op:
                 next(letter)
         if "substitute" in op:
-            out.append(op[op.index(" by ")+4:])
-            if i != len(editops)-1:
+            out.append(op[op.index(" by ") + 4:])
+            if i != len(editops) - 1:
                 next(letter)
         elif "insert" in op:
             out.append(op[len("insert "):])
     return out
+
+
+def list2regex(sclist):
+    """
+    Called by loanpy.adrc.Adrc.reconstruct. \
+Turns a list of phonemes into a regular expression.
+
+    :param sclist: a list of phonemes
+    :type sclist: list of str
+
+    :returns: The phonemes from the input list separated by a pipe. "-" is \
+removed and replaced with a question mark at the end.
+    :rtype: str
+
+    :Example:
+
+    >>> from loanpy.helpers import list2regex
+    >>> list2regex(["b", "k", "v"])
+    '(b|k|v)'
+
+    >>> from loanpy.helpers import list2regex
+    >>> list2regex(["b", "k", "-", "v"])
+    '(b|k|v)?'
+
+    """
+
+    if sclist == ["-"]:
+        return ""
+    if "-" in sclist:
+        return "(" + "|".join([i for i in sclist if i != "-"]) + ")?"
+    return "(" + "|".join(sclist) + ")"
+
+
+def flatten(nested_list):
+    """
+    Called by loanpy.adrc.Adrc.repair_phonotactics and loanpy.adrc.Adrc.adapt.
+    Flatten a nested list and discard empty strings (to prevent feeding \
+empty strings to loanpy.adrc.Adrc.reconstruct, which would throw an Error)
+
+    :param nested_list: a nested list
+    :type nested_list: list of lists
+
+    :return: flattened list without empty strings as elements
+    :rtype: list
+
+    :Example:
+
+    >>> from loanpy.helpers import flatten
+    >>> flatten([["wrd1", "wrd2", ""], ["wrd3", "", ""]])
+    ['wrd1', 'wrd2', 'wrd3']
+    """
+    # empty strings would trigger an error in the tokeniser
+    # sometimes both phonemes of a 2-phoneme-word can be replaced with "".
+    # so some entire words can be substituted by "". Discard those.
+    return [item for sublist in nested_list for item in sublist if item]
+
+
+def combine_ipalists(wrds):
+    """
+    Called by loanpy.adrc.Adrc.adapt. \
+Combines and flattens a list of lists of sound correspondence lists.
+
+    :param wrds: list of words consisting of lists of sound correspondence \
+    lists.
+    :type wrds: list of lists of lists of str
+
+    :returns: a list of words without empty strings as elements
+    :rtype: list of strings
+
+    :Example:
+
+    >>> from loanpy.helpers import combine_ipalists
+    >>> combine_ipalists([[["a", "b"], ["c"], ["d"]], [["e", "f"], \
+["g"], ["h"]]])
+    ['acd', 'bcd', 'egh', 'fgh']
+    """
+
+    return flatten([list(map("".join, product(*wrd))) for wrd in wrds])
 
 
 def get_howmany(step, hm_phonotactics_ceiling, hm_paths_ceiling):
@@ -742,17 +750,17 @@ leftover will be sliced away in loanpy.adrc.Adrc.adapt.
         return step, hm_phonotactics_ceiling, hm_paths_ceiling
 
     x, y, z = 1, 1, 1
-    while x*y*z < step:
+    while x * y * z < step:
         x += 1
-        if x*y*z >= step:
+        if x * y * z >= step:
             return x, y, z
         if y < hm_phonotactics_ceiling:
             y += 1
-            if x*y*z >= step:
+            if x * y * z >= step:
                 return x, y, z
         if z < hm_paths_ceiling:
             z += 1
-            if x*y*z >= step:
+            if x * y * z >= step:
                 return x, y, z
 
     return x, y, z
