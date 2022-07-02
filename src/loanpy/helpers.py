@@ -4,22 +4,16 @@ Some of the functions may also be useful for the user in \
 other linguistic contexts.
 
 """
-
-from ast import literal_eval
-from collections import Counter
 from datetime import datetime
 from functools import partial
 from itertools import product
 from logging import getLogger
-from pathlib import Path
 
 from gensim.downloader import load
 from ipatok import clusterise, tokenise
 from lingpy.sequence.sound_classes import token2class
 from networkx import DiGraph, all_shortest_paths, shortest_path
-from numpy import array_equiv, isnan, subtract, zeros
-from pandas import DataFrame, read_csv
-from panphon.distance import Distance
+from numpy import array_equiv, subtract, zeros
 from tqdm import tqdm
 
 logger = getLogger(__name__)
