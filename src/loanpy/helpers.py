@@ -762,6 +762,9 @@ leftover will be sliced away in loanpy.adrc.Adrc.adapt.
 
 def pick_minmax(input_and_nr, howmany, func=min, return_all=False):
     """
+    https://en.wikipedia.org/wiki/Partial_sorting
+    replace with this:
+    https://docs.python.org/3/library/heapq.html#heapq.nlargest
     Called in loanpy.helpers.Etym.rank_closest and \
 loanpy.helpers.Etym.rank_closest_phonotactics. \
 Pick only the n smallest numbers from a list. Cheaper than \
