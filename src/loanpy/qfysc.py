@@ -35,299 +35,6 @@ is defined nor the phonotactic/phoneme inventory is plugged in.
     """
     pass
 
-def read_forms(dff):
-    """
-    Called by loanpy.helpers.Etym.__init__; Reads forms.csv (cldf), \
-keeps only columns "Segement", "Cognacy" and \
-"Language ID", drops spaces in Segments to internally re-tokenise later. \
-Only called by Etym.__init__ to create local variable dff (data frame forms). \
-Returns None if dff is None. So that class can be initiated without args too.
-
-    :param dff: path to forms.csv
-    :type dff: pathlib.PosixPath | str | None
-
-    :returns: a workable version of forms.csv as a pandas data frame
-    :rtype: pandas.core.frame.DataFrame | None
-
-    :Example:
-
-    >>> from pathlib import Path
-    >>> from loanpy.helpers import __file__, read_forms
-    >>> path2file = Path(__file__).parent / "tests" / \
-"input_files" / "forms.csv"
-    >>> read_forms(path2file)
-           Language_ID Segments  Cognacy
-    0            1      abc        1
-    1            2      xyz        1
-
-    """
-
-    if not dff:
-        return None
-    dff = read_csv(dff, usecols=["Segments", "Cognacy", "Language_ID"])
-    dff["Segments"] = [i.replace(" ", "") for i in dff.Segments]
-    return dff
-
-
-def cldf2pd(dfforms, source_language=None, target_language=None):
-    """
-    Called by loanpy.helpers.Etym.__init__; \
-Converts a CLDF based forms.csv to a pandas data frame. \
-Returns None if dfforms is None, so class can be initiated without args too. \
-Runs through forms.csv and creates a new data frame the following way: \
-Checks if a cognate set contains words from both, source and target language. \
-If yes: word from source lg goes to column "Source_Form", \
-word from target lg goes to column "Target_Form" and \
-the number of the cognate set goes to column "Cognacy". \
-Note that if a cognate set doesn't contain words from source and target \
-language, \
-that cognate set is skipped.
-
-    :param dfforms: Takes the output of read_forms() as input
-    :type dfforms: pandas.core.frame.DataFrame | None
-
-    :param source_language: The language who's cognates go to \
-column "Source_Forms"
-    :type source_language: str, default=None
-
-    :param target_language: The language who's cognates go to \
-column "Target_Forms"
-    :type target_language: str, default=None
-
-    :returns: forms.csv data frame with re-positioned information
-    :rtype: pandas.core.frame.DataFrame | None
-
-    :Example:
-
-    >>> from pathlib import Path
-    >>> from loanpy.helpers import __file__, cldf2pd, read_forms
-    >>> path2forms = Path(__file__).parent / "tests" \
-/ "input_files" / "forms.csv"
-    >>> forms = read_forms(path2forms)
-    >>> cldf2pd(forms, source_language=1, target_language=2)
-          Target_Form Source_Form  Cognacy
-    0         xyz         abc        1
-
-    """
-
-    if dfforms is None:
-        return None
-    target_form, source_form, cognacy, dfetymology = [], [], [], DataFrame()
-
-    # bugfix: col Cognacy is sometimes empty. if so, fill it
-    if all(isnan(i) for i in dfforms.Cognacy):
-        dfforms["Cognacy"] = list(range(len(dfforms)))
-
-    for cog in range(1, int(list(dfforms["Cognacy"])[-1])+1):
-        dfformsdrop = dfforms[dfforms["Cognacy"] == cog]
-        if all(lg in list(dfformsdrop["Language_ID"])
-               for lg in [target_language, source_language]):
-            cognacy.append(cog)
-            for idx, row in dfformsdrop.iterrows():
-                if row["Language_ID"] == target_language:
-                    target_form.append(row["Segments"])
-                if row["Language_ID"] == source_language:
-                    source_form.append(row["Segments"])
-
-    dfetymology["Target_Form"] = target_form
-    dfetymology["Source_Form"] = source_form
-    dfetymology["Cognacy"] = cognacy
-    return dfetymology
-
-
-def read_mode(mode):
-    """
-    Called by loanpy.qfysc.Qfy.__init__
-
-    :param mode: The mode in which the data should be quantified. If set \
-to "None", default mode jumps to "adapt". This option is useful if there \
-is no time to think so all params are quickly set to None.
-    :type mode: None | "adapt" | "reconstruct"
-
-    :raises WrongModeError: The mode can only be "adapt" or "reconstruct"
-
-    :returns: "adapt" | "reconstruct"
-    :rtype: str
-
-    :Example:
-
-    >>> from loanpy.qfysc import read_mode
-    >>> read_mode("adapt")
-    "adapt"
-    >>> read_mode("reconstruct")
-    "reconstruct"
-    >>> read_mode(None)
-    "adapt"
-    >>> read_mode("")
-    "adapt"
-    >>> read_mode("bla")
-    loanpy.qfysc.WrongModeError: parameter <mode> \
-must be 'adapt' or 'reconstruct'
-
-    """
-    if mode and mode not in ["adapt", "reconstruct"]:
-        raise WrongModeError("parameter <mode> \
-must be 'adapt' or 'reconstruct'")
-    return mode if mode else "adapt"
-
-
-def read_connector(connector, mode):
-    """
-    Called by loanpy.qfysc.Qfy.__init__
-
-    :param connector: An iterable that defines the two symbols that connect \
-the words on the left and the right side of the etymology when adapting \
-vs. reconstructing. If None is passed, \
-"<" is used for adapting and \
-"<\*" for reconstructing.
-    :type connector: iterable of str
-
-    :param mode: the mode to choose the connector for, if "reconstruct", \
-then the second element of the iterable will be chosen. If "adapt", the 1st.
-    :type mode: "adapt" | "reconstruct"
-
-    :returns: The string that connects the left and right side of an etymology.
-    :rtype: str
-
-    :Example:
-
-    >>> from loanpy.qfysc import read_connector
-    >>> read_connector(connector=None, mode="adapt")
-    "<"
-    >>> read_connector(connector=None, mode=None)
-    "<"
-    >>> read_connector(connector=None, mode="reconstruct")
-    "<*"
-    >>> read_connector(connector=(" from ", " from *"), mode="reconstruct")
-    " from *"
-    """
-
-    if connector is None:
-        connector = ("<", "<*")
-    return connector[1] if mode == "reconstruct" else connector[0]
-
-
-def read_scdictbase(scdictbase):
-    """
-    Called by loanpy.qfysc.Qfy.__init__
-
-    :param scdictbase: The sound correspondence dictionary base. \
-Has to be generated \
-with loanpy.helpers.Etym.get_scdictbase first. Can be plugged in via a file, \
-by directly providing a dictionary, or accessing loanpy.qfysc.Qfy.scdictbase \
-(since loanpy.helpers.Etym.get_scdictbase always assigns the dictionary to \
-its attribute scdictbase, which is then inherited by loanpy.qfysc.Qfy.) \
-The preferred setting is to provide the path to the file, since \
-it is rather large (~1.6MB) and should therefore be generated \
-only once for any target language.
-    :type scdictbase: None | pathlib.PosixPath | str
-
-    :returns: A dictionary representing a heuristic approach to sound \
-substitution. Returns empty dictionary if set to None. \
-For more details see loanpy.helpers.Etym.get_scdictbase.
-    :rtype: dictionary
-
-    :Example:
-
-    >>> from loanpy.qfysc import read_scdictbase
-    >>> base = {"a": ["e", "o"], "b": ["p", "v"]}
-    >>> read_scdictbase(base)  # plug in dictionary directly
-    {"a": ["e", "o"], "b": ["p", "v"]}
-    >>> from loanpy.qfysc import __file__
-    >>> from pathlib import Path
-    >>> from os import remove
-    >>> path = Path(__file__).parent / "test_read_scdictbase.txt"
-    >>> with open(path, "w", encoding="utf-8") as f: f.write(str(base))  \
-# write test file
-    >>> read_scdictbase(path)  # read dictionary from file
-    {"a": ["e", "o"], "b": ["p", "v"]}
-    >>> remove(path)  # delete the test file again
-
-    """
-    # needed by get_sound_corresp for substitutions
-    if scdictbase is None:
-        return {}
-    if isinstance(scdictbase, dict):
-        return scdictbase
-    with open(scdictbase, "r", encoding="utf-8") as f:
-        return literal_eval(f.read())
-
-def forms2list(dff, target_language):
-    """
-    Called by loanpy.helpers.Etym.__init__; \
-Get a list of words of a language from a forms.csv file.
-
-    :param dff: forms.csv data frame (cldf)
-    :type dff: pandas.core.frame.DataFrame
-
-    :param target_language: The language from which the phoneme, \
-phoneme cluster and phonotactic inventories will be extracted.
-    :type target_language: str
-
-    :returns: a list of words in the target language
-    :rtype: list | None
-
-    :Example:
-
-    >>> from pathlib import Path
-    >>> from loanpy.helpers import __file__, forms2list, read_forms
-    >>> path2forms = Path(__file__).parent / "tests" \
-/ "input_files" / "forms.csv"
-    >>> forms = read_forms(path2forms)
-    >>> forms2list(forms, target_language=2)
-    ['xyz']
-    """
-    return None if dff is None else list(
-        dff[dff["Language_ID"] == target_language]["Segments"])
-
-def read_dst(dst_msr):
-    """
-    Called by loanpy.helpers.Etym.__init__; \
-Returns a function that calculates the phonological distance between strings \
-from panphon.distance.Distance. This will be used to calculate the most \
-similar phonemes of the phoneme inventory compared to \
-a given phoneme from ipa_all.csv
-
-    :param dst_msr: The name of the distance measure, which has to be \
-a method \
-of panphon.distance.Distance
-    :type dst_msr: None, \
-"doglo_prime_distance" | \
-"dolgo_prime_distance_div_maxlen" | \
-"fast_levenshtein_distance" | \
-"fast_levenshtein_distance_div_maxlen" | \
-"feature_difference" | \
-"feature_edit_distance" | \
-"feature_edit_distance_div_maxlen" | \
-"hamming_feature_edit_distance" | \
-"hamming_feature_edit_distance_div_maxlen" | \
-"hamming_substitution_cost" | \
-"jt_feature_edit_distance" | \
-"jt_feature_edit_distance_div_maxlen" | \
-"jt_hamming_feature_edit_distance" | \
-"jt_hamming_feature_edit_distance_div_maxlen" | \
-"jt_weighted_feature_edit_distance" | \
-"jt_weighted_feature_edit_distance_div_maxlen" | \
-"levenshtein_distance"
-
-    :returns: a function that calculates the phonological distance between \
-IPA-strings
-    :rtype: function | None
-
-    :Example:
-
-    >>> from loanpy.helpers import read_dst
-    >>> read_dst("fast_levenshtein_distance")
-    <bound method Distance.fast_levenshtein_distance of \
-<panphon.distance.Distance object at 0x7f7f21fe95b0>>
-
-    For more information see PanPhon's documentation:
-
-    >>> from panphon.distance import Distance
-    >>> help(Distance)
-
-    """
-    return None if not dst_msr else getattr(Distance(), dst_msr)
 
 class Etym:
     """
@@ -463,6 +170,252 @@ from loanpy.helpers.Etym
                                                     phonotactic_inventory,
                                                     most_frequent_phonotactics
                                                     )
+    def get_sound_corresp(self, write_to=None):
+
+        """
+        Convert an etymological dictionary to a dictionary of sound (cluster) \
+and phonotactic correspondences, \
+their number of occurrences, and IDs of cognate sets in which they occur. \
+If loanpy.qfysc.Qfy.mode=="reconstruct" phonotactic correspondences \
+will not be extracted \
+because that dimension is already captured through the alignment. \
+Since loanpy.adrc.Adrc.adapt does not capture this, phonotactic \
+correspondences need to be extracted from the data to \
+later repair the structures \
+before substituting. This has to do with the different nature of lateral \
+vs horizontal transfers: loanwords meet certain constraints immediately \
+and need to be repaired immediately. While historical sound changes happen \
+over a long period of time. (If there was an optimality theory based \
+model with constraint-changes for historical \
+linguistics, vertical predictions with loanpy.adrc.Adrc.adapt would \
+be possible.)
+
+        :param write_to: Indicate if results should be written to a \
+text file. If yes, provide the path. None means that no file will be written.
+        :type write_to: None | pathlib.PosixPath | str, default=None
+
+        :returns: list of 6 dicts. Dicts 0, 1, 2 capture phonological \
+correspondences, dicts 3, 4, 5 phonotactic ones. dict0/dict3: the actual \
+correspondences, dict1/dict4: How often each \
+correspondence occurs in the data, \
+dict2/dict5: list of cognates in which each correspondence occurs. \
+Dicts 4, 5, 6 will be empty if loanpy.qfysc.Qfy.mode=="reconstruct". \
+Set mode in \
+loanpy.qfysc.Qfy. Note: dictionary 5 contains some randomness because set() \
+is involved, for details see loanpy.qfysc.Qfy.get_phonotactics_corresp.
+        :rtype: [dict, dict, dict, dict, dict, dict]
+
+        :Example:
+
+        >>> from pathlib import Path
+        >>> from loanpy.qfysc import Qfy, __file__
+        >>> path2forms = Path(__file__).parent / "tests" \
+/ "input_files" / "forms.csv"
+        >>> qfy_obj = Qfy(forms_csv=path2forms, \
+source_language=1, target_language=2)
+        >>> qfy_obj.get_sound_corresp()
+        [{'C': ['x'], 'a': ['y'], 'b': [''], \
+'c': ['z']}, {'C<b': 1, 'x<C': 1, \
+'y<a': 1, 'z<c': 1}, {'C<b': [1], 'x<C': [1], 'y<a': [1], 'z<c': [1]}, \
+{'VCC': ['CVC']}, {'CVC<VCC': 1}, {'CVC<VCC': [1]}]
+
+        >>>  # now reconstruct instead of adapt, and write file
+        >>> from ast import literal_eval
+        >>> from os import remove
+        >>> path2scdict = Path(__file__).parent / "example_scdict2delete.txt"
+        >>> qfy_obj = Qfy(forms_csv=path2forms, \
+source_language=1, target_language=2, mode="reconstruct")
+        >>> qfy_obj.get_sound_corresp(write_to=path2scdict)
+        [{'#x': ['-'], '-#': ['-'], 'y': ['a'], 'z#': ['bc']}, \
+{'#x<*-': 1, '-#<*-': 1, 'y<*a': 1, 'z#<*bc': 1}, \
+{'#x<*-': [1], '-#<*-': [1], 'y<*a': [1], 'z#<*bc': [1]}, {}, {}, {}]
+        >>> literal_eval(open(path2scdict, "r", encoding="utf-8").read())
+        [{'#x': ['-'], '-#': ['-'], 'y': ['a'], 'z#': ['bc']}, \
+{'#x<*-': 1, '-#<*-': 1, 'y<*a': 1, 'z#<*bc': 1}, \
+{'#x<*-': [1], '-#<*-': [1], 'y<*a': [1], 'z#<*bc': [1]}, {}, {}, {}]
+        >>> remove(path2scdict)
+
+        """
+
+        soundchange = []
+        wordchange = []
+        # align every word and append it to a list of data frames for concat
+        for left, right, cog in zip(self.dfety["Target_Form"],
+                                    self.dfety["Source_Form"],
+                                    self.dfety["Cognacy"]):
+            dfalign = self.align(left, right)
+            soundchange.append(dfalign)
+            wordchange += [cog]*len(dfalign)  # col 3 after concat
+
+        dfsoundchange = concat(soundchange)  # one big df of sound corresp
+        # cognate set where it happened
+        dfsoundchange["wordchange"] = wordchange
+        dfsoundchange["e"] = 1  # every sound corr. occurs once. will be added
+
+        # flip keys and vals if adapting!
+        # important! since backwards predictions for rc
+        if self.mode == "adapt":
+            dfsoundchange["soundchange"] = (dfsoundchange["vals"] +
+                                            self.connector +
+                                            dfsoundchange["keys"])
+            #  join source&target with connector
+        else:
+            dfsoundchange["soundchange"] = (dfsoundchange["keys"] +
+                                            self.connector +
+                                            dfsoundchange["vals"])
+            # join source and target with connector
+
+# create the first 3 elements of the output from the big df of sound corresp
+# create 1st element of output. Sort correspondence list by frequency
+        dfsc = dfsoundchange.groupby("keys")["vals"].apply(
+            lambda x: [n[0] for n in Counter(x).most_common()]).reset_index()
+# create 2nd element of output. Sum up how often each corresp occurred
+        dfse = dfsoundchange.groupby("soundchange")["e"].sum().reset_index()
+# create 3rd elem. of output. List up cognate sets where each corresp occurred
+        dfe = dfsoundchange.groupby("soundchange")[
+            "wordchange"].apply(lambda x: sorted(set(x))).reset_index()
+
+# turn the 3 pandas dataframes into dictionaries
+        scdict = dict(zip(dfsc["keys"], dfsc["vals"]))
+        sedict = dict(zip(dfse["soundchange"], dfse["e"]))
+        edict = dict(zip(dfe["soundchange"], dfe["wordchange"]))
+
+# insert placeholder vowels. This was necessary for uralic data.
+        if self.vfb:  # "əœʌ"
+            for i in scdict:
+                if (any(self.phon2cv.get(j, "") == "V" for j in scdict[i]) and
+                        self.vfb[0] not in scdict[i]):
+                    scdict[i].append(self.vfb[0])
+                    if (any(self.vow2fb.get(j, "") == "F"
+                            for j in scdict[i]) and
+                            self.vfb[1] not in scdict[i]):
+                        scdict[i].append(self.vfb[1])
+                    if (any(self.vow2fb.get(j, "") == "B"
+                            for j in scdict[i]) and
+                            self.vfb[2] not in scdict[i]):
+                        scdict[i].append(self.vfb[2])
+
+# in loanpy.qfysc.Qfy.align_lingpy "C" and "V" instead of "-" used
+# to mark that a sound disappeared. So has to be removed here again.
+        if self.mode == "adapt":
+            for k in scdict:
+                scdict[k] = ["" if j == "C" or j == "V" else j
+                             for j in scdict[k]]
+# if adapting, merge data with heuristics
+            # loop through keys of both dicts combined
+            for i in self.scdictbase | scdict:
+                # combine keys that are in both
+                if i in self.scdictbase and i in scdict:
+                    scdict[i] = list(dict.fromkeys(scdict[i] +
+                                                   self.scdictbase[i]))
+                # if key missing from scdict but is in scdictbase
+                elif i in self.scdictbase:
+                    scdict[i] = self.scdictbase[i]  # then add it to scdict
+# like this it is ensured that no non-ipa chars are taken
+
+        out = [scdict, sedict, edict]  # first 3 elements of output
+        # the other 3 are only generated if adapting
+        out += self.get_phonotactics_corresp() if self.mode == "\
+adapt" else [{}, {}, {}]
+
+        if write_to:  # write to file if indicated so
+            with open(write_to, "w", encoding="utf-8") as data:
+                data.write(str(out))
+
+        return out  # always return the output
+
+    def get_phonotactics_corresp(self, write_to=None):
+
+        """
+        Called by loanpy.qfysc.Qfy.get_sound_corresp. \
+Similar to loanpy.qfysc.get_sound_corresp but here, no alignment \
+is needed. Just capture which phonotactic profile turns into which \
+in the data, how often that happens and in which cognate sets.
+
+        :param write_to: Indicate if results should be written to a \
+text file. If yes, provide the path. None means that no file will be written.
+        :type write_to: None | pathlib.PosixPath | str, default=None
+
+        :returns: list of 3 dicts that capture phonotactic correspondences, \
+how often each correspondence occurs in the data and in which cognate sets \
+each correspondence occurs.
+        :rtype: [dict, dict, dict]
+
+        :Example:
+
+        >>> from pathlib import Path
+        >>> from loanpy.qfysc import Qfy, __file__
+        >>> path2forms = Path(__file__).parent / "tests" \
+/ "input_files" / "forms.csv"
+        >>> qfy_obj = Qfy(forms_csv=path2forms, source_language=1, \
+target_language=2)
+        >>> qfy_obj.get_phonotactics_corresp()
+        [{'VCC': ['CVC']}, {'CVC<VCC': 1}, {'CVC<VCC': [1]}]
+
+        >>>  # now reconstruct instead of adapt, and write file
+        >>> from ast import literal_eval
+        >>> from os import remove
+        >>> path2scdict = Path(__file__).parent / "example_scdict2delete.txt"
+        >>> qfy_obj = Qfy(forms_csv=path2forms, source_language=1, \
+target_language=2, mode="reconstruct")
+        >>> qfy_obj.get_phonotactics_corresp(write_to=path2scdict)
+        [{'VCC': ['CVC']}, {'VCC<*CVC': 1}, {'VCC<*CVC': [1]}]
+        >>> literal_eval(open(path2scdict, "r", encoding="utf-8").read())
+        [{'VCC': ['CVC']}, {'VCC<*CVC': 1}, {'VCC<*CVC': [1]}]
+        >>> remove(path2scdict)
+
+        """
+
+        # get the phonotactic profile of both strings
+        keys = [prosodic_string(tokenise(i)) for i in self.dfety["Source_Form"]]
+        vals = [prosodic_string(tokenise(i)) for i in self.dfety["Target_Form"]]
+        wordchange = self.dfety["Cognacy"]
+
+        # create one big data frame out of structural changes
+        # column three captures the cognate sets where the change happened
+        dfstrucchange = DataFrame(zip(keys, vals, wordchange),
+                                  columns=["keys", "vals", "wordchange"])
+        dfstrucchange["e"] = 1  # each change happened one time. add later.
+
+        #  important to flip keys and vals if adapting!
+        if self.mode == "adapt":
+            dfstrucchange["strucchange"] = (dfstrucchange["vals"] +
+                                            self.connector +
+                                            dfstrucchange["keys"])
+        else:
+            dfstrucchange["strucchange"] = (dfstrucchange["keys"] +
+                                            self.connector +
+                                            dfstrucchange["vals"])
+
+# create the first 3 elements of the output from the big df of sound corresp
+# create 1st element of output. Sort correspondence list by frequency
+        dfsc = dfstrucchange.groupby("keys")[
+            "vals"].apply(lambda x: [n[0]
+                          for n in Counter(x).most_common()]).reset_index()
+# create 2nd element of output. Sum up how often each corresp occurred
+        dfse = dfstrucchange.groupby("strucchange")["e"].sum().reset_index()
+# create 3rd elem. of output. List up cognate sets where each corresp occurred
+        dfe = dfstrucchange.groupby("strucchange")["wordchange"].\
+            apply(list).reset_index()
+
+# turn the dataframes to dictionaries
+        scdict = dict(zip(dfsc["keys"], dfsc["vals"]))
+        sedict = dict(zip(dfse["strucchange"], dfse["e"]))
+        edict = dict(zip(dfe["strucchange"], dfe["wordchange"]))
+
+# merge data with heuristics: sort phonotactic inventory
+# by similarity to each structure
+# and append it to the data.
+        for i in scdict:  # this involves some randomness:
+            # rank_closest picks a random struc if 2 are equally close!
+            scdict[i] = list(dict.fromkeys(
+                scdict[i] + self.rank_closest_phonotactics(i).split(", ")))
+
+        if write_to:  # write file if indicated so
+            with open(write_to, "w", encoding="utf-8") as data:
+                data.write(str([scdict, sedict, edict]))
+
+        return [scdict, sedict, edict]  # return list of 3 dictionaries
 
     def get_inventories(self,
                         phoneme_inventory=None,
@@ -1010,250 +963,296 @@ gets flipped internally.)
             keys, vals = keys + ["-#"], vals + ["-"]
 
         return DataFrame({"keys": keys, "vals": vals})
+def read_forms(dff):
+    """
+    Called by loanpy.helpers.Etym.__init__; Reads forms.csv (cldf), \
+keeps only columns "Segement", "Cognacy" and \
+"Language ID", drops spaces in Segments to internally re-tokenise later. \
+Only called by Etym.__init__ to create local variable dff (data frame forms). \
+Returns None if dff is None. So that class can be initiated without args too.
 
-    def get_sound_corresp(self, write_to=None):
+    :param dff: path to forms.csv
+    :type dff: pathlib.PosixPath | str | None
 
-        """
-        Convert an etymological dictionary to a dictionary of sound (cluster) \
-and phonotactic correspondences, \
-their number of occurrences, and IDs of cognate sets in which they occur. \
-If loanpy.qfysc.Qfy.mode=="reconstruct" phonotactic correspondences \
-will not be extracted \
-because that dimension is already captured through the alignment. \
-Since loanpy.adrc.Adrc.adapt does not capture this, phonotactic \
-correspondences need to be extracted from the data to \
-later repair the structures \
-before substituting. This has to do with the different nature of lateral \
-vs horizontal transfers: loanwords meet certain constraints immediately \
-and need to be repaired immediately. While historical sound changes happen \
-over a long period of time. (If there was an optimality theory based \
-model with constraint-changes for historical \
-linguistics, vertical predictions with loanpy.adrc.Adrc.adapt would \
-be possible.)
+    :returns: a workable version of forms.csv as a pandas data frame
+    :rtype: pandas.core.frame.DataFrame | None
 
-        :param write_to: Indicate if results should be written to a \
-text file. If yes, provide the path. None means that no file will be written.
-        :type write_to: None | pathlib.PosixPath | str, default=None
+    :Example:
 
-        :returns: list of 6 dicts. Dicts 0, 1, 2 capture phonological \
-correspondences, dicts 3, 4, 5 phonotactic ones. dict0/dict3: the actual \
-correspondences, dict1/dict4: How often each \
-correspondence occurs in the data, \
-dict2/dict5: list of cognates in which each correspondence occurs. \
-Dicts 4, 5, 6 will be empty if loanpy.qfysc.Qfy.mode=="reconstruct". \
-Set mode in \
-loanpy.qfysc.Qfy. Note: dictionary 5 contains some randomness because set() \
-is involved, for details see loanpy.qfysc.Qfy.get_phonotactics_corresp.
-        :rtype: [dict, dict, dict, dict, dict, dict]
+    >>> from pathlib import Path
+    >>> from loanpy.helpers import __file__, read_forms
+    >>> path2file = Path(__file__).parent / "tests" / \
+"input_files" / "forms.csv"
+    >>> read_forms(path2file)
+           Language_ID Segments  Cognacy
+    0            1      abc        1
+    1            2      xyz        1
 
-        :Example:
+    """
 
-        >>> from pathlib import Path
-        >>> from loanpy.qfysc import Qfy, __file__
-        >>> path2forms = Path(__file__).parent / "tests" \
+    if not dff:
+        return None
+    dff = read_csv(dff, usecols=["Segments", "Cognacy", "Language_ID"])
+    dff["Segments"] = [i.replace(" ", "") for i in dff.Segments]
+    return dff
+
+
+def cldf2pd(dfforms, source_language=None, target_language=None):
+    """
+    Called by loanpy.helpers.Etym.__init__; \
+Converts a CLDF based forms.csv to a pandas data frame. \
+Returns None if dfforms is None, so class can be initiated without args too. \
+Runs through forms.csv and creates a new data frame the following way: \
+Checks if a cognate set contains words from both, source and target language. \
+If yes: word from source lg goes to column "Source_Form", \
+word from target lg goes to column "Target_Form" and \
+the number of the cognate set goes to column "Cognacy". \
+Note that if a cognate set doesn't contain words from source and target \
+language, \
+that cognate set is skipped.
+
+    :param dfforms: Takes the output of read_forms() as input
+    :type dfforms: pandas.core.frame.DataFrame | None
+
+    :param source_language: The language who's cognates go to \
+column "Source_Forms"
+    :type source_language: str, default=None
+
+    :param target_language: The language who's cognates go to \
+column "Target_Forms"
+    :type target_language: str, default=None
+
+    :returns: forms.csv data frame with re-positioned information
+    :rtype: pandas.core.frame.DataFrame | None
+
+    :Example:
+
+    >>> from pathlib import Path
+    >>> from loanpy.helpers import __file__, cldf2pd, read_forms
+    >>> path2forms = Path(__file__).parent / "tests" \
 / "input_files" / "forms.csv"
-        >>> qfy_obj = Qfy(forms_csv=path2forms, \
-source_language=1, target_language=2)
-        >>> qfy_obj.get_sound_corresp()
-        [{'C': ['x'], 'a': ['y'], 'b': [''], \
-'c': ['z']}, {'C<b': 1, 'x<C': 1, \
-'y<a': 1, 'z<c': 1}, {'C<b': [1], 'x<C': [1], 'y<a': [1], 'z<c': [1]}, \
-{'VCC': ['CVC']}, {'CVC<VCC': 1}, {'CVC<VCC': [1]}]
+    >>> forms = read_forms(path2forms)
+    >>> cldf2pd(forms, source_language=1, target_language=2)
+          Target_Form Source_Form  Cognacy
+    0         xyz         abc        1
 
-        >>>  # now reconstruct instead of adapt, and write file
-        >>> from ast import literal_eval
-        >>> from os import remove
-        >>> path2scdict = Path(__file__).parent / "example_scdict2delete.txt"
-        >>> qfy_obj = Qfy(forms_csv=path2forms, \
-source_language=1, target_language=2, mode="reconstruct")
-        >>> qfy_obj.get_sound_corresp(write_to=path2scdict)
-        [{'#x': ['-'], '-#': ['-'], 'y': ['a'], 'z#': ['bc']}, \
-{'#x<*-': 1, '-#<*-': 1, 'y<*a': 1, 'z#<*bc': 1}, \
-{'#x<*-': [1], '-#<*-': [1], 'y<*a': [1], 'z#<*bc': [1]}, {}, {}, {}]
-        >>> literal_eval(open(path2scdict, "r", encoding="utf-8").read())
-        [{'#x': ['-'], '-#': ['-'], 'y': ['a'], 'z#': ['bc']}, \
-{'#x<*-': 1, '-#<*-': 1, 'y<*a': 1, 'z#<*bc': 1}, \
-{'#x<*-': [1], '-#<*-': [1], 'y<*a': [1], 'z#<*bc': [1]}, {}, {}, {}]
-        >>> remove(path2scdict)
+    """
 
-        """
+    if dfforms is None:
+        return None
+    target_form, source_form, cognacy, dfetymology = [], [], [], DataFrame()
 
-        soundchange = []
-        wordchange = []
-        # align every word and append it to a list of data frames for concat
-        for left, right, cog in zip(self.dfety["Target_Form"],
-                                    self.dfety["Source_Form"],
-                                    self.dfety["Cognacy"]):
-            dfalign = self.align(left, right)
-            soundchange.append(dfalign)
-            wordchange += [cog]*len(dfalign)  # col 3 after concat
+    # bugfix: col Cognacy is sometimes empty. if so, fill it
+    if all(isnan(i) for i in dfforms.Cognacy):
+        dfforms["Cognacy"] = list(range(len(dfforms)))
 
-        dfsoundchange = concat(soundchange)  # one big df of sound corresp
-        # cognate set where it happened
-        dfsoundchange["wordchange"] = wordchange
-        dfsoundchange["e"] = 1  # every sound corr. occurs once. will be added
+    for cog in range(1, int(list(dfforms["Cognacy"])[-1])+1):
+        dfformsdrop = dfforms[dfforms["Cognacy"] == cog]
+        if all(lg in list(dfformsdrop["Language_ID"])
+               for lg in [target_language, source_language]):
+            cognacy.append(cog)
+            for idx, row in dfformsdrop.iterrows():
+                if row["Language_ID"] == target_language:
+                    target_form.append(row["Segments"])
+                if row["Language_ID"] == source_language:
+                    source_form.append(row["Segments"])
 
-        # flip keys and vals if adapting!
-        # important! since backwards predictions for rc
-        if self.mode == "adapt":
-            dfsoundchange["soundchange"] = (dfsoundchange["vals"] +
-                                            self.connector +
-                                            dfsoundchange["keys"])
-            #  join source&target with connector
-        else:
-            dfsoundchange["soundchange"] = (dfsoundchange["keys"] +
-                                            self.connector +
-                                            dfsoundchange["vals"])
-            # join source and target with connector
+    dfetymology["Target_Form"] = target_form
+    dfetymology["Source_Form"] = source_form
+    dfetymology["Cognacy"] = cognacy
+    return dfetymology
 
-# create the first 3 elements of the output from the big df of sound corresp
-# create 1st element of output. Sort correspondence list by frequency
-        dfsc = dfsoundchange.groupby("keys")["vals"].apply(
-            lambda x: [n[0] for n in Counter(x).most_common()]).reset_index()
-# create 2nd element of output. Sum up how often each corresp occurred
-        dfse = dfsoundchange.groupby("soundchange")["e"].sum().reset_index()
-# create 3rd elem. of output. List up cognate sets where each corresp occurred
-        dfe = dfsoundchange.groupby("soundchange")[
-            "wordchange"].apply(lambda x: sorted(set(x))).reset_index()
 
-# turn the 3 pandas dataframes into dictionaries
-        scdict = dict(zip(dfsc["keys"], dfsc["vals"]))
-        sedict = dict(zip(dfse["soundchange"], dfse["e"]))
-        edict = dict(zip(dfe["soundchange"], dfe["wordchange"]))
+def read_mode(mode):
+    """
+    Called by loanpy.qfysc.Qfy.__init__
 
-# insert placeholder vowels. This was necessary for uralic data.
-        if self.vfb:  # "əœʌ"
-            for i in scdict:
-                if (any(self.phon2cv.get(j, "") == "V" for j in scdict[i]) and
-                        self.vfb[0] not in scdict[i]):
-                    scdict[i].append(self.vfb[0])
-                    if (any(self.vow2fb.get(j, "") == "F"
-                            for j in scdict[i]) and
-                            self.vfb[1] not in scdict[i]):
-                        scdict[i].append(self.vfb[1])
-                    if (any(self.vow2fb.get(j, "") == "B"
-                            for j in scdict[i]) and
-                            self.vfb[2] not in scdict[i]):
-                        scdict[i].append(self.vfb[2])
+    :param mode: The mode in which the data should be quantified. If set \
+to "None", default mode jumps to "adapt". This option is useful if there \
+is no time to think so all params are quickly set to None.
+    :type mode: None | "adapt" | "reconstruct"
 
-# in loanpy.qfysc.Qfy.align_lingpy "C" and "V" instead of "-" used
-# to mark that a sound disappeared. So has to be removed here again.
-        if self.mode == "adapt":
-            for k in scdict:
-                scdict[k] = ["" if j == "C" or j == "V" else j
-                             for j in scdict[k]]
-# if adapting, merge data with heuristics
-            # loop through keys of both dicts combined
-            for i in self.scdictbase | scdict:
-                # combine keys that are in both
-                if i in self.scdictbase and i in scdict:
-                    scdict[i] = list(dict.fromkeys(scdict[i] +
-                                                   self.scdictbase[i]))
-                # if key missing from scdict but is in scdictbase
-                elif i in self.scdictbase:
-                    scdict[i] = self.scdictbase[i]  # then add it to scdict
-# like this it is ensured that no non-ipa chars are taken
+    :raises WrongModeError: The mode can only be "adapt" or "reconstruct"
 
-        out = [scdict, sedict, edict]  # first 3 elements of output
-        # the other 3 are only generated if adapting
-        out += self.get_phonotactics_corresp() if self.mode == "\
-adapt" else [{}, {}, {}]
+    :returns: "adapt" | "reconstruct"
+    :rtype: str
 
-        if write_to:  # write to file if indicated so
-            with open(write_to, "w", encoding="utf-8") as data:
-                data.write(str(out))
+    :Example:
 
-        return out  # always return the output
+    >>> from loanpy.qfysc import read_mode
+    >>> read_mode("adapt")
+    "adapt"
+    >>> read_mode("reconstruct")
+    "reconstruct"
+    >>> read_mode(None)
+    "adapt"
+    >>> read_mode("")
+    "adapt"
+    >>> read_mode("bla")
+    loanpy.qfysc.WrongModeError: parameter <mode> \
+must be 'adapt' or 'reconstruct'
 
-    def get_phonotactics_corresp(self, write_to=None):
+    """
+    if mode and mode not in ["adapt", "reconstruct"]:
+        raise WrongModeError("parameter <mode> \
+must be 'adapt' or 'reconstruct'")
+    return mode if mode else "adapt"
 
-        """
-        Called by loanpy.qfysc.Qfy.get_sound_corresp. \
-Similar to loanpy.qfysc.get_sound_corresp but here, no alignment \
-is needed. Just capture which phonotactic profile turns into which \
-in the data, how often that happens and in which cognate sets.
 
-        :param write_to: Indicate if results should be written to a \
-text file. If yes, provide the path. None means that no file will be written.
-        :type write_to: None | pathlib.PosixPath | str, default=None
+def read_connector(connector, mode):
+    """
+    Called by loanpy.qfysc.Qfy.__init__
 
-        :returns: list of 3 dicts that capture phonotactic correspondences, \
-how often each correspondence occurs in the data and in which cognate sets \
-each correspondence occurs.
-        :rtype: [dict, dict, dict]
+    :param connector: An iterable that defines the two symbols that connect \
+the words on the left and the right side of the etymology when adapting \
+vs. reconstructing. If None is passed, \
+"<" is used for adapting and \
+"<\*" for reconstructing.
+    :type connector: iterable of str
 
-        :Example:
+    :param mode: the mode to choose the connector for, if "reconstruct", \
+then the second element of the iterable will be chosen. If "adapt", the 1st.
+    :type mode: "adapt" | "reconstruct"
 
-        >>> from pathlib import Path
-        >>> from loanpy.qfysc import Qfy, __file__
-        >>> path2forms = Path(__file__).parent / "tests" \
+    :returns: The string that connects the left and right side of an etymology.
+    :rtype: str
+
+    :Example:
+
+    >>> from loanpy.qfysc import read_connector
+    >>> read_connector(connector=None, mode="adapt")
+    "<"
+    >>> read_connector(connector=None, mode=None)
+    "<"
+    >>> read_connector(connector=None, mode="reconstruct")
+    "<*"
+    >>> read_connector(connector=(" from ", " from *"), mode="reconstruct")
+    " from *"
+    """
+
+    if connector is None:
+        connector = ("<", "<*")
+    return connector[1] if mode == "reconstruct" else connector[0]
+
+
+def read_scdictbase(scdictbase):
+    """
+    Called by loanpy.qfysc.Qfy.__init__
+
+    :param scdictbase: The sound correspondence dictionary base. \
+Has to be generated \
+with loanpy.helpers.Etym.get_scdictbase first. Can be plugged in via a file, \
+by directly providing a dictionary, or accessing loanpy.qfysc.Qfy.scdictbase \
+(since loanpy.helpers.Etym.get_scdictbase always assigns the dictionary to \
+its attribute scdictbase, which is then inherited by loanpy.qfysc.Qfy.) \
+The preferred setting is to provide the path to the file, since \
+it is rather large (~1.6MB) and should therefore be generated \
+only once for any target language.
+    :type scdictbase: None | pathlib.PosixPath | str
+
+    :returns: A dictionary representing a heuristic approach to sound \
+substitution. Returns empty dictionary if set to None. \
+For more details see loanpy.helpers.Etym.get_scdictbase.
+    :rtype: dictionary
+
+    :Example:
+
+    >>> from loanpy.qfysc import read_scdictbase
+    >>> base = {"a": ["e", "o"], "b": ["p", "v"]}
+    >>> read_scdictbase(base)  # plug in dictionary directly
+    {"a": ["e", "o"], "b": ["p", "v"]}
+    >>> from loanpy.qfysc import __file__
+    >>> from pathlib import Path
+    >>> from os import remove
+    >>> path = Path(__file__).parent / "test_read_scdictbase.txt"
+    >>> with open(path, "w", encoding="utf-8") as f: f.write(str(base))  \
+# write test file
+    >>> read_scdictbase(path)  # read dictionary from file
+    {"a": ["e", "o"], "b": ["p", "v"]}
+    >>> remove(path)  # delete the test file again
+
+    """
+    # needed by get_sound_corresp for substitutions
+    if scdictbase is None:
+        return {}
+    if isinstance(scdictbase, dict):
+        return scdictbase
+    with open(scdictbase, "r", encoding="utf-8") as f:
+        return literal_eval(f.read())
+
+def forms2list(dff, target_language):
+    """
+    Called by loanpy.helpers.Etym.__init__; \
+Get a list of words of a language from a forms.csv file.
+
+    :param dff: forms.csv data frame (cldf)
+    :type dff: pandas.core.frame.DataFrame
+
+    :param target_language: The language from which the phoneme, \
+phoneme cluster and phonotactic inventories will be extracted.
+    :type target_language: str
+
+    :returns: a list of words in the target language
+    :rtype: list | None
+
+    :Example:
+
+    >>> from pathlib import Path
+    >>> from loanpy.helpers import __file__, forms2list, read_forms
+    >>> path2forms = Path(__file__).parent / "tests" \
 / "input_files" / "forms.csv"
-        >>> qfy_obj = Qfy(forms_csv=path2forms, source_language=1, \
-target_language=2)
-        >>> qfy_obj.get_phonotactics_corresp()
-        [{'VCC': ['CVC']}, {'CVC<VCC': 1}, {'CVC<VCC': [1]}]
+    >>> forms = read_forms(path2forms)
+    >>> forms2list(forms, target_language=2)
+    ['xyz']
+    """
+    return None if dff is None else list(
+        dff[dff["Language_ID"] == target_language]["Segments"])
 
-        >>>  # now reconstruct instead of adapt, and write file
-        >>> from ast import literal_eval
-        >>> from os import remove
-        >>> path2scdict = Path(__file__).parent / "example_scdict2delete.txt"
-        >>> qfy_obj = Qfy(forms_csv=path2forms, source_language=1, \
-target_language=2, mode="reconstruct")
-        >>> qfy_obj.get_phonotactics_corresp(write_to=path2scdict)
-        [{'VCC': ['CVC']}, {'VCC<*CVC': 1}, {'VCC<*CVC': [1]}]
-        >>> literal_eval(open(path2scdict, "r", encoding="utf-8").read())
-        [{'VCC': ['CVC']}, {'VCC<*CVC': 1}, {'VCC<*CVC': [1]}]
-        >>> remove(path2scdict)
+def read_dst(dst_msr):
+    """
+    Called by loanpy.helpers.Etym.__init__; \
+Returns a function that calculates the phonological distance between strings \
+from panphon.distance.Distance. This will be used to calculate the most \
+similar phonemes of the phoneme inventory compared to \
+a given phoneme from ipa_all.csv
 
-        """
+    :param dst_msr: The name of the distance measure, which has to be \
+a method \
+of panphon.distance.Distance
+    :type dst_msr: None, \
+"doglo_prime_distance" | \
+"dolgo_prime_distance_div_maxlen" | \
+"fast_levenshtein_distance" | \
+"fast_levenshtein_distance_div_maxlen" | \
+"feature_difference" | \
+"feature_edit_distance" | \
+"feature_edit_distance_div_maxlen" | \
+"hamming_feature_edit_distance" | \
+"hamming_feature_edit_distance_div_maxlen" | \
+"hamming_substitution_cost" | \
+"jt_feature_edit_distance" | \
+"jt_feature_edit_distance_div_maxlen" | \
+"jt_hamming_feature_edit_distance" | \
+"jt_hamming_feature_edit_distance_div_maxlen" | \
+"jt_weighted_feature_edit_distance" | \
+"jt_weighted_feature_edit_distance_div_maxlen" | \
+"levenshtein_distance"
 
-        # get the phonotactic profile of both strings
-        keys = [prosodic_string(tokenise(i)) for i in self.dfety["Source_Form"]]
-        vals = [prosodic_string(tokenise(i)) for i in self.dfety["Target_Form"]]
-        wordchange = self.dfety["Cognacy"]
+    :returns: a function that calculates the phonological distance between \
+IPA-strings
+    :rtype: function | None
 
-        # create one big data frame out of structural changes
-        # column three captures the cognate sets where the change happened
-        dfstrucchange = DataFrame(zip(keys, vals, wordchange),
-                                  columns=["keys", "vals", "wordchange"])
-        dfstrucchange["e"] = 1  # each change happened one time. add later.
+    :Example:
 
-        #  important to flip keys and vals if adapting!
-        if self.mode == "adapt":
-            dfstrucchange["strucchange"] = (dfstrucchange["vals"] +
-                                            self.connector +
-                                            dfstrucchange["keys"])
-        else:
-            dfstrucchange["strucchange"] = (dfstrucchange["keys"] +
-                                            self.connector +
-                                            dfstrucchange["vals"])
+    >>> from loanpy.helpers import read_dst
+    >>> read_dst("fast_levenshtein_distance")
+    <bound method Distance.fast_levenshtein_distance of \
+<panphon.distance.Distance object at 0x7f7f21fe95b0>>
 
-# create the first 3 elements of the output from the big df of sound corresp
-# create 1st element of output. Sort correspondence list by frequency
-        dfsc = dfstrucchange.groupby("keys")[
-            "vals"].apply(lambda x: [n[0]
-                          for n in Counter(x).most_common()]).reset_index()
-# create 2nd element of output. Sum up how often each corresp occurred
-        dfse = dfstrucchange.groupby("strucchange")["e"].sum().reset_index()
-# create 3rd elem. of output. List up cognate sets where each corresp occurred
-        dfe = dfstrucchange.groupby("strucchange")["wordchange"].\
-            apply(list).reset_index()
+    For more information see PanPhon's documentation:
 
-# turn the dataframes to dictionaries
-        scdict = dict(zip(dfsc["keys"], dfsc["vals"]))
-        sedict = dict(zip(dfse["strucchange"], dfse["e"]))
-        edict = dict(zip(dfe["strucchange"], dfe["wordchange"]))
+    >>> from panphon.distance import Distance
+    >>> help(Distance)
 
-# merge data with heuristics: sort phonotactic inventory
-# by similarity to each structure
-# and append it to the data.
-        for i in scdict:  # this involves some randomness:
-            # rank_closest picks a random struc if 2 are equally close!
-            scdict[i] = list(dict.fromkeys(
-                scdict[i] + self.rank_closest_phonotactics(i).split(", ")))
-
-        if write_to:  # write file if indicated so
-            with open(write_to, "w", encoding="utf-8") as data:
-                data.write(str([scdict, sedict, edict]))
-
-        return [scdict, sedict, edict]  # return list of 3 dictionaries
+    """
+    return None if not dst_msr else getattr(Distance(), dst_msr)
