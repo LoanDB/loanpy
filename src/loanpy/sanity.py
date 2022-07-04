@@ -287,7 +287,7 @@ def eval_all(
     :type crossval: bool, default=True
 
     :param writesc: Indicate if loanpy.qfysc.Qfy.get_sound_corresp should \
-    write its output to a file. If yes and if crossval is True, \
+    write its output to a file. If yes and if crossval, \
     provide a path to a **folder** (!). If yes and crossval is False, \
     provide a path to a file. \
     This is useful for debugging. \
@@ -428,8 +428,8 @@ target_language="EAH")
 False, False, False, False, False, \
 [10, 50, 100, 500, 1000], 'adapt', False, True).dfety
     Target_Form Source_Form  Cognacy  guesses best_guess
-    0     aɣat͡ʃi    aɣat͡ʃːɯ        1      inf   KeyError
-    1       aldaɣ       aldaɣ        2      inf   KeyError
+    0     aγat͡ʃi    aγat͡ʃːɯ        1      inf   KeyError
+    1       aldaγ       aldaγ        2      inf   KeyError
     2        ajan        ajan        3      inf   KeyError
     """
 
@@ -443,7 +443,7 @@ False, False, False, False, False, \
     for idx2isolate, (srcwrd, tgtwrd) in tqdm(enumerate(zip(
             args[0].dfety.Source_Form, args[0].dfety.Target_Form))):
         # get crossvalidated sound correspondences if indicated
-        if crossval is True:
+        if crossval:
             args[0] = get_crossval_data(args[0], idx2isolate, writesc)
         # make prediction from source word, check if target was hit
         args[1] = srcwrd  # insert sourceword into empty space created for it
@@ -455,7 +455,7 @@ False, False, False, False, False, \
             for key in out:
                 out[key].append(result_eval_one[key])
         # plug dropped word back in to forms if necessary
-        if crossval is True:
+        if crossval:
             args[0].forms_target_language.insert(
                 args[0].idx_of_popped_word, args[0].popped_word)
     args[0].dfety = concat([args[0].dfety, DataFrame(out)], axis=1)
@@ -658,7 +658,7 @@ target_language="EAH", scdictlist=path2sc_ad)
     except KeyError:
         # this if predictions not made
         out = {"guesses": float("inf"), "best_guess": "KeyError"}
-    if args[-1] is True:
+    if args[-1]:
         out |= args[0].workflow  # merge
     return out  # dict
 
@@ -783,10 +783,10 @@ target_language="EAH")
     >>> adrc_obj = get_noncrossval_sc(adrc_obj, None)
     >>> adrc_obj.scdict
     {'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'],
-    'n': ['n'], 't͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']}
+    'n': ['n'], 't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']}
     >>> adrc_obj.sedict
     {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, 'j<j': 1,
-    'l<l': 1, 'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 2}
+    'l<l': 1, 'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'γ<γ': 2}
     >>> adrc_obj.scdict_phonotactics
     {'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],
      'VCVC': ['VCVC', 'VCCVC', 'VCVCV'],
@@ -842,11 +842,11 @@ model passed into its attributes for looking up sound correspondences \
     >>> adrc_obj = Adrc(forms_csv=path2forms, source_language="WOT", \
 target_language="EAH")
     >>> adrc_obj = get_crossval_data(adrc_obj, 0, None)
-    >>> # first cog isolated, missing sc: a ɣ a t͡ʃ i - a ɣ a t͡ʃː ɯ
+    >>> # first cog isolated, missing sc: a γ a t͡ʃ i - a γ a t͡ʃː ɯ
     >>> adrc_obj.scdict
-    {'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'], 'ɣ': ['ɣ']}
+    {'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'], 'γ': ['γ']}
     >>> adrc_obj.sedict
-    {'a<a': 4, 'd<d': 1, 'j<j': 1, 'l<l': 1, 'n<n': 1, 'ɣ<ɣ': 1}
+    {'a<a': 4, 'd<d': 1, 'j<j': 1, 'l<l': 1, 'n<n': 1, 'γ<γ': 1}
     >>> adrc_obj.scdict_phonotactics
     {'VCCVC': ['VCCVC', 'VCVC'], 'VCVC': ['VCVC', 'VCCVC']}
 
@@ -893,7 +893,7 @@ def postprocess(adrc_obj):
     each of the 4 elements of the tuple returned by loanpy.adrc.Adrc.get_nse. \
     gets its own column. b) Checks if the correct phonotactics \
     were predicted or not, \
-    in case param <show_workflow> is True \
+    in case param <show_workflow> \
     and <max_repaired_phonotactics> is greater than zero in \
     loanpy.sanity.eval_all. \
     c) Calculates the Levenshtein Distance and its \
@@ -928,23 +928,23 @@ predictions missed the target.
     >>> adrc_obj = Adrc(forms_csv=path2forms, source_language="WOT", \
 target_language="EAH", scdictlist=path2sc_ad)
     >>> # pretend guesses are already made
-    >>> adrc_obj.dfety["best_guess"] = ["aɣa", "bla", "ajan"]
+    >>> adrc_obj.dfety["best_guess"] = ["aγa", "bla", "ajan"]
     >>> df = postprocess(adrc_obj).dfety
     >>> for col in df.columns:
     >>>     print(df[col])
-    0    aɣat͡ʃi
-    1      aldaɣ
+    0    aγat͡ʃi
+    1      aldaγ
     2       ajan
     Name: Target_Form, dtype: object
-    0    aɣat͡ʃːɯ
-    1       aldaɣ
+    0    aγat͡ʃːɯ
+    1       aldaγ
     2        ajan
     Name: Source_Form, dtype: object
     0    1
     1    2
     2    3
     Name: Cognacy, dtype: int64
-    0     aɣa
+    0     aγa
     1     bla
     2    ajan
     Name: best_guess, dtype: object
@@ -960,8 +960,8 @@ target_language="EAH", scdictlist=path2sc_ad)
     1    [6, 1, 1, 6, 2]
     2       [6, 1, 6, 1]
     Name: E_distr_Source_Target_Form, dtype: object
-    0    ['a<a', 'ɣ<ɣ', 'a<a', 't͡ʃ<t͡ʃː', 'i<ɯ']
-    1         ['a<a', 'l<l', 'd<d', 'a<a', 'ɣ<ɣ']
+    0    ['a<a', 'γ<γ', 'a<a', 't͡ʃ<t͡ʃː', 'i<ɯ']
+    1         ['a<a', 'l<l', 'd<d', 'a<a', 'γ<γ']
     2                ['a<a', 'j<j', 'a<a', 'n<n']
     Name: align_Source_Target_Form, dtype: object
     0    2.80
@@ -976,8 +976,8 @@ target_language="EAH", scdictlist=path2sc_ad)
     1    [0, 0, 1, 0, 6, 0]
     2          [6, 1, 6, 1]
     Name: E_distr_Source_best_guess, dtype: object
-    0        ['a<a', 'ɣ<ɣ', 'a<a', 'C<t͡ʃː', 'V<ɯ']
-    1    ['V<a', 'b<C', 'l<l', 'C<d', 'a<a', 'C<ɣ']
+    0        ['a<a', 'γ<γ', 'a<a', 'C<t͡ʃː', 'V<ɯ']
+    1    ['V<a', 'b<C', 'l<l', 'C<d', 'a<a', 'C<γ']
     2                  ['a<a', 'j<j', 'a<a', 'n<n']
     Name: align_Source_best_guess, dtype: object
     0    4

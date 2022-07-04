@@ -349,7 +349,7 @@ phonological matches. The index \
         dfphonmatch = DataFrame({"match": matched, "recipdf_idx": index})
 
         # this makes things more economical. dropping redundancies
-        if dropduplicates is True:
+        if dropduplicates:
             dfphonmatch = dfphonmatch[~dfphonmatch.index.duplicated(
                 keep='first')]
 
@@ -489,24 +489,24 @@ words
         # read in data for likeliestphonmatch, i.e. col Segments in both,
         # donor and recipient data frames
         dfmatches = dfmatches.merge(read_csv(self.recpath, encoding="utf-8",
-                                             usecols=["Segments",
+                                             usecols=["CV_Segments",
                                                       self.reccol]).fillna(""),
                                     left_on="recipdf_idx", right_index=True)
         dfmatches = dfmatches.merge(read_csv(self.donpath, encoding="utf-8",
                                              usecols=["Segments",
                                                       self.doncol]).fillna(""),
                                     left_index=True, right_index=True)
-        dfmatches["Segments_x"] = [i.replace(" ", "")
-                                   for i in dfmatches["Segments_x"]]
-        dfmatches["Segments_y"] = [i.replace(" ", "")
-                                   for i in dfmatches["Segments_y"]]
+        dfmatches["CV_Segments"] = [i.replace(" ", "")
+                                   for i in dfmatches["CV_Segments"]]
+        dfmatches["Segments"] = [i.replace(" ", "")
+                                   for i in dfmatches["Segments"]]
         # calculate likeliest phonological matches
         newcols = concat([self.likeliestphonmatch(ad, rc, segd, segr)
                           for ad, rc, segd, segr
                           in zip(dfmatches[self.doncol],
                                  dfmatches[self.reccol],
-                                 dfmatches["Segments_y"],
-                                 dfmatches["Segments_x"])])
+                                 dfmatches["Segments"],
+                                 dfmatches["CV_Segments"])])
         del dfmatches["match"]  # delete non-likeliest matches
         newcols.index = dfmatches.index  # otherwise concat wont work
 
@@ -622,7 +622,7 @@ small and very different search_in-dfs, while loans() inputs one big df.
 
         dfphonmatch = DataFrame({"match": matched, "recipdf_idx": index})
 
-        if dropduplicates is True:
+        if dropduplicates:
             dfphonmatch = dfphonmatch[
                 ~dfphonmatch.index.duplicated(keep='first')]
         return dfphonmatch
@@ -645,8 +645,8 @@ input forms.csv
         dfmatches = dfmatches.merge(read_csv(self.donpath,
                                              encoding="utf-8").fillna(""),
                                     left_index=True, right_index=True)
-        dfmatches = dfmatches.merge(read_csv(self.recpath,
-                                             encoding="utf-8").fillna(""),
+
+        dfmatches = dfmatches.merge(read_csv(self.recpath, encoding="utf-8").fillna(""),
                                     left_on="recipdf_idx", right_index=True)
         dfmatches = dfmatches.sort_values(by=self.semsim_msr.__name__,
                                           ascending=False)  # unsorted by merge

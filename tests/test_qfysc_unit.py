@@ -13,11 +13,9 @@ from loanpy.qfysc import (
     InventoryMissingError,
     WrongModeError,
     cldf2pd,
-    forms2list,
     read_mode,
     read_connector,
     read_dst,
-    read_forms,
     read_scdictbase)
 
 from pytest import raises
@@ -57,11 +55,11 @@ class EtymMonkeyGetSoundCorresp:
         self.align_returns = iter([self.df1, self.df2])
         self.align_called_with = []
         self.rank_closest_phonotactics_called_with = []
-        self.dfety = DataFrame({"Target_Form": ["kiki", "buba"],
-                                "Source_Form": ["hehe", "pupa"],
+        self.dfety = DataFrame({"Target_Seg": ["kiki", "buba"],
+                                "Source_Seg": ["hehe", "pupa"],
+                                "Target_CVSeg": ["kiki", "buba"],
+                                "Source_CVSeg": ["hehe", "pupa"],
                                 "Cognacy": [12, 13]})
-        self.left = "Target_Form"
-        self.right = "Source_Form"
         self.mode = mode
         self.connector = connector
         self.scdictbase = {"k": ["h", "c"], "i": ["i", "e"], "b": ["v"],
@@ -87,135 +85,12 @@ class EtymMonkeyGetSoundCorresp:
     def get_phonotactics_corresp(self, *args):
         return [{"d1": 0}, {"d2": 0}, {"d3": 0}]
 
-def test_read_phonotactic_inv():
-    """test if inventory of phonotactic structures is extracted correctly"""
-
-    # set up custom class
-    class EtymMonkeyReadstrucinv:
-        def __init__(self):
-            self.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
-
-    # set up rest
-    mocketym = EtymMonkeyReadstrucinv()
-
-    # assert with different parameter combinations
-    assert Etym.read_phonotactic_inv(self=mocketym, phonotactic_inventory=[
-        "a", "b", "c"]) == ["a", "b", "c"]
-    mocketym.forms_target_language = None
-    assert Etym.read_phonotactic_inv(self=mocketym, phonotactic_inventory=None,
-                                     ) is None
-    mocketym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
-    # now just read the most frquent 2 structures. VV is the 3rd frquent. so
-    # not in the output.
-    with patch("loanpy.qfysc.prosodic_string",
-        side_effect=["VV", "VC", "VC", "CC", "CC", "CC"]) as prosodic_string_mock:
-        assert Etym.read_phonotactic_inv(self=mocketym, phonotactic_inventory=None,
-                                     howmany=2) == {"CC", "VC"}
-
-    # assert calls
-    prosodic_string_mock.assert_has_calls(
-        [call(['a', 'b']),
-         call(['a', 'b']),
-         call(['a', 'a']),
-         call(['b', 'b']),
-         call(['b', 'b']),
-         call(['b', 'b'])]
-         )
-
-    # tear down
-    del mocketym, EtymMonkeyReadstrucinv
-
-def test_read_inventory():
-    """check if phoneme inventory is extracted correctly"""
-
-    class EtymMonkey:
-        pass
-    etym_monkey = EtymMonkey()
-    # assert where no setup needed
-    etym_monkey.forms_target_language = "whatever"
-    assert Etym.read_inventory(etym_monkey, "whatever2") == "whatever2"
-    etym_monkey.forms_target_language = None
-    assert Etym.read_inventory(etym_monkey, None) is None
-
-    # set up
-    # this is the vocabulary of the language
-    etym_monkey.forms_target_language = ["a", "aab", "bc"]
-    with patch("loanpy.helpers.tokenise") as tokenise_mock:
-        # these are all letters of the language
-        tokenise_mock.return_value = ['a', 'a', 'a', 'b', 'b', 'c']
-
-        # assert
-        assert Etym.read_inventory(etym_monkey,
-                                   None, tokenise_mock) == set(['a', 'b', 'c'])
-
-    # assert calls
-    tokenise_mock.assert_called_with("aaabbc")
-
-    # set up2: for clusterise
-    etym_monkey.forms_target_language = ["a", "ab", "baac"]
-    with patch("loanpy.helpers.clusterise") as clusterise_mock:
-        clusterise_mock.return_value = [
-            'aa', 'bb', 'aa', 'c']  # clusterised vocab
-
-        # assert
-        assert Etym.read_inventory(
-            etym_monkey, None, clusterise_mock) == set(['aa', 'bb', 'c'])
-
-    # assert calls
-    # all words are pulled together to one string
-    clusterise_mock.assert_called_with("aabbaac")
-
-    # tear down
-    del etym_monkey, EtymMonkey
-
 
 def test_get_inventories():
     """test if phoneme/cluster/phonotactic inventories are read in well"""
-    # set up
-    class EtymMonkey():
-        def __init__(self):
-            self.read_inventory_called_with = []
-            self.read_phonotactic_inv_called_with = []
 
-        def read_inventory(self, *args):
-            self.read_inventory_called_with.append([*args])
-            return "read_inventory_returned_this"
-
-        def read_phonotactic_inv(self, *args):
-            self.read_phonotactic_inv_called_with.append([*args])
-            return "read_phonotactic_inv_returned_this"
-
-    # create instancce
-    etym_monkey = EtymMonkey()
-    # run func
-    assert Etym.get_inventories(self=etym_monkey) == (
-        "read_inventory_returned_this",
-        "read_inventory_returned_this",
-        "read_phonotactic_inv_returned_this"
-    )
-
-    # assert calls
-    assert etym_monkey.read_inventory_called_with == [
-        [None], [None, hp.clusterise]]
-    assert etym_monkey.read_phonotactic_inv_called_with == [[None, 9999999]]
-
-    # run func without default parameters
-
-    # create instancce
-    etym_monkey = EtymMonkey()
-    # assert assigned attributes
-    assert Etym.get_inventories(etym_monkey, "param1", "param2", "param3", 4
-                                ) == ("read_inventory_returned_this",
-                                      "read_inventory_returned_this",
-                                      "read_phonotactic_inv_returned_this")
-    # assert calls
-    assert etym_monkey.read_inventory_called_with == [["param1"], [
-        "param2", hp.clusterise]]
-    assert etym_monkey.read_phonotactic_inv_called_with == [["param3", 4]]
-
-    # tear down
-    del etym_monkey, EtymMonkey
-
+    #todo: re-write this test.
+    pass
 
 
 def test_get_scdictbase():
@@ -470,186 +345,139 @@ def test_init():
     """test if class Etym is initiated correctly"""
 
     # set up
-    with patch("loanpy.qfysc.read_forms") as read_forms_mock:
-        read_forms_mock.return_value = None
-        with patch("loanpy.qfysc.forms2list") as forms2list_mock:
-            forms2list_mock.return_value = None
-            with patch("loanpy.qfysc.cldf2pd") as cldf2pd_mock:
-                cldf2pd_mock.return_value = None
-                with patch("loanpy.qfysc.Etym.get_inventories"
-                           ) as get_inventories_mock:
-                    get_inventories_mock.return_value = (None, None, None)
-                    with patch("loanpy.qfysc.read_dst"
-                               ) as read_dst_mock:
-                        read_dst_mock.return_value = "distfunc"
-                        with patch("loanpy.qfysc.read_mode") as read_mode_mock:
-                            read_mode_mock.return_value = "adapt"
-                            with patch("loanpy.qfysc.read_connector") as read_connector_mock:
-                                read_connector_mock.return_value = "<"
-                                # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
-                                #    read_nsedict_mock.return_value = {}
-                                with patch("loanpy.qfysc.read_scdictbase"
-                                           ) as read_scdictbase_mock:
-                                    read_scdictbase_mock.return_value = {}
-                                    mocketym = Etym()
+    with patch("loanpy.qfysc.cldf2pd") as cldf2pd_mock:
+        cldf2pd_mock.return_value = None
+        with patch("loanpy.qfysc.get_inventories"
+                   ) as get_inventories_mock:
+            get_inventories_mock.return_value = {}
+            with patch("loanpy.qfysc.read_dst"
+                       ) as read_dst_mock:
+                read_dst_mock.return_value = "distfunc"
+                with patch("loanpy.qfysc.read_mode") as read_mode_mock:
+                    read_mode_mock.return_value = "adapt"
+                    with patch("loanpy.qfysc.read_connector") as read_connector_mock:
+                        read_connector_mock.return_value = "<"
+                        # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
+                        #    read_nsedict_mock.return_value = {}
+                        with patch("loanpy.qfysc.read_scdictbase"
+                                   ) as read_scdictbase_mock:
+                            read_scdictbase_mock.return_value = {}
+                            mocketym = Etym()
 
-                                    # assert
-                                    assert mocketym.mode == "adapt"
-                                    assert mocketym.connector == "<"
-                                    assert mocketym.scdictbase == {}
-                                    assert mocketym.vfb is None
-                                    assert mocketym.dfety is None
-                                    assert mocketym.phoneme_inventory is None
-                                    assert mocketym.cluster_inventory is None
-                                    assert mocketym.phonotactic_inventory is None
-                                    assert mocketym.distance_measure == "distfunc"
+                            # assert
+                            assert mocketym.mode == "adapt"
+                            assert mocketym.connector == "<"
+                            assert mocketym.scdictbase == {}
+                            assert mocketym.vfb is None
+                            assert mocketym.dfety is None
+                            assert mocketym.inventories == {}
+                            assert mocketym.distance_measure == "distfunc"
 
-                                    # double check with __dict__
-                                    assert len(mocketym.__dict__) == 10
-                                    assert mocketym.__dict__ == {
-                                        'connector': '<',
-                                        'mode': 'adapt',
-                                        'scdictbase': {},
-                                        'vfb': None} | {
-                                            'cluster_inventory': None,
-                                            'phoneme_inventory': None,
-                                            'dfety': None,
-                                            'distance_measure': 'distfunc',
-                                            'forms_target_language': None,
-                                            'phonotactic_inventory': None}
+                            # double check with __dict__
+                            assert len(mocketym.__dict__) == 7
+                            assert mocketym.__dict__ == {
+                                'connector': '<',
+                                'mode': 'adapt',
+                                'scdictbase': {},
+                                'vfb': None} | {
+                                    'dfety': None,
+                                    'distance_measure': 'distfunc',
+                                    'inventories': {}}
 
                 read_mode_mock.assert_called_with("adapt")
                 read_connector_mock.assert_called_with(None, "adapt")
                 read_scdictbase_mock.assert_called_with(None)
-                read_forms_mock.assert_called_with(None)
-                forms2list_mock.assert_called_with(None, None)
                 cldf2pd_mock.assert_called_with(
                     None, None, None)
-                get_inventories_mock.assert_called_with(None, None, None, 9999999)
+                get_inventories_mock.assert_called_with(None, None)
                 read_dst_mock.assert_called_with(
                     "weighted_feature_edit_distance")
 
     del mocketym
     # set up 2
     dfmk = DataFrame({"Segments": ["abc", "def", "pou"],
-                      "Cognacy": [1, 1, 2],
-                      "Language_ID": ["lg2", "lg1", "lg2"]})
-    with patch("loanpy.qfysc.read_forms") as read_forms_mock:
-        read_forms_mock.return_value = dfmk
-        with patch("loanpy.qfysc.forms2list") as forms2list_mock:
-            forms2list_mock.return_value = ["abc", "pou"]
-            with patch("loanpy.qfysc.cldf2pd") as cldf2pd_mock:
-                cldf2pd_mock.return_value = "sth3"
-                with patch("loanpy.qfysc.Etym.get_inventories"
-                           ) as get_inventories_mock:
-                    get_inventories_mock.return_value = ("sth4", "sth5", "sth6")
-                    with patch("loanpy.qfysc.read_dst"
-                               ) as read_dst_mock:
-                        read_dst_mock.return_value = "sth7"
-                        with patch("loanpy.qfysc.read_mode") as read_mode_mock:
-                            read_mode_mock.return_value = "adapt"
-                            with patch("loanpy.qfysc.read_connector") as read_connector_mock:
-                                read_connector_mock.return_value = "<"
-                                # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
-                                #    read_nsedict_mock.return_value = {}
-                                with patch("loanpy.qfysc.read_scdictbase"
-                                           ) as read_scdictbase_mock:
-                                    read_scdictbase_mock.return_value = {}
+               "Cognacy": [1, 1, 2],
+               "Language_ID": ["lg2", "lg1", "lg2"]})
+    with patch("loanpy.qfysc.read_csv") as read_csv_mock:
+        read_csv_mock.return_value = dfmk
+        with patch("loanpy.qfysc.cldf2pd") as cldf2pd_mock:
+            cldf2pd_mock.return_value = "sth3"
+            with patch("loanpy.qfysc.get_inventories"
+                       ) as get_inventories_mock:
+                get_inventories_mock.return_value = {"sth4": "xy"}
+                with patch("loanpy.qfysc.read_dst"
+                           ) as read_dst_mock:
+                    read_dst_mock.return_value = "sth7"
+                    with patch("loanpy.qfysc.read_mode") as read_mode_mock:
+                        read_mode_mock.return_value = "adapt"
+                        with patch("loanpy.qfysc.read_connector") as read_connector_mock:
+                            read_connector_mock.return_value = "<"
+                            # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
+                            #    read_nsedict_mock.return_value = {}
+                            with patch("loanpy.qfysc.read_scdictbase"
+                                       ) as read_scdictbase_mock:
+                                read_scdictbase_mock.return_value = {}
 
-                                    mocketym = Etym(
-                                        forms_csv="path", source_language="lg1",
-                                        target_language="lg2")
+                                mocketym = Etym(
+                                    forms_csv="path", source_language="lg1",
+                                    target_language="lg2")
 
-                                    # assert
-                                    assert mocketym.mode == "adapt"
-                                    assert mocketym.connector == "<"
-                                    assert mocketym.scdictbase == {}
-                                    assert mocketym.vfb is None
-                                    assert mocketym.dfety is "sth3"
-                                    assert mocketym.phoneme_inventory is "sth4"
-                                    assert mocketym.cluster_inventory is "sth5"
-                                    assert mocketym.phonotactic_inventory is "sth6"
-                                    assert mocketym.distance_measure == "sth7"
+                                # assert
+                                assert mocketym.mode == "adapt"
+                                assert mocketym.connector == "<"
+                                assert mocketym.scdictbase == {}
+                                assert mocketym.vfb is None
+                                assert mocketym.dfety is "sth3"
+                                assert mocketym.inventories == {"sth4": "xy"}
+                                assert mocketym.distance_measure == "sth7"
 
-                                    # double check with __dict__
-                                    assert len(mocketym.__dict__) == 10
-                                    assert mocketym.__dict__ == {
-                                        'connector': '<',
-                                        'mode': 'adapt',
-                                        'scdictbase': {},
-                                        'vfb': None,
-                                        'cluster_inventory': "sth5",
-                                        'phoneme_inventory': "sth4",
-                                        'dfety': "sth3",
-                                        'distance_measure': 'sth7',
-                                        'forms_target_language': ["abc", "pou"],
-                                        'phonotactic_inventory': "sth6"}
+                                # double check with __dict__
+                                assert len(mocketym.__dict__) == 7
+                                assert mocketym.__dict__ == {
+                                    'connector': '<',
+                                    'mode': 'adapt',
+                                    'scdictbase': {},
+                                    'vfb': None,
+                                    'dfety': "sth3",
+                                    'distance_measure': 'sth7',
+                                    'inventories': {"sth4": "xy"}}
 
                 read_mode_mock.assert_called_with("adapt")
                 read_connector_mock.assert_called_with(None, "adapt")
                 read_scdictbase_mock.assert_called_with(None)
-                read_forms_mock.assert_called_with("path")
-                forms2list_mock.assert_called_with(dfmk, "lg2")
-                cldf2pd_mock.assert_called_with(dfmk, "lg1", "lg2")
-                get_inventories_mock.assert_called_with(None, None, None, 9999999)
+                cldf2pd_mock.assert_called_with("path", "lg1", "lg2")
+                get_inventories_mock.assert_called_with("path", "lg2")
                 read_dst_mock.assert_called_with(
                     "weighted_feature_edit_distance")
 
     # tear down
     del mocketym
 
-
-def test_forms2list():
-    "test if dff is converted to a list correctly"
-    # test first break: return None if dff is None
-    assert forms2list(None, "sth") is None
-
-    # set up fake input df
-    mock_df_in = DataFrame({"Segments": ["abc", "def", "pou"],
-                            "Cognacy": [1, 1, 2],
-                            "Language_ID": ["lg2", "lg1", "lg2"]})
-    assert forms2list(mock_df_in, "lg2") == ["abc", "pou"]
-
-def test_read_forms():
-    """Check if CLDF's forms.csv is read in correctly"""
-
-    # set up
-    dfin = DataFrame({"Segments": ["a b c", "d e f"],  # pull together later
-                      "Cognacy": ["ghi", "jkl"],
-                      "Language_ID": [123, 456],
-                      "randcol": ["mno", "pqr"]})
-    dfexp = DataFrame({"Segments": ["abc", "def"],  # pulled together segments
-                       "Cognacy": ["ghi", "jkl"],
-                       "Language_ID": [123, 456]})
-    path = Path(__file__).parent / "test_read_forms.csv"
-    with patch("loanpy.qfysc.read_csv") as read_csv_mock:
-        read_csv_mock.return_value = dfexp
-
-        # assert
-        assert read_forms(None) is None
-        assert_frame_equal(read_forms(path), dfexp)
-
-    # assert calls
-    read_csv_mock.assert_called_with(
-        path, usecols=['Segments', 'Cognacy', 'Language_ID'])
-
-    # tear down
-    del path, dfin, dfexp
-
-
 def test_cldf2pd():
     """test if the CLDF format is correctly tranformed to a pandas dataframe"""
 
     # set up
     dfin = DataFrame({"Segments": ["a", "b", "c", "d", "e", "f", "g"],
+                      "CV_Segments": ["hi", "jk", "lm", "no", "pq", "rs", "tu"],
                       "Cognacy": [1, 1, 2, 2, 3, 3, 3],
                       "Language_ID": ["lg1", "lg2", "lg1", "lg3",
-                                      "lg1", "lg2", "lg3"]})
-    dfexp = DataFrame({"Target_Form": ["b", "f"],
-                       "Source_Form": ["a", "e"],
-                       "Cognacy": [1, 3]})
+                                      "lg1", "lg2", "lg3"],
+                      "ProsodicStructure": ["V", "C", "C", "C", "V", "C", "C"]
+                      }).to_csv(
+                            "test_cldf2pd.csv",
+                            encoding="utf-8", index=False
+                      )
+    dfexp = DataFrame({"Target_Seg": ["b", "f"],
+                       "Source_Seg": ["a", "e"],
+                       "Target_CVSeg": ["jk", "rs"],
+                       "Source_CVSeg": ["hi", "pq"],
+                       "Cognacy": [1, 3],
+                       "Target_ProStr": ["C", "C"]  # tgt!
+                       })
     # only cognates are taken, where source and target language occur
-    dfout = cldf2pd(dfin, source_language="lg1", target_language="lg2")
+    dfout = cldf2pd(
+    "test_cldf2pd.csv", source_language="lg1", target_language="lg2"
+    )
 
     # assert
     assert cldf2pd(None, source_language="whatever",
@@ -657,6 +485,7 @@ def test_cldf2pd():
     assert_frame_equal(dfout, dfexp)
 
     # tear down
+    remove("test_cldf2pd.csv")
     del dfout, dfexp, dfin
 
 
@@ -775,11 +604,11 @@ def test_align_clusterwise():
     mockqfy.phon2cv = {
         "ɟ": "C", "ɒ": "V", "l": "C", "o": "V", "ɡ": "C", "j": "C"}
     exp = DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
-                    "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']})
+                    "vals": ['-', 'j', 'ɑ', 'l.k', 'ɑ', '-']})
 
     # assert
     assert_frame_equal(
-        Etym.align_clusterwise(self=mockqfy, left="ɟɒloɡ", right="jɑlkɑ"), exp)
+        Etym.align_clusterwise(self=mockqfy, left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ"), exp)
 
     # tear down
     del mockqfy, exp
@@ -902,8 +731,10 @@ def test_get_phonotactics_corresp():
         alignreturns1=None,
         alignreturns2=None)
 
-    mockqfy.dfety = DataFrame({"Target_Form": ["kiki", "buba"],
-                               "Source_Form": ["hehe", "pupa"],
+    mockqfy.dfety = DataFrame({"Target_Seg": ["k i k i", "b u b a"],
+                               "Source_Seg": ["h e h e", "p u p a"],
+                               "Target_CVSeg": ["k i k i ", "b u b a"],
+                               "Source_CVSeg": ["h e h e", "p u p a"],
                                "Cognacy": [12, 13]})
     mockqfy.left = "Target_Form"
     mockqfy.right = "Source_Form"

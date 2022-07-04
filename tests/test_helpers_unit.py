@@ -75,7 +75,7 @@ def test_combine_ipalists():
 
     # assert calls
     flatten_mock.assert_called_with(
-        [["ki", "ke", "gi", "ge"], ["bu", "bo", "pu", "po"]])
+        [["k i", "k e", "g i", "g e"], ["b u", "b o", "p u", "p o"]])
     product_mock.assert_has_calls([call(["k", "g"], ["i", "e"]),
                                    call(["b", "p"], ["u", "o"])])
 
@@ -150,14 +150,14 @@ def test_has_harmony():
     # test2: assert word has vowel harmony, only back vowels
     with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
         get_front_back_vowels_mock.return_value = ['t', 'B', 'r', 'k', 'B']
-        assert has_harmony(['t', 'ɒ', 'r', 'k', 'ɒ']) is True
+        assert has_harmony(['t', 'ɒ', 'r', 'k', 'ɒ'])
 
     get_front_back_vowels_mock.assert_called_with(['t', 'ɒ', 'r', 'k', 'ɒ'])
 
     # test 3: assert word has vowel harmony, only front vowels
     with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
         get_front_back_vowels_mock.return_value = ['ʃ', 'F', 'f', 'F', 'l', 'F', 'ʃ', 'F']
-        assert has_harmony(['ʃ', 'ɛ', 'f', 'y', 'l', 'ɛ', 'ʃ', 'ɛ']) is True
+        assert has_harmony(['ʃ', 'ɛ', 'f', 'y', 'l', 'ɛ', 'ʃ', 'ɛ'])
 
     get_front_back_vowels_mock.assert_called_with(['ʃ', 'ɛ', 'f', 'y', 'l', 'ɛ', 'ʃ', 'ɛ'])
 

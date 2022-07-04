@@ -307,11 +307,11 @@ def test_eval_recon():
     # test long regex, target missed, sort_by_nse=True, howmany=2
     assert eval_recon("daʃa", adrc_obj,
                       "aːruː", 2, True, False, False, True) == {
-        'best_guess': 'anaɣ', 'guesses': float("inf")}
+        'best_guess': 'anaγ', 'guesses': float("inf")}
     # test long regex, target hit, sort_by_nse=True, howmany=2
-    assert eval_recon("anaɣ", adrc_obj,
+    assert eval_recon("anaγ", adrc_obj,
                       "aːruː", 2, True, False, False, True) == {
-        'best_guess': 'anaɣ', 'guesses': 1}
+        'best_guess': 'anaγ', 'guesses': 1}
     # test long regex, target hit, sort_by_nse=True, howmany=1
     assert eval_recon("anaat͡ʃi", adrc_obj,
                       "aːruː", 1, True, False, False, True) == {
@@ -319,11 +319,11 @@ def test_eval_recon():
     # test short regex, target hit, sort_by_nse=False, howmany=2
     assert eval_recon("anaat͡ʃi", adrc_obj,
                       "aːruː", 2, True, False, False, False) == {
-        'best_guess': '^(a)(n)(a)(at͡ʃi|ɣ)$', 'guesses': 2}
+        'best_guess': '^(a)(n)(a)(at͡ʃi|γ)$', 'guesses': 2}
     # test short regex, target hit, sort_by_nse=False, howmany=2, diff target
-    assert eval_recon("anaɣ", adrc_obj,
+    assert eval_recon("anaγ", adrc_obj,
                       "aːruː", 2, True, False, False, False) == {
-        'best_guess': '^(a)(n)(a)(at͡ʃi|ɣ)$', 'guesses': 2}
+        'best_guess': '^(a)(n)(a)(at͡ʃi|γ)$', 'guesses': 2}
 
 
 def test_eval_one():
@@ -400,7 +400,7 @@ def test_eval_one():
         "gaga", adrc_obj, "aːruː",
         False, False, False, False, False, 0, 1, 100, 49, [
             2, 4, 6], "reconstruct") == {
-        "guesses": float("inf"), "best_guess": "^(a)(n)(a)(at͡ʃi|ɣ)$"}
+        "guesses": float("inf"), "best_guess": "^(a)(n)(a)(at͡ʃi|γ)$"}
     # assert target hit on first try, mode=reconstruct
     assert eval_one(
         "anaat͡ʃi",
@@ -436,10 +436,10 @@ def test_get_noncrossval_sc():
         'l': ['l'],
         'n': ['n'],
         't͡ʃː': ['t͡ʃ'],
-        'ɣ': ['ɣ'],
+        'γ': ['γ'],
         'ɯ': ['i']}
     assert adrc_obj_out.sedict == {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, 'j<j': 1,
-                                   'l<l': 1, 'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 2}
+                                   'l<l': 1, 'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'γ<γ': 2}
     for struc, exp_phonotactics in zip(adrc_obj_out.scdict_phonotactics, [
             ['VCCVC', 'VCVC', 'VCVCV'], ['VCVC', 'VCCVC', 'VCVCV']]):
         assert set(adrc_obj_out.scdict_phonotactics[struc]) == set(
@@ -465,8 +465,8 @@ def test_get_noncrossval_sc():
         'j': ['jn'],
         'ld': ['ɟ'],
         'n#': ['r'],
-        'ɣ': ['t͡ʃ'],
-        'ɣ#': ['-']}
+        'γ': ['t͡ʃ'],
+        'γ#': ['-']}
     assert adrc_obj_out.sedict == {
         '#-<*-': 3,
         '#a<*aː': 2,
@@ -478,8 +478,8 @@ def test_get_noncrossval_sc():
         'j<*jn': 1,
         'ld<*ɟ': 1,
         'n#<*r': 1,
-        'ɣ#<*-': 1,
-        'ɣ<*t͡ʃ': 1}
+        'γ#<*-': 1,
+        'γ<*t͡ʃ': 1}
     assert adrc_obj_out.scdict_phonotactics == {}
 
     # test with write=Path
@@ -495,12 +495,12 @@ def test_get_noncrossval_sc():
     # phonotactic inventory has randomness
     assert set(out.pop(3)) == {'VCVC', 'VCVCV', 'VCCVC'}
     assert out == [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'],
-                    't͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']},
+                    't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']},
                    {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, 'j<j': 1, 'l<l': 1, 'n<n': 1,
-                    't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 2},
+                    't͡ʃ<t͡ʃː': 1, 'γ<γ': 2},
                    {'a<a': [1, 2, 3], 'd<d': [2],
                     'i<ɯ': [1], 'j<j': [3], 'l<l': [2],
-                    'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'ɣ<ɣ': [1, 2]},
+                    'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'γ<γ': [1, 2]},
                    {'VCCVC<VCCVC': 1, 'VCVC<VCVC': 1, 'VCVCV<VCVCV': 1},
                    {'VCCVC<VCCVC': [2], 'VCVC<VCVC': [3], 'VCVCV<VCVCV': [1]}]
     # tear down
@@ -514,13 +514,13 @@ def test_get_crossval_data():
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH")
     # run function
-    # first cog isolated, missing sc: a ɣ a t͡ʃ i - a ɣ a t͡ʃː ɯ
+    # first cog isolated, missing sc: a γ a t͡ʃ i - a γ a t͡ʃː ɯ
     adrc_obj_out = get_crossval_data(adrc_obj, 0, None)
     # assert result
     assert adrc_obj_out.scdict == {'a': ['a'], 'd': ['d'], 'j': ['j'],
-                                   'l': ['l'], 'n': ['n'], 'ɣ': ['ɣ']}
+                                   'l': ['l'], 'n': ['n'], 'γ': ['γ']}
     assert adrc_obj_out.sedict == {'a<a': 4, 'd<d': 1, 'j<j': 1, 'l<l': 1,
-                                   'n<n': 1, 'ɣ<ɣ': 1}
+                                   'n<n': 1, 'γ<γ': 1}
     for struc, exp_phonotactics in zip(adrc_obj_out.scdict_phonotactics, [
             ['VCCVC', 'VCVC'], ['VCVC', 'VCCVC']]):
         assert set(adrc_obj_out.scdict_phonotactics[struc]) == set(
@@ -535,9 +535,9 @@ def test_get_crossval_data():
     adrc_obj_out = get_crossval_data(adrc_obj, 1, None)
     # assert result
     assert adrc_obj_out.scdict == {'a': ['a'], 'j': ['j'], 'n': ['n'],
-                                   't͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']}
+                                   't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']}
     assert adrc_obj_out.sedict == {'a<a': 4, 'i<ɯ': 1, 'j<j': 1,
-                                   'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 1}
+                                   'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'γ<γ': 1}
     for struc, exp_phonotactics in zip(adrc_obj_out.scdict_phonotactics, [
             ['VCVC', 'VCVCV'], ['VCVC', 'VCVCV']]):
         assert set(adrc_obj_out.scdict_phonotactics[struc]) == set(
@@ -552,9 +552,9 @@ def test_get_crossval_data():
     adrc_obj_out = get_crossval_data(adrc_obj, 2, None)
     # assert result
     assert adrc_obj_out.scdict == {'a': ['a'], 'd': ['d'], 'l': ['l'],
-                                   't͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']}
+                                   't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']}
     assert adrc_obj_out.sedict == {'a<a': 4, 'd<d': 1, 'i<ɯ': 1, 'l<l': 1,
-                                   't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 2}
+                                   't͡ʃ<t͡ʃː': 1, 'γ<γ': 2}
     for struc, exp_phonotactics in zip(adrc_obj_out.scdict_phonotactics, [
             ['VCVCV', 'VCCVC'], ['VCVCV', 'VCCVC']]):
         assert set(adrc_obj_out.scdict_phonotactics[struc]) == set(
@@ -577,16 +577,16 @@ def test_get_crossval_data():
         'a': ['uː'],
         'at͡ʃi#': ['-'],
         'ld': ['ɟ'],
-        'ɣ': ['t͡ʃ'],
-        'ɣ#': ['-']}
+        'γ': ['t͡ʃ'],
+        'γ#': ['-']}
     assert adrc_obj_out.sedict == {
         '#-<*-': 2,
         '#a<*aː': 2,
         'a<*uː': 1,
         'at͡ʃi#<*-': 1,
         'ld<*ɟ': 1,
-        'ɣ#<*-': 1,
-        'ɣ<*t͡ʃ': 1}
+        'γ#<*-': 1,
+        'γ<*t͡ʃ': 1}
     assert adrc_obj_out.scdict_phonotactics == {}
 
     # test with writesc = Path()
@@ -608,26 +608,26 @@ def test_get_crossval_data():
         'a': ['uː'],
         'at͡ʃi#': ['-'],
         'ld': ['ɟ'],
-        'ɣ': ['t͡ʃ'],
-        'ɣ#': ['-']}
+        'γ': ['t͡ʃ'],
+        'γ#': ['-']}
     assert adrc_obj_out.sedict == {
         '#-<*-': 2,
         '#a<*aː': 2,
         'a<*uː': 1,
         'at͡ʃi#<*-': 1,
         'ld<*ɟ': 1,
-        'ɣ#<*-': 1,
-        'ɣ<*t͡ʃ': 1}
+        'γ#<*-': 1,
+        'γ<*t͡ʃ': 1}
     assert adrc_obj_out.scdict_phonotactics == {}
     # assert file written correctly
     assert literal_eval(open(path2outfolder / "sc2isolated.txt",
                         encoding="utf-8").read()) == [
         {'#-': ['-'], '#a': ['aː'], 'a': ['uː'], 'at͡ʃi#': ['-'],
-         'ld': ['ɟ'], 'ɣ': ['t͡ʃ'], 'ɣ#': ['-']},
+         'ld': ['ɟ'], 'γ': ['t͡ʃ'], 'γ#': ['-']},
         {'#-<*-': 2, '#a<*aː': 2, 'a<*uː': 1,
-         'at͡ʃi#<*-': 1, 'ld<*ɟ': 1, 'ɣ#<*-': 1, 'ɣ<*t͡ʃ': 1},
+         'at͡ʃi#<*-': 1, 'ld<*ɟ': 1, 'γ#<*-': 1, 'γ<*t͡ʃ': 1},
         {'#-<*-': [1, 2], '#a<*aː': [1, 2], 'a<*uː': [2], 'at͡ʃi#<*-': [1],
-         'ld<*ɟ': [2], 'ɣ#<*-': [2], 'ɣ<*t͡ʃ': [1]}, {}, {}, {}]
+         'ld<*ɟ': [2], 'γ#<*-': [2], 'γ<*t͡ʃ': [1]}, {}, {}, {}]
 
     # tear down
     remove(path2outfolder / "sc2isolated.txt")
@@ -644,15 +644,15 @@ def test_loop_thru_data():
             10, 50, 100, 500, 1000], 'adapt', False, True) == adrc_obj
     # set up expected output
     df_exp = DataFrame([
-        ("aɣat͡ʃi", "aɣat͡ʃːɯ", 1, float("inf"), "KeyError"),
-        ("aldaɣ", "aldaɣ", 2, float("inf"), "KeyError"),
+        ("aγat͡ʃi", "aγat͡ʃːɯ", 1, float("inf"), "KeyError"),
+        ("aldaγ", "aldaγ", 2, float("inf"), "KeyError"),
         ("ajan", "ajan", 3, float("inf"), "KeyError")],
         columns=['Target_Form', 'Source_Form',
                  'Cognacy', 'guesses', 'best_guess'])
     # assert output.dfety is correct
     assert_frame_equal(adrc_obj.dfety, df_exp)
     # assert popped words were plugged back in consistently in loop
-    assert adrc_obj.forms_target_language == ["aɣat͡ʃi", "aldaɣ", "ajan"]
+    assert adrc_obj.forms_target_language == ["aγat͡ʃi", "aldaγ", "ajan"]
     # tear down
     del df_exp, adrc_obj
 
@@ -730,7 +730,7 @@ def test_postprocess():
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH", scdictlist=PATH2SC_AD)
     # pretend guesses are already made
-    adrc_obj.dfety["best_guess"] = ["aɣa", "bla", "ajan"]
+    adrc_obj.dfety["best_guess"] = ["aγa", "bla", "ajan"]
     # run function with show_workflow=False
     adrc_obj_out = postprocess(adrc_obj)
     assert_frame_equal(adrc_obj_out.dfety, read_csv(
@@ -761,7 +761,7 @@ def test_postprocess():
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH", scdictlist=PATH2SC_AD)
     # pretend guesses are already made
-    adrc_obj.dfety["best_guess"] = ["aɣa", "bla", "ajan"]
+    adrc_obj.dfety["best_guess"] = ["aγa", "bla", "ajan"]
     adrc_obj.dfety["predicted_phonotactics"] = [
         "['VCV', 'CCC']", "['CCC', 'VCC']", "['VCVC']"]
     # run function with show_workflow=False

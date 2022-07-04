@@ -39,7 +39,7 @@ def test_flatten():
 def test_combine_ipalists():
     """test if combinatorics is correctly applied to phonemes (#odometer)"""
     inlist = [[["k", "g"], ["i", "e"]], [["b", "p"], ["u", "o"]]]
-    out = ["ki", "ke", "gi", "ge", "bu", "bo", "pu", "po"]
+    out = ["k i", "k e", "g i", "g e", "b u", "b o", "p u", "p o"]
     assert combine_ipalists(inlist) == out
     del inlist, out
 
@@ -49,8 +49,8 @@ def test_has_harmony():
     assert has_harmony(
         ['b', 'o', 't͡s', 'i', 'b', 'o', 't͡s', 'i']) is False
     assert has_harmony("bot͡sibot͡si") is False
-    assert has_harmony("tɒrkɒ") is True
-    assert has_harmony("ʃɛfylɛʃɛ") is True
+    assert has_harmony("tɒrkɒ")
+    assert has_harmony("ʃɛfylɛʃɛ")
 
 
 def test_repair_harmony():

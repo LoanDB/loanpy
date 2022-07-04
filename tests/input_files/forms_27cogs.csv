@@ -1,12 +1,12 @@
 ID,Local_ID,Language_ID,Parameter_ID,Value,Form,Segments,Comment,Source,Cognacy,Loan,Graphemes,Profile
 H-0_carpenter-1,,H,0_carpenter,āč,āč,aː t͡ʃ,,wot,1,true,^ āč $,default
-EAH-0_carpenter-1,,EAH,0_carpenter,aγači,aγači,a ɣ a t͡ʃ i,,wot,1,true,^ aγači $,default
-WOT-0_carpenter-1,,WOT,0_carpenter,aγaččï,aγaččï,a ɣ a t͡ʃ t͡ʃ ɯ,,wot,1,true,^ aγaččï $,default
+EAH-0_carpenter-1,,EAH,0_carpenter,aγači,aγači,a γ a t͡ʃ i,,wot,1,true,^ aγači $,default
+WOT-0_carpenter-1,,WOT,0_carpenter,aγaččï,aγaččï,a γ a t͡ʃ t͡ʃ ɯ,,wot,1,true,^ aγaččï $,default
 H-1_cannoncatapult-1,,H,1_cannoncatapult,ādʹū,ādʹū,aː ɟ uː,,wot,2,true,^ ādʹū $,default
 OH-1_cannoncatapult-1,,OH,1_cannoncatapult,āldʹū,āldʹū,aː l ɟ uː,,wot,2,true,^ āldʹū $,default
 LAH-1_cannoncatapult-1,,LAH,1_cannoncatapult,aldau̯,aldau̯,a l d a w,,wot,2,true,^ aldau̯ $,default
-EAH-1_cannoncatapult-1,,EAH,1_cannoncatapult,aldaγ,aldaγ,a l d a ɣ,,wot,2,true,^ aldaγ $,default
-WOT-1_cannoncatapult-1,,WOT,1_cannoncatapult,aldaγ,aldaγ,a l d a ɣ,,wot,2,true,^ aldaγ $,default
+EAH-1_cannoncatapult-1,,EAH,1_cannoncatapult,aldaγ,aldaγ,a l d a γ,,wot,2,true,^ aldaγ $,default
+WOT-1_cannoncatapult-1,,WOT,1_cannoncatapult,aldaγ,aldaγ,a l d a γ,,wot,2,true,^ aldaγ $,default
 H-2_tofondlepetcaress-1,,H,2_tofondlepetcaress,åynāroz,åynāroz,ɒ j n aː r o z,,wot,3,true,^ åynāroz $,default
 EAH-2_tofondlepetcaress-1,,EAH,2_tofondlepetcaress,ayan,ayan,a j a n,,wot,3,true,^ ayan $,default
 WOT-2_tofondlepetcaress-1,,WOT,2_tofondlepetcaress,ayan,ayan,a j a n,,wot,3,true,^ ayan $,default
@@ -51,8 +51,8 @@ EAH-16_todecayputrifyturnstale-1,,EAH,16_todecayputrifyturnstale,oporo,oporo,o p
 WOT-16_todecayputrifyturnstale-1,,WOT,16_todecayputrifyturnstale,opura,opura,o p u r a,,wot,17,true,^ opura $,default
 H-17_smalltiny-1,,H,17_smalltiny,åprō,åprō,ɒ p r oː,,wot,18,true,^ åprō $,default
 OH-17_smalltiny-1,,OH,17_smalltiny,oprau̯,oprau̯,o p r a w,,wot,18,true,^ oprau̯ $,default
-EAH-17_smalltiny-1,,EAH,17_smalltiny,opuruγ,opuruγ,o p u r u ɣ,,wot,18,true,^ opuruγ $,default
-WOT-17_smalltiny-1,,WOT,17_smalltiny,opuruγ,opuruγ,o p u r u ɣ,,wot,18,true,^ opuruγ $,default
+EAH-17_smalltiny-1,,EAH,17_smalltiny,opuruγ,opuruγ,o p u r u γ,,wot,18,true,^ opuruγ $,default
+WOT-17_smalltiny-1,,WOT,17_smalltiny,opuruγ,opuruγ,o p u r u γ,,wot,18,true,^ opuruγ $,default
 H-19_tomow-1,,H,19_tomow,åråt,åråt,ɒ r ɒ t,,wot,19,true,^ åråt $,default
 EAH-19_tomow-1,,EAH,19_tomow,orat,orat,o r a t,,wot,19,true,^ orat $,default
 WOT-19_tomow-1,,WOT,19_tomow,orat,orat,o r a t,,wot,19,true,^ orat $,default

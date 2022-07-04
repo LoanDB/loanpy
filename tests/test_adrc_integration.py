@@ -74,11 +74,11 @@ def test_init():
 
     # set up fake sounndchange.txt file
     d0, d1, d2, d3 = [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'],
-                       'n': ['n'], 't͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']},
+                       'n': ['n'], 't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']},
                       {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, 'j<j': 1, 'l<l': 1,
-                       'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 2},
+                       'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'γ<γ': 2},
                       {'a<a': [1, 2, 3], 'd<d': [2], 'i<ɯ': [1], 'j<j': [3],
-                       'l<l': [2], 'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'ɣ<ɣ': [1, 2]},
+                       'l<l': [2], 'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'γ<γ': [1, 2]},
                       {'VCCVC': ['VCCVC'], 'VCVC': ['VCVC'],
                        'VCVCV': ['VCVCV']}]
 
@@ -107,16 +107,18 @@ def test_init():
     # 6 attributes inherited from Etym via Qfy
     assert_frame_equal(
         adrc_inst.dfety, DataFrame(
-            {"Target_Form": ["aɣat͡ʃi", "aldaɣ", "ajan"],
-             "Source_Form": ["aɣat͡ʃːɯ", "aldaɣ", "ajan"],
+            {"Target_Seg": ["a γ a t͡ʃ i", "a l d a γ", "a j a n"],
+             "Source_Seg": ["a γ a t͡ʃː ɯ", "a l d a γ", "a j a n"],
+             "Target_CVSeg": ["a γ a t͡ʃ i", "a l.d a γ", "a j a n"],
+             "Source_CVSeg": ["a γ a t͡ʃː ɯ", "a l.d a γ", "a j a n"],
              "Cognacy": [1, 2, 3]}))
     assert adrc_inst.phoneme_inventory == {'a', 'd', 'i', 'j',
-                                           'l', 'n', 't͡ʃ', 'ɣ'}
+                                           'l', 'n', 't͡ʃ', 'γ'}
     assert adrc_inst.cluster_inventory == {'a', 'ia', 'j', 'ld',
-                                           'n', 't͡ʃ', 'ɣ'}
+                                           'n', 't͡ʃ', 'γ'}
     assert adrc_inst.phonotactic_inventory == {'VCVCV', 'VCCVC'}
     ismethod(adrc_inst.distance_measure)
-    assert adrc_inst.forms_target_language == ['aɣat͡ʃi', 'aldaɣ', 'ajan']
+    assert adrc_inst.forms_target_language == ['a γ a t͡ʃ i', 'a l d a γ', 'a j a n']
 
     # don't remove yet,
     # remove("test_soundchanges.txt")
@@ -252,7 +254,7 @@ def test_reconstruct():
 
     # test same break again but param <howmany> is greater than 1 now
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=False, howmany=2) == "^(a)(n)(a)(at͡ʃi|ɣ)$"
+        ipastr="aːruː", clusterised=False, howmany=2) == "^(a)(n)(a)(at͡ʃi|γ)$"
 
     # overwrite adrc_inst, now with forms_csv, to read phonotactic_inventory.
     adrc_inst = Adrc(
@@ -263,7 +265,7 @@ def test_reconstruct():
     # test with phonotactics_filter=True (a filter)
     assert adrc_inst.reconstruct(
         ipastr="aːruː", clusterised=False, howmany=2,
-        phonotactics_filter=True) == "^anaɣ$"
+        phonotactics_filter=True) == "^anaγ$"
 
     # assert reconstruct works with phonotactics_filter=True & result is empty
     assert adrc_inst.reconstruct(
@@ -278,12 +280,12 @@ def test_reconstruct():
     # assert vowelharmony_filter works
     assert adrc_inst.reconstruct(
         ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=True) == "^anaat͡ʃi$|^anaɣ$"
+        vowelharmony_filter=True) == "^anaat͡ʃi$|^anaγ$"
 
     #filters out ^anuat͡ʃi$ out, since it has back and front vow
     assert adrc_inst.reconstruct(
         ipastr="aːru", clusterised=True, howmany=2,
-        phonotactics_filter=False, vowelharmony_filter=True) == "^anuɣ$"
+        phonotactics_filter=False, vowelharmony_filter=True) == "^anuγ$"
     # test vowelharmony_filter=True, result is empty
     assert adrc_inst.reconstruct(
         ipastr="aːru", clusterised=True, howmany=1, phonotactics_filter=False,
@@ -292,28 +294,28 @@ def test_reconstruct():
     # vtest sort_by_nse=True assert reconstr works and sorts the result by nse
     assert adrc_inst.reconstruct(
         ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=True) == "^anaɣ$|^anaat͡ʃi$"
+        vowelharmony_filter=False, sort_by_nse=True) == "^anaγ$|^anaat͡ʃi$"
 
     # test if sort_by_nse=1 works
     assert adrc_inst.reconstruct(
         ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=1) == "^anaɣ$|^anaat͡ʃi$"
+        vowelharmony_filter=False, sort_by_nse=1) == "^anaγ$|^anaat͡ʃi$"
 
     # test if sort_by_nse=2 works
     assert adrc_inst.reconstruct(
         ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=2) == "^anaɣ$|^anaat͡ʃi$"
+        vowelharmony_filter=False, sort_by_nse=2) == "^anaγ$|^anaat͡ʃi$"
 
     # test if sort_by_nse=float("inf") works
     assert adrc_inst.reconstruct(
         ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
         vowelharmony_filter=False,
-        sort_by_nse=float("inf")) == "^anaɣ$|^anaat͡ʃi$"
+        sort_by_nse=float("inf")) == "^anaγ$|^anaat͡ʃi$"
 
     # test if sort_by_nse=0 works
     assert adrc_inst.reconstruct(
         ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=0) == '^(a)(n)(a)(at͡ʃi|ɣ)$'
+        vowelharmony_filter=False, sort_by_nse=0) == '^(a)(n)(a)(at͡ʃi|γ)$'
     # since last 3 params are all False or 0, combinatorics is not triggered.
 
     del adrc_inst
@@ -629,68 +631,68 @@ def test_adapt():
 
     # assert adapt is working
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=5,
-        max_repaired_phonotactics=0) == "dady, datʰy, dedy, detʰy, tʰady"
+        max_repaired_phonotactics=0) == "d a d y, d a tʰ y, d e d y, d e tʰ y, tʰ a d y"
 
     # change max_repaired_phonotactics to 2 from 1.
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=6,
         max_repaired_phonotactics=2
-    ) == "dad, ded, tʰad, tʰed, dajdy, dejdy"
+    ) == "d a d, d e d, tʰ a d, tʰ e d, d a j d y, d e j d y"
 
     # change max_paths2repaired_phonotactics to 2 from 1.
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2
-    ) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
+    ) == "d a d, tʰ a d, d a j d y, tʰ a j d y, d a d j y, tʰ a d j y"
 
     # assert nothing changes if weights stay same relative to each other
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         deletion_cost=1,
         insertion_cost=0.49
-    ) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
+    ) == "d a d, tʰ a d, d a j d y, tʰ a j d y, d a d j y, tʰ a d j y"
 
     # assert nothing changes if weights stay same relative to each other
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         deletion_cost=2,
         insertion_cost=0.98
-    ) == "dad, tʰad, dajdy, tʰajdy, dadjy, tʰadjy"
+    ) == "d a d, tʰ a d, d a j d y, tʰ a j d y, d a d j y, tʰ a d j y"
 
     # o is a back vowel and will be replaced by "F"
     # which in turn turns to æ
     assert adrc_inst.adapt(
-        ipastr="dededo",
+        ipastr="d e d e d o",
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         repair_vowelharmony=True
     # dyd, tʰyd is twice because since paths2repaired_phonotactics=2
     # and "ded" can be reached by deleting "edo" from "dededo" OR "de.o"
-    ) == "dydydæ, tʰydydæ, dyd, tʰyd, dyd, tʰyd"
+    ) == "d y d y d æ, tʰ y d y d æ, d y d, tʰ y d, d y d, tʰ y d"
 
     # let's assume 'CVCCV' was an allowed structure
     adrc_inst.phonotactic_inventory.add('CVCVCV')
     # apply filter where unallowed structures are filtered out
     assert adrc_inst.adapt(
-        ipastr="dededo",
+        ipastr="d e d e d o",
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         repair_vowelharmony=True,
         phonotactics_filter=True
-        ) == "dydydæ, tʰydydæ"
+        ) == "d y d y d æ, tʰ y d y d æ"
 
     # test with cluster_filter=True
     adrc_inst = Adrc(
@@ -700,40 +702,40 @@ def test_adapt():
     # add this so phonotactics_filter won't be empty
     adrc_inst.phonotactic_inventory.add('CVCCV')
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=1000,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         repair_vowelharmony=True,
         phonotactics_filter=True,
-        cluster_filter=True) == "t͡ʃalda"
+        cluster_filter=True) == "t͡ʃ a l d a"
 
     # let more things go through filter cluster_filter:
     adrc_inst.cluster_inventory.add("d")
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=1000,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         repair_vowelharmony=True,
         phonotactics_filter=True,
-        cluster_filter=True) == "dalda, t͡ʃalda"
+        cluster_filter=True) == "d a l d a, t͡ʃ a l d a"
 
     # sort result by nse (likelihood of reconstruction)
     adrc_inst.cluster_inventory.add("d")
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=1000,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
         repair_vowelharmony=True,
         phonotactics_filter=True,
         cluster_filter=True,
-        sort_by_nse=True) == "t͡ʃalda, dalda"
+        sort_by_nse=True) == "t͡ʃ a l d a, d a l d a"
 
     # test show_workflow - run adapt first, then check workflow
     assert adrc_inst.adapt(
-        ipastr="dade",
+        ipastr="d a d e",
         howmany=1000,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -741,12 +743,10 @@ def test_adapt():
         phonotactics_filter=True,
         cluster_filter=True,
         sort_by_nse=True,
-        show_workflow=True) == "t͡ʃalda, dalda"
+        show_workflow=True) == "t͡ʃ a l d a, d a l d a"
 
     assert adrc_inst.workflow == OrderedDict(
         [
-            ('tokenised',
-             "['d', 'a', 'd', 'e']"),
             ('donor_phonotactics',
              'CVCV'),
             ('predicted_phonotactics',
@@ -785,9 +785,9 @@ def test_get_nse():
         source_language="H", target_language="EAH",
         mode="reconstruct")
 
-    assert adrc_inst.get_nse("ɟɒloɡ", "jɑlkɑ") == (
+    assert adrc_inst.get_nse("ɟ ɒ l o ɡ", "j ɑ l.k ɑ") == (
         6.67, 40, "[10, 9, 8, 7, 6, 0]",
-        "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*lk', 'o<*ɑ', 'ɡ#<*-']")
+        "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*l.k', 'o<*ɑ', 'ɡ#<*-']")
 
     # tear down
     del adrc_inst

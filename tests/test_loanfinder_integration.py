@@ -202,13 +202,15 @@ def test_likeliestphonmatch():
                    "nse_rc": [10],
                    "se_rc": [50],
                    "distr_rc": str([10] * 5),
-                   "align_rc": "['#-<*-', '#dl<*bl', \
+                   "align_rc": "['#-<*-', '#d.l<*b.l', \
 'u<*u', 'b#<*b', '-#<*-']",
                    "nse_ad": [4],
                    "se_ad": [20],
                    "distr_ad": "[0, 0, 10, 10, 0]",
                    "align_ad": "['e<V', 'C<b', 'l<l', 'u<u', 'b<b']",
-                   "nse_combined": [14]}),
+                   "nse_combined": [14],
+                   "x": [0],
+                   "y": [0]}),
         check_dtype=False)
 
     # tear down
@@ -289,7 +291,7 @@ def test_loans():
                            'nse_rc': [10],
                            'se_rc': [50],
                            'distr_rc': [str([10] * 5)],
-                           'align_rc': "['#-<*-', '#dl<*bl', \
+                           'align_rc': "['#-<*-', '#d.l<*b.l', \
 'u<*u', 'b#<*b', '-#<*-']",
                            'nse_ad': [5],
                            'se_ad': [20],
@@ -325,12 +327,14 @@ def test_postprocess():
             "Meaning_x": ["computer, interface"],
             "Meaning_y": ["human"],
             "semsim_msr": [0.10940766],
+            "CV_Segments": ["d.l u b"],
+            "Segments": ["b l u b"],
             "match": ["blub"],
             "nse_rc": [10],
             "se_rc": [50],
             "distr_rc": str(
                 [10] * 5),
-            "align_rc": "['#-<*-', '#dl<*bl', 'u<*u', 'b#<*b', '-#<*-']",
+            "align_rc": "['#-<*-', '#d.l<*b.l', 'u<*u', 'b#<*b', '-#<*-']",
             "nse_ad": [5],
             "se_ad": [20],
             "distr_ad": "[0, 10, 10, 0]",
@@ -343,6 +347,8 @@ def test_postprocess():
         path2recipdf=Path(__file__).parent / "input_files" / "loans_hun.csv",
         scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC,
         semsim=0.2)
+    for i in search_inst.postprocess(dfin).columns:
+        print(search_inst.postprocess(dfin)[i])
     assert_frame_equal(search_inst.postprocess(dfin), dfexp, check_dtype=False)
 
     # tear down
@@ -356,24 +362,26 @@ def test_merge_with_rest():
         path2recipdf=Path(__file__).parent / "input_files" / "loans_hun.csv",
         scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC)
     # mock input data frame
-    dfin = DataFrame({"a": ["pi", "pa", "po"],
-                      "b": ["bi", "ba", "bo"],
+    dfin = DataFrame({"a": ["p i", "p a", "p o"],
+                      "b": ["b i", "b a", "b o"],
                       "Meaning_x": ["mi", "ma", "mo"],
                       "Meaning_y": ["ni", "na", "no"],
                       "recipdf_idx": [0, 0, 0],
                       "mocksemsim": [98, 99, 100],
                       "gensim_multiword": [0.4, 0.2, 0.9]})
 
-    dfexp = DataFrame({"a": ["pi"],
-                       "b": ["bi"],
+    dfexp = DataFrame({"a": ["p i"],
+                       "b": ["b i"],
                        "recipdf_idx": [0],
                        "mocksemsim": [98],
                        "gensim_multiword": [0.4],
                        "Segments_x": ["b l u b"],
+                       "CV_Segments_x": ["b.l u b"],
                        "Meaning_x": ["human"],
                        "ad": ["blub, club"],
                        "bla_x": ["xyz"],
                        "Segments_y": ["d l u b"],
+                       "CV_Segments_y": ["d.l u b"],
                        "Meaning_y": ["computer, interface"],
                        "rc": ["(b|c)?lub"],
                        "bla_y": ["xyz"]})
