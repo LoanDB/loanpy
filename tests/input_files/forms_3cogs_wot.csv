@@ -1,12 +1,12 @@
-ID,Local_ID,Language_ID,Parameter_ID,Value,Form,Segments,Comment,Source,Cognacy,Loan,Graphemes,Profile
-H-0_carpenter-1,,H,0_carpenter,āč,āč,aː t͡ʃ,,wot,1,true,^ āč $,default
-EAH-0_carpenter-1,,EAH,0_carpenter,aγači,aγači,a ɣ a t͡ʃ i,,wot,1,true,^ aγači $,default
-WOT-0_carpenter-1,,WOT,0_carpenter,aγaččï,aγaččï,a ɣ a t͡ʃː ɯ,,wot,1,true,^ aγaččï $,default
-H-1_cannoncatapult-1,,H,1_cannoncatapult,ādʹū,ādʹū,aː ɟ uː,,wot,2,true,^ ādʹū $,default
-OH-1_cannoncatapult-1,,OH,1_cannoncatapult,āldʹū,āldʹū,aː l ɟ uː,,wot,2,true,^ āldʹū $,default
-LAH-1_cannoncatapult-1,,LAH,1_cannoncatapult,aldau̯,aldau̯,a l d a w,,wot,2,true,^ aldau̯ $,default
-EAH-1_cannoncatapult-1,,EAH,1_cannoncatapult,aldaγ,aldaγ,a l d a ɣ,,wot,2,true,^ aldaγ $,default
-WOT-1_cannoncatapult-1,,WOT,1_cannoncatapult,aldaγ,aldaγ,a l d a ɣ,,wot,2,true,^ aldaγ $,default
-H-2_tofondlepetcaress-1,,H,2_tofondlepetcaress,åynāroz,åynāroz,ɒ j n aː r o z,,wot,3,true,^ åynāroz $,default
-EAH-2_tofondlepetcaress-1,,EAH,2_tofondlepetcaress,ayan,ayan,a j a n,,wot,3,true,^ ayan $,default
-WOT-2_tofondlepetcaress-1,,WOT,2_tofondlepetcaress,ayan,ayan,a j a n,,wot,3,true,^ ayan $,default
+ID,Local_ID,Language_ID,Parameter_ID,Value,Form,Segments,Comment,Source,Cognacy,Loan,Graphemes,Profile,CV_Segments,ProsodicStructure,FB_Segments,FB_Vowel_Harmony
+H-0_carpenter-1,,H,0_carpenter,āč,āč,aː t͡ʃ,,wot,1,true,^ āč $,default,aː t͡ʃ,VC,aː t͡ʃ,True
+EAH-0_carpenter-1,,EAH,0_carpenter,aγači,aγači,a γ a t͡ʃ i,,wot,1,true,^ aγači $,default,a γ a t͡ʃ i,VCVCV,a γ a t͡ʃ F,True
+WOT-0_carpenter-1,,WOT,0_carpenter,aγaččï,aγaččï,a γ a t͡ʃː ɯ,,wot,1,true,^ aγaččï $,default,a γ a t͡ʃː ɯ,VCVCV,a γ a t͡ʃː B,True
+H-1_cannoncatapult-1,,H,1_cannoncatapult,ādʹū,ādʹū,aː ɟ uː,,wot,2,true,^ ādʹū $,default,aː ɟ uː,VCV,aː ɟ B,True
+OH-1_cannoncatapult-1,,OH,1_cannoncatapult,āldʹū,āldʹū,aː l ɟ uː,,wot,2,true,^ āldʹū $,default,aː l.ɟ uː,VCCV,aː l ɟ B,True
+LAH-1_cannoncatapult-1,,LAH,1_cannoncatapult,aldau̯,aldau̯,a l d a w,,wot,2,true,^ aldau̯ $,default,a l.d a w,VCCVC,a l d a w,True
+EAH-1_cannoncatapult-1,,EAH,1_cannoncatapult,aldaγ,aldaγ,a l d a γ,,wot,2,true,^ aldaγ $,default,a l.d a γ,VCCVC,a l d a γ,True
+WOT-1_cannoncatapult-1,,WOT,1_cannoncatapult,aldaγ,aldaγ,a l d a γ,,wot,2,true,^ aldaγ $,default,a l.d a γ,VCCVC,a l d a γ,True
+H-2_tofondlepetcaress-1,,H,2_tofondlepetcaress,åynāroz,åynāroz,ɒ j n aː r o z,,wot,3,true,^ åynāroz $,default,ɒ j.n aː r o z,VCCVCVC,B j n aː r B z,True
+EAH-2_tofondlepetcaress-1,,EAH,2_tofondlepetcaress,ayan,ayan,a j a n,,wot,3,true,^ ayan $,default,a j a n,VCVC,a j a n,True
+WOT-2_tofondlepetcaress-1,,WOT,2_tofondlepetcaress,ayan,ayan,a j a n,,wot,3,true,^ ayan $,default,a j a n,VCVC,a j a n,True

@@ -773,7 +773,7 @@ sanity.phonotactics_predicted") as phonotactics_predicted_mock:
     # assert calls
     get_dist_mock.assert_called_with("out_phonotacticspred", "best_guess")
     phonotactics_predicted_mock.assert_called_with(
-        "out2_getnse4df")  # only called if show_workflow is True
+        "out2_getnse4df")  # only called if show_workflow
     get_nse4df_mock.assert_has_calls(
         [call('in1', 'Target_Form'), call('out1_getnse4df', 'best_guess')]
     )
@@ -920,7 +920,7 @@ def test_phonotactics_predicted():
     adrc_monkey = AdrcMonkey()
     adrc_monkey.dfety = DataFrame()
     assert phonotactics_predicted(adrc_monkey) == adrc_monkey
-    assert phonotactics_predicted(adrc_monkey).dfety.empty is True
+    assert phonotactics_predicted(adrc_monkey).dfety.empty
     assert adrc_monkey.word2phonotactics_called_with == []
 
 

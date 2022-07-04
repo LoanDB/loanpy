@@ -6,6 +6,7 @@ from collections import Counter, OrderedDict
 from itertools import count, cycle, product
 from math import prod
 from operator import itemgetter
+from re import split as re_split
 
 from tqdm import tqdm
 
@@ -15,6 +16,7 @@ from loanpy.helpers import (
     combine_ipalists,
     editops,
     flatten,
+    get_clusters,
     get_howmany,
     has_harmony,
     list2regex,
@@ -48,10 +50,10 @@ input is None.
 / "input_files" / "sc_ad_3cogs.txt"
     >>> read_scdictlist(path2sc)
     [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'], \
-'t͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']}, {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, \
-'j<j': 1, 'l<l': 1, 'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 2}, {'a<a': [1, 2, 3], \
+'t͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']}, {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, \
+'j<j': 1, 'l<l': 1, 'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'γ<γ': 2}, {'a<a': [1, 2, 3], \
 'd<d': [2], 'i<ɯ': [1], 'j<j': [3], 'l<l': [2], 'n<n': [3], 't͡ʃ<t͡ʃː': [1], \
-'ɣ<ɣ': [1, 2]}, \
+'γ<γ': [1, 2]}, \
 {'VCCVC': ['VCCVC'], 'VCVC': ['VCVC'], 'VCVCV': ['VCVCV']}]
 
     """
@@ -145,13 +147,13 @@ mode="reconstruct", \
 most_frequent_phonotactics=2)
     >>> adrc_obj.scdict  # sound correspondence dictionary
     {'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'], \
-'t͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']}
+'t͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']}
     >>> adrc_obj.sedict  # sum of examples dictionary
     {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, 'j<j': 1, 'l<l': 1, \
-'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 2}
+'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'γ<γ': 2}
     >>> adrc_obj.edict  # examples dictionary
     {'a<a': [1, 2, 3], 'd<d': [2], 'i<ɯ': [1], 'j<j': [3], \
-'l<l': [2], 'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'ɣ<ɣ': [1, 2]}
+'l<l': [2], 'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'γ<γ': [1, 2]}
     >>> adrc_obj.scdict_phonotactics  # phonotactic correspondence dictionary
     {'VCCVC': ['VCCVC'], 'VCVC': ['VCVC'], 'VCVCV': ['VCVCV']}
     >>> adrc_obj.workflow
@@ -435,7 +437,7 @@ outputted regular expression is of the type "(^ace$|^ade$|^bce$|^bde$)".
         >>> adrc_obj.reconstruct("aːruː")
         '^(a)(n)(a)(at͡ʃi)$'
         >>> adrc_obj.reconstruct("aːruː", howmany=2)
-        '^(a)(n)(a)(at͡ʃi|ɣ)$'
+        '^(a)(n)(a)(at͡ʃi|γ)$'
         >>> path2forms = path2folder / "forms_3cogs_wot.csv"
         >>> # read etymological data to get phonotactic inventory for filter
         >>> adrc_obj = Adrc(forms_csv=path2forms, source_language="H", \
@@ -443,14 +445,14 @@ target_language="EAH", scdictlist=path2sc, mode="reconstruct")
         >>> adrc_obj.reconstruct("aːruː", \
 howmany=2, phonotactics_filter=True)  \
 # only CVCV in inventory
-        '^anaɣ$'
+        '^anaγ$'
         >>> adrc_obj.reconstruct("aːruː", howmany=1, \
 phonotactics_filter=True)  \
 # low howmany -> empty filter
         'wrong phonotactics'
         >>> adrc_obj.vow2fb["i"] = "B"  # let's assume "i" was a back vowel
         >>> adrc_obj.reconstruct("aːruː", howmany=4, vowelharmony_filter=True)
-        '^anaɣ$'
+        '^anaγ$'
         >>> # "anaat͡ʃi" got filtered out b/c it contains \
 a front and back vowel
         >>> # violation of constraint "vowelharmony_filter" in \
@@ -463,14 +465,14 @@ vowelharmony_filter=True)  \
         >>> adrc_obj.reconstruct("aːruː", howmany=4, \
 vowelharmony_filter=True)  \
 # nothing gets filtered
-        "^anaat͡ʃi$|^anaɣ$"
+        "^anaat͡ʃi$|^anaγ$"
         >>> adrc_obj.reconstruct("aːruː", howmany=4, sort_by_nse=True)
-        >>> # examples per phoneme divided by word length is higher for "anaɣ"
-        "^anaɣ$|^anaat͡ʃi$"
+        >>> # examples per phoneme divided by word length is higher for "anaγ"
+        "^anaγ$|^anaat͡ʃi$"
         """
 
         # slice up the input the way it's indicated in param <clusterised>
-        ipalist = clusterise(ipastr) if clusterised else tokenise(ipastr)
+        ipalist = ipastr.split(" ")
 
         # apply same tagging process as in loanpy.qfysc.Qfy.align_clusterwise
         ipalist[0], ipalist[-1] = f"#{ipalist[0]}", f"{ipalist[-1]}#"
@@ -489,19 +491,19 @@ vowelharmony_filter=True)  \
                [phonotactics_filter, vowelharmony_filter, sort_by_nse]):
             return f"^{''.join([list2regex(i) for i in out])}$"
 
-        # if one of the 3 params is True however, apply combinatorics
-        out = ["".join(i).replace("-", "") for i in product(*out)]
+        # if one of the 3 params however, apply combinatorics
+        out = [" ".join([ph for ph in wd if ph !="-"]) for wd in product(*out)]
 
         # apply first filter if indicated (wrong phontactics out)
-        if phonotactics_filter is True:
-            out = [i for i in out if prosodic_string(tokenise(i)) in
+        if phonotactics_filter:
+            out = [i for i in out if prosodic_string(re_split("[ |.]", i)) in
                    self.phonotactic_inventory]
             if out == []:
                 return "wrong phonotactics"
 
         # apply 2nd filter if indicated (wrong vowelharmony_filter out)
-        if vowelharmony_filter is True:
-            out = [i for i in out if has_harmony(i)]
+        if vowelharmony_filter:
+            out = [i for i in out if has_harmony(re_split("[ |.]", i))]
             if out == []:
                 return "wrong vowel harmony"
 
@@ -594,7 +596,7 @@ show_workflow=True)
 
         # tokenise if input is string
         if isinstance(ipastr, str):
-            ipastr = tokenise(ipastr)
+            ipastr = ipastr.split(" ")
         # get phonotactic profile of input string
         if max_repaired_phonotactics == 0:
             return [ipastr]
@@ -767,7 +769,7 @@ max_paths2repaired_phonotactics=2)
         "dajdæ, tʰajdæ, dujdy, tʰujdy, dadjæ, tʰadjæ"
         >>> # now let's filter out all clusters undocumented in forms.csv
         >>> adrc_obj.cluster_inventory  # only these clusters are allowed
-        {'ld', 't͡ʃ', 'j', 'ɣ', 'a', 'n', 'ia'}
+        {'ld', 't͡ʃ', 'j', 'γ', 'a', 'n', 'ia'}
         >>> adrc_obj.adapt(cluster_filter=True, phonotactics_filter=True, \
 repair_vowelharmony=True, ipastr="dade", howmany=6, \
 max_repaired_phonotactics=2, \
@@ -820,10 +822,7 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
          ) = get_howmany(howmany, max_repaired_phonotactics,
                          max_paths2repaired_phonotactics)
         # reset workflow variable, tokenise input (must be untokenised ipa str)
-        self.workflow, out = OrderedDict(), tokenise(ipastr)
-        # document the tokenisation if indicated
-        if show_workflow:
-            self.workflow["tokenised"] = str(out)
+        self.workflow, out = OrderedDict(), ipastr.split(" ")
 
         # repair the phonotactic structure if indicated
         out = self.repair_phonotactics(
@@ -856,7 +855,7 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         # phonotactics repaired, still: 1 phoneme can correspond to +-1 phoneme
         # structure not in target lg's phonotactic inventory
         if phonotactics_filter:
-            out = [i for i in out if prosodic_string(tokenise(i))
+            out = [i for i in out if prosodic_string(i.split(" "))
                    in self.phonotactic_inventory]
             #  indicate empty filter and return if necessary
             if out == []:
@@ -864,17 +863,18 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
 
         # filter clusters not in target lg's cluster inventory
         if cluster_filter:
+            print(self.cluster_inventory)
+            print([get_clusters(wrd.split(" ")).split(" ") for wrd in out])
             out = [wrd for wrd in out
                    if all(cl in self.cluster_inventory for cl
-                          in clusterise(wrd))]
+                          in get_clusters(wrd.split(" ")).split(" "))]
             # indicate empty filter and return if necessary
             if out == []:
                 return "wrong clusters"
 
         if sort_by_nse:  # sort resutls by likelyhood (nse) if indicated
-            out_nse = [(i, self.get_nse(ipastr, i)) for i in out]  # get nse
+            out_nse = [(i, self.get_nse(ipastr, i)) for i in out]
             out = pick_minmax(out_nse, sort_by_nse, max, True)
-
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
 
     def get_nse(self, left, right):

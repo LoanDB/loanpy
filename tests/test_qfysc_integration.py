@@ -11,8 +11,7 @@ from pytest import raises
 
 from loanpy.helpers import clusterise
 from loanpy.qfysc import (Etym, InventoryMissingError,
-read_scdictbase, read_dst, read_forms,
-cldf2pd)
+read_scdictbase, read_dst, cldf2pd)
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms_3cogs_wot.csv"
 PATH2FORMS2 = Path(__file__).parent / "input_files" / "forms.csv"
@@ -21,7 +20,8 @@ def test_get_scdictbase():
     """test if heuristic sound correspondence dictionary
     is calculated correctly"""
     # test with phoneme_inventory manually plugged in
-    etym = Etym(phoneme_inventory=["e", "b", "c"])
+    etym = Etym()
+    etym.inventories["Segments_inv"] = ["e", "b", "c"]
     scdictbase = etym.get_scdictbase(write_to=False)
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
@@ -75,77 +75,48 @@ def test_get_scdictbase():
 
 def test_rankclosest():
     """test if closest phonemes from inventory are ranked correctly"""
-    # assert error is being raised correctly
-    etym = Etym()
-    with raises(InventoryMissingError) as inventorymissingerror_mock:
-        etym.rank_closest(ph="d", howmany=3, inv=None)
-    assert str(inventorymissingerror_mock.value
-               ) == "define phoneme inventory or forms.csv"
-    del etym
 
     # assert phonemes are ranked correctly
-    etym = Etym(phoneme_inventory=["a", "b", "c"])
+    etym = Etym()
+    etym.inventories["Segments_inv"] =  set(["a", "b", "c"])
     assert etym.rank_closest(ph="d") == "b, c, a"
     assert etym.rank_closest(ph="d", howmany=2) == "b, c"
-    assert etym.rank_closest(ph="d", inv=["r", "t", "l"], howmany=1) == "t"
+    etym.inventories["Segments_inv"] =  set(["r", "t", "l"])
+    assert etym.rank_closest(ph="d", howmany=1) == "t"
     del etym
 
 
 def test_rankclosest_phonotactics():
     """test if most similar phonotactic profiles from inventory
     are ranked up correctly"""
-    # assert error is raised correctly if phoneme_inventory is missing
-    etym = Etym()
-    with raises(InventoryMissingError) as inventorymissingerror_mock:
-        # assert error is raised
-        etym.rank_closest_phonotactics(struc="CV", howmany=float("inf"))
-        assert str(inventorymissingerror_mock.value
-                   ) == "define phonotactic phoneme_inventory or forms.csv"
-    del etym
 
     # assert structures are ranked correctly
     etym = Etym(PATH2FORMS2, source_language=1, target_language=2)
     # phonotactic_inventory is only lg2 aka "xyz"
     assert etym.rank_closest_phonotactics(struc="CVCV") == "CVC"
     assert etym.rank_closest_phonotactics(
-        struc="CVCV", howmany=3, inv=[
-            "CVC", "CVCVV", "CCCC", "VVVVVV"]) == "CVCVV, CVC, CCCC"
+        struc="CVCV", howmany=3) == "CVC"
     del etym
-
-def test_read_forms():
-    """test if CLDF's forms.csv is read in correctly"""
-    # test first break
-    assert read_forms(None) is None
-
-    # set up
-    dfexp = DataFrame({"Language_ID": [1, 2],
-                       "Segments": ["abc", "xyz"],  # pulled together segments
-                       "Cognacy": [1, 1]})
-
-    assert read_forms(None) is None
-    assert_frame_equal(read_forms(PATH2FORMS2), dfexp)
-
-    # tear down
-    del dfexp
-
 
 def test_cldf2pd():
     """test if the CLDF format is correctly tranformed to a pandas dataframe"""
 
     # set up
-    dfin = read_csv(PATH2FORMS2)
-    dfexp = DataFrame({"Target_Form": ["x y z"],
-                       "Source_Form": ["a b c"],
-                       "Cognacy": [1]})
+    dfexp = DataFrame({"Target_Seg": ["x y z"],
+                       "Source_Seg": ["a b c"],
+                       "Target_CVSeg": ["x y z"],
+                       "Source_CVSeg": ["a b.c"],
+                       "Cognacy": [1],
+                       "Target_ProStr": ["CVC"]})
 
     # assert
     assert cldf2pd(None, source_language="whatever",
                    target_language="wtvr2") is None
-    assert_frame_equal(cldf2pd(dfin, source_language=1,
+    assert_frame_equal(cldf2pd(PATH2FORMS2, source_language=1,
                                target_language=2), dfexp)
 
     # tear down
-    del dfexp, dfin
+    del dfexp
 
 
 def test_read_dst():
@@ -197,72 +168,10 @@ def test_init():
     # tear down
     del mocketym
 
-
-def test_read_inventory():
-    """test if phoneme/cluster inventory is read in correctly"""
-    # assert first two exceptions: inv is not None and inv and forms are None
-    etym = Etym()
-    etym.forms_target_language = "some_inv"
-    assert etym.read_inventory("some_formscsv") == "some_formscsv"
-    assert etym.read_inventory(None) == set("someinv")  # tokeniser drops "_"
-    etym.forms_target_language = None
-    assert etym.read_inventory(None, None) is None
-
-    # assert calculations
-    etym.forms_target_language = ["a", "aab", "bc"]
-    assert etym.read_inventory(None) == set(['a', 'b', 'c'])
-    etym.forms_target_language = ["a", "ab", "baac"]
-    assert etym.read_inventory(None, clusterise
-                               ) == set(['aa', 'bb', 'c'])
-
-
 def test_get_inventories():
     """test if phoneme/cluster/phonotactic inventories are read in well"""
-    # set up instancce
-    etym = Etym()
-    # run func, assert output
-    etym.get_inventories() == (None, None, None)
-
-    # rerun with non-default args
-    # create instancce
-    etym = Etym()
-    # run func, assert output
-    etym.get_inventories("param1", "param2", "param3", 4) == (
-        "param1", "param2", "param3")
-
-    # rerun with real etym instnace
-    etym = Etym(forms_csv=PATH2FORMS2, source_language=1, target_language=2)
-    # run func
-    etym.get_inventories()
-    # assert assigned attributes
-    assert etym.phoneme_inventory == {'x', 'y', 'z'}
-    assert etym.cluster_inventory == {'x', 'y', 'z'}
-    assert etym.phonotactic_inventory == {'CVC'}
-
-    # tear down
-    del etym
-
-
-def test_read_phonotactic_inv():
-    """test if phonotactic inventory is read in correctly"""
-    # set up rest
-    etym = Etym()
-    # from forms.csv in CLDF
-    etym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
-    # assert with different parameter combinations
-    assert etym.read_phonotactic_inv(phonotactic_inventory=["a", "b", "c"],
-                                     ) == ["a", "b", "c"]
-    etym.forms_target_language = None
-    assert etym.read_phonotactic_inv(phonotactic_inventory=None,
-                                     ) is None
-    etym.forms_target_language = ["ab", "ab", "aa", "bb", "bb", "bb"]
-    # now just read the most frquent 2 structures. VV is the 3rd frquent. so
-    # not in the output.
-    assert etym.read_phonotactic_inv(phonotactic_inventory=None,
-                                     howmany=2) == {"CC", "VC"}
-
-    # tear down
-    del etym
+    pass
+    #TODO: re-write this.
 
 def test_read_mode():
     pass  # no patches in unittest (equal integration test)
@@ -295,15 +204,12 @@ def test_init():
     qfy = Etym()
 
     # assert number of attributes (super() + rest)
-    assert len(qfy.__dict__) == 10
+    assert len(qfy.__dict__) == 7
 
     # 6 attributes inherited from Etym
     assert qfy.dfety is None
-    assert qfy.phoneme_inventory is None
-    assert qfy.cluster_inventory is None
-    assert qfy.phonotactic_inventory is None
+    assert qfy.inventories == {}
     ismethod(qfy.distance_measure)
-    assert qfy.forms_target_language is None
 
     # 4 attributes initiated in Etym
     assert qfy.mode == "adapt"
@@ -319,14 +225,14 @@ def test_align():
     # set up
     qfy = Etym()
     # assert
-    assert_frame_equal(qfy.align(left="kala", right="hal"), DataFrame(
+    assert_frame_equal(qfy.align(left="k a l a", right="h a l"), DataFrame(
         {"keys": ["h", "a", "l", "V"], "vals": ["k", "a", "l", "a"]}))
     # overwrite
     qfy = Etym(mode="reconstruct")
     # assert
-    assert_frame_equal(qfy.align(left="ɟɒloɡ", right="jɑlkɑ"),
+    assert_frame_equal(qfy.align(left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ"),
                        DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
-                                  "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']}))
+                                  "vals": ['-', 'j', 'ɑ', 'l.k', 'ɑ', '-']}))
     # tear down
     del qfy
 
@@ -339,13 +245,13 @@ def test_align_lingpy():
     assert_frame_equal(qfy.align(left="kala", right="hal"), DataFrame(
         {"keys": ["h", "a", "l", "V"], "vals": ["k", "a", "l", "a"]}))
 
-    assert_frame_equal(qfy.align(left="aɣat͡ʃi", right="aɣat͡ʃːɯ"),
-                       DataFrame({"keys": ["a", "ɣ", "a", "t͡ʃː", "ɯ"],
-                                  "vals": ["a", "ɣ", "a", "t͡ʃ", "i"]}))
+    assert_frame_equal(qfy.align(left="aγat͡ʃi", right="aγat͡ʃːɯ"),
+                       DataFrame({"keys": ["a", "γ", "a", "t͡ʃː", "ɯ"],
+                                  "vals": ["a", "γ", "a", "t͡ʃ", "i"]}))
 
-    assert_frame_equal(qfy.align(left="aldaɣ", right="aldaɣ"),
-                       DataFrame({"keys": ["a", "l", "d", "a", "ɣ"],
-                                  "vals": ["a", "l", "d", "a", "ɣ"]}))
+    assert_frame_equal(qfy.align(left="aldaγ", right="aldaγ"),
+                       DataFrame({"keys": ["a", "l", "d", "a", "γ"],
+                                  "vals": ["a", "l", "d", "a", "γ"]}))
 
     assert_frame_equal(qfy.align(left="ajan", right="ajan"), DataFrame(
         {"keys": ["a", "j", "a", "n"], "vals": ["a", "j", "a", "n"]}))
@@ -359,41 +265,41 @@ def test_align_clusterwise():
     # set up
     qfy = Etym(mode="reconstruct")
     # assert
-    assert_frame_equal(qfy.align(left="ɟɒloɡ", right="jɑlkɑ"),
+    assert_frame_equal(qfy.align(left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ"),
                        DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
-                                  "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']}))
+                                  "vals": ['-', 'j', 'ɑ', 'l.k', 'ɑ', '-']}))
 
-    assert_frame_equal(qfy.align(left="kiki", right="hihi"),
+    assert_frame_equal(qfy.align(left="k i k i", right="h i h i"),
                        DataFrame({"keys": ['#-', '#k', 'i', 'k', 'i#', '-#'],
                                   "vals": ['-', 'h', 'i', 'h', 'i', '-']}))
-    assert_frame_equal(qfy.align(left="kiki", right="ihi"),
+    assert_frame_equal(qfy.align(left="k i k i", right="i h i"),
                        DataFrame({"keys": ['#k', 'i', 'k', 'i#', '-#'],
                                   "vals": ['-', 'i', 'h', 'i', '-']}))
 
-    assert_frame_equal(qfy.align(left="iki", right="hihi"),
+    assert_frame_equal(qfy.align(left="i k i", right="h i h i"),
                        DataFrame({"keys": ['#-', '#i', 'k', 'i#', '-#'],
                                   "vals": ['h', 'i', 'h', 'i', '-']}))
 
-    assert_frame_equal(qfy.align(left="uoaeia", right="brrrzierrrrr"),
-                       DataFrame({"keys": ['#-', 'uoaeia#', '-#'],
-                                  "vals": ['brrrz', 'ie', 'rrrrr']}))
+    assert_frame_equal(qfy.align(left="u.o.a.e.i.a", right="b.r.r.r.z i.e r.r.r.r.r"),
+                       DataFrame({"keys": ['#-', 'u.o.a.e.i.a#', '-#'],
+                                  "vals": ['b.r.r.r.z', 'i.e', 'r.r.r.r.r']}))
 
-    assert_frame_equal(qfy.align(left="uoaeia", right="brrrzi"),
-                       DataFrame({"keys": ['#-', 'uoaeia#', '-#'],
-                                  "vals": ['brrrz', 'i', '-']}))
+    assert_frame_equal(qfy.align(left="u.o.a.e.i.a", right="b.r.r.r.z i"),
+                       DataFrame({"keys": ['#-', 'u.o.a.e.i.a#', '-#'],
+                                  "vals": ['b.r.r.r.z', 'i', '-']}))
 
-    assert_frame_equal(qfy.align(left="uoaeia", right="brrrz"),
-                       DataFrame({"keys": ['#-', 'uoaeia#'],
-                                  "vals": ['brrrz', '-']}))
+    assert_frame_equal(qfy.align(left="u.o.a.e.i.a", right="b.r.r.r.z"),
+                       DataFrame({"keys": ['#-', 'u.o.a.e.i.a#'],
+                                  "vals": ['b.r.r.r.z', '-']}))
 
-    assert_frame_equal(qfy.align(left="budapestttt", right="uadast"),
+    assert_frame_equal(qfy.align(left="b u d a p e s.t.t.t.t", right="u.a d a s.t"),
                        DataFrame(
-                           {"keys": ['#b', 'u', 'd', 'a', 'p', 'estttt#'],
-                            "vals": ['-', 'ua', 'd', 'a', 'st', '-']}))
+                           {"keys": ['#b', 'u', 'd', 'a', 'p', 'es.t.t.t.t#'],
+                            "vals": ['-', 'u.a', 'd', 'a', 's.t', '-']}))
 
     # the only example in ronatasbertawot
     # where one starts with C, the other with V
-    assert_frame_equal(qfy.align(left="imad", right="vimad"),
+    assert_frame_equal(qfy.align(left="i m a d", right="v i m a d"),
                        DataFrame({"keys": ['#-', '#i', 'm', 'a', 'd#', '-#'],
                                   "vals": ['v', 'i', 'm', 'a', 'd', '-']}))
 
@@ -420,7 +326,7 @@ def test_get_sound_corresp():
             'l': ['l'],
             'n': ['n'],
             't͡ʃː': ['t͡ʃ'],
-            'ɣ': ['ɣ'],
+            'γ': ['γ'],
             'ɯ': ['i']},
 
         {'a<a': 6,
@@ -430,7 +336,7 @@ def test_get_sound_corresp():
          'l<l': 1,
          'n<n': 1,
          't͡ʃ<t͡ʃː': 1,
-         'ɣ<ɣ': 2},
+         'γ<γ': 2},
 
         {'a<a': [1, 2, 3],
          'd<d': [2],
@@ -439,7 +345,7 @@ def test_get_sound_corresp():
          'l<l': [2],
          'n<n': [3],
          't͡ʃ<t͡ʃː': [1],
-         'ɣ<ɣ': [1, 2]},
+         'γ<γ': [1, 2]},
 
         {'VCCVC<VCCVC': 1,
          'VCVC<VCVC': 1,
@@ -457,51 +363,51 @@ def test_get_sound_corresp():
         {'#-': ['-'],
          '#aː': ['a'],
          '#ɒ': ['a'],
-            '-#': ['at͡ʃi', 'ɣ'],
+            '-#': ['at͡ʃi', 'γ'],
             'aː': ['a'],
-            'jn': ['j'],
+            'j.n': ['j'],
             'oz#': ['-'],
             'r': ['n'],
-            't͡ʃ#': ['ɣ'],
+            't͡ʃ#': ['γ'],
             'uː#': ['a'],
-            'ɟ': ['ld']},
+            'ɟ': ['l.d']},
 
         {'#-<*-': 3,
          '#aː<*a': 2,
          '#ɒ<*a': 1,
          '-#<*at͡ʃi': 1,
-         '-#<*ɣ': 1,
+         '-#<*γ': 1,
          'aː<*a': 1,
-         'jn<*j': 1,
+         'j.n<*j': 1,
          'oz#<*-': 1,
          'r<*n': 1,
-         't͡ʃ#<*ɣ': 1,
+         't͡ʃ#<*γ': 1,
          'uː#<*a': 1,
-         'ɟ<*ld': 1},
+         'ɟ<*l.d': 1},
 
         {'#-<*-': [1, 2, 3],
          '#aː<*a': [1, 2],
          '#ɒ<*a': [3],
          '-#<*at͡ʃi': [1],
-         '-#<*ɣ': [2],
+         '-#<*γ': [2],
          'aː<*a': [3],
-         'jn<*j': [3],
+         'j.n<*j': [3],
          'oz#<*-': [3],
          'r<*n': [3],
-         't͡ʃ#<*ɣ': [1],
+         't͡ʃ#<*γ': [1],
          'uː#<*a': [2],
-         'ɟ<*ld': [2]},
+         'ɟ<*l.d': [2]},
         {}, {}, {}
     ]
 
     # assert frst test runs but with write_to and struc=True
     exp = [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'],
-            't͡ʃː': ['t͡ʃ'], 'ɣ': ['ɣ'], 'ɯ': ['i']},
+            't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']},
            {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, 'j<j': 1, 'l<l': 1,
-            'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'ɣ<ɣ': 2},
+            'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'γ<γ': 2},
            {'a<a': [1, 2, 3], 'd<d': [2], 'i<ɯ': [1],
             'j<j': [3], 'l<l': [2], 'n<n': [3],
-            't͡ʃ<t͡ʃː': [1], 'ɣ<ɣ': [1, 2]},
+            't͡ʃ<t͡ʃː': [1], 'γ<γ': [1, 2]},
            {'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],
             'VCVC': ['VCVC', 'VCCVC', 'VCVCV'],
             'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']},

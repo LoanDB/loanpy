@@ -152,7 +152,7 @@ that represent the meanings of a word. Within the strings, \
 meanings are separated \
 by ", ". It calculates the cosine similarities of the word pairs of the \
 Cartesian product and returns the value of the most similar pair. If \
-return_wordpair is True, the words are returned as well. \
+return_wordpair, the words are returned as well. \
 If global variable <loanpy.helpers.model> is None, the model provided \
 in param <wordvectors> will be loaded and passed on to \
 <loanpy.helpers.model>. To reload a model, call loanpy.helpers.plug_in_model.
@@ -696,7 +696,7 @@ Combines and flattens a list of lists of sound correspondence lists.
     ['acd', 'bcd', 'egh', 'fgh']
     """
 
-    return flatten([list(map("".join, product(*wrd))) for wrd in wrds])
+    return flatten([list(map(" ".join, product(*wrd))) for wrd in wrds])
 
 
 def get_howmany(step, hm_phonotactics_ceiling, hm_paths_ceiling):
@@ -808,3 +808,19 @@ returned, or if it should be merged with the rest of the unsorted list.
         mindisttup = func(input_and_nr, key=lambda tup: tup[1])
         out.append(input_and_nr.pop(input_and_nr.index(mindisttup))[0])
     return out + [i[0] for i in input_and_nr] if return_all else out
+
+def get_clusters(segments):
+    """
+    Takes a list of phonemes and segments them into consonant and vowel
+    clusters, like so: "abcdeaofgh" -> ["a", "bcd", "eao", "fgh"]
+    (c) List 2022"""
+    out = [segments[0]]
+    for i in range(1, len(segments)):
+        # can be optimized
+        prev, this = token2class(segments[i-1], "cv"), token2class(
+                segments[i], "cv")
+        if prev == this:
+            out[-1] += "."+segments[i]
+        else:
+            out += [segments[i]]
+    return " ".join(out)

@@ -765,14 +765,14 @@ def test_postprocess():
                                  "Meaning_x": ["edge"],
                                  "Meaning_y": ["sharp"],
                                  "semsim_msr": [0.8],
-                                 "Segments_x": ["kiki"],
+                                 "CV_Segments": ["kiki"],
                                  "rc": ["(k|h)(i)(k|h)(i)"],
-                                 "Segments_y": ["kiki"],
+                                 "Segments": ["kiki"],
                                  "ad": ["kiki, hihi"]},
                                 index=[1])
 
     # set up: mock a search_for data frame (=reconstructed)
-    dfrc = DataFrame({"Segments": ["k i k i", "b u b a"], "rc": [
+    dfrc = DataFrame({"CV_Segments": ["k i k i", "b u b a"], "rc": [
                      "(k|h)(i)(k|h)(i)", "(b|p)(u)(b|p)(a)"]}, index=[99, 100])
     # set up: mock a search_in data frame (=adapted)
     dfad = DataFrame({"Segments": ["k i k i", "b u b a"],
@@ -820,7 +820,7 @@ def test_postprocess():
     # assert 3 calls: pandas.read_csv, mocksearch.likeliestphonmatch
     # and concat_mock
     read_csv_mock.assert_has_calls([
-        call("hun.csv", encoding="utf-8", usecols=["Segments", "rc"]),
+        call("hun.csv", encoding="utf-8", usecols=["CV_Segments", "rc"]),
         call("got.csv", encoding="utf-8", usecols=["Segments", "ad"])])
     assert mocksearch.likeliestphonmatch_called_with == [
         ["kiki, hihi", "(k|h)(i)(k|h)(i)", "kiki", "kiki"]]

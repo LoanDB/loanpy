@@ -183,11 +183,11 @@ through the network of life</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;forms_3cogs_wot.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc</span><span class="p">,</span> <span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reconstruct&quot;</span><span class="p">,</span> <span class="n">most_frequent_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">scdict</span>  <span class="c1"># sound correspondence dictionary</span>
-<span class="go">{&#39;a&#39;: [&#39;a&#39;], &#39;d&#39;: [&#39;d&#39;], &#39;j&#39;: [&#39;j&#39;], &#39;l&#39;: [&#39;l&#39;], &#39;n&#39;: [&#39;n&#39;], &#39;t͡ʃː&#39;: [&#39;t͡ʃ&#39;], &#39;ɣ&#39;: [&#39;ɣ&#39;], &#39;ɯ&#39;: [&#39;i&#39;]}</span>
+<span class="go">{&#39;a&#39;: [&#39;a&#39;], &#39;d&#39;: [&#39;d&#39;], &#39;j&#39;: [&#39;j&#39;], &#39;l&#39;: [&#39;l&#39;], &#39;n&#39;: [&#39;n&#39;], &#39;t͡ʃː&#39;: [&#39;t͡ʃ&#39;], &#39;γ&#39;: [&#39;γ&#39;], &#39;ɯ&#39;: [&#39;i&#39;]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">sedict</span>  <span class="c1"># sum of examples dictionary</span>
-<span class="go">{&#39;a&lt;a&#39;: 6, &#39;d&lt;d&#39;: 1, &#39;i&lt;ɯ&#39;: 1, &#39;j&lt;j&#39;: 1, &#39;l&lt;l&#39;: 1, &#39;n&lt;n&#39;: 1, &#39;t͡ʃ&lt;t͡ʃː&#39;: 1, &#39;ɣ&lt;ɣ&#39;: 2}</span>
+<span class="go">{&#39;a&lt;a&#39;: 6, &#39;d&lt;d&#39;: 1, &#39;i&lt;ɯ&#39;: 1, &#39;j&lt;j&#39;: 1, &#39;l&lt;l&#39;: 1, &#39;n&lt;n&#39;: 1, &#39;t͡ʃ&lt;t͡ʃː&#39;: 1, &#39;γ&lt;γ&#39;: 2}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">edict</span>  <span class="c1"># examples dictionary</span>
-<span class="go">{&#39;a&lt;a&#39;: [1, 2, 3], &#39;d&lt;d&#39;: [2], &#39;i&lt;ɯ&#39;: [1], &#39;j&lt;j&#39;: [3], &#39;l&lt;l&#39;: [2], &#39;n&lt;n&#39;: [3], &#39;t͡ʃ&lt;t͡ʃː&#39;: [1], &#39;ɣ&lt;ɣ&#39;: [1, 2]}</span>
+<span class="go">{&#39;a&lt;a&#39;: [1, 2, 3], &#39;d&lt;d&#39;: [2], &#39;i&lt;ɯ&#39;: [1], &#39;j&lt;j&#39;: [3], &#39;l&lt;l&#39;: [2], &#39;n&lt;n&#39;: [3], &#39;t͡ʃ&lt;t͡ʃː&#39;: [1], &#39;γ&lt;γ&#39;: [1, 2]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">scdict_phonotactics</span>  <span class="c1"># phonotactic correspondence dictionary</span>
 <span class="go">{&#39;VCCVC&#39;: [&#39;VCCVC&#39;], &#39;VCVC&#39;: [&#39;VCVC&#39;], &#39;VCVCV&#39;: [&#39;VCVCV&#39;]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">workflow</span>
@@ -261,7 +261,7 @@ through the network of life</p>
 <span class="go">&quot;dajdæ, tʰajdæ, dujdy, tʰujdy, dadjæ, tʰadjæ&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># now let&#39;s filter out all clusters undocumented in forms.csv</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">cluster_inventory</span>  <span class="c1"># only these clusters are allowed</span>
-<span class="go">{&#39;ld&#39;, &#39;t͡ʃ&#39;, &#39;j&#39;, &#39;ɣ&#39;, &#39;a&#39;, &#39;n&#39;, &#39;ia&#39;}</span>
+<span class="go">{&#39;ld&#39;, &#39;t͡ʃ&#39;, &#39;j&#39;, &#39;γ&#39;, &#39;a&#39;, &#39;n&#39;, &#39;ia&#39;}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">cluster_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">phonotactics_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">repair_vowelharmony</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ipastr</span><span class="o">=</span><span class="s2">&quot;dade&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">max_repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_paths2repaired_phonotactics</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">&quot;wrong clusters&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span> <span class="c1"># let&#39;s use a different sound correspondence file</span>
@@ -323,27 +323,27 @@ through the network of life</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;aːruː&quot;</span><span class="p">)</span>
 <span class="go">&#39;^(a)(n)(a)(at͡ʃi)$&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;aːruː&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">&#39;^(a)(n)(a)(at͡ʃi|ɣ)$&#39;</span>
+<span class="go">&#39;^(a)(n)(a)(at͡ʃi|γ)$&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">path2folder</span> <span class="o">/</span> <span class="s2">&quot;forms_3cogs_wot.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># read etymological data to get phonotactic inventory for filter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">,</span> <span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reconstruct&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;aːruː&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">phonotactics_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># only CVCV in inventory</span>
-<span class="go">&#39;^anaɣ$&#39;</span>
+<span class="go">&#39;^anaγ$&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;aːruː&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">phonotactics_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># low howmany -&gt; empty filter</span>
 <span class="go">&#39;wrong phonotactics&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">vow2fb</span><span class="p">[</span><span class="s2">&quot;i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>  <span class="c1"># let&#39;s assume &quot;i&quot; was a back vowel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;aːruː&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">vowelharmony_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="go">&#39;^anaɣ$&#39;</span>
+<span class="go">&#39;^anaγ$&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># &quot;anaat͡ʃi&quot; got filtered out b/c it contains a front and back vowel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># violation of constraint &quot;vowelharmony_filter&quot; in terms of optimality theory</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;aːruː&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vowelharmony_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># low howmany -&gt; empty filter</span>
 <span class="go">&#39;wrong vowel harmony&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">vow2fb</span><span class="p">[</span><span class="s2">&quot;i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>  <span class="c1"># make &quot;i&quot; a front vowel again</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;aːruː&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">vowelharmony_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># nothing gets filtered</span>
-<span class="go">&quot;^anaat͡ʃi$|^anaɣ$&quot;</span>
+<span class="go">&quot;^anaat͡ʃi$|^anaγ$&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="s2">&quot;aːruː&quot;</span><span class="p">,</span> <span class="n">howmany</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_by_nse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># examples per phoneme divided by word length is higher for &quot;anaɣ&quot;</span>
-<span class="go">&quot;^anaɣ$|^anaat͡ʃi$&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># examples per phoneme divided by word length is higher for &quot;anaγ&quot;</span>
+<span class="go">&quot;^anaγ$|^anaat͡ʃi$&quot;</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -405,7 +405,7 @@ through the network of life</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path2cache</strong> (<em>pathlib.PosixPath</em><em> | </em><em>str</em><em> | </em><em>None</em><em>, </em><em>default=None</em>) – The path to the CSV-file in which information     about input-parameters and evaluated results is stored. If path points to     a non-existent file, the indicated file will be created.     If set to None, it will be written to CLDF’s folder “etc” (concluded from     the path provided in parameter &lt;forms_csv&gt;) and will be called     f”opt_param_{target_language}_{source_language}”.     If loanpy.sanity.cache is written as a decorator around this function,     it will receive this keyword argument, else it will be ignored.     For more information see loanpy.sanity.cache.</p></li>
 <li><p><strong>crossval</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Indicate whether results should     be cross-validated. If true,     the model with which to predict an adaptation or a reconstruction     of a word will be trained without that word. That means that all 3     inventories (phoneme, clusters, phonotactic) are also concluded     from data that excludes the specific row in the data frame,     where the word in question occurs.     Pitfall: If a word occurs multiple times in one data set,     this might blu the cross-validation.</p></li>
-<li><p><strong>writesc</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if loanpy.qfysc.Qfy.get_sound_corresp should     write its output to a file. If yes and if crossval is True,     provide a path to a <strong>folder</strong> (!). If yes and crossval is False,     provide a path to a file.     This is useful for debugging.     Careful: Since one file will be written in every     round of the cross-validation loop (as many iterations as there are     predictions to evaluate), the total storage room taken up by     the files can     get large. E.g. if 500 words should be evaluated and scdictbase is     1.6MB, the entire folder will take up 500*1.6MB. There are two ways to     avoid this: If writesc=True, make sure to set either crossval=False,     this will     only write one soundchange.txt file. Or set scdictbase=None,     since this is     the part that takes up the most storage. Predictions will be blurred     in both     cases but for debugging this is usually enough.</p></li>
+<li><p><strong>writesc</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Indicate if loanpy.qfysc.Qfy.get_sound_corresp should     write its output to a file. If yes and if crossval ,     provide a path to a <strong>folder</strong> (!). If yes and crossval is False,     provide a path to a file.     This is useful for debugging.     Careful: Since one file will be written in every     round of the cross-validation loop (as many iterations as there are     predictions to evaluate), the total storage room taken up by     the files can     get large. E.g. if 500 words should be evaluated and scdictbase is     1.6MB, the entire folder will take up 500*1.6MB. There are two ways to     avoid this: If writesc=True, make sure to set either crossval=False,     this will     only write one soundchange.txt file. Or set scdictbase=None,     since this is     the part that takes up the most storage. Predictions will be blurred     in both     cases but for debugging this is usually enough.</p></li>
 <li><p><strong>write_to</strong> (<em>None</em><em> | </em><em>pathlib.PosixPath</em><em> | </em><em>str</em><em>, </em><em>default=None</em>) – Indicate whether results should be written to a     CSV-file and plotted to a jpg. If yes, provide the path to the file     including the “.csv”-extension.     None means that no file     will be written.</p></li>
 </ul>
 </dd>
@@ -1142,7 +1142,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.helpers.gensim_multiword">
 <span class="sig-prename descclassname"><span class="pre">loanpy.helpers.</span></span><span class="sig-name descname"><span class="pre">gensim_multiword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recip_transl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">donor_transl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_wordpair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wordvectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'word2vec-google-news-300'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.helpers.gensim_multiword" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.loafinder.Search.loans. Takes two strings as input that represent the meanings of a word. Within the strings, meanings are separated by “, “. It calculates the cosine similarities of the word pairs of the Cartesian product and returns the value of the most similar pair. If return_wordpair is True, the words are returned as well. If global variable &lt;loanpy.helpers.model&gt; is None, the model provided in param &lt;wordvectors&gt; will be loaded and passed on to &lt;loanpy.helpers.model&gt;. To reload a model, call loanpy.helpers.plug_in_model.</p>
+<dd><p>Called by loanpy.loafinder.Search.loans. Takes two strings as input that represent the meanings of a word. Within the strings, meanings are separated by “, “. It calculates the cosine similarities of the word pairs of the Cartesian product and returns the value of the most similar pair. If return_wordpair , the words are returned as well. If global variable &lt;loanpy.helpers.model&gt; is None, the model provided in param &lt;wordvectors&gt; will be loaded and passed on to &lt;loanpy.helpers.model&gt;. To reload a model, call loanpy.helpers.plug_in_model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1843,7 +1843,7 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <span class="go">[None, None, None, None]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;sc_ad_3cogs.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">read_scdictlist</span><span class="p">(</span><span class="n">path2sc</span><span class="p">)</span>
-<span class="go">[{&#39;a&#39;: [&#39;a&#39;], &#39;d&#39;: [&#39;d&#39;], &#39;j&#39;: [&#39;j&#39;], &#39;l&#39;: [&#39;l&#39;], &#39;n&#39;: [&#39;n&#39;], &#39;t͡ʃː&#39;: [&#39;t͡ʃ&#39;], &#39;ɣ&#39;: [&#39;ɣ&#39;], &#39;ɯ&#39;: [&#39;i&#39;]}, {&#39;a&lt;a&#39;: 6, &#39;d&lt;d&#39;: 1, &#39;i&lt;ɯ&#39;: 1, &#39;j&lt;j&#39;: 1, &#39;l&lt;l&#39;: 1, &#39;n&lt;n&#39;: 1, &#39;t͡ʃ&lt;t͡ʃː&#39;: 1, &#39;ɣ&lt;ɣ&#39;: 2}, {&#39;a&lt;a&#39;: [1, 2, 3], &#39;d&lt;d&#39;: [2], &#39;i&lt;ɯ&#39;: [1], &#39;j&lt;j&#39;: [3], &#39;l&lt;l&#39;: [2], &#39;n&lt;n&#39;: [3], &#39;t͡ʃ&lt;t͡ʃː&#39;: [1], &#39;ɣ&lt;ɣ&#39;: [1, 2]}, {&#39;VCCVC&#39;: [&#39;VCCVC&#39;], &#39;VCVC&#39;: [&#39;VCVC&#39;], &#39;VCVCV&#39;: [&#39;VCVCV&#39;]}]</span>
+<span class="go">[{&#39;a&#39;: [&#39;a&#39;], &#39;d&#39;: [&#39;d&#39;], &#39;j&#39;: [&#39;j&#39;], &#39;l&#39;: [&#39;l&#39;], &#39;n&#39;: [&#39;n&#39;], &#39;t͡ʃː&#39;: [&#39;t͡ʃ&#39;], &#39;γ&#39;: [&#39;γ&#39;], &#39;ɯ&#39;: [&#39;i&#39;]}, {&#39;a&lt;a&#39;: 6, &#39;d&lt;d&#39;: 1, &#39;i&lt;ɯ&#39;: 1, &#39;j&lt;j&#39;: 1, &#39;l&lt;l&#39;: 1, &#39;n&lt;n&#39;: 1, &#39;t͡ʃ&lt;t͡ʃː&#39;: 1, &#39;γ&lt;γ&#39;: 2}, {&#39;a&lt;a&#39;: [1, 2, 3], &#39;d&lt;d&#39;: [2], &#39;i&lt;ɯ&#39;: [1], &#39;j&lt;j&#39;: [3], &#39;l&lt;l&#39;: [2], &#39;n&lt;n&#39;: [3], &#39;t͡ʃ&lt;t͡ʃː&#39;: [1], &#39;γ&lt;γ&#39;: [1, 2]}, {&#39;VCCVC&#39;: [&#39;VCCVC&#39;], &#39;VCVC&#39;: [&#39;VCVC&#39;], &#39;VCVCV&#39;: [&#39;VCVCV&#39;]}]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2120,8 +2120,8 @@ Flatten a nested list and discard empty strings (to prevent feeding empty string
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">loop_thru_data</span><span class="p">(</span><span class="n">adrc_obj</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span> <span class="s1">&#39;adapt&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dfety</span>
 <span class="go">Target_Form Source_Form  Cognacy  guesses best_guess</span>
-<span class="go">0     aɣat͡ʃi    aɣat͡ʃːɯ        1      inf   KeyError</span>
-<span class="go">1       aldaɣ       aldaɣ        2      inf   KeyError</span>
+<span class="go">0     aγat͡ʃi    aγat͡ʃːɯ        1      inf   KeyError</span>
+<span class="go">1       aldaγ       aldaγ        2      inf   KeyError</span>
 <span class="go">2        ajan        ajan        3      inf   KeyError</span>
 </pre></div>
 </div>
@@ -2284,10 +2284,10 @@ Checks if target was hit by predictions made by     loanpy.adrc.Adrc.reconstruct
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">get_noncrossval_sc</span><span class="p">(</span><span class="n">adrc_obj</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">scdict</span>
 <span class="go">{&#39;a&#39;: [&#39;a&#39;], &#39;d&#39;: [&#39;d&#39;], &#39;j&#39;: [&#39;j&#39;], &#39;l&#39;: [&#39;l&#39;],</span>
-<span class="go">&#39;n&#39;: [&#39;n&#39;], &#39;t͡ʃː&#39;: [&#39;t͡ʃ&#39;], &#39;ɣ&#39;: [&#39;ɣ&#39;], &#39;ɯ&#39;: [&#39;i&#39;]}</span>
+<span class="go">&#39;n&#39;: [&#39;n&#39;], &#39;t͡ʃː&#39;: [&#39;t͡ʃ&#39;], &#39;γ&#39;: [&#39;γ&#39;], &#39;ɯ&#39;: [&#39;i&#39;]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">sedict</span>
 <span class="go">{&#39;a&lt;a&#39;: 6, &#39;d&lt;d&#39;: 1, &#39;i&lt;ɯ&#39;: 1, &#39;j&lt;j&#39;: 1,</span>
-<span class="go">&#39;l&lt;l&#39;: 1, &#39;n&lt;n&#39;: 1, &#39;t͡ʃ&lt;t͡ʃː&#39;: 1, &#39;ɣ&lt;ɣ&#39;: 2}</span>
+<span class="go">&#39;l&lt;l&#39;: 1, &#39;n&lt;n&#39;: 1, &#39;t͡ʃ&lt;t͡ʃː&#39;: 1, &#39;γ&lt;γ&#39;: 2}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">scdict_phonotactics</span>
 <span class="go">{&#39;VCCVC&#39;: [&#39;VCCVC&#39;, &#39;VCVC&#39;, &#39;VCVCV&#39;],</span>
 <span class="go"> &#39;VCVC&#39;: [&#39;VCVC&#39;, &#39;VCCVC&#39;, &#39;VCVCV&#39;],</span>
@@ -2326,11 +2326,11 @@ Checks if target was hit by predictions made by     loanpy.adrc.Adrc.reconstruct
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2forms</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;forms_3cogs_wot.csv&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">get_crossval_data</span><span class="p">(</span><span class="n">adrc_obj</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># first cog isolated, missing sc: a ɣ a t͡ʃ i - a ɣ a t͡ʃː ɯ</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># first cog isolated, missing sc: a γ a t͡ʃ i - a γ a t͡ʃː ɯ</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">scdict</span>
-<span class="go">{&#39;a&#39;: [&#39;a&#39;], &#39;d&#39;: [&#39;d&#39;], &#39;j&#39;: [&#39;j&#39;], &#39;l&#39;: [&#39;l&#39;], &#39;n&#39;: [&#39;n&#39;], &#39;ɣ&#39;: [&#39;ɣ&#39;]}</span>
+<span class="go">{&#39;a&#39;: [&#39;a&#39;], &#39;d&#39;: [&#39;d&#39;], &#39;j&#39;: [&#39;j&#39;], &#39;l&#39;: [&#39;l&#39;], &#39;n&#39;: [&#39;n&#39;], &#39;γ&#39;: [&#39;γ&#39;]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">sedict</span>
-<span class="go">{&#39;a&lt;a&#39;: 4, &#39;d&lt;d&#39;: 1, &#39;j&lt;j&#39;: 1, &#39;l&lt;l&#39;: 1, &#39;n&lt;n&#39;: 1, &#39;ɣ&lt;ɣ&#39;: 1}</span>
+<span class="go">{&#39;a&lt;a&#39;: 4, &#39;d&lt;d&#39;: 1, &#39;j&lt;j&#39;: 1, &#39;l&lt;l&#39;: 1, &#39;n&lt;n&#39;: 1, &#39;γ&lt;γ&#39;: 1}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">scdict_phonotactics</span>
 <span class="go">{&#39;VCCVC&#39;: [&#39;VCCVC&#39;, &#39;VCVC&#39;], &#39;VCVC&#39;: [&#39;VCVC&#39;, &#39;VCCVC&#39;]}</span>
 </pre></div>
@@ -2343,7 +2343,7 @@ Checks if target was hit by predictions made by     loanpy.adrc.Adrc.reconstruct
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.sanity.postprocess">
 <span class="sig-prename descclassname"><span class="pre">loanpy.sanity.</span></span><span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adrc_obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.sanity.postprocess" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called by loanpy.sanity.eval_all.     Evaluates the consistency and quality of both,     the etymological data, and the predictions.     Takes the return value of sanity.loop_thru_data as input. Needs columns     “guesses” and “best guess” to make calculations, which are:     a) Calculates the NSEs between source and target words, as well as     source words and best guesses. This results in 2*4=8 columns, since     each of the 4 elements of the tuple returned by loanpy.adrc.Adrc.get_nse.     gets its own column. b) Checks if the correct phonotactics     were predicted or not,     in case param &lt;show_workflow&gt; is True     and &lt;max_repaired_phonotactics&gt; is greater than zero in     loanpy.sanity.eval_all.     c) Calculates the Levenshtein Distance and its     normalised version between target words and best guesses.     This is an alternative way of measuring by how much the target     was missed, than the false positive rate.     Useful when comparing the results of the rule-based model with an AI,
+<dd><p>Called by loanpy.sanity.eval_all.     Evaluates the consistency and quality of both,     the etymological data, and the predictions.     Takes the return value of sanity.loop_thru_data as input. Needs columns     “guesses” and “best guess” to make calculations, which are:     a) Calculates the NSEs between source and target words, as well as     source words and best guesses. This results in 2*4=8 columns, since     each of the 4 elements of the tuple returned by loanpy.adrc.Adrc.get_nse.     gets its own column. b) Checks if the correct phonotactics     were predicted or not,     in case param &lt;show_workflow&gt;      and &lt;max_repaired_phonotactics&gt; is greater than zero in     loanpy.sanity.eval_all.     c) Calculates the Levenshtein Distance and its     normalised version between target words and best guesses.     This is an alternative way of measuring by how much the target     was missed, than the false positive rate.     Useful when comparing the results of the rule-based model with an AI,
 since AIs usually only make 1 guess, so there is no false positive rate     for evaluation there. Currently, there is no formula of how to convert     the Levenshtein Distance into a number of false positives. The keyword     here is “Levenshtein Distance neighbourhood problem”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2365,23 +2365,23 @@ since AIs usually only make 1 guess, so there is no false positive rate     for 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path2sc_ad</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;input_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;sc_ad_3cogs.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span> <span class="o">=</span> <span class="n">Adrc</span><span class="p">(</span><span class="n">forms_csv</span><span class="o">=</span><span class="n">path2forms</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s2">&quot;WOT&quot;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;EAH&quot;</span><span class="p">,</span> <span class="n">scdictlist</span><span class="o">=</span><span class="n">path2sc_ad</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># pretend guesses are already made</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">dfety</span><span class="p">[</span><span class="s2">&quot;best_guess&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aɣa&quot;</span><span class="p">,</span> <span class="s2">&quot;bla&quot;</span><span class="p">,</span> <span class="s2">&quot;ajan&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adrc_obj</span><span class="o">.</span><span class="n">dfety</span><span class="p">[</span><span class="s2">&quot;best_guess&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aγa&quot;</span><span class="p">,</span> <span class="s2">&quot;bla&quot;</span><span class="p">,</span> <span class="s2">&quot;ajan&quot;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">postprocess</span><span class="p">(</span><span class="n">adrc_obj</span><span class="p">)</span><span class="o">.</span><span class="n">dfety</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
-<span class="go">0    aɣat͡ʃi</span>
-<span class="go">1      aldaɣ</span>
+<span class="go">0    aγat͡ʃi</span>
+<span class="go">1      aldaγ</span>
 <span class="go">2       ajan</span>
 <span class="go">Name: Target_Form, dtype: object</span>
-<span class="go">0    aɣat͡ʃːɯ</span>
-<span class="go">1       aldaɣ</span>
+<span class="go">0    aγat͡ʃːɯ</span>
+<span class="go">1       aldaγ</span>
 <span class="go">2        ajan</span>
 <span class="go">Name: Source_Form, dtype: object</span>
 <span class="go">0    1</span>
 <span class="go">1    2</span>
 <span class="go">2    3</span>
 <span class="go">Name: Cognacy, dtype: int64</span>
-<span class="go">0     aɣa</span>
+<span class="go">0     aγa</span>
 <span class="go">1     bla</span>
 <span class="go">2    ajan</span>
 <span class="go">Name: best_guess, dtype: object</span>
@@ -2397,8 +2397,8 @@ since AIs usually only make 1 guess, so there is no false positive rate     for 
 <span class="go">1    [6, 1, 1, 6, 2]</span>
 <span class="go">2       [6, 1, 6, 1]</span>
 <span class="go">Name: E_distr_Source_Target_Form, dtype: object</span>
-<span class="go">0    [&#39;a&lt;a&#39;, &#39;ɣ&lt;ɣ&#39;, &#39;a&lt;a&#39;, &#39;t͡ʃ&lt;t͡ʃː&#39;, &#39;i&lt;ɯ&#39;]</span>
-<span class="go">1         [&#39;a&lt;a&#39;, &#39;l&lt;l&#39;, &#39;d&lt;d&#39;, &#39;a&lt;a&#39;, &#39;ɣ&lt;ɣ&#39;]</span>
+<span class="go">0    [&#39;a&lt;a&#39;, &#39;γ&lt;γ&#39;, &#39;a&lt;a&#39;, &#39;t͡ʃ&lt;t͡ʃː&#39;, &#39;i&lt;ɯ&#39;]</span>
+<span class="go">1         [&#39;a&lt;a&#39;, &#39;l&lt;l&#39;, &#39;d&lt;d&#39;, &#39;a&lt;a&#39;, &#39;γ&lt;γ&#39;]</span>
 <span class="go">2                [&#39;a&lt;a&#39;, &#39;j&lt;j&#39;, &#39;a&lt;a&#39;, &#39;n&lt;n&#39;]</span>
 <span class="go">Name: align_Source_Target_Form, dtype: object</span>
 <span class="go">0    2.80</span>
@@ -2413,8 +2413,8 @@ since AIs usually only make 1 guess, so there is no false positive rate     for 
 <span class="go">1    [0, 0, 1, 0, 6, 0]</span>
 <span class="go">2          [6, 1, 6, 1]</span>
 <span class="go">Name: E_distr_Source_best_guess, dtype: object</span>
-<span class="go">0        [&#39;a&lt;a&#39;, &#39;ɣ&lt;ɣ&#39;, &#39;a&lt;a&#39;, &#39;C&lt;t͡ʃː&#39;, &#39;V&lt;ɯ&#39;]</span>
-<span class="go">1    [&#39;V&lt;a&#39;, &#39;b&lt;C&#39;, &#39;l&lt;l&#39;, &#39;C&lt;d&#39;, &#39;a&lt;a&#39;, &#39;C&lt;ɣ&#39;]</span>
+<span class="go">0        [&#39;a&lt;a&#39;, &#39;γ&lt;γ&#39;, &#39;a&lt;a&#39;, &#39;C&lt;t͡ʃː&#39;, &#39;V&lt;ɯ&#39;]</span>
+<span class="go">1    [&#39;V&lt;a&#39;, &#39;b&lt;C&#39;, &#39;l&lt;l&#39;, &#39;C&lt;d&#39;, &#39;a&lt;a&#39;, &#39;C&lt;γ&#39;]</span>
 <span class="go">2                  [&#39;a&lt;a&#39;, &#39;j&lt;j&#39;, &#39;a&lt;a&#39;, &#39;n&lt;n&#39;]</span>
 <span class="go">Name: align_Source_best_guess, dtype: object</span>
 <span class="go">0    4</span>
