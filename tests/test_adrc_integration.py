@@ -47,7 +47,7 @@ def test_init():
 
     # check if initiation without args works fine
     adrc_inst = Adrc()
-    assert len(adrc_inst.__dict__) == 15
+    assert len(adrc_inst.__dict__) == 12
 
     # 5 attributes initiated in Adrc, rest inherited
     assert adrc_inst.scdict is None
@@ -64,11 +64,8 @@ def test_init():
 
     # 6 attributes inherited from Etym via Qfy
     assert adrc_inst.dfety is None
-    assert adrc_inst.phoneme_inventory is None
-    assert adrc_inst.cluster_inventory is None
-    assert adrc_inst.phonotactic_inventory is None
+    assert adrc_inst.inventories == {}
     ismethod(adrc_inst.distance_measure)
-    assert adrc_inst.forms_target_language is None
 
     # assert initiation runs correctly with non-empty params as well
 
@@ -89,7 +86,7 @@ def test_init():
         mode="reconstruct",
         most_frequent_phonotactics=2)
 
-    assert len(adrc_inst.__dict__) == 15
+    assert len(adrc_inst.__dict__) == 12
 
     # assert initiation went correctly
     assert adrc_inst.scdict == d0
@@ -107,18 +104,19 @@ def test_init():
     # 6 attributes inherited from Etym via Qfy
     assert_frame_equal(
         adrc_inst.dfety, DataFrame(
-            {"Target_Seg": ["a γ a t͡ʃ i", "a l d a γ", "a j a n"],
-             "Source_Seg": ["a γ a t͡ʃː ɯ", "a l d a γ", "a j a n"],
-             "Target_CVSeg": ["a γ a t͡ʃ i", "a l.d a γ", "a j a n"],
-             "Source_CVSeg": ["a γ a t͡ʃː ɯ", "a l.d a γ", "a j a n"],
+            {"Segments_tgt": ["a γ a t͡ʃ i", "a l d a γ", "a j a n"],
+             "Segments_src": ["a γ a t͡ʃː ɯ", "a l d a γ", "a j a n"],
+             "CV_Segments_tgt": ["a γ a t͡ʃ i", "a l.d a γ", "a j a n"],
+             "CV_Segments_src": ["a γ a t͡ʃː ɯ", "a l.d a γ", "a j a n"],
+             "ProsodicStructure_tgt": ["VCVCV", "VCCVC", "VCVC"],
+             "ProsodicStructure_src": ["VCVCV", "VCCVC", "VCVC"],
              "Cognacy": [1, 2, 3]}))
-    assert adrc_inst.phoneme_inventory == {'a', 'd', 'i', 'j',
+    assert adrc_inst.inventories["Segments"] == {'a', 'd', 'i', 'j',
                                            'l', 'n', 't͡ʃ', 'γ'}
-    assert adrc_inst.cluster_inventory == {'a', 'ia', 'j', 'ld',
+    assert adrc_inst.inventories["CV_Segments"] == {'a', 'i', 'j', 'l.d',
                                            'n', 't͡ʃ', 'γ'}
-    assert adrc_inst.phonotactic_inventory == {'VCVCV', 'VCCVC'}
+    assert adrc_inst.inventories["ProsodicStructure"] == {'VCVCV', 'VCCVC', 'VCVC'}
     ismethod(adrc_inst.distance_measure)
-    assert adrc_inst.forms_target_language == ['a γ a t͡ʃ i', 'a l d a γ', 'a j a n']
 
     # don't remove yet,
     # remove("test_soundchanges.txt")
@@ -238,23 +236,23 @@ def test_reconstruct():
 
     # assert reconstruct works when sound changes are missing from data
     assert adrc_inst.reconstruct(
-        ipastr="kiki") == "#k, i, k, i# not old"
+        ipastr="k i k i") == "#k, i, k, i# not old"
 
     # assert it's actually clusterising by default
     assert adrc_inst.reconstruct(
-        ipastr="kriekrie") == "#kr, ie, kr, ie# not old"
+        ipastr="k.r i.e k.r i.e") == "#k.r, i.e, k.r, i.e# not old"
 
-    # try clusterised=False, r can be old!
+    # try r can be old!
     assert adrc_inst.reconstruct(
-        clusterised=False, ipastr="kriekrie") == "#k, i, e, k, i, e# not old"
+        ipastr="k r i e k r i e") == "#k, i, e, k, i, e# not old"
 
     # test 2nd break: phonotactics_filter and vowelharmony_filter are False
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=False) == "^(a)(n)(a)(at͡ʃi)$"
+        ipastr="aː r uː") == "^(a) (n) (a) (a t͡ʃ i)$"
 
     # test same break again but param <howmany> is greater than 1 now
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=False, howmany=2) == "^(a)(n)(a)(at͡ʃi|γ)$"
+        ipastr="aː r uː", howmany=2) == "^(a) (n) (a) (a t͡ʃ i|γ)$"
 
     # overwrite adrc_inst, now with forms_csv, to read phonotactic_inventory.
     adrc_inst = Adrc(
@@ -264,58 +262,58 @@ def test_reconstruct():
 
     # test with phonotactics_filter=True (a filter)
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=False, howmany=2,
-        phonotactics_filter=True) == "^anaγ$"
+        ipastr="aː r uː", howmany=2,
+        phonotactics_filter=True) == "^a n a γ$"
 
     # assert reconstruct works with phonotactics_filter=True & result is empty
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=False, howmany=1,
+        ipastr="aː r uː", howmany=1,
         phonotactics_filter=True) == "wrong phonotactics"
 
     # same as previous one but with clusterised=True
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=1,
+        ipastr="aː r uː", howmany=1,
         phonotactics_filter=True) == "wrong phonotactics"
 
     # assert vowelharmony_filter works
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=True) == "^anaat͡ʃi$|^anaγ$"
+        ipastr="aː r uː", howmany=2, phonotactics_filter=False,
+        vowelharmony_filter=True) == "^a n a a t͡ʃ i$|^a n a γ$"
 
     #filters out ^anuat͡ʃi$ out, since it has back and front vow
     assert adrc_inst.reconstruct(
-        ipastr="aːru", clusterised=True, howmany=2,
-        phonotactics_filter=False, vowelharmony_filter=True) == "^anuγ$"
+        ipastr="aː r u", howmany=2,  # short u!
+        phonotactics_filter=False, vowelharmony_filter=True) == "^a n u γ$"
     # test vowelharmony_filter=True, result is empty
     assert adrc_inst.reconstruct(
-        ipastr="aːru", clusterised=True, howmany=1, phonotactics_filter=False,
+        ipastr="aː r u", howmany=1, phonotactics_filter=False,
         vowelharmony_filter=True) == "wrong vowel harmony"
 
     # vtest sort_by_nse=True assert reconstr works and sorts the result by nse
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=True) == "^anaγ$|^anaat͡ʃi$"
+        ipastr="aː r uː", howmany=2, phonotactics_filter=False,
+        vowelharmony_filter=False, sort_by_nse=True) == "^a n a γ$|^a n a a t͡ʃ i$"
 
     # test if sort_by_nse=1 works
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=1) == "^anaγ$|^anaat͡ʃi$"
+        ipastr="aː r uː", howmany=2, phonotactics_filter=False,
+        vowelharmony_filter=False, sort_by_nse=1) == "^a n a γ$|^a n a a t͡ʃ i$"
 
     # test if sort_by_nse=2 works
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=2) == "^anaγ$|^anaat͡ʃi$"
+        ipastr="aː r uː", howmany=2, phonotactics_filter=False,
+        vowelharmony_filter=False, sort_by_nse=2) == "^a n a γ$|^a n a a t͡ʃ i$"
 
     # test if sort_by_nse=float("inf") works
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
+        ipastr="aː r uː", howmany=2, phonotactics_filter=False,
         vowelharmony_filter=False,
-        sort_by_nse=float("inf")) == "^anaγ$|^anaat͡ʃi$"
+        sort_by_nse=float("inf")) == "^a n a γ$|^a n a a t͡ʃ i$"
 
     # test if sort_by_nse=0 works
     assert adrc_inst.reconstruct(
-        ipastr="aːruː", clusterised=True, howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=0) == '^(a)(n)(a)(at͡ʃi|γ)$'
+        ipastr="aː r uː", howmany=2, phonotactics_filter=False,
+        vowelharmony_filter=False, sort_by_nse=0) == '^(a) (n) (a) (a t͡ʃ i|γ)$'
     # since last 3 params are all False or 0, combinatorics is not triggered.
 
     del adrc_inst
@@ -332,15 +330,15 @@ def test_repair_phonotactics():
 
     # assert repair_phonotactics works with max_repaired_phonotactics=1
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=0) == [['k', 'i', 'k', 'i']]
+        ipastr="k i k i", max_repaired_phonotactics=0) == [['k', 'i', 'k', 'i']]
     # but also with max_repaired_phonotactics=2
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki",
+        ipastr="k i k i",
         max_repaired_phonotactics=2) == [['k', 'i', 'k'],
                                          ['k', 'i', 'C', 'k', 'i']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=3,
+        ipastr="k i k i", max_repaired_phonotactics=3,
         # only 2 strucs available
         show_workflow=True) == [['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i']]
     assert adrc_inst.workflow == OrderedDict([(
@@ -348,14 +346,14 @@ def test_repair_phonotactics():
         ('predicted_phonotactics', "['CVC', 'CVCCV']")])
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=2,
+        ipastr="k i k i", max_repaired_phonotactics=2,
         # C can be inserted before or after k
         max_paths2repaired_phonotactics=2) == [['k', 'i', 'k'],
                                                ['k', 'i', 'C', 'k', 'i'],
                                                ['k', 'i', 'k', 'C', 'i']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=2,
+        ipastr="k i k i", max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=3,
         show_workflow=True) == [['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i'],
                                 ['k', 'i', 'k', 'C', 'i']]
@@ -364,7 +362,7 @@ def test_repair_phonotactics():
         ('predicted_phonotactics', "['CVC', 'CVCCV']")])
 
     # can't squeeze out more from this example, this was the max.
-    assert adrc_inst.repair_phonotactics(ipastr="kiki",
+    assert adrc_inst.repair_phonotactics(ipastr="k i k i",
                                         max_repaired_phonotactics=9999999,
                                         # C can be inserted before or after k
                                         max_paths2repaired_phonotactics=9999999
@@ -377,7 +375,7 @@ def test_repair_phonotactics():
     # so "alkjpqf" is"VCCVCCC" but "ja" would be "CV"
     # same story with "r, m, n, w" btw.
     assert adrc_inst.repair_phonotactics(
-        ipastr="alkjpqf", max_repaired_phonotactics=5, show_workflow=True) == [
+        ipastr="a l k j p q f", max_repaired_phonotactics=5, show_workflow=True) == [
         [
             'a', 'l', 'k', 'j', 'f'], [
                 'a', 'l', 'j', 'f'], [
@@ -387,7 +385,7 @@ def test_repair_phonotactics():
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
     # same input str, higher max_rep.ph., add max_p2rep.
-    assert adrc_inst.repair_phonotactics(ipastr="alkjpqf",
+    assert adrc_inst.repair_phonotactics(ipastr="a l k j p q f",
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10,
                                         show_workflow=True) == [
@@ -417,7 +415,7 @@ def test_repair_phonotactics():
 
     # almost same input str, just "j" replaced by "t" so it's always "C"
     assert adrc_inst.repair_phonotactics(
-        ipastr="alktpqf", max_repaired_phonotactics=5, show_workflow=True) == [
+        ipastr="a l k t p q f", max_repaired_phonotactics=5, show_workflow=True) == [
         [
             'a', 'l', 'k', 'V', 't'], [
                 'a', 'l', 'V', 'f'], [
@@ -426,7 +424,7 @@ def test_repair_phonotactics():
         [('donor_phonotactics', 'VCCCCCC'),
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
-    assert adrc_inst.repair_phonotactics(ipastr="alktpqf",
+    assert adrc_inst.repair_phonotactics(ipastr="a l k t p q f",
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10,
                                         show_workflow=True) == [
@@ -448,7 +446,7 @@ def test_repair_phonotactics():
         [('donor_phonotactics', 'VCCCCCC'),
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
-    assert adrc_inst.repair_phonotactics(ipastr="aaa",
+    assert adrc_inst.repair_phonotactics(ipastr="a a a",
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10,
                                         show_workflow=True) == [
@@ -461,7 +459,7 @@ def test_repair_phonotactics():
         [('donor_phonotactics', 'VVV'),
          ('predicted_phonotactics', "['VCVCV', 'VCVC', 'VCCVC']")])
 
-    assert adrc_inst.repair_phonotactics(ipastr="zrrr",
+    assert adrc_inst.repair_phonotactics(ipastr="z r r r",
                                         max_repaired_phonotactics=12,
                                         max_paths2repaired_phonotactics=2,
                                         show_workflow=True) == [
@@ -476,7 +474,7 @@ def test_repair_phonotactics():
     # test struc missing from dict and rank_closest instead, test show_workflow
     # pretend scdict_phonotactics is empty:
     adrc_inst.scdict_phonotactics = {}
-    assert adrc_inst.repair_phonotactics(ipastr="kiki",
+    assert adrc_inst.repair_phonotactics(ipastr="k i k i",
                                         max_repaired_phonotactics=2,
                                         show_workflow=True) == [['V', 'k', 'i',
                                                                  'k', 'i'],
@@ -487,18 +485,18 @@ def test_repair_phonotactics():
          ('predicted_phonotactics', "['VCVCV', 'VCVC']")])
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=3) == [
+        ipastr="k i k i", max_repaired_phonotactics=3) == [
         ['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C'],
         ['V', 'k', 'k', 'i', 'C']]
     # first i gets deleted: kiki-kki-Vkki-VkkiC to get VCCVC
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=4) == [
+        ipastr="k i k i", max_repaired_phonotactics=4) == [
         ['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C'],
         ['V', 'k', 'k', 'i', 'C']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=2,
+        ipastr="k i k i", max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2) == [
         [
             'V', 'k', 'i', 'k', 'i'], [
@@ -507,7 +505,7 @@ def test_repair_phonotactics():
 
     # no change
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=2,
+        ipastr="k i k i", max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=3) == [
         [
             'V', 'k', 'i', 'k', 'i'], [
@@ -515,7 +513,7 @@ def test_repair_phonotactics():
                     'V', 'k', 'i', 'k']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=3,
+        ipastr="k i k i", max_repaired_phonotactics=3,
         max_paths2repaired_phonotactics=2) == [
         [
             'V', 'k', 'i', 'k', 'i'], [
@@ -525,7 +523,7 @@ def test_repair_phonotactics():
                             'i', 'k', 'C', 'i', 'C']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="kiki", max_repaired_phonotactics=999,
+        ipastr="k i k i", max_repaired_phonotactics=999,
         max_paths2repaired_phonotactics=999) == [
         [
             'V', 'k', 'i', 'k', 'i'], [
@@ -539,17 +537,17 @@ def test_repair_phonotactics():
 
     # test with different input strings now
     assert adrc_inst.repair_phonotactics(
-        ipastr="alkjpqf", max_repaired_phonotactics=5) == [
+        ipastr="a l k j p q f", max_repaired_phonotactics=5) == [
         ['a', 'l', 'k', 'j', 'f'], ['a', 'l', 'j', 'f'],
         ['a', 'l', 'V', 'k', 'j']]
 
     # almost same as before, just "j" replaced with "t" so it's always "C"
     assert adrc_inst.repair_phonotactics(
-        ipastr="alktpqf", max_repaired_phonotactics=5) == [
+        ipastr="a l k t p q f", max_repaired_phonotactics=5) == [
         ['a', 'l', 'k', 'V', 't'], ['a', 'l', 'V', 'f'],
         ['a', 'l', 'V', 'f', 'V']]
 
-    assert adrc_inst.repair_phonotactics(ipastr="alkjpqf",
+    assert adrc_inst.repair_phonotactics(ipastr="a l k j p q f",
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10
                                         ) == [
@@ -575,7 +573,7 @@ def test_repair_phonotactics():
 
 
     # almost same as before, just "j" replaced with "t" so it's always "C"
-    assert adrc_inst.repair_phonotactics(ipastr="alktpqf",
+    assert adrc_inst.repair_phonotactics(ipastr="a l k t p q f",
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10
                                         ) == [
@@ -595,7 +593,7 @@ def test_repair_phonotactics():
         ['a', 't', 'V', 'p', 'V'], ['a', 't', 'V', 'p', 'V']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="aaa", max_repaired_phonotactics=10,
+        ipastr="a a a", max_repaired_phonotactics=10,
         max_paths2repaired_phonotactics=10) == [
         [
             'a', 'C', 'a', 'C', 'a'], [
@@ -609,7 +607,7 @@ def test_repair_phonotactics():
                                             'a', 'C', 'C', 'a', 'C']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="zrrr", max_repaired_phonotactics=12,
+        ipastr="z r r r", max_repaired_phonotactics=12,
         max_paths2repaired_phonotactics=2) == [
         ['V', 'r', 'r', 'V', 'r'], ['V', 'z', 'r', 'V', 'r'],
         ['V', 'r', 'V', 'r'],
@@ -683,7 +681,7 @@ def test_adapt():
     ) == "d y d y d æ, tʰ y d y d æ, d y d, tʰ y d, d y d, tʰ y d"
 
     # let's assume 'CVCCV' was an allowed structure
-    adrc_inst.phonotactic_inventory.add('CVCVCV')
+    adrc_inst.inventories["ProsodicStructure"].add('CVCVCV')
     # apply filter where unallowed structures are filtered out
     assert adrc_inst.adapt(
         ipastr="d e d e d o",
@@ -700,7 +698,7 @@ def test_adapt():
         forms_csv=PATH2FORMS,
         source_language="WOT", target_language="EAH")
     # add this so phonotactics_filter won't be empty
-    adrc_inst.phonotactic_inventory.add('CVCCV')
+    adrc_inst.inventories["ProsodicStructure"].add('CVCCV')
     assert adrc_inst.adapt(
         ipastr="d a d e",
         howmany=1000,
@@ -711,7 +709,7 @@ def test_adapt():
         cluster_filter=True) == "t͡ʃ a l d a"
 
     # let more things go through filter cluster_filter:
-    adrc_inst.cluster_inventory.add("d")
+    adrc_inst.inventories["CV_Segments"].add("d")
     assert adrc_inst.adapt(
         ipastr="d a d e",
         howmany=1000,
@@ -722,7 +720,7 @@ def test_adapt():
         cluster_filter=True) == "d a l d a, t͡ʃ a l d a"
 
     # sort result by nse (likelihood of reconstruction)
-    adrc_inst.cluster_inventory.add("d")
+    adrc_inst.inventories["CV_Segments"].add("d")
     assert adrc_inst.adapt(
         ipastr="d a d e",
         howmany=1000,

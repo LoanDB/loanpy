@@ -35,9 +35,6 @@ from loanpy.helpers import (
     repair_harmony,
     tuples2editops)
 
-from loanpy.qfysc import InventoryMissingError
-
-
 class EtymMonkey:
     """used throughout the module"""
     pass
@@ -379,7 +376,6 @@ def test_list2regex():
     assert list2regex(["b", "k", "-", "v", "mp", "mk"]) == "(b|k|v|mp|mk)?"
     assert list2regex(["o"]) == '(o)'
     assert list2regex(["ʃʲk"]) == '(ʃʲk)'
-    assert list2regex(["-"]) == ""
 
 
 def test_edit_distance_with2ops():

@@ -8,7 +8,6 @@ from functools import partial
 from pathlib import Path
 
 from ipatok import clusterise
-from lingpy import prosodic_string
 from lingpy.align.pairwise import Pairwise
 from lingpy.sequence.sound_classes import token2class
 from numpy import isnan
@@ -19,22 +18,10 @@ from tqdm import tqdm
 
 from loanpy.helpers import clusterise, tokenise, edit_distance_with2ops, pick_minmax
 
-prosodic_string = partial(prosodic_string, _output="cv")
-
-
 class WrongModeError(Exception):
     """Raised in loanpy.qfysc.read_mode if mode is neither \
 "adapt" nor "reconstruct" nor None/""/False/[]/0/ etc"""
     pass
-
-class InventoryMissingError(Exception):
-    """
-    Called by lonapy.helpers.Etym.rank_closest and \
-loanpy.helpers.Etym.rank_closest_phonotactics if neither forms.csv \
-is defined nor the phonotactic/phoneme inventory is plugged in.
-    """
-    pass
-
 
 class Etym:
     """
@@ -159,6 +146,7 @@ from loanpy.helpers.Etym
         # do NOT extract self.inventories this from dfety but from forms.csv
         # b/c dfety extracts only from cogset where src and tgt lg are present
         self.inventories = get_inventories(forms_csv, target_language)
+
     def get_sound_corresp(self, write_to=None):
 
         """
@@ -231,9 +219,9 @@ source_language=1, target_language=2, mode="reconstruct")
         # align every word and append it to a list of data frames for concat
         #define type of tokenisation depending on self.mode
         tgtsrs, srcsrs = (
-        self.dfety["Target_Seg"], self.dfety["Source_Seg"]
+        self.dfety["Segments_tgt"], self.dfety["Segments_src"]
         ) if self.mode == "adapt" else (
-        self.dfety["Target_CVSeg"], self.dfety["Source_CVSeg"])
+        self.dfety["CV_Segments_tgt"], self.dfety["CV_Segments_src"])
 
         #start looping through source-target word pairs
         for left, right, cog in zip(tgtsrs, srcsrs, self.dfety["Cognacy"]):
@@ -359,21 +347,12 @@ target_language=2, mode="reconstruct")
         >>> remove(path2scdict)
 
         """
-
-        #define type of tokenisation depending on self.mode
-        tgtsrs, srcsrs = (
-        self.dfety["Target_Seg"], self.dfety["Source_Seg"]
-        ) if self.mode == "adapt" else (
-        self.dfety["Target_CVSeg"], self.dfety["Source_CVSeg"])
-
-        # get the phonotactic profile of both strings
-        keys = [prosodic_string(i.split(" ")) for i in srcsrs]
-        vals = [prosodic_string(i.split(" ")) for i in tgtsrs]
-        wordchange = self.dfety["Cognacy"]
-
         # create one big data frame out of structural changes
         # column three captures the cognate sets where the change happened
-        dfstrucchange = DataFrame(zip(keys, vals, wordchange),
+        dfstrucchange = DataFrame(zip(
+        self.dfety["ProsodicStructure_src"],
+        self.dfety["ProsodicStructure_tgt"],
+        self.dfety["Cognacy"]),
                                   columns=["keys", "vals", "wordchange"])
         dfstrucchange["e"] = 1  # each change happened one time. add later.
 
@@ -417,7 +396,7 @@ target_language=2, mode="reconstruct")
 
         return [scdict, sedict, edict]  # return list of 3 dictionaries
 
-    def get_scdictbase(self, write_to=None, most_common=float("inf")):
+    def get_scdictbase(self, write_to=None):
         """
         Call manually in the beginning. \
 Loop through ipa_all.csv and rank most similar phonemes \
@@ -466,26 +445,16 @@ ranked according to similarity)
         """
 
         ipa_all = read_csv(Path(path2panphon).parent / "data" / "ipa_all.csv")
-        ipa_all["substi"] = [self.rank_closest(ph, most_common)
+        ipa_all["substi"] = [self.rank_closest(ph)
                              for ph in tqdm(ipa_all["ipa"])]
         scdictbase = dict(zip(ipa_all["ipa"],
                               ipa_all["substi"].str.split(", ")))
 
-        # pick the most unmarked C
-        cons_inv = [i for i in self.inventories["Segments_inv"]
-                    if token2class(i, "cv") == "C"]
-        # think this through again.
-        scdictbase["C"] = self.rank_closest("ə", most_common,
-                                            cons_inv).split(", ")
-        # pick the most unmarked V
-        vow_inv = [i for i in self.inventories["Segments_inv"]
-                   if token2class(i, "cv") == "V"]
-        scdictbase["V"] = self.rank_closest("ə", most_common,
-                                            vow_inv).split(", ")
-        scdictbase["F"] = [i for i in self.inventories["Segments_inv"]
-                           if token2class(i, "asjp") in "ieE"]
-        scdictbase["B"] = [i for i in self.inventories["Segments_inv"]
-                           if token2class(i, "asjp") == "ou"]
+        for cv in "CV":  # add "C" and "V" to scdictbase, most unmarked
+            scdictbase[cv] = [i for i in scdictbase["ə"] if token2class(i, "cv") == cv]
+        #add "F" and "B" to scdictbase (most umarked front and back vowels)
+        scdictbase["F"] = [i for i in scdictbase["V"] if token2class(i, "asjp") in "ieE"]
+        scdictbase["B"] = [i for i in scdictbase["V"] if token2class(i, "asjp") in "ou"]
 
         self.scdictbase = scdictbase
 
@@ -529,7 +498,7 @@ first)
         """
         try:
             phons_and_dist = [(i, self.distance_measure(ph, i))
-            for i in self.inventories["Segments_inv"]]
+            for i in self.inventories["Segments"]]
         except TypeError:
             return None
         return ", ".join(pick_minmax(phons_and_dist, howmany))
@@ -573,7 +542,7 @@ inv=["CVC", "CVCVV", "CCCC", "VVVVVV"])
         """
 
         strucs_and_dist = [(i, edit_distance_with2ops(struc, i))
-        for i in self.inventories["ProsodicStructure_inv"]]
+        for i in self.inventories["ProsodicStructure"]]
         return ", ".join(pick_minmax(strucs_and_dist, howmany))
 
     def align(self, left, right):
@@ -715,7 +684,6 @@ gets flipped internally.)
         #all input types work here: "abc", "a b c", "a b.c", ["a", "b", "c"]
         pw = Pairwise(seqs=left, seqB=right, merge_vowels=False)
         pw.align()
-        print(pw.alignments)
         leftright = [pw.alignments[0][0], pw.alignments[0][1]]
         leftright[0] = ["C" if new == "-" and token2class(old, "cv") == "C"
                         else "V" if (new == "-" and
@@ -786,14 +754,13 @@ gets flipped internally.)
         keys[0], keys[-1] = "#" + keys[0], keys[-1] + "#"
         # create empty start character
         keys, vals = ["#-"] + keys, ["-"] + vals  # nut keys AND vals get this
-
         # if one starts with C and the other with V, move the C-cluster
         # into the empty start character created above
         # check if e.g. the "t͡ʃː" in ["#-", "#t͡ʃːr", "o"] is a "C" or a "V":
         # note that this almost never happens in our current data
         # only imad-vimad, öt-wöt, etc
-        if (token2class(tokenise(keys[1][1:])[0], "cv") == "V" and
-                token2class(tokenise(vals[1])[0], "cv") == "C"):
+        if (token2class(keys[1].split(".")[0].replace("#", ""), "cv") == "V" and
+                token2class(vals[1].split(".")[0], "cv") == "C"):
             vals = vals[1:]
         # now check if e.g.
         # the "t͡ʃː" in ["-", "t͡ʃːr", "o"] (!) is a "C" or a "V":
@@ -806,10 +773,10 @@ gets flipped internally.)
         diff = abs(len(vals) - len(keys))
         if len(keys) < len(vals):
             keys += ["-#"]
-            vals = vals[:-diff] + ["".join(vals[-diff:])]
+            vals = vals[:-diff] + [" ".join(vals[-diff:])]
         elif len(keys) > len(vals):
             vals += ["-"]
-            keys = keys[:-diff] + ["".join(keys[-diff:])]
+            keys = keys[:-diff] + [" ".join(keys[-diff:])]
         else:
             keys, vals = keys + ["-#"], vals + ["-"]
 
@@ -861,8 +828,12 @@ column "Target_Forms"
     dfforms = read_csv(dfforms, usecols=["Segments", "CV_Segments",
                                          "Cognacy", "Language_ID",
                                          "ProsodicStructure"])
-    (seg_tgt, seg_src, cvseg_tgt, cvseg_src,
-    cogidlist, prostr, dfetymology) = [], [], [], [], [], [], DataFrame()
+    dfetymology = {k: [] for k in[
+    "Segments_tgt", "Segments_src",
+    "CV_Segments_tgt", "CV_Segments_src",
+    "ProsodicStructure_tgt", "ProsodicStructure_src",
+    "Cognacy"
+    ]}
 
     # bugfix: col Cognacy is sometimes empty. if so, fill it
     if all(isnan(i) for i in dfforms.Cognacy):
@@ -871,24 +842,23 @@ column "Target_Forms"
     for cogid in range(1, int(list(dfforms["Cognacy"])[-1])+1):
         cogset = dfforms[dfforms["Cognacy"] == cogid]
         try:  # both src and tgt lg have to be present in cogset
-            #optimize
-            seg_tgt.append(cogset[cogset["Language_ID"] == target_language].iloc[0]["Segments"])
-            seg_src.append(cogset[cogset["Language_ID"] == source_language].iloc[0]["Segments"])
-            cvseg_tgt.append(cogset[cogset["Language_ID"] == target_language].iloc[0]["CV_Segments"])
-            cvseg_src.append(cogset[cogset["Language_ID"] == source_language].iloc[0]["CV_Segments"])
-            prostr.append(cogset[cogset["Language_ID"] == target_language].iloc[0]["ProsodicStructure"])
-            cogidlist.append(cogid)
+            dfetymology["Segments_tgt"].append(cogset[cogset["Language_ID"
+            ] == target_language].iloc[0]["Segments"])
+            dfetymology["Segments_src"].append(cogset[cogset["Language_ID"
+            ] == source_language].iloc[0]["Segments"])
+            dfetymology["CV_Segments_tgt"].append(cogset[cogset["Language_ID"
+            ] == target_language].iloc[0]["CV_Segments"])
+            dfetymology["CV_Segments_src"].append(cogset[cogset["Language_ID"
+            ] == source_language].iloc[0]["CV_Segments"])
+            dfetymology["ProsodicStructure_tgt"].append(cogset[cogset[
+            "Language_ID"] == target_language].iloc[0]["ProsodicStructure"])
+            dfetymology["ProsodicStructure_src"].append(cogset[cogset[
+            "Language_ID"] == source_language].iloc[0]["ProsodicStructure"])
+            dfetymology["Cognacy"].append(cogid)
         except IndexError:
             continue
 
-    dfetymology["Target_Seg"] = seg_tgt
-    dfetymology["Source_Seg"] = seg_src
-    dfetymology["Target_CVSeg"] = cvseg_tgt
-    dfetymology["Source_CVSeg"] = cvseg_src
-    dfetymology["Cognacy"] = cogidlist
-    dfetymology["Target_ProStr"] = prostr
-
-    return dfetymology
+    return DataFrame(dfetymology)
 
 
 def read_mode(mode):
@@ -1041,7 +1011,8 @@ phoneme cluster and phonotactic inventories will be extracted.
 
     invdict = {}
     for col in ["Segments", "CV_Segments", "ProsodicStructure"]:
-        invdict[f"{col}_inv"] = set(" ".join(list(df_tgt[col])).split(" "))
+        invdict[col] = set()
+        [invdict[col].update(i.split(" ")) for i in df_tgt[col]]
 
     return invdict
 

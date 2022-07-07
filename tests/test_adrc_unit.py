@@ -99,8 +99,6 @@ def test_init():
         forms_csv=None,
         source_language=None,
         target_language=None,
-        most_frequent_phonotactics=9999999,
-        phonotactic_inventory=None,
         mode=None,
         connector=None,
         scdictbase=None,
@@ -141,8 +139,7 @@ def test_init():
     # assert calls
     super_method_mock.assert_called_with(
         forms_csv='forms.csv', source_language=None, target_language=None,
-        most_frequent_phonotactics=2,
-        phonotactic_inventory=None, mode='reconstruct', connector=None,
+        mode='reconstruct', connector=None,
         scdictbase=None, vfb=None)
     assert read_scdictlist_mock.call_args_list == [call("soundchanges.txt")]
 
@@ -356,6 +353,11 @@ def test_reconstruct():
             self.harmony_called_with = []
             self.get_nse_returns = iter([20, 4, 99, 17])
             self.get_nse_called_with = []
+            self.inventories = {
+            "Segments": {},
+            "CV_Segments": {},
+            "ProsodicStructure": {}
+            }
 
         def read_sc(self, ipalist, howmany):
             self.read_sc_called_with.append((ipalist, howmany))
@@ -380,20 +382,20 @@ def test_reconstruct():
     }
     # set up: mock tokenise, mock list2regex
     with patch("loanpy.adrc.list2regex", side_effect=[
-            "", "(k)", "(i)", "(h)", "(e)", ""]) as list2regex_mock:
+            "(k)", "(i)", "(h)", "(e)"]) as list2regex_mock:
 
         # assert reconstruct works
         assert Adrc.reconstruct(
             self=monkey_adrc,
             ipastr="k i k i",
-            clusterised=False) == "^(k)(i)(h)(e)$"
+            ) == "^(k) (i) (h) (e)$"
 
     # assert 3 calls: tokenise, read_sc, list2regex
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 1)]
     assert list2regex_mock.call_args_list == [
-        call(["-"]), call(["k"]), call(["i"]),
-        call(["h"]), call(["e"]), call(["-"])]
+        call(["k"]), call(["i"]),
+        call(["h"]), call(["e"])]
 
     # test same break again but param <howmany> is greater than 1 now
 
@@ -406,20 +408,20 @@ def test_reconstruct():
     }
     # mock clusterise, list2regex
     with patch("loanpy.adrc.list2regex", side_effect=[
-            "", "(k|h)", "(i)", "(h)", "(e)", ""]) as list2regex_mock:
+            "(k|h)", "(i)", "(h)", "(e)"]) as list2regex_mock:
 
         # assert reconstruct works
         assert Adrc.reconstruct(
             self=monkey_adrc,
             ipastr="k i k i",
-            howmany=2) == "^(k|h)(i)(h)(e)$"
+            howmany=2) == "^(k|h) (i) (h) (e)$"
 
     # assert 3 calls: clusterise, read_sc, list2regex
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 2)]
     assert list2regex_mock.call_args_list == [
-        call(["-"]), call(["k", "h"]), call(["i"]),
-        call(["h"]), call(["e"]), call(["-"])]
+        call(["k", "h"]), call(["i"]),
+        call(["h"]), call(["e"])]
     # test with phonotactics_filter=True
 
     # teardown/setup: overwrite mock class, plug in mock scdict,
@@ -430,7 +432,7 @@ def test_reconstruct():
         "#-": ["-"], "#k": ["k", "h"], "i": ["i", "ei"],
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
-    monkey_adrc.phonotactic_inventory = ["CVVCV"]
+    monkey_adrc.inventories["ProsodicStructure"] = ["CVVCV"]
 
     # set up: mock tokenise
     with patch("loanpy.adrc.prosodic_string",
@@ -441,7 +443,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=3,
             phonotactics_filter=True,
-            clusterised=False) == "^k e.i h e$|^h e.i h e$"
+            ) == "^k e.i h e$|^h e.i h e$"
 
     # assert 3 calls: tokenise, read_sc, word2phonotactics
     assert monkey_adrc.read_sc_called_with == [
@@ -476,7 +478,7 @@ def test_reconstruct():
     prosodic_string_mock.assert_has_calls([call(list(i)) for i in
         ["kihe", "keihe", "hihe", "heihe"]])
 
-    # test phonotactics_filter=True, result empty, clusterised=False
+    # test phonotactics_filter=True, result empty,
 
     # teardown/setup: overwrite mock class, plug in mock scdict,
     # phonotactic_inventory
@@ -496,7 +498,7 @@ def test_reconstruct():
         ipastr="k i k i",
         howmany=3,
         phonotactics_filter=True,
-        clusterised=False) == "wrong phonotactics"
+        ) == "wrong phonotactics"
 
     # assert 3 calls: tokenise, read_sc, word2phonotactics
 
@@ -526,7 +528,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=3,
             vowelharmony_filter=True,
-            clusterised=False) == "^k i h e$|^h i h e$"
+            ) == "^k i h e$|^h i h e$"
 
     # assert 3 calls: tokenise, read_sc, has_harmony
 
@@ -555,7 +557,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=3,
             vowelharmony_filter=True,
-            clusterised=False) == "wrong vowel harmony"
+            ) == "wrong vowel harmony"
 
     # assert 3 calls: tokenise, read_sc, has_harmony
     assert monkey_adrc.read_sc_called_with == [
@@ -584,7 +586,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=float("inf"),
             sort_by_nse=True,
-            clusterised=False) == "^h i h e$|^k i h e$|^h o h e$|^k o h e$"
+            ) == "^h i h e$|^k i h e$|^h o h e$|^k o h e$"
 
     # assert 3 calls: tokenise, read_sc, and get_nse
     pick_minmax_mock.assert_called_with([
@@ -615,7 +617,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=float("inf"),
             sort_by_nse=1,
-            clusterised=False) == "^h i h e$|^k i h e$|^k o h e$|^h o h e$"
+            ) == "^h i h e$|^k i h e$|^k o h e$|^h o h e$"
 
     # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
     pick_minmax_mock.assert_called_with(
@@ -646,7 +648,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=float("inf"),
             sort_by_nse=2,
-            clusterised=False) == "^h i h e$|^k i h e$|^k o h e$|^h o h e$"
+            ) == "^h i h e$|^k i h e$|^k o h e$|^h o h e$"
 
     # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
     pick_minmax_mock.assert_called_with(
@@ -677,7 +679,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=float("inf"),
             sort_by_nse=3,
-            clusterised=False) == "^h i h e$|^k i h e$|^h o h e$|^k o h e$"
+            ) == "^h i h e$|^k i h e$|^h o h e$|^k o h e$"
 
     # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
     pick_minmax_mock.assert_called_with(
@@ -706,7 +708,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=float("inf"),
             sort_by_nse=0,
-            clusterised=False) == "^(k|h)(i|o)(h)(e)$"
+            ) == "^(k|h) (i|o) (h) (e)$"
 
     # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
     pick_minmax_mock.assert_not_called()
@@ -733,7 +735,7 @@ def test_reconstruct():
             ipastr="k i k i",
             howmany=float("inf"),
             sort_by_nse=False,
-            clusterised=False) == "^(k|h)(i|o)(h)(e)$"
+            ) == "^(k|h) (i|o) (h) (e)$"
 
     # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
     pick_minmax_mock.assert_not_called()
@@ -751,7 +753,7 @@ def test_reconstruct():
         "#-": ["-"], "#k": ["k", "h"], "i": ["i", "o"],
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
-    monkey_adrc.phonotactic_inventory = ["CVCV"]  # let's all thru filter!
+    monkey_adrc.inventories["ProsodicStructure"] = ["CVCV"]  # let's all thru filter!
 
     # set up: mock tokenise, pick_minmax
     with patch("loanpy.adrc.prosodic_string") as prosodic_string_mock:
@@ -764,7 +766,7 @@ def test_reconstruct():
                 howmany=float("inf"),
                 sort_by_nse=False,
                 phonotactics_filter=True,
-                clusterised=False) == "^k i h e$|^k o h e$|^h i h e$|^h o h e$"
+                ) == "^k i h e$|^k o h e$|^h i h e$|^h o h e$"
 
     # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
     prosodic_string_mock.assert_has_calls([call(list(i)) for i in [
@@ -886,11 +888,9 @@ def test_adapt():
             self.read_sc_returns = iter(read_screturns)
             self.read_sc_called_with = []
             self.workflow = OrderedDict()
-            #self.repair_harmony_called_with = []
-            self.phonotactic_inventory = ["CVCCV"]
-            #self.word2phonotactics_called_with = []
-            #self.word2phonotactics_returns = iter(["CVC"] * 6 + ["CVCCV"] * 4)
-            self.cluster_inventory = ["k", "h", "t.k", "o", "u", "e"]
+            self.inventories = {}
+            self.inventories["CV_Segments"] = ["k", "h", "t.k", "o", "u", "e"]
+            self.inventories["ProsodicStructure"] = ["CVCCV"]
             self.get_nse_returns = iter([5, 9])
             self.get_nse_called_with = []
 
@@ -1016,7 +1016,7 @@ def test_adapt():
     # teardown/setup: overwrite instance of mock class,
     # plug in phonotactic_inventory, mock tokenise
     monkey_adrc = AdrcMonkeyAdapt()
-    monkey_adrc.phonotactic_inventory = ["CV", "VC"]
+    monkey_adrc.inventories["ProsodicStructure"] = ["CV", "VC"]
     with patch("loanpy.adrc.get_howmany") as get_howmany_mock:
         get_howmany_mock.return_value = (1, 1, 1)
         with patch("loanpy.adrc.combine_ipalists"
@@ -1047,7 +1047,7 @@ def test_adapt():
     # teardown/setup: overwrite instance of mock class
     # , plug in cluster_inventory, mock tokenise
     monkey_adrc = AdrcMonkeyAdapt()
-    monkey_adrc.cluster_inventory = ["pr", "gr", "vrp", "skrrrr"]
+    monkey_adrc.inventories["CV_Segments"] = ["p.r", "g.r", "v.r.p", "s.k.r.r.r.r"]
     with patch("loanpy.adrc.get_howmany") as get_howmany_mock:
         get_howmany_mock.return_value = (1, 1, 1)
         with patch("loanpy.adrc.combine_ipalists"

@@ -10,7 +10,7 @@ from pandas.testing import assert_frame_equal
 from pytest import raises
 
 from loanpy.helpers import clusterise
-from loanpy.qfysc import (Etym, InventoryMissingError,
+from loanpy.qfysc import (Etym,
 read_scdictbase, read_dst, cldf2pd)
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms_3cogs_wot.csv"
@@ -21,7 +21,7 @@ def test_get_scdictbase():
     is calculated correctly"""
     # test with phoneme_inventory manually plugged in
     etym = Etym()
-    etym.inventories["Segments_inv"] = ["e", "b", "c"]
+    etym.inventories["Segments"] = ["e", "b", "c"]
     scdictbase = etym.get_scdictbase(write_to=False)
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
@@ -35,8 +35,9 @@ def test_get_scdictbase():
     del etym, scdictbase
 
     # test with invetory extracted from forms.csv
+    path2scdict_integr_test = Path(__file__).parent / "integr_test_scdict.txt"
     etym = Etym(forms_csv=PATH2FORMS2, source_language=1, target_language=2)
-    scdictbase = etym.get_scdictbase(write_to=False)
+    scdictbase = etym.get_scdictbase(write_to=path2scdict_integr_test)
     assert isinstance(scdictbase, dict)
     assert len(scdictbase) == 6371
     assert scdictbase["p"] == ["z", "x", "y"]  # IPA z is most similar to IPA p
@@ -46,42 +47,24 @@ def test_get_scdictbase():
     assert scdictbase["V"] == ["y"]
     assert scdictbase["F"] == ["y"]
     assert scdictbase["B"] == []
-    del etym, scdictbase
 
-    # test if written correctly and if param most_common works
-
-    # set up
-    etym = Etym(phoneme_inventory=["e", "b", "c"])
-    path2scdict_integr_test = Path(__file__).parent / "integr_test_scdict.txt"
-    etym.get_scdictbase(write_to=path2scdict_integr_test, most_common=2)
+    # test if written correctly
     with open(path2scdict_integr_test, "r", encoding="utf-8") as f:
+        # quite large file, so best to just test like this
         scdictbase = literal_eval(f.read())
 
-    # assert
-    assert isinstance(scdictbase, dict)
-    assert len(scdictbase) == 6371
-    assert scdictbase["p"] == ["b", "c"]  # b is obv most similar to p
-    assert scdictbase["h"] == ["c", "b"]
-    assert scdictbase["e"] == ["e", "b"]
-    assert scdictbase["C"] == ["b", "c"]
-    assert scdictbase["V"] == ["e"]
-    assert scdictbase["F"] == ["e"]
-    assert scdictbase["B"] == []
-
-    # tear down
     remove(path2scdict_integr_test)
     del etym, scdictbase, path2scdict_integr_test
-
 
 def test_rankclosest():
     """test if closest phonemes from inventory are ranked correctly"""
 
     # assert phonemes are ranked correctly
     etym = Etym()
-    etym.inventories["Segments_inv"] =  set(["a", "b", "c"])
+    etym.inventories["Segments"] =  set(["a", "b", "c"])
     assert etym.rank_closest(ph="d") == "b, c, a"
     assert etym.rank_closest(ph="d", howmany=2) == "b, c"
-    etym.inventories["Segments_inv"] =  set(["r", "t", "l"])
+    etym.inventories["Segments"] =  set(["r", "t", "l"])
     assert etym.rank_closest(ph="d", howmany=1) == "t"
     del etym
 
@@ -102,12 +85,14 @@ def test_cldf2pd():
     """test if the CLDF format is correctly tranformed to a pandas dataframe"""
 
     # set up
-    dfexp = DataFrame({"Target_Seg": ["x y z"],
-                       "Source_Seg": ["a b c"],
-                       "Target_CVSeg": ["x y z"],
-                       "Source_CVSeg": ["a b.c"],
+    dfexp = DataFrame({"Segments_tgt": ["x y z"],
+                       "Segments_src": ["a b c"],
+                       "CV_Segments_tgt": ["x y z"],
+                       "CV_Segments_src": ["a b.c"],
+                       "ProsodicStructure_tgt": ["CVC"],
+                       "ProsodicStructure_src": ["VCC"],
                        "Cognacy": [1],
-                       "Target_ProStr": ["CVC"]})
+                       })
 
     # assert
     assert cldf2pd(None, source_language="whatever",
@@ -294,7 +279,7 @@ def test_align_clusterwise():
 
     assert_frame_equal(qfy.align(left="b u d a p e s.t.t.t.t", right="u.a d a s.t"),
                        DataFrame(
-                           {"keys": ['#b', 'u', 'd', 'a', 'p', 'es.t.t.t.t#'],
+                           {"keys": ['#b', 'u', 'd', 'a', 'p', 'e s.t.t.t.t#'],
                             "vals": ['-', 'u.a', 'd', 'a', 's.t', '-']}))
 
     # the only example in ronatasbertawot
@@ -363,10 +348,10 @@ def test_get_sound_corresp():
         {'#-': ['-'],
          '#aː': ['a'],
          '#ɒ': ['a'],
-            '-#': ['at͡ʃi', 'γ'],
+            '-#': ['a t͡ʃ i', 'γ'],
             'aː': ['a'],
             'j.n': ['j'],
-            'oz#': ['-'],
+            'o z#': ['-'],
             'r': ['n'],
             't͡ʃ#': ['γ'],
             'uː#': ['a'],
@@ -375,11 +360,11 @@ def test_get_sound_corresp():
         {'#-<*-': 3,
          '#aː<*a': 2,
          '#ɒ<*a': 1,
-         '-#<*at͡ʃi': 1,
+         '-#<*a t͡ʃ i': 1,
          '-#<*γ': 1,
          'aː<*a': 1,
          'j.n<*j': 1,
-         'oz#<*-': 1,
+         'o z#<*-': 1,
          'r<*n': 1,
          't͡ʃ#<*γ': 1,
          'uː#<*a': 1,
@@ -388,11 +373,11 @@ def test_get_sound_corresp():
         {'#-<*-': [1, 2, 3],
          '#aː<*a': [1, 2],
          '#ɒ<*a': [3],
-         '-#<*at͡ʃi': [1],
+         '-#<*a t͡ʃ i': [1],
          '-#<*γ': [2],
          'aː<*a': [3],
          'j.n<*j': [3],
-         'oz#<*-': [3],
+         'o z#<*-': [3],
          'r<*n': [3],
          't͡ʃ#<*γ': [1],
          'uː#<*a': [2],

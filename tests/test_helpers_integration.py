@@ -24,8 +24,6 @@ from loanpy.helpers import (
     repair_harmony,
     tuples2editops)
 
-from loanpy.qfysc import InventoryMissingError
-
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms.csv"
 
 

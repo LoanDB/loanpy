@@ -10,7 +10,6 @@ from loanpy import qfysc as qs
 from loanpy import helpers as hp
 from loanpy.qfysc import (
     Etym,
-    InventoryMissingError,
     WrongModeError,
     cldf2pd,
     read_mode,
@@ -55,10 +54,12 @@ class EtymMonkeyGetSoundCorresp:
         self.align_returns = iter([self.df1, self.df2])
         self.align_called_with = []
         self.rank_closest_phonotactics_called_with = []
-        self.dfety = DataFrame({"Target_Seg": ["kiki", "buba"],
-                                "Source_Seg": ["hehe", "pupa"],
-                                "Target_CVSeg": ["kiki", "buba"],
-                                "Source_CVSeg": ["hehe", "pupa"],
+        self.dfety = DataFrame({"Segments_tgt": ["kiki", "buba"],
+                                "Segments_src": ["hehe", "pupa"],
+                                "CV_Segments_tgt": ["kiki", "buba"],
+                                "CV_Segments_src": ["hehe", "pupa"],
+                                "ProsodicStructure_tgt": ["CVCV", "CVCV"],
+                                "ProsodicStructure_src": ["CVCV", "CVCV"],
                                 "Cognacy": [12, 13]})
         self.mode = mode
         self.connector = connector
@@ -73,6 +74,11 @@ class EtymMonkeyGetSoundCorresp:
             "a": "V",
             "e": "V"}
         self.vow2fb = {"i": "F", "e": "F", "u": "B", "a": "B"}
+        self.inventories = {
+        "Segments": {"k", "i", "h", "e", "b", "u", "a", "p"},
+        "CV_Segments": {"k", "i", "h", "e", "b", "u", "a", "p"},
+        "ProdosicStructure": {"CVCV"}
+        }
 
     def align(self, left, right):
         self.align_called_with.append((left, right))
@@ -105,23 +111,24 @@ def test_get_scdictbase():
     # define mock function for tqdm and plug it into lonapy.helpers
     class EtymMonkeyget_scdictbase:
         def __init__(self):
-            self.rnkcls = iter(["e, f, d", "d, f, e", "f, d, e", "f, d", "e",
-                                "e", "d", "f", "f", "e"])
+            self.rnkcls = iter(["e, f, d", "d, f, e", "f, d, e", "e, f, d",
+                                "f, d", "e", "e", "d", "f", "f", "e"])
             self.rank_closest_called_with = []
 
         def rank_closest(self, *args):
             self.rank_closest_called_with.append([*args])
             return next(self.rnkcls)
+
     with patch("loanpy.qfysc.read_csv") as read_csv_mock:
-        read_csv_mock.return_value = DataFrame({"ipa": ["a", "b", "c"]})
+        read_csv_mock.return_value = DataFrame({"ipa": ["a", "b", "c", "ə"]})
         mocketym = EtymMonkeyget_scdictbase()
-        mocketym.phoneme_inventory = ["d", "e", "f"]
-        mocketym.phon2cv = {"d": "C", "e": "V", "f": "C"}
-        mocketym.vow2fb = {"e": "F"}
+        mocketym.inventories = {"Segments": {"d", "e", "f"}}
+
         path2test_scdictbase = Path(__file__).parent / "test_scdictbase.txt"
         exp = {"a": ["e", "f", "d"],
                "b": ["d", "f", "e"],
                "c": ["f", "d", "e"],
+               "ə": ["e", "f", "d"],
                "C": ["f", "d"],
                "V": ["e"],
                "F": ["e"],
@@ -147,23 +154,6 @@ def test_get_scdictbase():
         with open(path2test_scdictbase, "r", encoding="utf-8") as f:
             assert literal_eval(f.read()) == exp
 
-        # assert correct output with howmany=1 instead of inf
-        assert Etym.get_scdictbase(
-            self=mocketym,
-            write_to=path2test_scdictbase,
-            most_common=1) == exp2
-        assert mocketym.scdictbase == exp2
-        with open(path2test_scdictbase, "r", encoding="utf-8") as f:
-            assert literal_eval(f.read()) == exp2
-
-    # assert calls
-    assert_series_equal(qs.tqdm.called_with, Series(
-        ["a", "b", "c"], name="ipa"))
-    read_csv_mock.assert_called()
-    assert mocketym.rank_closest_called_with == [
-        ['a', float("inf")], ['b', float("inf")], ['c', float("inf")],
-        ['ə', float("inf"), ['d', 'f']], ['ə', float("inf"), ['e']],
-        ['a', 1], ['b', 1], ['c', 1], ['ə', 1, ['d', 'f']], ['ə', 1, ['e']]]
     # tear down
     qs.tqdm = tqdm
     remove(path2test_scdictbase)
@@ -172,25 +162,11 @@ def test_get_scdictbase():
 def test_rank_closest_phonotactics():
     """test if getting the distance between to phonotactic structures works"""
 
-    # set up
-    mocketym = EtymMonkey()
-    mocketym.phonotactic_inventory = None
-    with raises(InventoryMissingError) as inventorymissingerror_mock:
-        # assert error is raised
-        Etym.rank_closest_phonotactics(
-            self=mocketym,
-            struc="CV",
-            howmany=float("inf"))
-    # assert error message
-    assert str(
-        inventorymissingerror_mock.value
-    ) == "define phonotactic inventory or forms.csv"
-
     # set up: create instance of empty mock class,
     #  plug in inventory of phonotactic structures,
     # mock edit_distance_with2ops and pick_minmax
     mocketym = EtymMonkey()
-    mocketym.phonotactic_inventory = ["CVC", "CVCVCC"]
+    mocketym.inventories = {"ProsodicStructure": {"CVC", "CVCVCC"}}
     with patch("loanpy.qfysc.edit_distance_with2ops", side_effect=[
             1, 0.98]) as edit_distance_with2ops_mock:
         with patch("loanpy.qfysc.pick_minmax") as pick_minmax_mock:
@@ -202,9 +178,14 @@ def test_rank_closest_phonotactics():
 
     # assert calls
     edit_distance_with2ops_mock.assert_has_calls(
-        [call("CVCV", "CVC"), call("CVCV", "CVCVCC")])
-    pick_minmax_mock.assert_called_with(
-        [('CVC', 1), ('CVCVCC', 0.98)], 9999999)
+        [call("CVCV", "CVC"), call("CVCV", "CVCVCC")],
+        any_order=True)  # since based on a set!
+    try:
+        pick_minmax_mock.assert_called_with(
+            [('CVC', 1), ('CVCVCC', 0.98)], 9999999)
+    except AssertionError:  # since based on a set!
+        pick_minmax_mock.assert_called_with(
+            [('CVCVCC', 1), ('CVC', 0.98)], 9999999)
 
     # tear down
     del mocketym
@@ -216,7 +197,8 @@ def test_rank_closest():
     # set up custom class, create instance of it
     class EtymMonkeyrank_closest:
         def __init__(self):
-            self.phoneme_inventory, self.dm_called_with = None, []
+            self.inventories = {"Segments": None}
+            self.dm_called_with = []
             self.dm_return = iter([1, 0, 2])
 
         def distance_measure(self, *args):
@@ -225,16 +207,7 @@ def test_rank_closest():
             return next(self.dm_return)
 
     mocketym = EtymMonkeyrank_closest()
-
-    # assert exception and exception message
-    with raises(InventoryMissingError) as inventorymissingerror_mock:
-        Etym.rank_closest(
-            self=mocketym,
-            ph="d",
-            howmany=float("inf"),
-            inv=None)
-    assert str(inventorymissingerror_mock.value
-               ) == "define phoneme inventory or forms.csv"
+    mocketym.inventories["Segments"] = ["a", "b", "c"]
 
     # set up2: mock pick_minmax
     with patch("loanpy.qfysc.pick_minmax") as pick_minmax_mock:
@@ -242,8 +215,7 @@ def test_rank_closest():
 
         # assert
         assert Etym.rank_closest(
-            self=mocketym, ph="d", inv=[
-                "a", "b", "c"]) == "b, a, c"
+            self=mocketym, ph="d") == "b, a, c"
 
     # assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
@@ -252,13 +224,13 @@ def test_rank_closest():
 
     # set up3: overwrite mock class instance, mock pick_minmax anew
     mocketym = EtymMonkeyrank_closest()
+    mocketym.inventories["Segments"] = ["a", "b", "c"]
     with patch("loanpy.qfysc.pick_minmax") as pick_minmax_mock:
         pick_minmax_mock.return_value = ["b", "a"]
 
         # assert pick_minmax picks mins correctly again
         assert Etym.rank_closest(
-            self=mocketym, ph="d", inv=[
-                "a", "b", "c"], howmany=2) == "b, a"
+            self=mocketym, ph="d", howmany=2) == "b, a"
 
     # assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
@@ -266,7 +238,7 @@ def test_rank_closest():
 
     # set up4: check if phoneme inventory can be accessed through self
     mocketym = EtymMonkeyrank_closest()
-    mocketym.phoneme_inventory = ["a", "b", "c"]
+    mocketym.inventories["Segments"] = ["a", "b", "c"]
     with patch("loanpy.qfysc.pick_minmax") as pick_minmax_mock:
         pick_minmax_mock.return_value = "b"
 
@@ -274,7 +246,6 @@ def test_rank_closest():
         assert Etym.rank_closest(
             self=mocketym,
             ph="d",
-            inv=None,
             howmany=1) == "b"
 
     # assert calls
@@ -457,22 +428,23 @@ def test_cldf2pd():
     """test if the CLDF format is correctly tranformed to a pandas dataframe"""
 
     # set up
-    dfin = DataFrame({"Segments": ["a", "b", "c", "d", "e", "f", "g"],
-                      "CV_Segments": ["hi", "jk", "lm", "no", "pq", "rs", "tu"],
-                      "Cognacy": [1, 1, 2, 2, 3, 3, 3],
+    dfin = DataFrame({"Segments": ["a", "b", "c", "d", "e", "f", "g", "ə"],
+                      "CV_Segments": ["hi", "jk", "lm", "no", "pq", "rs", "tu", "vw"],
+                      "Cognacy": [1, 1, 2, 2, 3, 3, 3, 3],
                       "Language_ID": ["lg1", "lg2", "lg1", "lg3",
-                                      "lg1", "lg2", "lg3"],
-                      "ProsodicStructure": ["V", "C", "C", "C", "V", "C", "C"]
+                                      "lg1", "lg2", "lg3", "lg2"],
+                      "ProsodicStructure": ["V", "C", "C", "C", "V", "C", "C", "V"]
                       }).to_csv(
                             "test_cldf2pd.csv",
                             encoding="utf-8", index=False
                       )
-    dfexp = DataFrame({"Target_Seg": ["b", "f"],
-                       "Source_Seg": ["a", "e"],
-                       "Target_CVSeg": ["jk", "rs"],
-                       "Source_CVSeg": ["hi", "pq"],
+    dfexp = DataFrame({"Segments_tgt": ["b", "f"],
+                       "Segments_src": ["a", "e"],
+                       "CV_Segments_tgt": ["jk", "rs"],
+                       "CV_Segments_src": ["hi", "pq"],
+                       "ProsodicStructure_tgt": ["C", "C"],
+                       "ProsodicStructure_src": ["V", "V"],
                        "Cognacy": [1, 3],
-                       "Target_ProStr": ["C", "C"]  # tgt!
                        })
     # only cognates are taken, where source and target language occur
     dfout = cldf2pd(
@@ -731,10 +703,12 @@ def test_get_phonotactics_corresp():
         alignreturns1=None,
         alignreturns2=None)
 
-    mockqfy.dfety = DataFrame({"Target_Seg": ["k i k i", "b u b a"],
-                               "Source_Seg": ["h e h e", "p u p a"],
-                               "Target_CVSeg": ["k i k i ", "b u b a"],
-                               "Source_CVSeg": ["h e h e", "p u p a"],
+    mockqfy.dfety = DataFrame({"Segments_tgt": ["k i k i", "b u b a"],
+                               "Segments_src": ["h e h e", "p u p a"],
+                               "CV_Segments_tgt": ["k i k i ", "b u b a"],
+                               "CV_Segments_src": ["h e h e", "p u p a"],
+                               "ProsodicStructure_tgt": ["CVCV", "CVCV"],
+                               "ProsodicStructure_src": ["CVCV", "CVCV"],
                                "Cognacy": [12, 13]})
     mockqfy.left = "Target_Form"
     mockqfy.right = "Source_Form"
@@ -749,24 +723,21 @@ def test_get_phonotactics_corresp():
         __file__).parent / "phonotctchange.txt"
 
     with patch("loanpy.qfysc.DataFrame") as DataFrame_mock:
-        with patch("loanpy.qfysc.prosodic_string") as prosodic_string_mock:
-            prosodic_string_mock.return_value = "CVCV"
-            DataFrame_mock.return_value = DataFrame(
-                {"keys": ["CVCV"] * 2, "vals": ["CVCV"] * 2,
-                 "wordchange": [12, 13]})
+        DataFrame_mock.return_value = DataFrame(
+            {"keys": ["CVCV"] * 2, "vals": ["CVCV"] * 2,
+             "wordchange": [12, 13]})
 
-            # assert
-            assert Etym.get_phonotactics_corresp(
-                self=mockqfy, write_to=path2test_get_phonotactics_corresp) == exp
-            # assert file was written
-            with open(path2test_get_phonotactics_corresp, "r",
-                      encoding="utf-8") as f:
-                assert literal_eval(f.read()) == exp
+        # assert
+        assert Etym.get_phonotactics_corresp(
+            self=mockqfy, write_to=path2test_get_phonotactics_corresp) == exp
+        # assert file was written
+        with open(path2test_get_phonotactics_corresp, "r",
+                  encoding="utf-8") as f:
+            assert literal_eval(f.read()) == exp
 
     # assert calls
     assert list(DataFrame_mock.call_args_list[0][0][0]) == exp_call1
     assert DataFrame_mock.call_args_list[0][1] == exp_call2
-    prosodic_string_mock.assert_has_calls([call(list(i)) for i in ['hehe', 'pupa', 'kiki', 'buba']])
     assert mockqfy.rank_closest_phonotactics_called_with == ["CVCV"]
 
     # tear down

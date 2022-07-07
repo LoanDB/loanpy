@@ -4,10 +4,12 @@ through the network of life"""
 from ast import literal_eval
 from collections import Counter, OrderedDict
 from itertools import count, cycle, product
+from functools import partial
 from math import prod
 from operator import itemgetter
 from re import split as re_split
 
+from lingpy import prosodic_string
 from tqdm import tqdm
 
 from loanpy.helpers import (
@@ -23,8 +25,9 @@ from loanpy.helpers import (
     pick_minmax,
     repair_harmony,
     tokenise)
-from loanpy.qfysc import Etym, prosodic_string
+from loanpy.qfysc import Etym
 
+prosodic_string = partial(prosodic_string, _output="cv")
 
 def read_scdictlist(scdictlist):
     """
@@ -179,8 +182,6 @@ from loanpy.qfysc.Qfy
         super().__init__(forms_csv=forms_csv,
                          source_language=source_language,
                          target_language=target_language,
-                         most_frequent_phonotactics=most_frequent_phonotactics,
-                         phonotactic_inventory=phonotactic_inventory,
                          mode=mode,
                          connector=connector,
                          scdictbase=scdictbase,
@@ -344,7 +345,6 @@ sound can correspond.
     def reconstruct(self,
                     ipastr,
                     howmany=1,
-                    clusterised=True,
                     phonotactics_filter=False,
                     vowelharmony_filter=False,
                     sort_by_nse=False,
@@ -489,7 +489,7 @@ vowelharmony_filter=True)  \
         # skip combinatorics, instead return result if these 3 params are False
         if all(i is False or i == 0 for i in
                [phonotactics_filter, vowelharmony_filter, sort_by_nse]):
-            return f"^{''.join([list2regex(i) for i in out])}$"
+            return f"^{' '.join([list2regex(i) for i in out if i != ['-']])}$"
 
         # if one of the 3 params however, apply combinatorics
         out = [" ".join([ph for ph in wd if ph !="-"]) for wd in product(*out)]
@@ -497,7 +497,7 @@ vowelharmony_filter=True)  \
         # apply first filter if indicated (wrong phontactics out)
         if phonotactics_filter:
             out = [i for i in out if prosodic_string(re_split("[ |.]", i)) in
-                   self.phonotactic_inventory]
+                   self.inventories["ProsodicStructure"]]
             if out == []:
                 return "wrong phonotactics"
 
@@ -856,17 +856,15 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         # structure not in target lg's phonotactic inventory
         if phonotactics_filter:
             out = [i for i in out if prosodic_string(i.split(" "))
-                   in self.phonotactic_inventory]
+                   in self.inventories["ProsodicStructure"]]
             #  indicate empty filter and return if necessary
             if out == []:
                 return "wrong phonotactics"
 
         # filter clusters not in target lg's cluster inventory
         if cluster_filter:
-            print(self.cluster_inventory)
-            print([get_clusters(wrd.split(" ")).split(" ") for wrd in out])
             out = [wrd for wrd in out
-                   if all(cl in self.cluster_inventory for cl
+                   if all(cl in self.inventories["CV_Segments"] for cl
                           in get_clusters(wrd.split(" ")).split(" "))]
             # indicate empty filter and return if necessary
             if out == []:

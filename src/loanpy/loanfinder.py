@@ -339,14 +339,16 @@ phonological matches. The index \
         """
         # maximal phonetic distance == 0 means only identical words are matches
         if self.phondist == 0:  # will drop all non-identical elements
-            matched = self.search_in[self.search_in.str.match(search_for)]
+            matched = self.search_in[self.search_in.str.match(
+            search_for.replace(".", " "))]
         else:  # will otherwise drop everything above the max distance
             self.phondist_msr = partial(self.phondist_msr, target=search_for)
             matched = self.search_in[
                 self.search_in.apply(self.phondist_msr) <= self.phondist]
 
         # creates new col "recipdf_idx" - keys to the input df
-        dfphonmatch = DataFrame({"match": matched, "recipdf_idx": index})
+        dfphonmatch = DataFrame({"match": matched, "match_cvseg": search_for,
+        "recipdf_idx": index})
 
         # this makes things more economical. dropping redundancies
         if dropduplicates:
@@ -496,10 +498,7 @@ words
                                              usecols=["Segments",
                                                       self.doncol]).fillna(""),
                                     left_index=True, right_index=True)
-        dfmatches["CV_Segments"] = [i.replace(" ", "")
-                                   for i in dfmatches["CV_Segments"]]
-        dfmatches["Segments"] = [i.replace(" ", "")
-                                   for i in dfmatches["Segments"]]
+
         # calculate likeliest phonological matches
         newcols = concat([self.likeliestphonmatch(ad, rc, segd, segr)
                           for ad, rc, segd, segr
@@ -507,13 +506,16 @@ words
                                  dfmatches[self.reccol],
                                  dfmatches["Segments"],
                                  dfmatches["CV_Segments"])])
-        del dfmatches["match"]  # delete non-likeliest matches
+
+         # delete non-likeliest matches
+        del dfmatches["match"], dfmatches["match_cvseg"]
         newcols.index = dfmatches.index  # otherwise concat wont work
 
         dfmatches = concat([dfmatches, newcols], axis=1)  # add new cols
+
         # delete redundant data
-        del (dfmatches["Segments_x"], dfmatches[self.reccol],
-             dfmatches["Segments_y"], dfmatches[self.doncol])
+        del (dfmatches["CV_Segments"], dfmatches[self.reccol],
+             dfmatches["Segments"], dfmatches[self.doncol])
 
         return dfmatches  # same structure as input df
 
@@ -573,12 +575,14 @@ club", recip_rc="(b|c)?lub",
         # get the nse score between original and predictions
         # and write to new columns
         # cols se_rc, lst_rc, se_ad, lst_ad are just extra info for the user
-        dfph = DataFrame([(wrd,) + self.get_nse_rc(recip_segment, wrd) +
-                          self.get_nse_ad(donor_segment, wrd)
-                          for wrd in dfph["match"]],
-                         columns=["match", "nse_rc", "se_rc", "distr_rc",
-                                  "align_rc", "nse_ad", "se_ad", "distr_ad",
-                                  "align_ad"])
+        dfph = DataFrame([(wrd, wrd_cvseg) +
+                           self.get_nse_rc(recip_segment, wrd_cvseg) +
+                           self.get_nse_ad(donor_segment, wrd)
+                          for wrd, wrd_cvseg in zip(dfph["match"], dfph["match_cvseg"])],
+                          columns=[
+                          "match", "match_cvseg", "nse_rc", "se_rc", "distr_rc",
+                          "align_rc", "nse_ad", "se_ad", "distr_ad", "align_ad"
+                          ])
         # add combined nse
         dfph["nse_combined"] = dfph["nse_rc"] + dfph["nse_ad"]
         # get idx of max combined, keep only that idx (=likeliest match)
@@ -614,13 +618,14 @@ small and very different search_in-dfs, while loans() inputs one big df.
         """
         # for inline comments see loanpy.loanfinder.Search.phonmatch
         if self.phondist == 0:
-            matched = search_in[search_in.str.match(search_for)]
+            matched = search_in[search_in.str.match(search_for.replace(".", ""))]
         else:
             self.phondist_msr = partial(self.phondist_msr, target=search_for)
             matched = search_in[
                 search_in.apply(self.phondist_msr) <= self.phondist]
 
-        dfphonmatch = DataFrame({"match": matched, "recipdf_idx": index})
+        dfphonmatch = DataFrame({"match": matched, "match_cvseg": search_for,
+        "recipdf_idx": index})
 
         if dropduplicates:
             dfphonmatch = dfphonmatch[

@@ -316,8 +316,9 @@ def test_loans():
 def test_postprocess():
     """test if postprocessing works fine with test input data"""
     # set up: define input data frame
-    dfin = DataFrame({"match": ["blub"], "recipdf_idx": [0], "Meaning_x": [
-                     "computer, interface"],
+    dfin = DataFrame({"match": ["b l u b"], "match_cvseg": ["b.l u b"],
+                      "recipdf_idx": [0], "Meaning_x": [
+                      "computer, interface"],
         "Meaning_y": ["human"], "semsim_msr": [0.10940766]})
 
     # set up: define expected output data frame
@@ -327,9 +328,8 @@ def test_postprocess():
             "Meaning_x": ["computer, interface"],
             "Meaning_y": ["human"],
             "semsim_msr": [0.10940766],
-            "CV_Segments": ["d.l u b"],
-            "Segments": ["b l u b"],
-            "match": ["blub"],
+            "match": ["b l u b"],
+            "match_cvseg": ["b.l u b"],
             "nse_rc": [10],
             "se_rc": [50],
             "distr_rc": str(
@@ -347,8 +347,8 @@ def test_postprocess():
         path2recipdf=Path(__file__).parent / "input_files" / "loans_hun.csv",
         scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC,
         semsim=0.2)
-    for i in search_inst.postprocess(dfin).columns:
-        print(search_inst.postprocess(dfin)[i])
+    search_inst.postprocess(dfin)
+
     assert_frame_equal(search_inst.postprocess(dfin), dfexp, check_dtype=False)
 
     # tear down
@@ -378,12 +378,12 @@ def test_merge_with_rest():
                        "Segments_x": ["b l u b"],
                        "CV_Segments_x": ["b.l u b"],
                        "Meaning_x": ["human"],
-                       "ad": ["blub, club"],
+                       "ad": ["b l u b, c l u b"],
                        "bla_x": ["xyz"],
                        "Segments_y": ["d l u b"],
                        "CV_Segments_y": ["d.l u b"],
                        "Meaning_y": ["computer, interface"],
-                       "rc": ["(b|c)?lub"],
+                       "rc": ["(b|c)? l u b"],
                        "bla_y": ["xyz"]})
 
     assert_frame_equal(search_inst.merge_with_rest(dfin), dfexp)
