@@ -26,7 +26,7 @@ from panphon.distance import Distance
 from tqdm import tqdm
 
 from loanpy.helpers import get_howmany, tokenise
-from loanpy.qfysc import prosodic_string
+from loanpy.adrc import prosodic_string  # b/c incl. partial
 from loanpy.adrc import Adrc
 
 BANNED = ["KeyError", "not old", "wrong phonotactics",
