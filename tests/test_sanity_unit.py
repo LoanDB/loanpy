@@ -219,7 +219,6 @@ def test_loop_thru_data():
                             False, False, False, False, False,
                             [10, 50, 100, 500, 1000],
                             'adapt', False, False) == adrc_monkey
-                        print(adrc_monkey.dfety)
                         assert_frame_equal(adrc_monkey.dfety, df_exp)
 
     # assert calls
@@ -910,7 +909,6 @@ def test_phonotactics_predicted():
     # assert output
     with patch("loanpy.sanity.tokenise",
     side_effect=[["a", "b", "c"], ["d", "e", "f"], ["g", "h", "i"]]) as tokenise_mock:
-        print(phonotactics_predicted(adrc_monkey).dfety)
         assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
 
     # test break - return input if KeyError, i.e. if col is missing from df

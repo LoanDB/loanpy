@@ -496,6 +496,7 @@ vowelharmony_filter=True)  \
 
         # apply first filter if indicated (wrong phontactics out)
         if phonotactics_filter:
+            print(out, self.inventories)
             out = [i for i in out if prosodic_string(re_split("[ |.]", i)) in
                    self.inventories["ProsodicStructure"]]
             if out == []:

@@ -449,6 +449,7 @@ False, False, False, False, False, \
 
         if crossval:
             args[0] = get_crossval_data(args[0], idx2isolate, writesc)
+
         # make prediction from source word, check if target was hit
         args[1] = srcwrd  # insert sourceword into empty space created for it
         result_eval_one = eval_one(tgtwrd, *args)  # args 0-11 (incl)
@@ -649,6 +650,7 @@ target_language="EAH", scdictlist=path2sc_ad)
     args[2], args[3], args[4] = get_howmany(args[2], args[3], args[4])
     try:
         pred = Adrc.adapt(*args).split(", ")
+
         # best guess = target+1 if hit (e.g index 0 means 1 guess needed)
         try:
             out = {"guesses": pred.index(tgtwrd)+1, "best_guess": tgtwrd}
@@ -736,10 +738,10 @@ target_language="EAH", scdictlist=path2sc_rc)
     # is pred-reg-ex IN tgtwrd?
     short_regex, target_hit = "(" in pred, bool(search(pred, tgtwrd))
     # return output based on those 2 conditions
-    if short_regex and target_hit:
-        out = args[2], pred
-    elif "not old" in pred:
+    if any(i in pred for i in BANNED):
         out = float("inf"), pred
+    elif short_regex and target_hit:
+        out = args[2], pred
     elif short_regex and not target_hit:
         out = float("inf"), pred
     elif not short_regex and target_hit:
@@ -1162,7 +1164,6 @@ def phonotactics_predicted(adrc_obj):
 
 
     """
-
     try:
         adrc_obj.dfety[
             "phonotactics_predicted"] = [True if
@@ -1173,6 +1174,7 @@ def phonotactics_predicted(adrc_obj):
                                                     "predicted_phonotactics"])]
     except KeyError:
         pass
+
     return adrc_obj
 
 
