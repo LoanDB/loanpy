@@ -207,17 +207,16 @@ def test_eval_adapt():
     # assert with show_workflow=True
     # KeyError is triggered before 3rd part of workflow is added.
     # max_phonotactics=0, therefore adapted_phonotactics=tokenised
-    assert eval_adapt("Apfel", adrc_obj, "apple",
+    assert eval_adapt("A p f e l", adrc_obj, "a p p l e",
                       10, False, False, False, False, 0, 1, 100, 49, True) == {
         "best_guess": "KeyError", "guesses": float("inf"),
-        'tokenised': "['a', 'p', 'p', 'l', 'e']",
         'adapted_phonotactics': "[['a', 'p', 'p', 'l', 'e']]"}
 
     # assert no keyerror but target missed
     assert eval_adapt(
-        "daʃa",
+        "d a ʃ a",
         adrc_obj,
-        "dat͡ʃːa",
+        "d a t͡ʃː a",
         10,
         False,
         False,
@@ -228,33 +227,33 @@ def test_eval_adapt():
         100,
         49,
         False) == {
-        'best_guess': 'dat͡ʃa',
+        'best_guess': 'd a t͡ʃ a',
         'guesses': float("inf")}
 
     # assert no keyerror but target missed while showing workflow
-    assert eval_adapt("daʃa", adrc_obj, "dat͡ʃːa",
+    assert eval_adapt("d a ʃ a", adrc_obj, "d a t͡ʃː a",
                       10, False, False, False, False, 0, 1, 100, 49, True) == {
-        'best_guess': 'dat͡ʃa', 'guesses': float("inf"),
+        'best_guess': 'd a t͡ʃ a', 'guesses': float("inf"),
         'adapted_phonotactics': "[['d', 'a', 't͡ʃː', 'a']]",
-        'before_combinatorics': "[[['d'], ['a'], ['t͡ʃ'], ['a']]]",
-        'tokenised': "['d', 'a', 't͡ʃː', 'a']"}
+        'before_combinatorics': "[[['d'], ['a'], ['t͡ʃ'], ['a']]]"
+        }
 
     # no keyerror, target missed, show workflow, max_phonotactics=1
-    assert eval_adapt("daʃa", adrc_obj, "aldajd",
+    assert eval_adapt("d a ʃ a", adrc_obj, "a l d a j d",
                       10, False, False, False, False, 1, 1, 100, 49, True) == {
         'adapted_phonotactics': "[['a', 'l', 'd', 'a', 'd']]",
         'before_combinatorics': "[[['a'], ['l'], ['d'], ['a'], ['d']]]",
-        'best_guess': 'aldad',
+        'best_guess': 'a l d a d',
         'donor_phonotactics': 'VCCVCC',
         'guesses': float("inf"),
         'predicted_phonotactics': "['VCCVC']",
-        'tokenised': "['a', 'l', 'd', 'a', 'j', 'd']"}
+        }
 
     # assert target hit
     assert eval_adapt(
-        "dat͡ʃa",
+        "d a t͡ʃ a",
         adrc_obj,
-        "dat͡ʃːa",
+        "d a t͡ʃː a",
         10,
         False,
         False,
@@ -265,27 +264,27 @@ def test_eval_adapt():
         100,
         49,
         False) == {
-        'best_guess': 'dat͡ʃa',
+        'best_guess': 'd a t͡ʃ a',
         'guesses': 1}
 
     # assert target hit while showing workflow, no repair_phonotactics
-    assert eval_adapt("dat͡ʃa", adrc_obj, "dat͡ʃːa",
+    assert eval_adapt("d a t͡ʃ a", adrc_obj, "d a t͡ʃː a",
                       10, False, False, False, False, 0, 1, 100, 49, True) == {
-        'best_guess': 'dat͡ʃa', 'guesses': 1,
+        'best_guess': 'd a t͡ʃ a', 'guesses': 1,
         'adapted_phonotactics': "[['d', 'a', 't͡ʃː', 'a']]",
         'before_combinatorics': "[[['d'], ['a'], ['t͡ʃ'], ['a']]]",
-        'tokenised': "['d', 'a', 't͡ʃː', 'a']"}
+        }
 
     # assert target hit, show workflow, max_phonotactics=1
-    assert eval_adapt("aldad", adrc_obj, "aldajd",
+    assert eval_adapt("a l d a d", adrc_obj, "a l d a j d",
                       10, False, False, False, False, 1, 1, 100, 49, True) == {
         'adapted_phonotactics': "[['a', 'l', 'd', 'a', 'd']]",
         'before_combinatorics': "[[['a'], ['l'], ['d'], ['a'], ['d']]]",
-        'best_guess': 'aldad',
+        'best_guess': 'a l d a d',
         'donor_phonotactics': 'VCCVCC',
         'guesses': 1,
         'predicted_phonotactics': "['VCCVC']",
-        'tokenised': "['a', 'l', 'd', 'a', 'j', 'd']"}
+         }
 
 
 def test_eval_recon():
@@ -294,36 +293,36 @@ def test_eval_recon():
                     target_language="EAH", scdictlist=PATH2SC_RC)
 
     # test else clause (neither short nor long regex)
-    assert eval_recon("daʃa", adrc_obj, "dada") == {
+    assert eval_recon("d a ʃ a", adrc_obj, "d a d a") == {
         'best_guess': '#d, a, d, a# not old', 'guesses': float("inf")}
     # (no show workflow for reconstruct)
     # test short regex and target missed
-    assert eval_recon("daʃa", adrc_obj, "aːruː") == {
-        'best_guess': '^(a)(n)(a)(at͡ʃi)$', 'guesses': float("inf")}
+    assert eval_recon("d a ʃ a", adrc_obj, "aː r uː") == {
+        'best_guess': '^(a) (n) (a) (a t͡ʃ i)$', 'guesses': float("inf")}
     # test long regex (sort_by_nse=True, last arg) and target missed
-    assert eval_recon("daʃa", adrc_obj,
-                      "aːruː", 1, True, False, False, True) == {
-        'best_guess': 'anaat͡ʃi', 'guesses': float("inf")}
+    assert eval_recon("d a ʃ a", adrc_obj,
+                      "aː r uː", 1, False, False, True) == {
+        'best_guess': 'a n a a t͡ʃ i', 'guesses': float("inf")}
     # test long regex, target missed, sort_by_nse=True, howmany=2
-    assert eval_recon("daʃa", adrc_obj,
-                      "aːruː", 2, True, False, False, True) == {
-        'best_guess': 'anaγ', 'guesses': float("inf")}
+    assert eval_recon("d a ʃ a", adrc_obj,
+                      "aː r uː", 2, False, False, True) == {
+        'best_guess': 'a n a γ', 'guesses': float("inf")}
     # test long regex, target hit, sort_by_nse=True, howmany=2
-    assert eval_recon("anaγ", adrc_obj,
-                      "aːruː", 2, True, False, False, True) == {
-        'best_guess': 'anaγ', 'guesses': 1}
+    assert eval_recon("a n a γ", adrc_obj,
+                      "aː r uː", 2, False, False, True) == {
+        'best_guess': 'a n a γ', 'guesses': 1}
     # test long regex, target hit, sort_by_nse=True, howmany=1
-    assert eval_recon("anaat͡ʃi", adrc_obj,
-                      "aːruː", 1, True, False, False, True) == {
-        'best_guess': 'anaat͡ʃi', 'guesses': 1}
+    assert eval_recon("a n a a t͡ʃ i", adrc_obj,
+                      "aː r uː", 1, False, False, True) == {
+        'best_guess': 'a n a a t͡ʃ i', 'guesses': 1}
     # test short regex, target hit, sort_by_nse=False, howmany=2
-    assert eval_recon("anaat͡ʃi", adrc_obj,
-                      "aːruː", 2, True, False, False, False) == {
-        'best_guess': '^(a)(n)(a)(at͡ʃi|γ)$', 'guesses': 2}
+    assert eval_recon("a n a a t͡ʃ i", adrc_obj,
+                      "aː r uː", 2, False, False, False) == {
+        'best_guess': '^(a) (n) (a) (a t͡ʃ i|γ)$', 'guesses': 2}
     # test short regex, target hit, sort_by_nse=False, howmany=2, diff target
-    assert eval_recon("anaγ", adrc_obj,
-                      "aːruː", 2, True, False, False, False) == {
-        'best_guess': '^(a)(n)(a)(at͡ʃi|γ)$', 'guesses': 2}
+    assert eval_recon("a n a γ", adrc_obj,
+                      "aː r uː", 2, False, False, False) == {
+        'best_guess': '^(a) (n) (a) (a t͡ʃ i|γ)$', 'guesses': 2}
 
 
 def test_eval_one():
@@ -335,21 +334,21 @@ def test_eval_one():
 
     # assert keyerror, mode=adapt
     assert eval_one(
-        "gaga", adrc_obj, "dada",
+        "g a g a", adrc_obj, "d a d a",
         False, False, False, False, 0, 1, 100, 49, False, [
             2, 4, 6], "adapt") == {
-        "guesses": float("inf"), "best_guess": "dada"}
+        "guesses": float("inf"), "best_guess": "d a d a"}
     # assert no keyerror, mode=adapt, target missed
     assert eval_one(
-        "gaga", adrc_obj, "dada",
-        False, False, False, False, False, 0, 1, 100, 49, [
+        "g a g a", adrc_obj, "d a d a",
+        False, False, False, False, 0, 1, 100, 49, False, [
             2, 4, 6], "adapt") == {
-        "guesses": float("inf"), "best_guess": "dada"}
+        "guesses": float("inf"), "best_guess": "d a d a"}
     # assert target hit on first try, mode=adapt
     assert eval_one(
-        "dada",
+        "d a d a",
         adrc_obj,
-        "dada",
+        "d a d a",
         False,
         False,
         False,
@@ -362,12 +361,12 @@ def test_eval_one():
         [1],
         "adapt") == {
         "guesses": 1,
-        "best_guess": "dada"}
+        "best_guess": "d a d a"}
     # assert target hit on first try, mode=adapt, show_workflow=True
     assert eval_one(
-        "dada",
+        "d a d a",
         adrc_obj,
-        "dada",
+        "d a d a",
         False,
         False,
         False,
@@ -380,10 +379,10 @@ def test_eval_one():
         [1],
         "adapt") == {
         "guesses": 1,
-        "best_guess": "dada",
+        "best_guess": "d a d a",
         'adapted_phonotactics': "[['d', 'a', 'd', 'a']]",
         'before_combinatorics': "[[['d'], ['a'], ['d'], ['a']]]",
-        'tokenised': "['d', 'a', 'd', 'a']"}
+        }
 
     # assert reconstruct
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
@@ -391,21 +390,21 @@ def test_eval_one():
 
     # assert keyerror, mode=reconstruct
     assert eval_one(
-        "gaga", adrc_obj, "dada",
+        "g a g a", adrc_obj, "d a d a",
         False, False, False, False, 0, 1, 100, 49, False, [
             2, 4, 6], "reconstruct") == {
         "guesses": float("inf"), "best_guess": '#d, a, d, a# not old'}
     # assert no keyerror, mode=reconstruct, target missed
     assert eval_one(
-        "gaga", adrc_obj, "aːruː",
+        "g a g a", adrc_obj, "aː r uː",
         False, False, False, False, False, 0, 1, 100, 49, [
             2, 4, 6], "reconstruct") == {
-        "guesses": float("inf"), "best_guess": "^(a)(n)(a)(at͡ʃi|γ)$"}
+        "guesses": float("inf"), "best_guess": "^(a) (n) (a) (a t͡ʃ i|γ)$"}
     # assert target hit on first try, mode=reconstruct
     assert eval_one(
-        "anaat͡ʃi",
+        "a n a a t͡ʃ i",
         adrc_obj,
-        "aːruː",
+        "aː r uː",
         False,
         False,
         False,
@@ -418,7 +417,7 @@ def test_eval_one():
         [1],
         "reconstruct") == {
         "guesses": 1,
-        "best_guess": "^(a)(n)(a)(at͡ʃi)$"}
+        "best_guess": "^(a) (n) (a) (a t͡ʃ i)$"}
 
 
 def test_get_noncrossval_sc():
@@ -457,13 +456,13 @@ def test_get_noncrossval_sc():
         '#a': [
             'aː',
             'ɒ'],
-        '-#': ['oz'],
+        '-#': ['o z'],
         'a': [
             'uː',
             'aː'],
-        'at͡ʃi#': ['-'],
-        'j': ['jn'],
-        'ld': ['ɟ'],
+        'a t͡ʃ i#': ['-'],
+        'j': ['j.n'],
+        'l.d': ['ɟ'],
         'n#': ['r'],
         'γ': ['t͡ʃ'],
         'γ#': ['-']}
@@ -471,12 +470,12 @@ def test_get_noncrossval_sc():
         '#-<*-': 3,
         '#a<*aː': 2,
         '#a<*ɒ': 1,
-        '-#<*oz': 1,
+        '-#<*o z': 1,
         'a<*aː': 1,
         'a<*uː': 1,
-        'at͡ʃi#<*-': 1,
-        'j<*jn': 1,
-        'ld<*ɟ': 1,
+        'a t͡ʃ i#<*-': 1,
+        'j<*j.n': 1,
+        'l.d<*ɟ': 1,
         'n#<*r': 1,
         'γ#<*-': 1,
         'γ<*t͡ʃ': 1}
@@ -575,16 +574,16 @@ def test_get_crossval_data():
         '#-': ['-'],
         '#a': ['aː'],
         'a': ['uː'],
-        'at͡ʃi#': ['-'],
-        'ld': ['ɟ'],
+        'a t͡ʃ i#': ['-'],
+        'l.d': ['ɟ'],
         'γ': ['t͡ʃ'],
         'γ#': ['-']}
     assert adrc_obj_out.sedict == {
         '#-<*-': 2,
         '#a<*aː': 2,
         'a<*uː': 1,
-        'at͡ʃi#<*-': 1,
-        'ld<*ɟ': 1,
+        'a t͡ʃ i#<*-': 1,
+        'l.d<*ɟ': 1,
         'γ#<*-': 1,
         'γ<*t͡ʃ': 1}
     assert adrc_obj_out.scdict_phonotactics == {}
@@ -606,28 +605,28 @@ def test_get_crossval_data():
         '#-': ['-'],
         '#a': ['aː'],
         'a': ['uː'],
-        'at͡ʃi#': ['-'],
-        'ld': ['ɟ'],
+        'a t͡ʃ i#': ['-'],
+        'l.d': ['ɟ'],
         'γ': ['t͡ʃ'],
         'γ#': ['-']}
     assert adrc_obj_out.sedict == {
         '#-<*-': 2,
         '#a<*aː': 2,
         'a<*uː': 1,
-        'at͡ʃi#<*-': 1,
-        'ld<*ɟ': 1,
+        'a t͡ʃ i#<*-': 1,
+        'l.d<*ɟ': 1,
         'γ#<*-': 1,
         'γ<*t͡ʃ': 1}
     assert adrc_obj_out.scdict_phonotactics == {}
     # assert file written correctly
     assert literal_eval(open(path2outfolder / "sc2isolated.txt",
                         encoding="utf-8").read()) == [
-        {'#-': ['-'], '#a': ['aː'], 'a': ['uː'], 'at͡ʃi#': ['-'],
-         'ld': ['ɟ'], 'γ': ['t͡ʃ'], 'γ#': ['-']},
+        {'#-': ['-'], '#a': ['aː'], 'a': ['uː'], 'a t͡ʃ i#': ['-'],
+         'l.d': ['ɟ'], 'γ': ['t͡ʃ'], 'γ#': ['-']},
         {'#-<*-': 2, '#a<*aː': 2, 'a<*uː': 1,
-         'at͡ʃi#<*-': 1, 'ld<*ɟ': 1, 'γ#<*-': 1, 'γ<*t͡ʃ': 1},
-        {'#-<*-': [1, 2], '#a<*aː': [1, 2], 'a<*uː': [2], 'at͡ʃi#<*-': [1],
-         'ld<*ɟ': [2], 'γ#<*-': [2], 'γ<*t͡ʃ': [1]}, {}, {}, {}]
+         'a t͡ʃ i#<*-': 1, 'l.d<*ɟ': 1, 'γ#<*-': 1, 'γ<*t͡ʃ': 1},
+        {'#-<*-': [1, 2], '#a<*aː': [1, 2], 'a<*uː': [2], 'a t͡ʃ i#<*-': [1],
+         'l.d<*ɟ': [2], 'γ#<*-': [2], 'γ<*t͡ʃ': [1]}, {}, {}, {}]
 
     # tear down
     remove(path2outfolder / "sc2isolated.txt")
@@ -638,21 +637,26 @@ def test_loop_thru_data():
     """Is cross-validation called and loop run?"""
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH")
-    # assert output is correct
+
     assert loop_thru_data(
         adrc_obj, 1, 1, 100, 49, False, False, False, False, False, [
             10, 50, 100, 500, 1000], 'adapt', False, True) == adrc_obj
     # set up expected output
+
     df_exp = DataFrame([
-        ("aγat͡ʃi", "aγat͡ʃːɯ", 1, float("inf"), "KeyError"),
-        ("aldaγ", "aldaγ", 2, float("inf"), "KeyError"),
-        ("ajan", "ajan", 3, float("inf"), "KeyError")],
-        columns=['Target_Form', 'Source_Form',
+        ("a γ a t͡ʃ i", "a γ a t͡ʃː ɯ", "a γ a t͡ʃ i", "a γ a t͡ʃː ɯ",
+        "VCVCV", "VCVCV", 1, float("inf"), "KeyError"),
+        ("a l d a γ", "a l d a γ", "a l.d a γ", "a l.d a γ",
+        "VCCVC", "VCCVC", 2, float("inf"), "KeyError"),
+        ("a j a n", "a j a n", "a j a n", "a j a n",
+        "VCVC", "VCVC", 3, float("inf"), "KeyError")],
+        columns=['Segments_tgt', 'Segments_src',
+                 "CV_Segments_tgt", "CV_Segments_src",
+                 'ProsodicStructure_tgt', 'ProsodicStructure_src',
                  'Cognacy', 'guesses', 'best_guess'])
+
     # assert output.dfety is correct
     assert_frame_equal(adrc_obj.dfety, df_exp)
-    # assert popped words were plugged back in consistently in loop
-    assert adrc_obj.forms_target_language == ["aγat͡ʃi", "aldaγ", "ajan"]
     # tear down
     del df_exp, adrc_obj
 
@@ -663,7 +667,7 @@ def test_getnse4df():
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH", scdictlist=PATH2SC_AD)
 
-    out_adrc_obj = get_nse4df(adrc_obj, "Target_Form")
+    out_adrc_obj = get_nse4df(adrc_obj, "Segments_tgt")
     # assert output was correct
     assert_frame_equal(out_adrc_obj.dfety, read_csv(
         Path(__file__).parent / "expected_files" / "getnse4df_ad.csv"))
@@ -676,7 +680,7 @@ def test_getnse4df():
         scdictlist=PATH2SC_RC,
         mode="reconstruct")
 
-    out_adrc_obj = get_nse4df(adrc_obj, "Target_Form")
+    out_adrc_obj = get_nse4df(adrc_obj, "CV_Segments_tgt")
     # assert output was correct
     assert_frame_equal(out_adrc_obj.dfety, read_csv(
         Path(__file__).parent / "expected_files" / "getnse4df_rc.csv"))
@@ -690,7 +694,8 @@ def test_phonotactics_predicted():
     adrc_obj = Adrc()
 
     df_in = DataFrame({
-        "Target_Form": ["abc", "def", "ghi"],
+        "Segments_tgt": ["a b c", "d e f", "g h i"],
+        "ProsodicStructure_tgt": ["VCC", "CVC", "CCV"],
         "predicted_phonotactics": [["CCC", "VVV"], ["CVC"], ["CCV", "CCC"]]})
 
     df_exp = df_in.assign(phonotactics_predicted=[False, True, True])
@@ -715,9 +720,9 @@ def test_get_dist():
 
     # set up expected outcome
     df_exp = dfety.assign(
-        fast_levenshtein_distance_best_guess_tgt=[5, 10, 0],
+        fast_levenshtein_distance_best_guess_tgt=[4, 10, 0],
         fast_levenshtein_distance_div_maxlen_best_guess_tgt=[
-            0.42, 0.83, 0.00])
+            0.4, 0.83, 0.00])
     assert_frame_equal(get_dist(adrc_obj, "best_guess").dfety, df_exp)
 
     # tear down
@@ -762,8 +767,6 @@ def test_postprocess():
         "['VCV', 'CCC']", "['CCC', 'VCC']", "['VCVC']"]
     # run function with show_workflow=False
     adrc_obj_out = postprocess(adrc_obj)
-    for i in adrc_obj_out.dfety.columns:
-        print(adrc_obj_out.dfety[i])
     assert_frame_equal(
         adrc_obj_out.dfety,
         read_csv(
