@@ -4,6 +4,7 @@ Find (old) loanwords between two languages
 """
 
 from ast import literal_eval
+from datetime import datetime
 from functools import partial
 from logging import getLogger
 
@@ -444,7 +445,7 @@ similarity of phonological matches: "))
             dfmatches.to_csv(write_to, encoding="utf-8", index=False)
             logger.warning(f"file written to {write_to}")
 
-        logger.warning(f"done. Insert date and time later here.")
+        logger.warning(f"Done. {datetime.now().strftime('%H:%M')}")
         return dfmatches
 
     def postprocess(self, dfmatches):

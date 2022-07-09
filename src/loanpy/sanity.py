@@ -427,7 +427,7 @@ target_language="EAH")
     >>> loop_thru_data(adrc_obj, 1, 1, 100, 49, \
 False, False, False, False, False, \
 [10, 50, 100, 500, 1000], 'adapt', False, True).dfety
-    Target_Form Source_Form  Cognacy  guesses best_guess
+    Segments_tgt Source_Form  Cognacy  guesses best_guess
     0     aγat͡ʃi    aγat͡ʃːɯ        1      inf   KeyError
     1       aldaγ       aldaγ        2      inf   KeyError
     2        ajan        ajan        3      inf   KeyError
@@ -440,9 +440,13 @@ False, False, False, False, False, \
     if crossval is False:
         args[0] = get_noncrossval_sc(args[0], writesc)
 
-    for idx2isolate, (srcwrd, tgtwrd) in tqdm(enumerate(zip(
-            args[0].dfety.Source_Form, args[0].dfety.Target_Form))):
+    for idx2isolate, row in args[0].dfety.iterrows():
         # get crossvalidated sound correspondences if indicated
+        if args[0].mode == "adapt":
+            srcwrd, tgtwrd = row["Segments_src"], row["Segments_tgt"]
+        else:
+            srcwrd, tgtwrd = row["CV_Segments_src"], row["CV_Segments_tgt"]
+
         if crossval:
             args[0] = get_crossval_data(args[0], idx2isolate, writesc)
         # make prediction from source word, check if target was hit
@@ -450,14 +454,10 @@ False, False, False, False, False, \
         result_eval_one = eval_one(tgtwrd, *args)  # args 0-11 (incl)
         if out == {}:
             out = {k: [result_eval_one[k]] for k in result_eval_one}
-        else:
-            # update dict
+        else:  # update dict
             for key in out:
                 out[key].append(result_eval_one[key])
-        # plug dropped word back in to forms if necessary
-        if crossval:
-            args[0].forms_target_language.insert(
-                args[0].idx_of_popped_word, args[0].popped_word)
+
     args[0].dfety = concat([args[0].dfety, DataFrame(out)], axis=1)
     return args[0]  # the adrc_obj
 
@@ -859,22 +859,13 @@ target_language="EAH")
     # create filename for corssvalidated training results
     if writesc:
         writesc = writesc / f"sc{idx}isolated.txt"
-    # get index of popped word in forms
-    adrc_obj.idx_of_popped_word = adrc_obj.forms_target_language.index(
-        dropped_row.at[idx, "Target_Form"])
-    # pop isolated word from forms, from which inventories are concluded
-    adrc_obj.popped_word = adrc_obj.forms_target_language.pop(
-        adrc_obj.idx_of_popped_word)
-    # get crossvalidated inventories from crossvalidated forms
-    (adrc_obj.phoneme_inventory, adrc_obj.cluster_inventory,
-     adrc_obj.phonotactic_inventory) = adrc_obj.get_inventories()
-    # popped word will be plugged in in loop_thru_data at end of loop
-    # because adapt & reconstruct use inventories for filters etc.
+
+    # get crossvalidated inventories from crossvalidated dfety
+    adrc_obj.inventories = adrc_obj.get_inventories()
     # train model on crossvalidated data (chosen row is isolated)
     (adrc_obj.scdict, adrc_obj.sedict, _,  # get sound correspondences
      adrc_obj.scdict_phonotactics, _, _) = adrc_obj.get_sound_corresp(writesc)
     # dropped row plugged in again so df can be reused in next round of loop
-    # can be done here b/c only qfysc uses dfety, not used in adapt/reconstruct
     adrc_obj.dfety = concat([adrc_obj.dfety.head(idx),
                              dropped_row,  # re-insert isolated row
                              adrc_obj.dfety.tail(len(adrc_obj.dfety)-idx)])
@@ -935,7 +926,7 @@ target_language="EAH", scdictlist=path2sc_ad)
     0    aγat͡ʃi
     1      aldaγ
     2       ajan
-    Name: Target_Form, dtype: object
+    Name: Segments_tgt, dtype: object
     0    aγat͡ʃːɯ
     1       aldaγ
     2        ajan
@@ -951,19 +942,19 @@ target_language="EAH", scdictlist=path2sc_ad)
     0    3.2
     1    3.2
     2    3.5
-    Name: NSE_Source_Target_Form, dtype: float64
+    Name: NSE_Source_Segments_tgt, dtype: float64
     0    16
     1    16
     2    14
-    Name: SE_Source_Target_Form, dtype: int64
+    Name: SE_Source_Segments_tgt, dtype: int64
     0    [6, 2, 6, 1, 1]
     1    [6, 1, 1, 6, 2]
     2       [6, 1, 6, 1]
-    Name: E_distr_Source_Target_Form, dtype: object
+    Name: E_distr_Source_Segments_tgt, dtype: object
     0    ['a<a', 'γ<γ', 'a<a', 't͡ʃ<t͡ʃː', 'i<ɯ']
     1         ['a<a', 'l<l', 'd<d', 'a<a', 'γ<γ']
     2                ['a<a', 'j<j', 'a<a', 'n<n']
-    Name: align_Source_Target_Form, dtype: object
+    Name: align_Source_Segments_tgt, dtype: object
     0    2.80
     1    1.17
     2    3.50
@@ -983,15 +974,18 @@ target_language="EAH", scdictlist=path2sc_ad)
     0    4
     1    3
     2    0
-    Name: fast_levenshtein_distance_best_guess_Target_Form, dtype: int64
+    Name: fast_levenshtein_distance_best_guess_Segments_tgt, dtype: int64
     0    0.57
     1    0.60
     2    0.00
-    Name: fast_levenshtein_distance_div_maxlen_best_guess_Target_Form, \
+    Name: fast_levenshtein_distance_div_maxlen_best_guess_Segments_tgt, \
 dtype: float64
 
     """
-    adrc_obj = get_nse4df(adrc_obj, "Target_Form")
+    if adrc_obj.mode == "adapt":
+        adrc_obj = get_nse4df(adrc_obj, "Segments_tgt")
+    else:
+        adrc_obj = get_nse4df(adrc_obj, "CV_Segments_tgt")
     adrc_obj = get_nse4df(adrc_obj, "best_guess")
     adrc_obj = phonotactics_predicted(adrc_obj)
     adrc_obj = get_dist(adrc_obj, "best_guess")
@@ -1110,22 +1104,22 @@ def get_nse4df(adrc_obj, tgt_col):
 "input_files" / "sc_ad_3cogs.txt"
     >>> adrc_obj = Adrc(forms_csv=path2forms, source_language="WOT", \
 target_language="EAH", scdictlist=path2sc_ad)
-    >>> get_nse4df(adrc_obj, "Target_Form").dfety
+    >>> get_nse4df(adrc_obj, "Segments_tgt").dfety
     [Similar large output as in the example for loanpy.sanity.postprocess,
      just last two columns missing, [3 rows x 7 columns]]
 
     """
 
-    col1, col2 = adrc_obj.dfety[tgt_col], adrc_obj.dfety["Source_Form"]
+    col1, col2 = adrc_obj.dfety[tgt_col], adrc_obj.dfety["Segments_src"]
     if adrc_obj.mode == "reconstruct":
-        col1, col2 = col2, col1  # flip it!
+        col1, col2 = adrc_obj.dfety["CV_Segments_src"], adrc_obj.dfety[tgt_col]
 
     adrc_obj.dfety = concat(
         [adrc_obj.dfety, DataFrame([adrc_obj.get_nse(tgt, src)
          for tgt, src in zip(col1, col2)],
-            columns=[f"NSE_Source_{tgt_col}", f"SE_Source_{tgt_col}",
-                     f"E_distr_Source_{tgt_col}",
-                     f"align_Source_{tgt_col}"])], axis=1)
+            columns=[f"NSE_{tgt_col}_src", f"SE_{tgt_col}_src",
+                     f"E_distr_{tgt_col}_src",
+                     f"align_{tgt_col}_src"])], axis=1)
 
     return adrc_obj
 
@@ -1158,10 +1152,10 @@ def phonotactics_predicted(adrc_obj):
     >>> from loanpy.adrc import Adrc
     >>> from loanpy.sanity import phonotactics_predicted, __file__
     >>> adrc_obj = Adrc()
-    >>> adrc_obj.dfety = DataFrame({"Target_Form": ["abc", "def", "ghi"], \
+    >>> adrc_obj.dfety = DataFrame({"Segments_tgt": ["abc", "def", "ghi"], \
 "predicted_phonotactics": [["CCC", "VVV"], ["CVC"], ["CCV", "CCC"]]})
     >>> phonotactics_predicted(adrc_obj).dfety
-      Target_Form predicted_phonotactics  phonotactics_predicted
+      Segments_tgt predicted_phonotactics  phonotactics_predicted
     0         abc             [CCC, VVV]                   False
     1         def                  [CVC]                    True
     2         ghi             [CCV, CCC]                    True
@@ -1172,9 +1166,9 @@ def phonotactics_predicted(adrc_obj):
     try:
         adrc_obj.dfety[
             "phonotactics_predicted"] = [True if
-                                         prosodic_string(tokenise(actual))
+                                         actual
                                          in pred else False for actual, pred
-                                         in zip(adrc_obj.dfety["Target_Form"],
+                                         in zip(adrc_obj.dfety["ProsodicStructure_tgt"],
                                                 adrc_obj.dfety[
                                                     "predicted_phonotactics"])]
     except KeyError:
@@ -1217,7 +1211,7 @@ def get_dist(adrc_obj, col, dst_msrs=["fast_levenshtein_distance",
     >>> adrc_obj = Adrc()
     >>> adrc_obj.dfety = DataFrame({\
 "best_guess": ["will not buy", "record", "scratched"], \
-"Target_Form": ["won't buy", "tobacconists", "scratched"]})
+"Segments_tgt": ["won't buy", "tobacconists", "scratched"]})
     >>> df = get_dist(adrc_obj, "best_guess").dfety
     >>> for col in df.columns:
     >>>     print(df[col])
@@ -1228,15 +1222,15 @@ def get_dist(adrc_obj, col, dst_msrs=["fast_levenshtein_distance",
     0       won't buy
     1    tobacconists
     2       scratched
-    Name: Target_Form, dtype: object
+    Name: Segments_tgt, dtype: object
     0     5
     1    10
     2     0
-    Name: fast_levenshtein_distance_best_guess_Target_Form, dtype: int64
+    Name: fast_levenshtein_distance_best_guess_Segments_tgt, dtype: int64
     0    0.42
     1    0.83
     2    0.00
-    Name: fast_levenshtein_distance_div_maxlen_best_guess_Target_Form, \
+    Name: fast_levenshtein_distance_div_maxlen_best_guess_Segments_tgt, \
 dtype: float64
 
 
@@ -1246,12 +1240,14 @@ dtype: float64
         new_col = []
         msr = getattr(dist, dst_msr)  # turn str into method of Distance obj
         for idx, row in adrc_obj.dfety.iterrows():  # loop thru df
-            bg, tf = row[col], row["Target_Form"]  # best guess, target form
+            # best guess, target form
+            bg = row[col].replace(" ", "").replace(".", "")
+            tf = row["Segments_tgt"].replace(" ", "").replace(".", "")
             if any(ban in bg for ban in BANNED):  # red flags to ignore
                 new_col.append(float("inf"))  # means no distance calculable
             else:
                 new_col.append(round(msr(bg, tf), 2))  # calculate distance
-        adrc_obj.dfety[f"{dst_msr}_{col}_Target_Form"] = new_col  # add to col
+        adrc_obj.dfety[f"{dst_msr}_{col}_tgt"] = new_col  # add to col
 
     return adrc_obj  # same as input obj but with new cols in adrc_obj.dfety
 
