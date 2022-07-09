@@ -709,14 +709,14 @@ def test_get_dist():
     # set up input
     dfety = DataFrame({
         "best_guess": ["will not buy", "record", "scratched"],
-        "Target_Form": ["won't buy", "tobacconists", "scratched"]})
+        "Segments_tgt": ["won't buy", "tobacconists", "scratched"]})
 
     adrc_obj.dfety = dfety
 
     # set up expected outcome
     df_exp = dfety.assign(
-        fast_levenshtein_distance_best_guess_Target_Form=[5, 10, 0],
-        fast_levenshtein_distance_div_maxlen_best_guess_Target_Form=[
+        fast_levenshtein_distance_best_guess_tgt=[5, 10, 0],
+        fast_levenshtein_distance_div_maxlen_best_guess_tgt=[
             0.42, 0.83, 0.00])
     assert_frame_equal(get_dist(adrc_obj, "best_guess").dfety, df_exp)
 
@@ -730,9 +730,10 @@ def test_postprocess():
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH", scdictlist=PATH2SC_AD)
     # pretend guesses are already made
-    adrc_obj.dfety["best_guess"] = ["aγa", "bla", "ajan"]
+    adrc_obj.dfety["best_guess"] = ["a γ a", "b l a", "a j a n"]
     # run function with show_workflow=False
     adrc_obj_out = postprocess(adrc_obj)
+
     assert_frame_equal(adrc_obj_out.dfety, read_csv(
         Path(__file__).parent / "expected_files" / "postprocess_ad.csv"))
 
@@ -744,15 +745,10 @@ def test_postprocess():
         scdictlist=PATH2SC_RC,
         mode="reconstruct")
     # pretend guesses are already made
-    adrc_obj.dfety["best_guess"] = ["aːt͡ʃ", "bla", "ɒjnaːr"]
+    adrc_obj.dfety["best_guess"] = ["aː t͡ʃ", "b.l a", "ɒ j.n aː r"]
     # run function with show_workflow=False
     adrc_obj_out = postprocess(adrc_obj)
-    rfile = read_csv(
-        Path(__file__).parent / "expected_files" / "postprocess_rc.csv")
-    for i in adrc_obj_out.dfety.columns:
-        print(adrc_obj_out.dfety[i])
-    for j in rfile:
-        print(rfile[j])
+
     assert_frame_equal(adrc_obj_out.dfety, read_csv(
         Path(__file__).parent / "expected_files" / "postprocess_rc.csv"))
 
@@ -761,11 +757,13 @@ def test_postprocess():
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH", scdictlist=PATH2SC_AD)
     # pretend guesses are already made
-    adrc_obj.dfety["best_guess"] = ["aγa", "bla", "ajan"]
+    adrc_obj.dfety["best_guess"] = ["a γ a", "b l a", "a j a n"]
     adrc_obj.dfety["predicted_phonotactics"] = [
         "['VCV', 'CCC']", "['CCC', 'VCC']", "['VCVC']"]
     # run function with show_workflow=False
     adrc_obj_out = postprocess(adrc_obj)
+    for i in adrc_obj_out.dfety.columns:
+        print(adrc_obj_out.dfety[i])
     assert_frame_equal(
         adrc_obj_out.dfety,
         read_csv(

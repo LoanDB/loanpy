@@ -646,7 +646,7 @@ removed and replaced with a question mark at the end.
     """
 
     if "-" in sclist:
-        return "(" + "|".join([i for i in sclist if i != "-"]) + ")?"
+        return "?(" + "|".join([i for i in sclist if i != "-"]) + ")?"
     return "(" + "|".join(sclist) + ")"
 
 

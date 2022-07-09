@@ -371,9 +371,9 @@ not in model',
 def test_list2regex():
     """test if list of phonemes is correctly converted to regular expression"""
     assert list2regex(["b", "k", "v"]) == "(b|k|v)"
-    assert list2regex(["b", "k", "-", "v"]) == "(b|k|v)?"
-    assert list2regex(["b", "k", "-", "v", "mp"]) == "(b|k|v|mp)?"
-    assert list2regex(["b", "k", "-", "v", "mp", "mk"]) == "(b|k|v|mp|mk)?"
+    assert list2regex(["b", "k", "-", "v"]) == "?(b|k|v)?"
+    assert list2regex(["b", "k", "-", "v", "mp"]) == "?(b|k|v|mp)?"
+    assert list2regex(["b", "k", "-", "v", "mp", "mk"]) == "?(b|k|v|mp|mk)?"
     assert list2regex(["o"]) == '(o)'
     assert list2regex(["ʃʲk"]) == '(ʃʲk)'
 

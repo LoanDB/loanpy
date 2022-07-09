@@ -142,10 +142,10 @@ from loanpy.helpers.Etym
         self.distance_measure = read_dst(distance_measure)
         # read data frame forms, turn words of target language to list
         # conclude dfety from dff
-        self.dfety = cldf2pd(forms_csv, source_language, target_language)
+        self.dfety, self.dfrest = cldf2pd(forms_csv, source_language, target_language)
         # do NOT extract self.inventories this from dfety but from forms.csv
         # b/c dfety extracts only from cogset where src and tgt lg are present
-        self.inventories = get_inventories(forms_csv, target_language)
+        self.inventories = self.get_inventories()
 
     def get_sound_corresp(self, write_to=None):
 
@@ -782,6 +782,42 @@ gets flipped internally.)
 
         return DataFrame({"keys": keys, "vals": vals})
 
+    def get_inventories(self):
+        """
+        Called by loanpy.helpers.Etym.__init__; \
+    Get a list of words of a language from a forms.csv file.
+
+        :param dff: forms.csv data frame (cldf)
+        :type dff: pandas.core.frame.DataFrame
+
+        :param target_language: The language from which the phoneme, \
+    phoneme cluster and phonotactic inventories will be extracted.
+        :type target_language: str
+
+        :returns: a list of words in the target language
+        :rtype: list | None
+
+        :Example:
+
+        >>> from pathlib import Path
+        >>> from loanpy.helpers import __file__, forms2list, read_forms
+        >>> path2forms = Path(__file__).parent / "tests" \
+    / "input_files" / "forms.csv"
+        >>> forms = read_forms(path2forms)
+        >>> forms2list(forms, target_language=2)
+        ['xyz']
+        """
+        if self.dfety is None:
+            return {}
+
+        invdict = {}
+        for col in ["Segments", "CV_Segments", "ProsodicStructure"]:
+            invdict[col] = set()
+            [invdict[col].update(i.split(" ")) for i in self.dfety[f"{col}_tgt"]]
+            [invdict[col].update(i.split(" ")) for i in self.dfrest[f"{col}_tgt"]]
+
+        return invdict
+
 def cldf2pd(dfforms, source_language=None, target_language=None):
     """
     Called by loanpy.helpers.Etym.__init__; \
@@ -824,16 +860,18 @@ column "Target_Forms"
     """
 
     if dfforms is None:
-        return None
+        return None, None
     dfforms = read_csv(dfforms, usecols=["Segments", "CV_Segments",
                                          "Cognacy", "Language_ID",
                                          "ProsodicStructure"])
-    dfetymology = {k: [] for k in[
+    dfetymology = {k: [] for k in [
     "Segments_tgt", "Segments_src",
     "CV_Segments_tgt", "CV_Segments_src",
     "ProsodicStructure_tgt", "ProsodicStructure_src",
-    "Cognacy"
-    ]}
+    "Cognacy"]}
+    dfrest = {k: [] for k in [
+    "Segments_tgt", "CV_Segments_tgt",
+    "ProsodicStructure_tgt"]}
 
     # bugfix: col Cognacy is sometimes empty. if so, fill it
     if all(isnan(i) for i in dfforms.Cognacy):
@@ -841,7 +879,9 @@ column "Target_Forms"
 
     for cogid in range(1, int(list(dfforms["Cognacy"])[-1])+1):
         cogset = dfforms[dfforms["Cognacy"] == cogid]
-        try:  # both src and tgt lg have to be present in cogset
+
+        if all(i in list(cogset["Language_ID"])
+               for i in [target_language, source_language]):
             dfetymology["Segments_tgt"].append(cogset[cogset["Language_ID"
             ] == target_language].iloc[0]["Segments"])
             dfetymology["Segments_src"].append(cogset[cogset["Language_ID"
@@ -855,10 +895,19 @@ column "Target_Forms"
             dfetymology["ProsodicStructure_src"].append(cogset[cogset[
             "Language_ID"] == source_language].iloc[0]["ProsodicStructure"])
             dfetymology["Cognacy"].append(cogid)
-        except IndexError:
+
+        elif target_language in list(cogset["Language_ID"]):
+            dfrest["Segments_tgt"].append(cogset[cogset["Language_ID"
+            ] == target_language].iloc[0]["Segments"])
+            dfrest["CV_Segments_tgt"].append(cogset[cogset["Language_ID"
+            ] == target_language].iloc[0]["CV_Segments"])
+            dfrest["ProsodicStructure_tgt"].append(cogset[cogset[
+            "Language_ID"] == target_language].iloc[0]["ProsodicStructure"])
+
+        else:
             continue
 
-    return DataFrame(dfetymology)
+    return DataFrame(dfetymology), DataFrame(dfrest)
 
 
 def read_mode(mode):
@@ -977,44 +1026,6 @@ For more details see loanpy.helpers.Etym.get_scdictbase.
         return scdictbase
     with open(scdictbase, "r", encoding="utf-8") as f:
         return literal_eval(f.read())
-
-def get_inventories(dff, target_language):
-    """
-    Called by loanpy.helpers.Etym.__init__; \
-Get a list of words of a language from a forms.csv file.
-
-    :param dff: forms.csv data frame (cldf)
-    :type dff: pandas.core.frame.DataFrame
-
-    :param target_language: The language from which the phoneme, \
-phoneme cluster and phonotactic inventories will be extracted.
-    :type target_language: str
-
-    :returns: a list of words in the target language
-    :rtype: list | None
-
-    :Example:
-
-    >>> from pathlib import Path
-    >>> from loanpy.helpers import __file__, forms2list, read_forms
-    >>> path2forms = Path(__file__).parent / "tests" \
-/ "input_files" / "forms.csv"
-    >>> forms = read_forms(path2forms)
-    >>> forms2list(forms, target_language=2)
-    ['xyz']
-    """
-    if dff is None:
-        return {}
-    dff = read_csv(dff, usecols=["Segments", "CV_Segments",
-                                 "Language_ID", "ProsodicStructure"])
-    df_tgt = dff[dff["Language_ID"] == target_language]
-
-    invdict = {}
-    for col in ["Segments", "CV_Segments", "ProsodicStructure"]:
-        invdict[col] = set()
-        [invdict[col].update(i.split(" ")) for i in df_tgt[col]]
-
-    return invdict
 
 def read_dst(dst_msr):
     """

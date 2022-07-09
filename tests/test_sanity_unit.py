@@ -123,27 +123,29 @@ def test_loop_thru_data():
     })
 
     dfforms_mock = DataFrame({
-        "Source_Form": ["apple", "banana", "cherry"],
-        "Target_Form": ["Apfel", "Banane", "Kirsche"]
+        "Segments_src": ["a p p l e", "b a n a n a", "c h e r r y"],
+        "CV_Segments_src": ["a p.p.l e", "b a n a n a", "c.h e r.r y"],
+        "Segments_tgt": ["A pf e l", "B a n a n e", "K i r sch e"],
+        "CV_Segments_tgt": ["A p.f e l", "B a n a n e", "K i r s.c.h e"]
     })
 
-    out1_eval_one = {"best_guess": "abc", "guesses": 1}
-    out2_eval_one = {"best_guess": "def", "guesses": 2}
-    out3_eval_one = {"best_guess": "ghi", "guesses": 3}
+    out1_eval_one = {"best_guess": "a b c", "guesses": 1}
+    out2_eval_one = {"best_guess": "d e f", "guesses": 2}
+    out3_eval_one = {"best_guess": "g h i", "guesses": 3}
 
     class AdrcMonkey:
         def __init__(self):
-            self.forms_target_language = ["Apfel", "Banane", "Kirsche"]
             self.dfety = dfforms_mock
+            self.mode = "adapt"
 
-    def tqdm_mock(iterable):
-        tqdm_mock.called_with = iterable
-        return iterable
-    tqdm_real, sanity.tqdm = sanity.tqdm, tqdm_mock
+#    def tqdm_mock(iterable):
+#        tqdm_mock.called_with = iterable
+#        return iterable
+#    tqdm_real, sanity.tqdm = sanity.tqdm, tqdm_mock
 
     adrc_monkey = AdrcMonkey()
     idxlist = iter([0, 1, 2])
-    forms = iter(["Apfel", "Banane", "Kirsche"])
+    forms = iter(["A pf e l", "B a n a n e", "K i r sch e"])
     # first patch is not called by default
     with patch("loanpy.sanity.get_noncrossval_sc") as get_noncrossval_sc_mock:
         with patch("loanpy.sanity.get_crossval_data",
@@ -176,21 +178,21 @@ def test_loop_thru_data():
     ])
 
     eval_one_mock.assert_has_calls([
-        call("Apfel", adrc_monkey, "apple", 1, 1, 100, 49, False,
+        call("A pf e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], 'adapt'),
-        call("Banane", adrc_monkey, "banana", 1, 1, 100, 49, False,
+        call("B a n a n e", adrc_monkey, "b a n a n a", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], 'adapt'),
-        call("Kirsche", adrc_monkey, "cherry", 1, 1, 100, 49, False,
+        call("K i r sch e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], 'adapt')
     ])
 
-    DataFrame_mock.assert_called_with({'best_guess': ['abc', 'def', 'ghi'],
+    DataFrame_mock.assert_called_with({'best_guess': ['a b c', 'd e f', 'g h i'],
                                        'guesses': [1, 2, 3]})
     concat_mock.assert_called_with([dfforms_mock, "dfoutmock"], axis=1)
-    assert isinstance(tqdm_mock.called_with, enumerate)
+#    assert isinstance(tqdm_mock.called_with, enumerate)
 
     # tear down
-    sanity.tqdm.called_with = None
+#    sanity.tqdm.called_with = None
 
     # 2nd assertion: loop with crossval=True
 
@@ -226,23 +228,23 @@ def test_loop_thru_data():
     get_noncrossval_sc_mock.assert_called_with(adrc_monkey, False)
 
     eval_one_mock.assert_has_calls([
-        call("Apfel", adrc_monkey, "apple", 1, 1, 100, 49, False,
+        call("A pf e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], 'adapt'),
-        call("Banane", adrc_monkey, "banana", 1, 1, 100, 49, False,
+        call("B a n a n e", adrc_monkey, "b a n a n a", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], 'adapt'),
-        call("Kirsche", adrc_monkey, "cherry", 1, 1, 100, 49, False,
+        call("K i r sch e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], 'adapt')
     ])
 
-    DataFrame_mock.assert_called_with({'best_guess': ['abc', 'def', 'ghi'],
+    DataFrame_mock.assert_called_with({'best_guess': ['a b c', 'd e f', 'g h i'],
                                        'guesses': [1, 2, 3]})
     concat_mock.assert_called_with([dfforms_mock, "dfoutmock"], axis=1)
-    assert isinstance(tqdm_mock.called_with, enumerate)
+#    assert isinstance(tqdm_mock.called_with, enumerate)
 
     # tear down
-    sanity.tqdm = tqdm_real
+#    sanity.tqdm = tqdm_real
 
-    del adrc_monkey, AdrcMonkey, tqdm_real, tqdm_mock, dfforms_mock, df_exp
+    del adrc_monkey, AdrcMonkey, dfforms_mock, df_exp
 
 
 def test_eval_one():
@@ -255,16 +257,16 @@ def test_eval_one():
     with patch("loanpy.sanity.eval_adapt") as eval_adapt_mock:
         with patch("loanpy.sanity.eval_recon") as eval_recon_mock:
             eval_adapt_mock.return_value = {
-                "guesses": 123, "best_guess": "bla"}
-            assert eval_one("apple", "Apfel", adrc_monkey, False,
+                "guesses": 123, "best_guess": "b l a"}
+            assert eval_one("a p.p.l e", "A pf e l", adrc_monkey, False,
                             False, False, False, 1, 1, 100, 49, False,
                             [10, 50, 100, 500, 1000], 'adapt'
-                            ) == {"guesses": 123, "best_guess": "bla"}
+                            ) == {"guesses": 123, "best_guess": "b l a"}
 
     # assert correct args were passed on to eval_adapt
     eval_adapt_mock.assert_called_with(
-        "apple",
-        "Apfel",
+        "a p.p.l e",
+        "A pf e l",
         adrc_monkey,
         10,
         False,
@@ -282,19 +284,19 @@ def test_eval_one():
     # test when target is hit in 2nd round
     with patch("loanpy.sanity.eval_adapt",
                side_effect=[
-                   {"guesses": float("inf"), "best_guess": "bli"},
-                   {"guesses": 123, "best_guess": "bla"}]) as eval_adapt_mock:
+                   {"guesses": float("inf"), "best_guess": "b l i"},
+                   {"guesses": 123, "best_guess": "b l a"}]) as eval_adapt_mock:
         with patch("loanpy.sanity.eval_recon") as eval_recon_mock:
-            assert eval_one("apple", "Apfel", adrc_monkey, False,
+            assert eval_one("a p.p.l e", "A pf e l", adrc_monkey, False,
                             False, False, False, 1, 1, 100, 49, False,
                             [10, 50, 100, 500, 1000], 'adapt'
-                            ) == {"guesses": 123, "best_guess": "bla"}
+                            ) == {"guesses": 123, "best_guess": "b l a"}
 
     # eval_adapt called twice
     eval_adapt_mock.assert_has_calls([
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              10, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              50, False, False, False, False, 1, 1, 100, 49, False)])
     # assert eval_recon was not called
     eval_recon_mock.assert_not_called()
@@ -302,22 +304,22 @@ def test_eval_one():
     # test when target is hit in 3rd round
     with patch("loanpy.sanity.eval_adapt",
                side_effect=[
-                   {"guesses": float("inf"), "best_guess": "bli"},
-                   {"guesses": float("inf"), "best_guess": "bla"},
-                   {"guesses": 123, "best_guess": "blu"}]
+                   {"guesses": float("inf"), "best_guess": "b l i"},
+                   {"guesses": float("inf"), "best_guess": "b l a"},
+                   {"guesses": 123, "best_guess": "b l u"}]
                ) as eval_adapt_mock:
-        assert eval_one("apple", "Apfel", adrc_monkey, False,
+        assert eval_one("a p.p.l e", "A pf e l", adrc_monkey, False,
                         False, False, False, 1, 1, 100, 49, False,
                         [10, 50, 100, 500, 1000], 'adapt'
-                        ) == {"guesses": 123, "best_guess": "blu"}
+                        ) == {"guesses": 123, "best_guess": "b l u"}
 
     # eval_adapt called 3 times
     eval_adapt_mock.assert_has_calls([
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              10, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              50, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              100, False, False, False, False, 1, 1, 100, 49, False)])
 
     # assert eval_recon was not called
@@ -326,24 +328,24 @@ def test_eval_one():
     # test when target is not hit
     with patch("loanpy.sanity.eval_adapt") as eval_adapt_mock:
         eval_adapt_mock.return_value = {"guesses": float("inf"),
-                                        "best_guess": "bla"}
+                                        "best_guess": "b l a"}
         with patch("loanpy.sanity.eval_recon") as eval_recon_mock:
-            assert eval_one("apple", "Apfel", adrc_monkey, False,
+            assert eval_one("a p.p.l e", "A pf e l", adrc_monkey, False,
                             False, False, False, 1, 1, 100, 49, False,
                             [10, 50, 100, 500, 1000], 'adapt'
-                            ) == {"guesses": float("inf"), "best_guess": "bla"}
+                            ) == {"guesses": float("inf"), "best_guess": "b l a"}
 
     # assert eval_adapt called as many times as guesslist is long
     eval_adapt_mock.assert_has_calls([
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              10, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              50, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              100, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              500, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              1000, False, False, False, False, 1, 1, 100, 49, False)
     ])
     # assert eval_recon was not called
@@ -352,24 +354,24 @@ def test_eval_one():
     # test if reconstruct is called when mode=="reconstruct"
     with patch("loanpy.sanity.eval_recon") as eval_recon_mock:
         eval_recon_mock.return_value = {"guesses": float("inf"),
-                                        "best_guess": "bla"}
+                                        "best_guess": "b l a"}
         with patch("loanpy.sanity.eval_adapt") as eval_adapt_mock:
-            assert eval_one("apple", "Apfel", adrc_monkey, False,
+            assert eval_one("a p.p.l e", "A pf e l", adrc_monkey, False,
                             False, False, False, 1, 1, 100, 49, False,
                             [10, 50, 100, 500, 1000], 'reconstruct'
-                            ) == {"guesses": float("inf"), "best_guess": "bla"}
+                            ) == {"guesses": float("inf"), "best_guess": "b l a"}
 
     # eval eval_recon called as many times as guesslist is long
     eval_recon_mock.assert_has_calls([
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              10, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              50, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              100, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              500, False, False, False, False, 1, 1, 100, 49, False),
-        call("apple", "Apfel", adrc_monkey,
+        call("a p.p.l e", "A pf e l", adrc_monkey,
              1000, False, False, False, False, 1, 1, 100, 49, False)
     ])
     # assert eval_adapt not called
@@ -402,9 +404,9 @@ def test_eval_adapt():
         get_howmany_mock.return_value = (1, 2, 3)
         # assert with show_workflow=False
         assert eval_adapt(
-            "Apfel",
+            "A pf e l",
             adrc_monkey,
-            "apple",
+            "a p.p.l e",
             10,
             1,
             1,
@@ -420,13 +422,13 @@ def test_eval_adapt():
         get_howmany_mock.assert_called_with(10, 1, 1)
         # assert call
         assert adrc_monkey.adapt_called_with[0] == [
-            adrc_monkey, "apple",
+            adrc_monkey, "a p.p.l e",
             1, 2, 3, 100, 49, False, False, False, False, False]
         # assert with show_workflow=True
         assert eval_adapt(
-            "Apfel",
+            "A pf e l",
             adrc_monkey,
-            "apple",
+            "a p.p.l e",
             10,
             1,
             1,
@@ -444,27 +446,27 @@ def test_eval_adapt():
             "step3": "yu"}
         get_howmany_mock.assert_called_with(10, 1, 1)
         assert adrc_monkey.adapt_called_with[1] == [
-            adrc_monkey, "apple", 1, 2, 3, 100, 49,
+            adrc_monkey, "a p.p.l e", 1, 2, 3, 100, 49,
             False, False, False, False, True]
 
     # check if valueerror is handled correctly (wrong predictions made)
-    adrc_monkey = AdrcMonkey(adapt_returns="yamdelavasa, 2nd_g, 3rd_g")
+    adrc_monkey = AdrcMonkey(adapt_returns="y a m d e l a v a s a, 2nd_g, 3rd_g")
     with patch("loanpy.sanity.get_howmany") as get_howmany_mock:
         get_howmany_mock.return_value = (1, 2, 3)
-        assert eval_adapt("Apfel", adrc_monkey, "apple",
+        assert eval_adapt("A pf e l", adrc_monkey, "a p.p.l e",
                           10, 1, 1, 100, 49,
                           False, False, False, False, False) == {
             # "didn't hit target but this was best guess"
-            "guesses": float("inf"), "best_guess": "yamdelavasa"}
+            "guesses": float("inf"), "best_guess": "y a m d e l a v a s a"}
         get_howmany_mock.assert_called_with(10, 1, 1)
         assert adrc_monkey.adapt_called_with[0] == [
-            adrc_monkey, "apple", 1, 2, 3, 100, 49,
+            adrc_monkey, "a p.p.l e", 1, 2, 3, 100, 49,
             False, False, False, False, False]
         # assert with show_workflow=True
         assert eval_adapt(
-            "Apfel",
+            "A pf e l",
             adrc_monkey,
-            "apple",
+            "a p.p.l e",
             10,
             1,
             1,
@@ -476,23 +478,23 @@ def test_eval_adapt():
             False,
             True) == {
             "guesses": float("inf"),
-            "best_guess": "yamdelavasa",
+            "best_guess": "y a m d e l a v a s a",
             "step1": "ya",
             "step2": "ye",
             "step3": "yu"}
         get_howmany_mock.assert_called_with(10, 1, 1)
         assert adrc_monkey.adapt_called_with[1] == [
-            adrc_monkey, "apple", 1, 2, 3, 100, 49,
+            adrc_monkey, "a p.p.l e", 1, 2, 3, 100, 49,
             False, False, False, False, True]
 
     # -check if no error is handled correctly (right prediction made)
-    adrc_monkey = AdrcMonkey(adapt_returns="yamdelavasa, def, Apfel")
+    adrc_monkey = AdrcMonkey(adapt_returns="y a m d e l a v a s a, d e f, A pf e l")
     with patch("loanpy.sanity.get_howmany") as get_howmany_mock:
         get_howmany_mock.return_value = (1, 2, 3)
         assert eval_adapt(
-            "Apfel",
+            "A pf e l",
             adrc_monkey,
-            "apple",
+            "a p.p.l e",
             10,
             1,
             1,
@@ -503,18 +505,18 @@ def test_eval_adapt():
             False,
             False,
             False) == {
-            'best_guess': 'Apfel',
+            'best_guess': 'A pf e l',
             'guesses': 3}
         # hit the target, so: best guess = target (even if not on index 0!)
         get_howmany_mock.assert_called_with(10, 1, 1)
         assert adrc_monkey.adapt_called_with[0] == [
-            adrc_monkey, "apple", 1, 2, 3, 100, 49,
+            adrc_monkey, "a p.p.l e", 1, 2, 3, 100, 49,
             False, False, False, False, False]
         # assert with show_workflow=True
         assert eval_adapt(
-            "Apfel",
+            "A pf e l",
             adrc_monkey,
-            "apple",
+            "a p.p.l e",
             10,
             1,
             1,
@@ -525,14 +527,14 @@ def test_eval_adapt():
             False,
             False,
             True) == {
-            'best_guess': 'Apfel',
+            'best_guess': 'A pf e l',
             'guesses': 3,
             'step1': 'ya',
             'step2': 'ye',
             'step3': 'yu'}
         get_howmany_mock.assert_called_with(10, 1, 1)
         assert adrc_monkey.adapt_called_with[1] == [
-            adrc_monkey, "apple", 1, 2, 3, 100, 49,
+            adrc_monkey, "a p.p.l e", 1, 2, 3, 100, 49,
             False, False, False, False, True]
 
     # tear down
@@ -557,9 +559,9 @@ def test_eval_recon():
     # 1: target not hit, keyerror (else condition)
     adrc_monkey = AdrcMonkey("#a, b c# not old")
     assert eval_recon(
-        "Apfel",
+        "A pf e l",
         adrc_monkey,
-        "apple",
+        "a p.p.l e",
         10,
         1,
         1,
@@ -574,15 +576,15 @@ def test_eval_recon():
         'guesses': float("inf")}
     # assert call (source and target gets flipped!)
     assert adrc_monkey.reconstruct_called_with[0] == [
-        adrc_monkey, "apple", 10, 1, 1, 100, 49,
+        adrc_monkey, "a p.p.l e", 10, 1, 1, 100, 49,
         False, False, False, False, False]
 
     # target not hit, short regex (capital "A" missing)
     adrc_monkey = AdrcMonkey("(a)(p)(p|f)(e)?(l)(e)?")
     assert eval_recon(
-        "Apfel",
+        "A pf e l",
         adrc_monkey,
-        "apple",
+        "a p.p.l e",
         10,
         1,
         1,
@@ -597,15 +599,15 @@ def test_eval_recon():
         'guesses': float("inf")}
     # assert call
     assert adrc_monkey.reconstruct_called_with[0] == [
-        adrc_monkey, "apple", 10, 1, 1, 100, 49,
+        adrc_monkey, "a p.p.l e", 10, 1, 1, 100, 49,
         False, False, False, False, False]
 
     # target not hit, long regex (capital "A" missing)
     adrc_monkey = AdrcMonkey("^Appele$|^Appel$")
     assert eval_recon(
-        "Apfel",
+        "A pf e l",
         adrc_monkey,
-        "apple",
+        "a p.p.l e",
         10,
         1,
         1,
@@ -620,15 +622,15 @@ def test_eval_recon():
         'guesses': float("inf")}
     # assert call
     assert adrc_monkey.reconstruct_called_with[0] == [
-        adrc_monkey, "apple", 10, 1, 1, 100, 49,
+        adrc_monkey, "a p.p.l e", 10, 1, 1, 100, 49,
         False, False, False, False, False]
 
     # 2: target hit with short regex
-    adrc_monkey = AdrcMonkey("(a|A)(p)(p|f)(e)?(l)(e)?")
+    adrc_monkey = AdrcMonkey("(a|A) (p) (p|f) ?(e)? (l) ?(e)?")
     assert eval_recon(
-        "Apfel",
+        "A p f e l",
         adrc_monkey,
-        "apple",
+        "a p.p.l e",
         10,
         1,
         1,
@@ -639,16 +641,16 @@ def test_eval_recon():
         False,
         False,
         False) == {
-        'best_guess': '(a|A)(p)(p|f)(e)?(l)(e)?',
+        'best_guess': '(a|A) (p) (p|f) ?(e)? (l) ?(e)?',
         'guesses': 10}
 
     # 3: target hit with long regex
     adrc_monkey = AdrcMonkey(  # correct solution on index nr 5
-        "^Appele$|^Appel$|^Apple$|^Appl$|^Apfele$|^Apfel$|^Apfle$|^Apfl$")
+        "^Appele$|^Appel$|^a p.p.l e$|^A p.p.l$|^A pf e l e$|^A pf e l$|^A pfle$|^Apfl$")
     assert eval_recon(
-        "Apfel",
+        "A pf e l",
         adrc_monkey,
-        "apple",
+        "a p.p.l e",
         10,
         1,
         1,
@@ -659,7 +661,7 @@ def test_eval_recon():
         False,
         False,
         False) == {
-        'best_guess': 'Apfel',
+        'best_guess': 'A pf e l',
         'guesses': 6}
 
     # tear down
@@ -701,10 +703,9 @@ def test_get_crossval_data():
     # set up mock class for input and instantiate it
     class AdrcMonkey:
         def __init__(self):
-            self.forms_target_language = ["apple", "banana", "cherry"]
             self.get_sound_corresp_called_with = []
-            self.dfety = DataFrame({"Target_Form":
-                                    ["apple", "banana", "cherry"],
+            self.dfety = DataFrame({"Segments_tgt":
+                                    ["a p.p.l e", "banana", "cherry"],
                                     "color": ["green", "yellow", "red"]})
 
         def get_sound_corresp(self, *args):
@@ -714,7 +715,7 @@ def test_get_crossval_data():
 
         def get_inventories(self, *args):
             return ({"a", "p", "l", "e", "b", "n", "c", "h", "r", "y"},
-                    {"a", "pp", "l", "e", "b", "n", "ch", "rr", "y"},
+                    {"a", "p.p", "l", "e", "b", "n", "c.h", "r.r", "y"},
                     {"VCCVC", "CVCVCV", "CCVCCV"})
 
     adrc_monkey = AdrcMonkey()
@@ -726,7 +727,6 @@ def test_get_crossval_data():
     assert adrc_obj_out.scdict == {"d1": "scdict"}
     assert adrc_obj_out.sedict == {"d2": "sedict"}
     assert adrc_obj_out.scdict_phonotactics == {"d3": "scdict_phonotactics"}
-    assert adrc_obj_out.forms_target_language == ["apple", "cherry"]
     assert adrc_monkey.get_sound_corresp_called_with == [[None]]
 
     # tear down
@@ -735,6 +735,11 @@ def test_get_crossval_data():
 
 def test_postprocess():
     """Is result of loanpy.sanity.loop_thru_data postprocessed correctly?"""
+
+    class MockIn:
+        def __init__(self):
+            self.mode = "adapt"
+    mock_in = MockIn()
     # patch functions
     with patch("loanpy.sanity.get_nse4df",
                side_effect=["out1_getnse4df",
@@ -747,13 +752,13 @@ predicted") as phonotactics_predicted_mock:
                 get_dist_mock.return_value = "out_getldnld"
 
                 # assert return value
-                assert postprocess("in1") == "out_getldnld"
+                assert postprocess(mock_in) == "out_getldnld"
 
     # assert calls
     get_dist_mock.assert_called_with("out_phonotacticspred", "best_guess")
     phonotactics_predicted_mock.assert_called_with("out2_getnse4df")
     get_nse4df_mock.assert_has_calls(
-        [call('in1', 'Target_Form'), call('out1_getnse4df', 'best_guess')]
+        [call(mock_in, 'Segments_tgt'), call('out1_getnse4df', 'best_guess')]
     )
 
     # test with show_workflow=False
@@ -768,14 +773,14 @@ sanity.phonotactics_predicted") as phonotactics_predicted_mock:
                 get_dist_mock.return_value = "out_getldnld"
 
                 # assert return value
-                assert postprocess("in1") == "out_getldnld"
+                assert postprocess(mock_in) == "out_getldnld"
 
     # assert calls
     get_dist_mock.assert_called_with("out_phonotacticspred", "best_guess")
     phonotactics_predicted_mock.assert_called_with(
         "out2_getnse4df")  # only called if show_workflow
     get_nse4df_mock.assert_has_calls(
-        [call('in1', 'Target_Form'), call('out1_getnse4df', 'best_guess')]
+        [call(mock_in, 'Segments_tgt'), call('out1_getnse4df', 'best_guess')]
     )
 
 
@@ -841,13 +846,16 @@ def test_get_nse4df():
     """Is normalised sum of examples for data frame calculated correctly?"""
     # set up
     df_exp = DataFrame()
-    dfety = DataFrame({"Source_Form": ["abc", "def", "ghi"],
-                       "Target_Form": ["jkl", "mno", "pqr"]})
+    dfety = DataFrame({
+    "Segments_src": ["a b c", "d e f", "g h i"],
+    "CV_Segments_src": ["a b.c", "d e f", "g.h i"],
+    "Segments_tgt": ["j k l", "m n o", "p q r"],
+    "CV_Segments_tgt": ["j.k.l", "m.n o", "p.q.r"]})
     dfetynse = DataFrame({
-        "NSE_Source_Target_Form": [1, 5, 9],
-        "SE_Source_Target_Form": [2, 6, 10],
-        "E_distr_Source_Target_Form": [3, 7, 11],
-        "align_Source_Target_Form": [4, 8, 12]})
+        "NSE_Segments_tgt_src": [1, 5, 9],
+        "SE_Segments_tgt_src": [2, 6, 10],
+        "E_distr_Segments_tgt_src": [3, 7, 11],
+        "align_Segments_tgt_src": [4, 8, 12]})
 
     class AdrcMonkey:
         def __init__(self):
@@ -866,7 +874,7 @@ def test_get_nse4df():
         concat_mock.return_value = df_exp
         # assert output is correct
         adrc_monkey.mode = "adapt"
-        out = get_nse4df(adrc_monkey, "Target_Form")
+        out = get_nse4df(adrc_monkey, "Segments_tgt")
         assert isinstance(out, AdrcMonkey)
         assert_frame_equal(out.dfety, df_exp)
 
@@ -880,15 +888,16 @@ def test_get_nse4df():
     assert_frame_equal(concat_mock.call_args_list[0][0][0][1], dfetynse)
 
     # assert call to monkey
-    assert adrc_monkey.get_nse_called_with == [["jkl", "abc"], ["mno", "def"],
-                                               ["pqr", "ghi"]]
+    assert adrc_monkey.get_nse_called_with == [["j k l", "a b c"], ["m n o", "d e f"],
+                                               ["p q r", "g h i"]]
 
 
 def test_phonotactics_predicted():
     """Correct boolean returned when checking if phonotactics was predicted?"""
     # set up
     df_in = DataFrame({
-        "Target_Form": ["abc", "def", "ghi"],
+        "Segments_tgt": ["abc", "def", "ghi"],
+        "ProsodicStructure_tgt": ["VCC", "CVC", "CCV"],
         "predicted_phonotactics": [["CCC", "VVV"], ["CVC"], ["CCV", "CCC"]]})
 
     df_exp = df_in.assign(phonotactics_predicted=[False, True, True])
@@ -896,33 +905,19 @@ def test_phonotactics_predicted():
     class AdrcMonkey():
         def __init__(self):
             self.dfety = df_in
-            self.word2phonotactics_called_with = []
-            self.word2phonotactics_returns = iter(["VCC", "CVC", "CCV"])
-
-        def word2phonotactics(self, word):
-            self.word2phonotactics_called_with.append(word)
-            return next(self.word2phonotactics_returns)
 
     adrc_monkey = AdrcMonkey()
     # assert output
     with patch("loanpy.sanity.tokenise",
     side_effect=[["a", "b", "c"], ["d", "e", "f"], ["g", "h", "i"]]) as tokenise_mock:
-        with patch("loanpy.sanity.prosodic_string",
-        side_effect=["VCC", "CVC", "CCV"]) as prosodic_string_mock:
-
-            assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
-    # assert call
-    tokenise_mock.assert_has_calls([call("abc"), call("def"), call("ghi")])
-    prosodic_string_mock.assert_has_calls(
-    [call(["a", "b", "c"]), call(["d", "e", "f"]), call(["g", "h", "i"])])
+        print(phonotactics_predicted(adrc_monkey).dfety)
+        assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
 
     # test break - return input if KeyError, i.e. if col is missing from df
     adrc_monkey = AdrcMonkey()
     adrc_monkey.dfety = DataFrame()
     assert phonotactics_predicted(adrc_monkey) == adrc_monkey
     assert phonotactics_predicted(adrc_monkey).dfety.empty
-    assert adrc_monkey.word2phonotactics_called_with == []
-
 
 def test_get_dist():
     """Are (normalised) Levenshtein Distances calculated correctly?"""
@@ -945,8 +940,8 @@ def test_get_dist():
 
     # set up input
     dfety = DataFrame({
-        "best_guess": ["will not buy", "record", "scratched"],
-        "Target_Form": ["won't buy", "tobacconists", "scratched"]})
+        "best_guess": ["will not buy", "record", "scrat.ched"],
+        "Segments_tgt": ["won't buy", "tobacconists", "scrat.ched"]})
 
     class AdrcMonkey:
         def __init__(self):
@@ -957,8 +952,8 @@ def test_get_dist():
 
     # set up expected outcome
     df_exp = dfety.assign(
-        fast_levenshtein_distance_best_guess_Target_Form=[1, 2, 3],
-        fast_levenshtein_distance_div_maxlen_best_guess_Target_Form=[4, 5, 6])
+        fast_levenshtein_distance_best_guess_tgt=[1, 2, 3],
+        fast_levenshtein_distance_div_maxlen_best_guess_tgt=[4, 5, 6])
 
     # plug monkey into patch
     with patch("loanpy.sanity.Distance") as Distance_mock:
@@ -968,12 +963,12 @@ def test_get_dist():
 
     # assert call1
     assert dist_monkey.fast_levenshtein_distance_called_with == [
-        ["will not buy", "won't buy"],
+        ["willnotbuy", "won'tbuy"],
         ["record", "tobacconists"],
         ["scratched", "scratched"]]
     # assert call2
     assert dist_monkey.fast_levenshtein_distance_div_maxlen_called_with == [
-        ["will not buy", "won't buy"],
+        ["willnotbuy", "won'tbuy"],
         ["record", "tobacconists"],
         ["scratched", "scratched"]]
     # assert call3
@@ -1008,8 +1003,8 @@ def test_plot_roc():
     path2mockplot = Path(__file__).parent / "mockplot.jpg"
     # mock first input arg
     df_forms_mock = DataFrame(
-        {"Source_Form": ["kiki", "buba", "kaba"],
-         "Target_Form": ["hehe", "pupa", "hapa"],
+        {"CV_Segments_src": ["k i k i", "b u b a", "k a b a"],
+         "Segments_tgt": ["h e h e", "p u p a", "h a p a"],
          "guesses": [1, None, 3]})
 
     # test with lev_dist and norm_lev_dist == False (default settings)
@@ -1160,13 +1155,13 @@ def test_write_to_cache():
     DataFrame().to_csv(mock_cache_path, index=False, encoding="utf-8")
     # set up expected new cache
     df_exp = DataFrame(
-        {"fruit": ["cherry", "banana", "apple"],
+        {"fruit": ["cherry", "banana", "a p.p.l e"],
          "color": ["red", "yellow", "green"],
          "opt_tpr": [0.8, 0.6, 0.4]})
     # mock pandas concat
     with patch("loanpy.sanity.concat") as concat_mock:
         concat_mock.return_value = DataFrame(
-            {"fruit": ["apple", "banana", "cherry"],
+            {"fruit": ["a p.p.l e", "banana", "cherry"],
              "color": ["green", "yellow", "red"],
              "opt_tpr": [0.4, 0.6, 0.8]})
         # mock pandas read_csv

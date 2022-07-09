@@ -317,8 +317,8 @@ def test_init():
 
     # set up
     with patch("loanpy.qfysc.cldf2pd") as cldf2pd_mock:
-        cldf2pd_mock.return_value = None
-        with patch("loanpy.qfysc.get_inventories"
+        cldf2pd_mock.return_value = None, None
+        with patch("loanpy.qfysc.Etym.get_inventories"
                    ) as get_inventories_mock:
             get_inventories_mock.return_value = {}
             with patch("loanpy.qfysc.read_dst"
@@ -345,22 +345,23 @@ def test_init():
                             assert mocketym.distance_measure == "distfunc"
 
                             # double check with __dict__
-                            assert len(mocketym.__dict__) == 7
+                            assert len(mocketym.__dict__) == 8
                             assert mocketym.__dict__ == {
                                 'connector': '<',
                                 'mode': 'adapt',
                                 'scdictbase': {},
-                                'vfb': None} | {
-                                    'dfety': None,
-                                    'distance_measure': 'distfunc',
-                                    'inventories': {}}
+                                'vfb': None,
+                                'dfety': None,
+                                'dfrest': None,
+                                'distance_measure': 'distfunc',
+                                'inventories': {}}
 
                 read_mode_mock.assert_called_with("adapt")
                 read_connector_mock.assert_called_with(None, "adapt")
                 read_scdictbase_mock.assert_called_with(None)
                 cldf2pd_mock.assert_called_with(
                     None, None, None)
-                get_inventories_mock.assert_called_with(None, None)
+                get_inventories_mock.assert_called_with()
                 read_dst_mock.assert_called_with(
                     "weighted_feature_edit_distance")
 
@@ -372,8 +373,8 @@ def test_init():
     with patch("loanpy.qfysc.read_csv") as read_csv_mock:
         read_csv_mock.return_value = dfmk
         with patch("loanpy.qfysc.cldf2pd") as cldf2pd_mock:
-            cldf2pd_mock.return_value = "sth3"
-            with patch("loanpy.qfysc.get_inventories"
+            cldf2pd_mock.return_value = "sth3", "sth5"
+            with patch("loanpy.qfysc.Etym.get_inventories"
                        ) as get_inventories_mock:
                 get_inventories_mock.return_value = {"sth4": "xy"}
                 with patch("loanpy.qfysc.read_dst"
@@ -403,13 +404,14 @@ def test_init():
                                 assert mocketym.distance_measure == "sth7"
 
                                 # double check with __dict__
-                                assert len(mocketym.__dict__) == 7
+                                assert len(mocketym.__dict__) == 8
                                 assert mocketym.__dict__ == {
                                     'connector': '<',
                                     'mode': 'adapt',
                                     'scdictbase': {},
                                     'vfb': None,
                                     'dfety': "sth3",
+                                    'dfrest': "sth5",
                                     'distance_measure': 'sth7',
                                     'inventories': {"sth4": "xy"}}
 
@@ -417,7 +419,7 @@ def test_init():
                 read_connector_mock.assert_called_with(None, "adapt")
                 read_scdictbase_mock.assert_called_with(None)
                 cldf2pd_mock.assert_called_with("path", "lg1", "lg2")
-                get_inventories_mock.assert_called_with("path", "lg2")
+                get_inventories_mock.assert_called_with()
                 read_dst_mock.assert_called_with(
                     "weighted_feature_edit_distance")
 
@@ -430,22 +432,25 @@ def test_cldf2pd():
     # set up
     dfin = DataFrame({"Segments": ["a", "b", "c", "d", "e", "f", "g", "ə"],
                       "CV_Segments": ["hi", "jk", "lm", "no", "pq", "rs", "tu", "vw"],
-                      "Cognacy": [1, 1, 2, 2, 3, 3, 3, 3],
+                      "Cognacy": [1, 1, 2, 2, 3, 3, 4, 4],
                       "Language_ID": ["lg1", "lg2", "lg1", "lg3",
-                                      "lg1", "lg2", "lg3", "lg2"],
+                                      "lg3", "lg2", "lg3", "lg4"],
                       "ProsodicStructure": ["V", "C", "C", "C", "V", "C", "C", "V"]
                       }).to_csv(
                             "test_cldf2pd.csv",
                             encoding="utf-8", index=False
                       )
-    dfexp = DataFrame({"Segments_tgt": ["b", "f"],
-                       "Segments_src": ["a", "e"],
-                       "CV_Segments_tgt": ["jk", "rs"],
-                       "CV_Segments_src": ["hi", "pq"],
-                       "ProsodicStructure_tgt": ["C", "C"],
-                       "ProsodicStructure_src": ["V", "V"],
-                       "Cognacy": [1, 3],
+    dfexp = DataFrame({"Segments_tgt": ["b"],
+                       "Segments_src": ["a"],
+                       "CV_Segments_tgt": ["jk"],
+                       "CV_Segments_src": ["hi"],
+                       "ProsodicStructure_tgt": ["C"],
+                       "ProsodicStructure_src": ["V"],
+                       "Cognacy": [1],
                        })
+    dfexp2 = DataFrame({"Segments_tgt": ["f"],
+                        "CV_Segments_tgt": ["rs"],
+                        "ProsodicStructure_tgt": ["C"]})
     # only cognates are taken, where source and target language occur
     dfout = cldf2pd(
     "test_cldf2pd.csv", source_language="lg1", target_language="lg2"
@@ -453,8 +458,10 @@ def test_cldf2pd():
 
     # assert
     assert cldf2pd(None, source_language="whatever",
-                   target_language="wtvr2") is None
-    assert_frame_equal(dfout, dfexp)
+                   target_language="wtvr2") == (None, None)
+    assert_frame_equal(dfout[0], dfexp)
+    print(dfout[1])
+    assert_frame_equal(dfout[1], dfexp2)
 
     # tear down
     remove("test_cldf2pd.csv")

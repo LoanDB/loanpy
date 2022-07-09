@@ -93,12 +93,16 @@ def test_cldf2pd():
                        "ProsodicStructure_src": ["VCC"],
                        "Cognacy": [1],
                        })
+    dfexp2 = DataFrame({"Segments_tgt": [], "CV_Segments_tgt": [], "ProsodicStructure_tgt": []})
 
     # assert
     assert cldf2pd(None, source_language="whatever",
-                   target_language="wtvr2") is None
-    assert_frame_equal(cldf2pd(PATH2FORMS2, source_language=1,
-                               target_language=2), dfexp)
+                   target_language="wtvr2") == (None, None)
+    out = cldf2pd(PATH2FORMS2, source_language=1,
+                               target_language=2)
+    assert_frame_equal(out[0], dfexp)
+    print(out[1])
+    assert_frame_equal(out[1], dfexp2)
 
     # tear down
     del dfexp
@@ -189,7 +193,7 @@ def test_init():
     qfy = Etym()
 
     # assert number of attributes (super() + rest)
-    assert len(qfy.__dict__) == 7
+    assert len(qfy.__dict__) == 8
 
     # 6 attributes inherited from Etym
     assert qfy.dfety is None

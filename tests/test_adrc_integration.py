@@ -47,7 +47,7 @@ def test_init():
 
     # check if initiation without args works fine
     adrc_inst = Adrc()
-    assert len(adrc_inst.__dict__) == 12
+    assert len(adrc_inst.__dict__) == 13
 
     # 5 attributes initiated in Adrc, rest inherited
     assert adrc_inst.scdict is None
@@ -64,6 +64,7 @@ def test_init():
 
     # 6 attributes inherited from Etym via Qfy
     assert adrc_inst.dfety is None
+    assert adrc_inst.dfrest is None
     assert adrc_inst.inventories == {}
     ismethod(adrc_inst.distance_measure)
 
@@ -86,7 +87,7 @@ def test_init():
         mode="reconstruct",
         most_frequent_phonotactics=2)
 
-    assert len(adrc_inst.__dict__) == 12
+    assert len(adrc_inst.__dict__) == 13
 
     # assert initiation went correctly
     assert adrc_inst.scdict == d0
@@ -117,6 +118,9 @@ def test_init():
                                            'n', 't͡ʃ', 'γ'}
     assert adrc_inst.inventories["ProsodicStructure"] == {'VCVCV', 'VCCVC', 'VCVC'}
     ismethod(adrc_inst.distance_measure)
+    assert_frame_equal(adrc_inst.dfrest,
+        DataFrame({"Segments_tgt": [], "CV_Segments_tgt": [],
+                   "ProsodicStructure_tgt": []}))
 
     # don't remove yet,
     # remove("test_soundchanges.txt")
