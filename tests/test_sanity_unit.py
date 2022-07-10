@@ -895,7 +895,7 @@ def test_phonotactics_predicted():
     """Correct boolean returned when checking if phonotactics was predicted?"""
     # set up
     df_in = DataFrame({
-        "Segments_tgt": ["abc", "def", "ghi"],
+        "Segments_tgt": ["a b c", "d e f", "g h i"],
         "ProsodicStructure_tgt": ["VCC", "CVC", "CCV"],
         "predicted_phonotactics": [["CCC", "VVV"], ["CVC"], ["CCV", "CCC"]]})
 
@@ -907,9 +907,7 @@ def test_phonotactics_predicted():
 
     adrc_monkey = AdrcMonkey()
     # assert output
-    with patch("loanpy.sanity.tokenise",
-    side_effect=[["a", "b", "c"], ["d", "e", "f"], ["g", "h", "i"]]) as tokenise_mock:
-        assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
+    assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
 
     # test break - return input if KeyError, i.e. if col is missing from df
     adrc_monkey = AdrcMonkey()

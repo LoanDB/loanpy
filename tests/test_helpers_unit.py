@@ -162,38 +162,32 @@ def test_repair_harmony():
     """test if a words vowelharmony is repaired correctly"""
 
     # test1: input does have vowel harmony, so nothing happens
-    with patch("loanpy.helpers.tokenise") as tokenise_mock:
-        tokenise_mock.return_value = ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']
-        with patch("loanpy.helpers.has_harmony") as has_harmony_mock:
-            has_harmony_mock.return_value = True
-            with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
-                get_front_back_vowels_mock.return_value = ['k', 'F', 's', 't', 'h', 'F', 'j']
+    with patch("loanpy.helpers.has_harmony") as has_harmony_mock:
+        has_harmony_mock.return_value = True
+        with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
+            get_front_back_vowels_mock.return_value = ['k', 'F', 's', 't', 'h', 'F', 'j']
 
-                # assert that nothing happens if input word has vowel harmony
-                assert repair_harmony(ipalist='kɛsthɛj') == [
-                    ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
+            # assert that nothing happens if input word has vowel harmony
+            assert repair_harmony(ipalist='k ɛ s t h ɛ j') == [
+                ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
 
     # assert calls
-    tokenise_mock.assert_called_with("kɛsthɛj")
     has_harmony_mock.assert_called_with(['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j'])
     get_front_back_vowels_mock.assert_not_called()
 
     #set up 2: patch tokenise, has_harmmony, get_front_back_vowels, token2class
     #test 2: input has more back vowels than front ones
-    with patch("loanpy.helpers.tokenise") as tokenise_mock:
-        tokenise_mock.return_value = ['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ']
-        with patch("loanpy.helpers.has_harmony") as has_harmony_mock:
-            has_harmony_mock.return_value = False
-            with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
-                get_front_back_vowels_mock.return_value = ['B', 'l', 'ʃ', 'B', 'F', 'r', 'ʃ']
-                with patch("loanpy.helpers.token2class",
-                side_effect=["o", "x", "x", "o", "i", "x", "x"]) as token2class_mock:
-                    # assert that the wrong front vowel ø is replaced by "B"
-                    assert repair_harmony(ipalist='ɒlʃoːørʃ') == [
-                        ['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
+    with patch("loanpy.helpers.has_harmony") as has_harmony_mock:
+        has_harmony_mock.return_value = False
+        with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
+            get_front_back_vowels_mock.return_value = ['B', 'l', 'ʃ', 'B', 'F', 'r', 'ʃ']
+            with patch("loanpy.helpers.token2class",
+            side_effect=["o", "x", "x", "o", "i", "x", "x"]) as token2class_mock:
+                # assert that the wrong front vowel ø is replaced by "B"
+                assert repair_harmony(ipalist='ɒ l ʃ oː ø r ʃ') == [
+                    ['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
 
     # assert calls
-    tokenise_mock.assert_called_with("ɒlʃoːørʃ")
     has_harmony_mock.assert_called_with(['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'])
     get_front_back_vowels_mock.assert_called_with(['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ'])
     token2class_mock.assert_has_calls([call(i, "asjp") for i in ['ɒ', 'l', 'ʃ', 'oː', 'ø', 'r', 'ʃ']])
@@ -201,20 +195,18 @@ def test_repair_harmony():
 
     #set up 3: patch tokenise, has_harmmony, get_front_back_vowels, token2class
     #test 3: input has more front vowels than back ones
-    with patch("loanpy.helpers.tokenise") as tokenise_mock:
-        with patch("loanpy.helpers.has_harmony") as has_harmony_mock:
-            has_harmony_mock.return_value = False
-            with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
-                get_front_back_vowels_mock.return_value = ['b', 'F', 'l', 'B', 't', 'F', 'l', 'F', 'p']
-                with patch("loanpy.helpers.token2class",
-                side_effect=["x", "i", "x", "o", "x", "i", "x", "i", "x"]) as token2class_mock:
-                    # assert that the wrong front vowel "ɒ" is replace by "F"
-                    assert repair_harmony(
-                        ipalist=['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p']) == [
-                        ['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
+    with patch("loanpy.helpers.has_harmony") as has_harmony_mock:
+        has_harmony_mock.return_value = False
+        with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
+            get_front_back_vowels_mock.return_value = ['b', 'F', 'l', 'B', 't', 'F', 'l', 'F', 'p']
+            with patch("loanpy.helpers.token2class",
+            side_effect=["x", "i", "x", "o", "x", "i", "x", "i", "x"]) as token2class_mock:
+                # assert that the wrong front vowel "ɒ" is replace by "F"
+                assert repair_harmony(
+                    ipalist=['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p']) == [
+                    ['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
 
     # assert calls
-    tokenise_mock.assert_not_called()
     has_harmony_mock.assert_called_with(['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p'])
     get_front_back_vowels_mock.assert_called_with(['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p'])
     token2class_mock.assert_has_calls([call(i, "asjp") for i in ['b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p']])
@@ -226,20 +218,18 @@ def test_repair_harmony():
     bk2b = ['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']
     bk_fb = ['b', 'B', 'l', 'B', 't', 'B', 'n', 'k', 'F', 'n', 'F', 'ʃ', 'F']
 
-    with patch("loanpy.helpers.tokenise") as tokenise_mock:
-        with patch("loanpy.helpers.has_harmony") as has_harmony_mock:
-            has_harmony_mock.return_value = False
-            with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
-                get_front_back_vowels_mock.return_value = bk_fb
-                with patch("loanpy.helpers.token2class",
-                side_effect=["x", "o", "x", "o", "x", "o", "x", "x", "i", "x", "i", "x", "i"]*2) as token2class_mock:
-                    # assert words without vowelharmony with equally many front and back vowels
-                    # are repaired in both possible ways
-                    assert repair_harmony(ipalist=bk) == [bk2f, bk2b]
+    with patch("loanpy.helpers.has_harmony") as has_harmony_mock:
+        has_harmony_mock.return_value = False
+        with patch("loanpy.helpers.get_front_back_vowels") as get_front_back_vowels_mock:
+            get_front_back_vowels_mock.return_value = bk_fb
+            with patch("loanpy.helpers.token2class",
+            side_effect=["x", "o", "x", "o", "x", "o", "x", "x", "i", "x", "i", "x", "i"]*2) as token2class_mock:
+                # assert words without vowelharmony with equally many front and back vowels
+                # are repaired in both possible ways
+                assert repair_harmony(ipalist=bk) == [bk2f, bk2b]
 
 
     # assert calls
-    tokenise_mock.assert_not_called()
     has_harmony_mock.assert_called_with(bk)
     get_front_back_vowels_mock.assert_called_with(bk)
     token2class_mock.assert_has_calls([call(i, "asjp") for i in bk])

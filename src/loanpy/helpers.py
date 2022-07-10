@@ -10,7 +10,6 @@ from itertools import product
 from logging import getLogger
 
 from gensim.downloader import load
-from ipatok import clusterise, tokenise
 from lingpy.sequence.sound_classes import token2class
 from networkx import DiGraph, all_shortest_paths, shortest_path
 from numpy import array_equiv, subtract, zeros
@@ -18,9 +17,6 @@ from tqdm import tqdm
 
 logger = getLogger(__name__)
 model = None
-tokenise = partial(tokenise, replace=True)
-clusterise = partial(clusterise, replace=True)
-
 
 def get_front_back_vowels(segments):
     """
@@ -79,7 +75,7 @@ many front as back vowels, both options will be returned.
 
     """
     if isinstance(ipalist, str):
-        ipalist = tokenise(ipalist)
+        ipalist = ipalist.split(" ")
 
     if has_harmony(ipalist) and "V" not in ipalist:
         return [ipalist]
