@@ -348,7 +348,7 @@ phonological matches. The index \
                 self.search_in.apply(self.phondist_msr) <= self.phondist]
 
         # creates new col "recipdf_idx" - keys to the input df
-        dfphonmatch = DataFrame({"match": matched, "match_cvseg": search_for,
+        dfphonmatch = DataFrame({"match": matched,
         "recipdf_idx": index})
 
         # this makes things more economical. dropping redundancies
@@ -448,148 +448,147 @@ similarity of phonological matches: "))
         logger.warning(f"Done. {datetime.now().strftime('%H:%M')}")
         return dfmatches
 
-    def postprocess(self, dfmatches):
-        """
-        Will replace every phonological match \
-in the output data frame with its most likely version.
+#    def postprocess(self, dfmatches):
+#        """
+#        Will replace every phonological match \
+#in the output data frame with its most likely version.
+#
+#        :param dfmatches: The entire data frame with potential loanwords
+#        :type dfmatches: pandas.core.series.Series
+#
+#        :returns: the same data frame but with likelier adaptations of donor \
+#words
+#        :rtype: pandas.core.series.Series
+#
+#        :Example:
+#
+#        >>> from pathlib import Path
+#        >>> from pandas import DataFrame
+#        >>> from loanpy.loanfinder import Search, __file__
+#        >>> PATH2SC_AD = Path(__file__).parent / "tests" \
+#/ "input_files" / "sc_ad_likeliest.txt"
+#        >>> PATH2SC_RC = Path(__file__).parent / "tests" \
+#/ "input_files" / "sc_rc_likeliest.txt"
+#        >>> search_obj = Search(
+#        >>> path2donordf=Path(__file__).parent / "tests" \
+#/ "input_files" / "loans_got.csv",
+#        >>> path2recipdf=Path(__file__).parent / "tests" / \
+#"input_files" / "loans_hun.csv",
+#        >>> scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC,
+#        >>> semsim=0.2)
+#        >>> dfin = DataFrame({"match": ["blub"], "recipdf_idx": [0],
+#        >>> "Meaning_x": ["computer, interface"],
+#        >>> "Meaning_y": ["human"], "semsim_msr": [0.10940766]})
+#        >>> search_obj.postprocess(dfin)
+#        postprocessing...
+#           recipdf_idx            Meaning_x  ...                      align_ad\
+ # nse_combined
+#        0            0  computer, interface  ...  ['b<b', 'l<l', 'u<u', 'b<b']\
+#        15.0
+#
+#
+#        """
+#        logger.warning(f"postprocessing...")
+#        # read in data for likeliestphonmatch, i.e. col Segments in both,
+#        # donor and recipient data frames
+#        dfmatches = dfmatches.merge(read_csv(self.recpath, encoding="utf-8",
+#                                             usecols=["CV_Segments",
+#                                                      self.reccol]).fillna(""),
+#                                    left_on="recipdf_idx", right_index=True)
+#        dfmatches = dfmatches.merge(read_csv(self.donpath, encoding="utf-8",
+#                                             usecols=["Segments",
+#                                                      self.doncol]).fillna(""),
+#                                    left_index=True, right_index=True)
+#
+#        # calculate likeliest phonological matches
+#        newcols = concat([self.likeliestphonmatch(ad, rc, segd, segr)
+#                          for ad, rc, segd, segr
+#                          in zip(dfmatches[self.doncol],
+#                                 dfmatches[self.reccol],
+#                                 dfmatches["Segments"],
+#                                 dfmatches["CV_Segments"])])
+#
+#         # delete non-likeliest matches
+#        del dfmatches["match"]
+#        newcols.index = dfmatches.index  # otherwise concat wont work
+#
+#        dfmatches = concat([dfmatches, newcols], axis=1)  # add new cols
+#
+#        # delete redundant data
+#        del (dfmatches["CV_Segments"], dfmatches[self.reccol],
+#             dfmatches["Segments"], dfmatches[self.doncol])
+#
+#        return dfmatches  # same structure as input df
 
-        :param dfmatches: The entire data frame with potential loanwords
-        :type dfmatches: pandas.core.series.Series
-
-        :returns: the same data frame but with likelier adaptations of donor \
-words
-        :rtype: pandas.core.series.Series
-
-        :Example:
-
-        >>> from pathlib import Path
-        >>> from pandas import DataFrame
-        >>> from loanpy.loanfinder import Search, __file__
-        >>> PATH2SC_AD = Path(__file__).parent / "tests" \
-/ "input_files" / "sc_ad_likeliest.txt"
-        >>> PATH2SC_RC = Path(__file__).parent / "tests" \
-/ "input_files" / "sc_rc_likeliest.txt"
-        >>> search_obj = Search(
-        >>> path2donordf=Path(__file__).parent / "tests" \
-/ "input_files" / "loans_got.csv",
-        >>> path2recipdf=Path(__file__).parent / "tests" / \
-"input_files" / "loans_hun.csv",
-        >>> scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC,
-        >>> semsim=0.2)
-        >>> dfin = DataFrame({"match": ["blub"], "recipdf_idx": [0],
-        >>> "Meaning_x": ["computer, interface"],
-        >>> "Meaning_y": ["human"], "semsim_msr": [0.10940766]})
-        >>> search_obj.postprocess(dfin)
-        postprocessing...
-           recipdf_idx            Meaning_x  ...                      align_ad\
-  nse_combined
-        0            0  computer, interface  ...  ['b<b', 'l<l', 'u<u', 'b<b']\
-        15.0
-
-
-        """
-        logger.warning(f"postprocessing...")
-        # read in data for likeliestphonmatch, i.e. col Segments in both,
-        # donor and recipient data frames
-        dfmatches = dfmatches.merge(read_csv(self.recpath, encoding="utf-8",
-                                             usecols=["CV_Segments",
-                                                      self.reccol]).fillna(""),
-                                    left_on="recipdf_idx", right_index=True)
-        dfmatches = dfmatches.merge(read_csv(self.donpath, encoding="utf-8",
-                                             usecols=["Segments",
-                                                      self.doncol]).fillna(""),
-                                    left_index=True, right_index=True)
-
-        # calculate likeliest phonological matches
-        newcols = concat([self.likeliestphonmatch(ad, rc, segd, segr)
-                          for ad, rc, segd, segr
-                          in zip(dfmatches[self.doncol],
-                                 dfmatches[self.reccol],
-                                 dfmatches["Segments"],
-                                 dfmatches["CV_Segments"])])
-
-         # delete non-likeliest matches
-        del dfmatches["match"], dfmatches["match_cvseg"]
-        newcols.index = dfmatches.index  # otherwise concat wont work
-
-        dfmatches = concat([dfmatches, newcols], axis=1)  # add new cols
-
-        # delete redundant data
-        del (dfmatches["CV_Segments"], dfmatches[self.reccol],
-             dfmatches["Segments"], dfmatches[self.doncol])
-
-        return dfmatches  # same structure as input df
-
-    def likeliestphonmatch(self, donor_ad, recip_rc, donor_segment,
-                           recip_segment):
-        """
-        Called by loanpy.loanfinder.postprocess. \
-Calculates the nse of recip_rc-recip_segment \
-and donor_ad-donor_segment, adds them together \
-and picks the word pair with the highest sum. \
-Adds 2*4 columns from loanpy.adrc.Adrc.get_nse.
-
-        :param donor_ad: adapted words in the donor data frame
-        :type donor_ad: str (not a regular expression, words separated by ", ")
-
-        :param recip_rc: a reconstructed word
-        :type recip_rc: str (regular expression)
-
-        :param donor_segment: the original (non-adapted) donor word
-        :type donor_segment: str
-
-        :param recip_segment: the original (non-reconstructed) recipient word
-        :type recip_segment: str
-
-        :returns: The likeliest phonological match
-        :rtype: pandas.core.series.Series
-
-        :Example:
-
-        >>> from pathlib import Path
-        >>> from pandas import DataFrame
-        >>> from loanpy.loanfinder import Search, __file__
-        >>> PATH2SC_AD = Path(__file__).parent / "tests" \
-/ "input_files" / "sc_ad_likeliest.txt"
-        >>> PATH2SC_RC = Path(__file__).parent / "tests" \
-/ "input_files" / "sc_rc_likeliest.txt"
-        >>> PATH2READ_DATA = Path(__file__).parent / "tests" \
-/ "input_files" / "ad_read_data.csv"
-        >>> search_obj = Search(
-        >>> PATH2READ_DATA, donorcol="col1",
-        >>> scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC)
-        >>> search_obj.likeliestphonmatch(donor_ad="a, blub, \
-club", recip_rc="(b|c)?lub",
-        >>> donor_segment="elub", recip_segment="dlub")
-            match  nse_rc  se_rc  ...           distr_ad\
-            align_ad  nse_combined
-            0  blub    10.0     50  ...  [0, 0, 10, 10, 0]  \
-            ['e<V', 'C<b', 'l<l', 'u<u', 'b<b']          14.0
-            [1 rows x 10 columns]
-
-
-        """
-        # step 1: serach for phonological matches between
-        # reconstructed reg-ex and list of predicted adaptations
-        dfph = self.phonmatch_small(Series(donor_ad.split(", "), name="match"),
-                                    recip_rc, dropduplicates=False)
-        # get the nse score between original and predictions
-        # and write to new columns
-        # cols se_rc, lst_rc, se_ad, lst_ad are just extra info for the user
-        dfph = DataFrame([(wrd, wrd_cvseg) +
-                           self.get_nse_rc(recip_segment, wrd_cvseg) +
-                           self.get_nse_ad(donor_segment, wrd)
-                          for wrd, wrd_cvseg in zip(dfph["match"], dfph["match_cvseg"])],
-                          columns=[
-                          "match", "match_cvseg", "nse_rc", "se_rc", "distr_rc",
-                          "align_rc", "nse_ad", "se_ad", "distr_ad", "align_ad"
-                          ])
-        # add combined nse
-        dfph["nse_combined"] = dfph["nse_rc"] + dfph["nse_ad"]
-        # get idx of max combined, keep only that idx (=likeliest match)
-        dfph = dfph[dfph.index == dfph["nse_combined"].idxmax()]
-
-        return dfph
+#    def likeliestphonmatch(self, donor_ad, recip_rc, donor_segment,
+#                           recip_segment):
+#        """
+#        Called by loanpy.loanfinder.postprocess. \
+#Calculates the nse of recip_rc-recip_segment \
+#and donor_ad-donor_segment, adds them together \
+#and picks the word pair with the highest sum. \
+#Adds 2*4 columns from loanpy.adrc.Adrc.get_nse.
+#
+#        :param donor_ad: adapted words in the donor data frame
+#        :type donor_ad: str (not a regular expression, words separated by ", ")
+#
+#        :param recip_rc: a reconstructed word
+#        :type recip_rc: str (regular expression)
+#
+#        :param donor_segment: the original (non-adapted) donor word
+#        :type donor_segment: str
+#
+#        :param recip_segment: the original (non-reconstructed) recipient word
+#        :type recip_segment: str
+#
+#        :returns: The likeliest phonological match
+#        :rtype: pandas.core.series.Series
+#
+#        :Example:
+#
+#        >>> from pathlib import Path
+#        >>> from pandas import DataFrame
+#        >>> from loanpy.loanfinder import Search, __file__
+#        >>> PATH2SC_AD = Path(__file__).parent / "tests" \/ "input_files" / "sc_ad_likeliest.txt"
+#        >>> PATH2SC_RC = Path(__file__).parent / "tests" \
+#/ "input_files" / "sc_rc_likeliest.txt"
+#        >>> PATH2READ_DATA = Path(__file__).parent / "tests" \
+#/ "input_files" / "ad_read_data.csv"
+#        >>> search_obj = Search(
+#        >>> PATH2READ_DATA, donorcol="col1",
+#        >>> scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC)
+#        >>> search_obj.likeliestphonmatch(donor_ad="a, blub, \
+#club", recip_rc="(b|c)?lub",
+#        >>> donor_segment="elub", recip_segment="dlub")
+#            match  nse_rc  se_rc  ...           distr_ad\
+#            align_ad  nse_combined
+#            0  blub    10.0     50  ...  [0, 0, 10, 10, 0]  \
+#            ['e<V', 'C<b', 'l<l', 'u<u', 'b<b']          14.0
+#            [1 rows x 10 columns]
+#
+#
+#        """
+#        # step 1: serach for phonological matches between
+#        # reconstructed reg-ex and list of predicted adaptations
+#        dfph = self.phonmatch_small(Series(donor_ad.split(", "), name="match"),
+#                                    recip_rc, dropduplicates=False)
+#        # get the nse score between original and predictions
+#        # and write to new columns
+#        # cols se_rc, lst_rc, se_ad, lst_ad are just extra info for the user
+#        dfph = DataFrame([(wrd, wrd_cvseg) +
+#                           self.get_nse_rc(recip_segment, wrd_cvseg) +
+#                           self.get_nse_ad(donor_segment, wrd)
+#                          for wrd, wrd_cvseg in zip(dfph["match"])],
+#                          columns=[
+##                          "match", "match_cvseg", "nse_rc", "se_rc", "distr_rc",
+#                          "align_rc", "nse_ad", "se_ad", "distr_ad", "align_ad"
+#                          ])
+#        # add combined nse
+#        dfph["nse_combined"] = dfph["nse_rc"] + dfph["nse_ad"]
+#        # get idx of max combined, keep only that idx (=likeliest match)
+#        dfph = dfph[dfph.index == dfph["nse_combined"].idxmax()]
+#
+#        return dfph
 
     def phonmatch_small(self, search_in, search_for, index=None,
                         dropduplicates=True):
@@ -625,7 +624,7 @@ small and very different search_in-dfs, while loans() inputs one big df.
             matched = search_in[
                 search_in.apply(self.phondist_msr) <= self.phondist]
 
-        dfphonmatch = DataFrame({"match": matched, "match_cvseg": search_for,
+        dfphonmatch = DataFrame({"match": matched,
         "recipdf_idx": index})
 
         if dropduplicates:
