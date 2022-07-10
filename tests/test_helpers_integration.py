@@ -19,7 +19,6 @@ from loanpy.helpers import (
     get_mtx,
     has_harmony,
     combine_ipalists,
-    clusterise,
     mtx2graph,
     repair_harmony,
     tuples2editops)
@@ -53,14 +52,14 @@ def test_has_harmony():
 
 def test_repair_harmony():
     """test if words without front-back vowel harmony are repaired correctly"""
-    assert repair_harmony('kɛsthɛj') == [
+    assert repair_harmony('k ɛ s t h ɛ j') == [
         ['k', 'ɛ', 's', 't', 'h', 'ɛ', 'j']]
-    assert repair_harmony('ɒlʃoːørʃ') == [
+    assert repair_harmony('ɒ l ʃ oː ø r ʃ') == [
         ['ɒ', 'l', 'ʃ', 'oː', 'B', 'r', 'ʃ']]
     assert repair_harmony([
         'b', 'eː', 'l', 'ɒ', 't', 'ɛ', 'l', 'ɛ', 'p']) == [
         ['b', 'eː', 'l', 'F', 't', 'ɛ', 'l', 'ɛ', 'p']]
-    assert repair_harmony('bɒlɒtonkɛnɛʃɛ') == [
+    assert repair_harmony('b ɒ l ɒ t o n k ɛ n ɛ ʃ ɛ') == [
         ['b', 'F', 'l', 'F', 't', 'F', 'n', 'k', 'ɛ', 'n', 'ɛ', 'ʃ', 'ɛ'],
         ['b', 'ɒ', 'l', 'ɒ', 't', 'o', 'n', 'k', 'B', 'n', 'B', 'ʃ', 'B']]
 

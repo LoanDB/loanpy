@@ -25,7 +25,7 @@ from pandas import DataFrame, concat, read_csv
 from panphon.distance import Distance
 from tqdm import tqdm
 
-from loanpy.helpers import get_howmany, tokenise
+from loanpy.helpers import get_howmany
 from loanpy.adrc import prosodic_string  # b/c incl. partial
 from loanpy.adrc import Adrc
 

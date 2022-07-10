@@ -16,7 +16,7 @@ from panphon import __file__ as path2panphon
 from panphon.distance import Distance
 from tqdm import tqdm
 
-from loanpy.helpers import clusterise, tokenise, edit_distance_with2ops, pick_minmax
+from loanpy.helpers import edit_distance_with2ops, pick_minmax
 
 class WrongModeError(Exception):
     """Raised in loanpy.qfysc.read_mode if mode is neither \
@@ -764,8 +764,8 @@ gets flipped internally.)
             vals = vals[1:]
         # now check if e.g.
         # the "t͡ʃː" in ["-", "t͡ʃːr", "o"] (!) is a "C" or a "V":
-        elif (token2class(tokenise(keys[1][1:])[0], "cv") == "C" and
-                token2class(tokenise(vals[1])[0], "cv") == "V"):
+        elif (token2class(keys[1].split(".")[0].replace("#", ""), "cv") == "C" and
+                token2class(vals[1].split(".")[0], "cv") == "V"):
               keys = keys[1:]
 
         # go sequentially and squeeze the leftover together to one suffix

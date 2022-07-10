@@ -9,7 +9,6 @@ from pandas import DataFrame, read_csv
 from pandas.testing import assert_frame_equal
 from pytest import raises
 
-from loanpy.helpers import clusterise
 from loanpy.qfysc import (Etym,
 read_scdictbase, read_dst, cldf2pd)
 

@@ -14,7 +14,6 @@ from tqdm import tqdm
 
 from loanpy.helpers import (
     apply_edit,
-    clusterise,
     combine_ipalists,
     editops,
     flatten,
@@ -23,8 +22,8 @@ from loanpy.helpers import (
     has_harmony,
     list2regex,
     pick_minmax,
-    repair_harmony,
-    tokenise)
+    repair_harmony)
+
 from loanpy.qfysc import Etym
 
 prosodic_string = partial(prosodic_string, _output="cv")
