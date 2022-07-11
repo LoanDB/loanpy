@@ -7,7 +7,6 @@ cycler==0.11.0
 editdistance==0.6.0
 fonttools==4.33.3
 gensim==4.2.0
-ipatok==0.4.1
 isodate==0.6.1
 kiwisolver==1.4.2
 latexcodec==2.0.1
