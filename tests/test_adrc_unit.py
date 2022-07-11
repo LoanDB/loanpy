@@ -565,7 +565,7 @@ def test_reconstruct():
     has_harmony_mock.assert_has_calls([call(i.split(" ")) for i in [
         "k i h e", "k o h e", "h i h e", "h o h e"]])
 
-    # test sort_by_nse=True
+    # test sort_by_nse=9999999
 
     # teardown/setup: overwrite mock class, plug in scdict
     monkey_adrc = AdrcMonkeyReconstruct(
@@ -577,22 +577,22 @@ def test_reconstruct():
     }
 
     # set up: mock tokenise
-    with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
-        pick_minmax_mock.return_value = ["h i h e", "k i h e", "h o h e", "k o h e"]
+    with patch("loanpy.adrc.nlargest") as nlargest_mock:
+        nlargest_mock.return_value = [(99, "h i h e"), (20, "k i h e"), (17, "h o h e"), (4, "k o h e")]
 
         # assert reconstruct works and sorts the result by nse
         assert Adrc.reconstruct(
             self=monkey_adrc,
             ipastr="k i k i",
-            howmany=float("inf"),
-            sort_by_nse=True,
+            howmany=9999999,
+            sort_by_nse=9999999,
             ) == "^h i h e$|^k i h e$|^h o h e$|^k o h e$"
 
     # assert 3 calls: tokenise, read_sc, and get_nse
-    pick_minmax_mock.assert_called_with([
-        ("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)], True, max)
+    nlargest_mock.assert_called_with(9999999, [
+        ("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)])
     assert monkey_adrc.read_sc_called_with == [
-        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == [["k i k i", "k i h e"], [
         "k i k i", "k o h e"], ["k i k i", "h i h e"], ["k i k i", "h o h e"]]
 
@@ -607,23 +607,23 @@ def test_reconstruct():
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
 
-    # set up: mock tokenise, pick_minmax
-    with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
-        pick_minmax_mock.return_value = ["h i h e"]
+    # set up: mock tokenise, nlargest
+    with patch("loanpy.adrc.nlargest") as nlargest_mock:
+        nlargest_mock.return_value = [(99, "h i h e")]
 
         # assert reconstruct works and picks 1 word with highest nse
         assert Adrc.reconstruct(
             self=monkey_adrc,
             ipastr="k i k i",
-            howmany=float("inf"),
+            howmany=9999999,
             sort_by_nse=1,
             ) == "^h i h e$|^k i h e$|^k o h e$|^h o h e$"
 
-    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
-    pick_minmax_mock.assert_called_with(
-        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)], 1, max)
+    # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
+    nlargest_mock.assert_called_with(1,
+        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)])
     assert monkey_adrc.read_sc_called_with == [
-        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == [["k i k i", "k i h e"], [
         "k i k i", "k o h e"], ["k i k i", "h i h e"], ["k i k i", "h o h e"]]
 
@@ -638,23 +638,23 @@ def test_reconstruct():
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
 
-    # set up: mock tokenise, pick_minmax
-    with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
-        pick_minmax_mock.return_value = ["h i h e", "k i h e"]
+    # set up: mock tokenise, nlargest
+    with patch("loanpy.adrc.nlargest") as nlargest_mock:
+        nlargest_mock.return_value = [(99, "h i h e"), (20, "k i h e")]
 
         # assert reconstruct works and picks 1 word with highest nse
         assert Adrc.reconstruct(
             self=monkey_adrc,
             ipastr="k i k i",
-            howmany=float("inf"),
+            howmany=9999999,
             sort_by_nse=2,
             ) == "^h i h e$|^k i h e$|^k o h e$|^h o h e$"
 
-    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
-    pick_minmax_mock.assert_called_with(
-        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)], 2, max)
+    # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
+    nlargest_mock.assert_called_with(2,
+        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)])
     assert monkey_adrc.read_sc_called_with == [
-        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == [["k i k i", "k i h e"], [
         "k i k i", "k o h e"], ["k i k i", "h i h e"], ["k i k i", "h o h e"]]
 
@@ -669,23 +669,23 @@ def test_reconstruct():
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
 
-    # set up: mock tokenise, pick_minmax
-    with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
-        pick_minmax_mock.return_value = ["h i h e", "k i h e", "h o h e"]
+    # set up: mock tokenise, nlargest
+    with patch("loanpy.adrc.nlargest") as nlargest_mock:
+        nlargest_mock.return_value = [(99, "h i h e"), (20, "k i h e"), (17, "h o h e")]
 
         # assert reconstruct works and picks 1 word with highest nse
         assert Adrc.reconstruct(
             self=monkey_adrc,
             ipastr="k i k i",
-            howmany=float("inf"),
+            howmany=9999999,
             sort_by_nse=3,
             ) == "^h i h e$|^k i h e$|^h o h e$|^k o h e$"
 
-    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
-    pick_minmax_mock.assert_called_with(
-        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)], 3, max)
+    # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
+    nlargest_mock.assert_called_with(3,
+        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)])
     assert monkey_adrc.read_sc_called_with == [
-        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == [["k i k i", "k i h e"], [
         "k i k i", "k o h e"], ["k i k i", "h i h e"], ["k i k i", "h o h e"]]
 
@@ -700,23 +700,23 @@ def test_reconstruct():
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
 
-    # set up: mock tokenise, pick_minmax
-    with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+    # set up: mock tokenise, nlargest
+    with patch("loanpy.adrc.nlargest") as nlargest_mock:
         # assert reconstruct works and picks 0 words with highest nse
         assert Adrc.reconstruct(
             self=monkey_adrc,
             ipastr="k i k i",
-            howmany=float("inf"),
+            howmany=9999999,
             sort_by_nse=0,
             ) == "^(k|h) (i|o) (h) (e)$"
 
-    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
-    pick_minmax_mock.assert_not_called()
+    # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
+    nlargest_mock.assert_not_called()
     assert monkey_adrc.read_sc_called_with == [
-        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == []
 
-    # test sort_by_nse=False
+    # test sort_by_nse=0
 
     # teardown/setup: overwrite mock class, plug in scdict
     monkey_adrc = AdrcMonkeyReconstruct(
@@ -727,23 +727,23 @@ def test_reconstruct():
         "k": ["h"], "i#": ["e", "o"], "-#": ["-"]
     }
 
-    # set up: mock tokenise, pick_minmax
-    with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+    # set up: mock tokenise, nlargest
+    with patch("loanpy.adrc.nlargest") as nlargest_mock:
         # assert reconstruct works and picks 0 words with highest nse
         assert Adrc.reconstruct(
             self=monkey_adrc,
             ipastr="k i k i",
-            howmany=float("inf"),
-            sort_by_nse=False,
+            howmany=9999999,
+            sort_by_nse=0,
             ) == "^(k|h) (i|o) (h) (e)$"
 
-    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
-    pick_minmax_mock.assert_not_called()
+    # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
+    nlargest_mock.assert_not_called()
     assert monkey_adrc.read_sc_called_with == [
-        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == []
 
-    # test sort_by_nse=False, but combinatorics applied b/c
+    # test sort_by_nse=0, but combinatorics applied b/c
     # phonotactics_filter=True
 
     # teardown/setup: overwrite mock class, plug in scdict
@@ -755,26 +755,26 @@ def test_reconstruct():
     }
     monkey_adrc.inventories["ProsodicStructure"] = ["CVCV"]  # let's all thru filter!
 
-    # set up: mock tokenise, pick_minmax
+    # set up: mock tokenise, nlargest
     with patch("loanpy.adrc.prosodic_string") as prosodic_string_mock:
         prosodic_string_mock.return_value="CVCV"
-        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
+        with patch("loanpy.adrc.nlargest") as nlargest_mock:
             # assert reconstruct works and picks 0 words with highest nse
             assert Adrc.reconstruct(
                 self=monkey_adrc,
                 ipastr="k i k i",
-                howmany=float("inf"),
-                sort_by_nse=False,
+                howmany=9999999,
+                sort_by_nse=0,
                 phonotactics_filter=True,
                 ) == "^k i h e$|^k o h e$|^h i h e$|^h o h e$"
 
-    # assert 4 calls: tokenise, read_sc, and get_nse, pick_minmax
+    # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
     prosodic_string_mock.assert_has_calls([call(list(i)) for i in [
     "kihe", "kohe", "hihe", "hohe"
     ]])
-    pick_minmax_mock.assert_not_called()
+    nlargest_mock.assert_not_called()
     assert monkey_adrc.read_sc_called_with == [
-        (['#-', '#k', 'i', 'k', 'i#', '-#'], float("inf"))]
+        (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == []
 
     del monkey_adrc, AdrcMonkeyReconstruct
@@ -968,20 +968,27 @@ def test_adapt():
                         'k o k', 'k u k', 'h o k', 'h u k', 'c o k',
                         'c u k', 'k o t k e', 'k o d k e', 'k u t k e', 'k u d k e']
                     with patch("loanpy.adrc.prosodic_string",
-                        side_effect=["CVC"] * 6 + ["CVCCV"] * 4):
+                        side_effect=["CVC"] * 6 + ["CVCCV"] * 4) as prosodic_string_mock:
+                        with patch("loanpy.adrc.get_clusters",
+                        side_effect=[
+                                'k o t.k e', 'k o d.k e', 'k u t.k e',
+                                'k u d.k e']) as get_clusters_mock:
+                            with patch("loanpy.adrc.nlargest") as nlargest_mock:
+                                nlargest_mock.return_value = [(9, "k u t k e"),
+                                (5, "k o t k e")]
 
-                        # assert adapt works
-                        assert Adrc.adapt(
-                            self=monkey_adrc,
-                            ipastr="k i k i",
-                            howmany=6,
-                            max_repaired_phonotactics=2,
-                            max_paths2repaired_phonotactics=2,
-                            repair_vowelharmony=True,
-                            phonotactics_filter=True,
-                            sort_by_nse=True,
-                            cluster_filter=True,
-                            show_workflow=True) == "k u t k e, k o t k e"
+                                # assert adapt works
+                                assert Adrc.adapt(
+                                    self=monkey_adrc,
+                                    ipastr="k i k i",
+                                    howmany=6,
+                                    max_repaired_phonotactics=2,
+                                    max_paths2repaired_phonotactics=2,
+                                    repair_vowelharmony=True,
+                                    phonotactics_filter=True,
+                                    sort_by_nse=9999999,
+                                    cluster_filter=True,
+                                    show_workflow=True) == "k u t k e, k o t k e"
 
     # assert 8 calls: tokenise, flatten, repair_phonotactics, read_sc,
     # combine_ipalists, repair_harmony, workflow, get_howmany
@@ -1010,6 +1017,12 @@ def test_adapt():
             ('before_combinatorics',
              "[[['k', 'h', 'c'], ['o', 'u'], ['k']], \
 [['k'], ['o', 'u'], ['t', 'd'], ['k'], ['e']]]")])
+    prosodic_string_mock.assert_has_calls([call(i) for i in [
+        ['k', 'o', 'k'], ['k', 'u', 'k'], ['h', 'o', 'k'],
+        ['h', 'u', 'k'], ['c', 'o', 'k'],
+        ['c', 'u', 'k'], ['k', 'o', 't', 'k', 'e'],
+        ['k', 'o', 'd', 'k', 'e'], ['k', 'u', 't', 'k', 'e'],
+        ['k', 'u', 'd', 'k', 'e']]])
 
     # phonotactics_filter empty
 
@@ -1091,21 +1104,25 @@ def test_adapt():
                         'c u k', 'k o t k e', 'k o d k e', 'k u t k e', 'k u d k e']
                     with patch("loanpy.adrc.prosodic_string",
                         side_effect=["CVC"] * 6 + ["CVCCV"] * 4):
-                        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
-                            pick_minmax_mock.return_value = ["k u t k e"]
+                        with patch("loanpy.adrc.get_clusters",
+                        side_effect=[
+                                'k o t.k e', 'k o d.k e', 'k u t.k e',
+                                'k u d.k e']) as get_clusters_mock:
+                            with patch("loanpy.adrc.nlargest") as nlargest_mock:
+                                nlargest_mock.return_value = [(9, "k u t k e")]
 
-                            # assert adapt works
-                            assert Adrc.adapt(
-                                self=monkey_adrc,
-                                ipastr="k i k i",
-                                howmany=6,
-                                max_repaired_phonotactics=2,
-                                max_paths2repaired_phonotactics=2,
-                                repair_vowelharmony=True,
-                                phonotactics_filter=True,
-                                sort_by_nse=1,
-                                cluster_filter=True,
-                                show_workflow=True) == "k u t k e"
+                                # assert adapt works
+                                assert Adrc.adapt(
+                                    self=monkey_adrc,
+                                    ipastr="k i k i",
+                                    howmany=6,
+                                    max_repaired_phonotactics=2,
+                                    max_paths2repaired_phonotactics=2,
+                                    repair_vowelharmony=True,
+                                    phonotactics_filter=True,
+                                    sort_by_nse=1,
+                                    cluster_filter=True,
+                                    show_workflow=True) == "k u t k e, k o t k e"
 
     # assert 8 calls: tokenise, flatten, repair_phonotactics, read_sc,
     # combine_ipalists, repair_harmony, workflow, get_howmany
@@ -1114,8 +1131,8 @@ def test_adapt():
         [["k", "h", "c"], ["o", "u"], ["k"]], [["k"],
                                                ["o", "u"],
                                                ["t", "d"], ["k"], ["e"]]])
-    pick_minmax_mock.assert_called_with([
-        ("k o t k e", 5), ("k u t k e", 9)], 1, max, True)
+    nlargest_mock.assert_called_with(
+        1, [("k o t k e", 5), ("k u t k e", 9)])
 
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
@@ -1137,6 +1154,12 @@ def test_adapt():
              "[[['k', 'h', 'c'], ['o', 'u'], ['k']], \
 [['k'], ['o', 'u'], ['t', 'd'], ['k'], ['e']]]")])
 
+    prosodic_string_mock.assert_has_calls([call(i) for i in [
+        ['k', 'o', 'k'], ['k', 'u', 'k'], ['h', 'o', 'k'],
+        ['h', 'u', 'k'], ['c', 'o', 'k'],
+        ['c', 'u', 'k'], ['k', 'o', 't', 'k', 'e'],
+        ['k', 'o', 'd', 'k', 'e'], ['k', 'u', 't', 'k', 'e'],
+        ['k', 'u', 'd', 'k', 'e']]])
     # advanced settings, sort_by_nse=2
 
     # teardown/setup: overwrite mock class, mock tokenise,
@@ -1157,21 +1180,26 @@ def test_adapt():
                         'c u k', 'k o t k e', 'k o d k e', 'k u t k e', 'k u d k e']
                     with patch("loanpy.adrc.prosodic_string",
                         side_effect=["CVC"] * 6 + ["CVCCV"] * 4):
-                        with patch("loanpy.adrc.pick_minmax") as pick_minmax_mock:
-                            pick_minmax_mock.return_value = ["k u t k e", "k o t k e"]
+                        with patch("loanpy.adrc.get_clusters",
+                        side_effect=[
+                                'k o t.k e', 'k o d.k e', 'k u t.k e',
+                                'k u d.k e']) as get_clusters_mock:
+                            with patch("loanpy.adrc.nlargest") as nlargest_mock:
+                                nlargest_mock.return_value = [(9, "k u t k e"),
+                                (5, "k o t k e")]
 
-                            # assert adapt works
-                            assert Adrc.adapt(
-                                self=monkey_adrc,
-                                ipastr="k i k i",
-                                howmany=6,
-                                max_repaired_phonotactics=2,
-                                max_paths2repaired_phonotactics=2,
-                                repair_vowelharmony=True,
-                                phonotactics_filter=True,
-                                sort_by_nse=2,
-                                cluster_filter=True,
-                                show_workflow=True) == "k u t k e, k o t k e"
+                                # assert adapt works
+                                assert Adrc.adapt(
+                                    self=monkey_adrc,
+                                    ipastr="k i k i",
+                                    howmany=6,
+                                    max_repaired_phonotactics=2,
+                                    max_paths2repaired_phonotactics=2,
+                                    repair_vowelharmony=True,
+                                    phonotactics_filter=True,
+                                    sort_by_nse=2,
+                                    cluster_filter=True,
+                                    show_workflow=True) == "k u t k e, k o t k e"
 
     # assert 8 calls: tokenise, flatten, repair_phonotactics, read_sc,
     # combine_ipalists, repair_harmony, workflow, get_howmany
@@ -1180,8 +1208,8 @@ def test_adapt():
         [["k", "h", "c"], ["o", "u"], ["k"]], [["k"],
                                                ["o", "u"],
                                                ["t", "d"], ["k"], ["e"]]])
-    pick_minmax_mock.assert_called_with([
-        ("k o t k e", 5), ("k u t k e", 9)], 2, max, True)
+    nlargest_mock.assert_called_with(2, [
+        ("k o t k e", 5), ("k u t k e", 9)])
 
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
@@ -1203,6 +1231,12 @@ def test_adapt():
              "[[['k', 'h', 'c'], ['o', 'u'], ['k']], \
 [['k'], ['o', 'u'], ['t', 'd'], ['k'], ['e']]]")])
 
+    prosodic_string_mock.assert_has_calls([call(i) for i in [
+        ['k', 'o', 'k'], ['k', 'u', 'k'], ['h', 'o', 'k'],
+        ['h', 'u', 'k'], ['c', 'o', 'k'],
+        ['c', 'u', 'k'], ['k', 'o', 't', 'k', 'e'],
+        ['k', 'o', 'd', 'k', 'e'], ['k', 'u', 't', 'k', 'e'],
+        ['k', 'u', 'd', 'k', 'e']]])
     # tear down
     del monkey_adrc, AdrcMonkeyAdapt
 

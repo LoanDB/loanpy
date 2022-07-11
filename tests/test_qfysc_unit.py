@@ -164,13 +164,13 @@ def test_rank_closest_phonotactics():
 
     # set up: create instance of empty mock class,
     #  plug in inventory of phonotactic structures,
-    # mock edit_distance_with2ops and pick_minmax
+    # mock edit_distance_with2ops and nsmallest
     mocketym = EtymMonkey()
     mocketym.inventories = {"ProsodicStructure": {"CVC", "CVCVCC"}}
     with patch("loanpy.qfysc.edit_distance_with2ops", side_effect=[
             1, 0.98]) as edit_distance_with2ops_mock:
-        with patch("loanpy.qfysc.pick_minmax") as pick_minmax_mock:
-            pick_minmax_mock.return_value = ["CVCVCC", "CVC"]
+        with patch("loanpy.qfysc.nsmallest") as nsmallest_mock:
+            nsmallest_mock.return_value = [(1, "CVCVCC"), (2, "CVC")]
 
             # assert the correct closest string is picked
             assert Etym.rank_closest_phonotactics(
@@ -181,11 +181,11 @@ def test_rank_closest_phonotactics():
         [call("CVCV", "CVC"), call("CVCV", "CVCVCC")],
         any_order=True)  # since based on a set!
     try:
-        pick_minmax_mock.assert_called_with(
-            [('CVC', 1), ('CVCVCC', 0.98)], 9999999)
+        nsmallest_mock.assert_called_with(
+            9999999, [('CVC', 1), ('CVCVCC', 0.98)])
     except AssertionError:  # since based on a set!
-        pick_minmax_mock.assert_called_with(
-            [('CVCVCC', 1), ('CVC', 0.98)], 9999999)
+        nsmallest_mock.assert_called_with(
+            9999999, [(1, 'CVCVCC'), (0.98, 'CVC')])
 
     # tear down
     del mocketym
@@ -209,9 +209,9 @@ def test_rank_closest():
     mocketym = EtymMonkeyrank_closest()
     mocketym.inventories["Segments"] = ["a", "b", "c"]
 
-    # set up2: mock pick_minmax
-    with patch("loanpy.qfysc.pick_minmax") as pick_minmax_mock:
-        pick_minmax_mock.return_value = ["b", "a", "c"]
+    # set up2: mock nsmallest
+    with patch("loanpy.qfysc.nsmallest") as nsmallest_mock:
+        nsmallest_mock.return_value = [(1, "b"), (2, "a"), (3, "c")]
 
         # assert
         assert Etym.rank_closest(
@@ -219,30 +219,30 @@ def test_rank_closest():
 
     # assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
-    pick_minmax_mock.assert_called_with(
-        [('a', 1), ('b', 0), ('c', 2)], float("inf"))
+    nsmallest_mock.assert_called_with(
+        99999, [(1, 'a'), (0, 'b'), (2, 'c')])
 
-    # set up3: overwrite mock class instance, mock pick_minmax anew
+    # set up3: overwrite mock class instance, mock nsmallest anew
     mocketym = EtymMonkeyrank_closest()
     mocketym.inventories["Segments"] = ["a", "b", "c"]
-    with patch("loanpy.qfysc.pick_minmax") as pick_minmax_mock:
-        pick_minmax_mock.return_value = ["b", "a"]
+    with patch("loanpy.qfysc.nsmallest") as nsmallest_mock:
+        nsmallest_mock.return_value =  [(1, "b"), (2, "a")]
 
-        # assert pick_minmax picks mins correctly again
+        # assert nsmallest picks mins correctly again
         assert Etym.rank_closest(
             self=mocketym, ph="d", howmany=2) == "b, a"
 
     # assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
-    pick_minmax_mock.assert_called_with([('a', 1), ('b', 0), ('c', 2)], 2)
+    nsmallest_mock.assert_called_with(2, [(1, 'a'), (0, 'b'), (2, 'c')])
 
     # set up4: check if phoneme inventory can be accessed through self
     mocketym = EtymMonkeyrank_closest()
     mocketym.inventories["Segments"] = ["a", "b", "c"]
-    with patch("loanpy.qfysc.pick_minmax") as pick_minmax_mock:
-        pick_minmax_mock.return_value = "b"
+    with patch("loanpy.qfysc.nsmallest") as nsmallest_mock:
+        nsmallest_mock.return_value = [(1, "b")]
 
-        # assert pick_minmax picks mins correctly again
+        # assert nsmallest picks mins correctly again
         assert Etym.rank_closest(
             self=mocketym,
             ph="d",
@@ -250,7 +250,7 @@ def test_rank_closest():
 
     # assert calls
     assert mocketym.dm_called_with == [['d', 'a'], ['d', 'b'], ['d', 'c']]
-    pick_minmax_mock.assert_called_with([('a', 1), ('b', 0), ('c', 2)], 1)
+    nsmallest_mock.assert_called_with(1, [(1, 'a'), (0, 'b'), (2, 'c')])
 
     # tear down
     del mocketym, EtymMonkeyrank_closest
@@ -460,7 +460,6 @@ def test_cldf2pd():
     assert cldf2pd(None, source_language="whatever",
                    target_language="wtvr2") == (None, None)
     assert_frame_equal(dfout[0], dfexp)
-    print(dfout[1])
     assert_frame_equal(dfout[1], dfexp2)
 
     # tear down

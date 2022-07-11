@@ -5,6 +5,7 @@ from ast import literal_eval
 from collections import Counter, OrderedDict
 from itertools import count, cycle, product
 from functools import partial
+from heapq import nlargest
 from math import prod
 from operator import itemgetter
 from re import split as re_split
@@ -346,7 +347,7 @@ sound can correspond.
                     howmany=1,
                     phonotactics_filter=False,
                     vowelharmony_filter=False,
-                    sort_by_nse=False,
+                    sort_by_nse=0,
                     *args):  # so sanity.eval_one can pass on more args
         """
         Predicts past forms of a word based on data. Should \
@@ -495,7 +496,6 @@ vowelharmony_filter=True)  \
 
         # apply first filter if indicated (wrong phontactics out)
         if phonotactics_filter:
-            print(out, self.inventories)
             out = [i for i in out if prosodic_string(re_split("[ |.]", i)) in
                    self.inventories["ProsodicStructure"]]
             if out == []:
@@ -510,7 +510,7 @@ vowelharmony_filter=True)  \
         # sort results by decreasing likelihood (normalised sum of examples)
         if sort_by_nse:
             out_nse = [(i, self.get_nse(ipastr, i)) for i in out]  # get nse
-            out_max = pick_minmax(out_nse, sort_by_nse, max)
+            out_max = [i[1] for i in nlargest(sort_by_nse, out_nse)]
             out = list(dict.fromkeys(out_max + out))
 
         # can't have float in slice, but howmany=float("inf") is possible now
@@ -633,7 +633,7 @@ show_workflow=True)
               cluster_filter=False,
               phonotactics_filter=False,
               repair_vowelharmony=False,
-              sort_by_nse=False,
+              sort_by_nse=0,
               max_repaired_phonotactics=0,
               max_paths2repaired_phonotactics=1,
               deletion_cost=100,
@@ -852,8 +852,6 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
         # combine the sound correspondences to create a list of words (str)
         out = combine_ipalists(out)
 
-        # phonotactics repaired, still: 1 phoneme can correspond to +-1 phoneme
-        # structure not in target lg's phonotactic inventory
         if phonotactics_filter:
             out = [i for i in out if prosodic_string(i.split(" "))
                    in self.inventories["ProsodicStructure"]]
@@ -861,7 +859,6 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
             if out == []:
                 return "wrong phonotactics"
 
-        # filter clusters not in target lg's cluster inventory
         if cluster_filter:
             out = [wrd for wrd in out
                    if all(cl in self.inventories["CV_Segments"] for cl
@@ -871,8 +868,9 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
                 return "wrong clusters"
 
         if sort_by_nse:  # sort resutls by likelyhood (nse) if indicated
-            out_nse = [(i, self.get_nse(ipastr, i)) for i in out]
-            out = pick_minmax(out_nse, sort_by_nse, max, True)
+            out_nse = [(i, self.get_nse(ipastr, i)) for i in out]  # get nse
+            out_max = [i[1] for i in nlargest(sort_by_nse, out_nse)]
+            out = list(dict.fromkeys(out_max + out))
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
 
     def get_nse(self, left, right):
