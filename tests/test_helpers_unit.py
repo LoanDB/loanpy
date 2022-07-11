@@ -30,7 +30,6 @@ from loanpy.helpers import (
     list2regex,
     model,
     mtx2graph,
-    pick_minmax,
     plug_in_model,
     repair_harmony,
     tuples2editops)
@@ -702,38 +701,3 @@ output tuple are not higher than the two last numbers of the input tuple"""
     assert get_howmany(0, 0, 0) == (0, 0, 0)
     assert get_howmany(1000, 1000, 1000) == (10, 10, 10)
     assert get_howmany(500, 0, 2) == (500, 0, 2)
-
-
-def test_pick_minmax():
-    """test if correct number of mins/maxs is picked"""
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf")
-                       ) == ["c", "a", "b"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1) == ["c"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2) == ["c", "a"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3) == ["c", "a", "b"]
-    # test with max
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"),
-                       max) == ["b", "a", "c"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, max) == ["b"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, max) == ["b", "a"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3,
-                       max) == ["b", "a", "c"]
-
-    # test with return_all=True
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"), True
-                       ) == ["c", "a", "b"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, min, True
-                       ) == ["c", "a", "b"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, min, True
-                       ) == ["c", "a", "b"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3, min, True
-                       ) == ["c", "a", "b"]
-    # test with max
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"),
-                       max, True) == ["b", "a", "c"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1, max, True
-                       ) == ["b", "a", "c"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2, max, True
-                       ) == ["b", "a", "c"]
-    assert pick_minmax([("a", 5), ("b", 7), ("c", 3)], 3,
-                       max, True) == ["b", "a", "c"]

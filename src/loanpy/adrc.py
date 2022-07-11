@@ -22,7 +22,6 @@ from loanpy.helpers import (
     get_howmany,
     has_harmony,
     list2regex,
-    pick_minmax,
     repair_harmony)
 
 from loanpy.qfysc import Etym

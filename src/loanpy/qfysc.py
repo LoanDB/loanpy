@@ -16,7 +16,7 @@ from panphon import __file__ as path2panphon
 from panphon.distance import Distance
 from tqdm import tqdm
 
-from loanpy.helpers import edit_distance_with2ops, pick_minmax
+from loanpy.helpers import edit_distance_with2ops
 
 class WrongModeError(Exception):
     """Raised in loanpy.qfysc.read_mode if mode is neither \

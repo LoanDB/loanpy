@@ -753,57 +753,6 @@ leftover will be sliced away in loanpy.adrc.Adrc.adapt.
 
     return x, y, z
 
-
-def pick_minmax(input_and_nr, howmany, func=min, return_all=False):
-    """
-    Deprecated.
-    https://en.wikipedia.org/wiki/Partial_sorting
-    replace with this:
-    https://docs.python.org/3/library/heapq.html#heapq.nlargest
-    Called in loanpy.helpers.Etym.rank_closest and \
-loanpy.helpers.Etym.rank_closest_phonotactics. \
-Pick only the n smallest numbers from a list. Cheaper than \
-sorting the entire list and then taking only the slice needed.
-
-    :param input_and_nr: inventories and distances
-    :type input_and_nr: list of tuples
-
-    :param howmany: how many minimums/maximums to pick from input-list
-    :type howmany: int
-
-    :param func: Indicate if minimums or maximums should be picked.
-    :type func: max | min, default=min
-
-    :param return_all: Indicate whether only the sorted chunk should be \
-returned, or if it should be merged with the rest of the unsorted list.
-    :type return_all: bool, default=False
-
-    :returns: The indicated number of minimal values
-    :rtype: str (separated by ", ")
-
-    :Example:
-
-    >>> from loanpy.helpers import pick_minmax
-    >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], float("inf"))
-    ["c", "a", "b"]
-    >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], 1)
-    ["c"]
-    >>> pick_minmax([("a", 5), ("b", 7), ("c", 3)], 2)
-    ["c", "a"]
-    """
-
-    # if we want to have at least as many elements as the list is long
-    # then we will just have to sort the entire list
-    if howmany >= len(input_and_nr) or howmany is True:
-        sorted2 = partial(sorted, reverse=True) if func == max else sorted
-        return [i[0] for i in sorted2(input_and_nr, key=lambda tup: tup[1])]
-    out = []
-    # but if we just want a handful of min values
-    for i in range(howmany):  # just pick that number of mins thru loop.
-        mindisttup = func(input_and_nr, key=lambda tup: tup[1])
-        out.append(input_and_nr.pop(input_and_nr.index(mindisttup))[0])
-    return out + [i[0] for i in input_and_nr] if return_all else out
-
 def get_clusters(segments):
     """
     Takes a list of phonemes and segments them into consonant and vowel
