@@ -1,8 +1,8 @@
 .. image:: https://zenodo.org/badge/428920599.svg
    :target: https://zenodo.org/record/6628976
 
-.. image:: https://circleci.com/gh/martino-vic/loanpy/tree/2.0-beta.svg?style=svg
-       :target: https://circleci.com/gh/martino-vic/loanpy/tree/2.0-beta
+.. image:: https://dl.circleci.com/status-badge/img/gh/martino-vic/loanpy/tree/2%2E0%2E1.svg?style=svg
+       :target: https://dl.circleci.com/status-badge/redirect/gh/martino-vic/loanpy/tree/2%2E0%2E1
 
 Installation
 ============
