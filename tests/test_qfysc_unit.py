@@ -182,7 +182,7 @@ def test_rank_closest_phonotactics():
         any_order=True)  # since based on a set!
     try:
         nsmallest_mock.assert_called_with(
-            9999999, [('CVC', 1), ('CVCVCC', 0.98)])
+            9999999, [(1, 'CVC'), (0.98, 'CVCVCC')])
     except AssertionError:  # since based on a set!
         nsmallest_mock.assert_called_with(
             9999999, [(1, 'CVCVCC'), (0.98, 'CVC')])

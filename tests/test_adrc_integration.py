@@ -293,10 +293,10 @@ def test_reconstruct():
         ipastr="aː r u", howmany=1, phonotactics_filter=False,
         vowelharmony_filter=True) == "wrong vowel harmony"
 
-    # vtest sort_by_nse=True assert reconstr works and sorts the result by nse
+    # vtest sort_by_nse=9999999 assert reconstr works and sorts the result by nse
     assert adrc_inst.reconstruct(
         ipastr="aː r uː", howmany=2, phonotactics_filter=False,
-        vowelharmony_filter=False, sort_by_nse=True) == "^a n a γ$|^a n a a t͡ʃ i$"
+        vowelharmony_filter=False, sort_by_nse=9999999) == "^a n a γ$|^a n a a t͡ʃ i$"
 
     # test if sort_by_nse=1 works
     assert adrc_inst.reconstruct(
@@ -308,11 +308,11 @@ def test_reconstruct():
         ipastr="aː r uː", howmany=2, phonotactics_filter=False,
         vowelharmony_filter=False, sort_by_nse=2) == "^a n a γ$|^a n a a t͡ʃ i$"
 
-    # test if sort_by_nse=float("inf") works
+    # test if sort_by_nse=9999999 works
     assert adrc_inst.reconstruct(
         ipastr="aː r uː", howmany=2, phonotactics_filter=False,
         vowelharmony_filter=False,
-        sort_by_nse=float("inf")) == "^a n a γ$|^a n a a t͡ʃ i$"
+        sort_by_nse=9999999) == "^a n a γ$|^a n a a t͡ʃ i$"
 
     # test if sort_by_nse=0 works
     assert adrc_inst.reconstruct(
@@ -733,7 +733,7 @@ def test_adapt():
         repair_vowelharmony=True,
         phonotactics_filter=True,
         cluster_filter=True,
-        sort_by_nse=True) == "t͡ʃ a l d a, d a l d a"
+        sort_by_nse=9999999) == "t͡ʃ a l d a, d a l d a"
 
     # test show_workflow - run adapt first, then check workflow
     assert adrc_inst.adapt(
@@ -744,7 +744,7 @@ def test_adapt():
         repair_vowelharmony=True,
         phonotactics_filter=True,
         cluster_filter=True,
-        sort_by_nse=True,
+        sort_by_nse=9999999,
         show_workflow=True) == "t͡ʃ a l d a, d a l d a"
 
     assert adrc_inst.workflow == OrderedDict(
