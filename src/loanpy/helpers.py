@@ -756,6 +756,7 @@ leftover will be sliced away in loanpy.adrc.Adrc.adapt.
 
 def pick_minmax(input_and_nr, howmany, func=min, return_all=False):
     """
+    Deprecated.
     https://en.wikipedia.org/wiki/Partial_sorting
     replace with this:
     https://docs.python.org/3/library/heapq.html#heapq.nlargest

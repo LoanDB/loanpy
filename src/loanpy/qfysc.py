@@ -5,9 +5,9 @@ Quantify sound correspondences from etymological data.
 from ast import literal_eval
 from collections import Counter
 from functools import partial
+from heapq import nsmallest
 from pathlib import Path
 
-from ipatok import clusterise
 from lingpy.align.pairwise import Pairwise
 from lingpy.sequence.sound_classes import token2class
 from numpy import isnan
@@ -464,7 +464,7 @@ ranked according to similarity)
 
         return scdictbase
 
-    def rank_closest(self, ph, howmany=float("inf")):
+    def rank_closest(self, ph, howmany=99999):
         """
         Called by loanpy.helpers.Etym.get_scdictbase. \
 Sort self.phoneme_inventory by distance to input-phoneme.
@@ -497,11 +497,11 @@ first)
 
         """
         try:
-            phons_and_dist = [(i, self.distance_measure(ph, i))
+            phons_and_dist = [(self.distance_measure(ph, i), i)
             for i in self.inventories["Segments"]]
         except TypeError:
             return None
-        return ", ".join(pick_minmax(phons_and_dist, howmany))
+        return ", ".join([i[1] for i in nsmallest(howmany, phons_and_dist)])
 
     # DONT merge this func into rank_closest. It makes things more complicated
     def rank_closest_phonotactics(self, struc, howmany=9999999):
@@ -541,9 +541,9 @@ inv=["CVC", "CVCVV", "CCCC", "VVVVVV"])
 
         """
 
-        strucs_and_dist = [(i, edit_distance_with2ops(struc, i))
+        strucs_and_dist = [(edit_distance_with2ops(struc, i), i)
         for i in self.inventories["ProsodicStructure"]]
-        return ", ".join(pick_minmax(strucs_and_dist, howmany))
+        return ", ".join([i[1] for i in nsmallest(howmany, strucs_and_dist)])
 
     def align(self, left, right):
         """
