@@ -351,7 +351,8 @@ def test_reconstruct():
             self.read_sc_returns = read_sc_returns
             self.harmony_returns = iter(harmony_returns)
             self.harmony_called_with = []
-            self.get_nse_returns = iter([20, 4, 99, 17])
+            self.get_nse_returns = iter([
+            (20, "bli"), (4, "bla"), (99, "blu"), (17, "blo")])
             self.get_nse_called_with = []
             self.inventories = {
             "Segments": {},
@@ -590,7 +591,7 @@ def test_reconstruct():
 
     # assert 3 calls: tokenise, read_sc, and get_nse
     nlargest_mock.assert_called_with(9999999, [
-        ("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)])
+        (20, "k i h e"), (4, "k o h e"), (99, "h i h e"), (17, "h o h e")])
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == [["k i k i", "k i h e"], [
@@ -621,7 +622,7 @@ def test_reconstruct():
 
     # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
     nlargest_mock.assert_called_with(1,
-        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)])
+        [(20, "k i h e"), (4, "k o h e"), (99, "h i h e"), (17, "h o h e")])
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == [["k i k i", "k i h e"], [
@@ -652,7 +653,7 @@ def test_reconstruct():
 
     # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
     nlargest_mock.assert_called_with(2,
-        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)])
+        [(20, "k i h e"), (4, "k o h e"), (99, "h i h e"), (17, "h o h e")])
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == [["k i k i", "k i h e"], [
@@ -683,7 +684,7 @@ def test_reconstruct():
 
     # assert 4 calls: tokenise, read_sc, and get_nse, nlargest
     nlargest_mock.assert_called_with(3,
-        [("k i h e", 20), ("k o h e", 4), ("h i h e", 99), ("h o h e", 17)])
+        [(20, "k i h e"), (4, "k o h e"), (99, "h i h e"), (17, "h o h e")])
     assert monkey_adrc.read_sc_called_with == [
         (['#-', '#k', 'i', 'k', 'i#', '-#'], 9999999)]
     assert monkey_adrc.get_nse_called_with == [["k i k i", "k i h e"], [
@@ -891,7 +892,7 @@ def test_adapt():
             self.inventories = {}
             self.inventories["CV_Segments"] = ["k", "h", "t.k", "o", "u", "e"]
             self.inventories["ProsodicStructure"] = ["CVCCV"]
-            self.get_nse_returns = iter([5, 9])
+            self.get_nse_returns = iter([(5, "bla"), (9, "bla")])
             self.get_nse_called_with = []
 
         def repair_phonotactics(self, *args):
@@ -1132,7 +1133,7 @@ def test_adapt():
                                                ["o", "u"],
                                                ["t", "d"], ["k"], ["e"]]])
     nlargest_mock.assert_called_with(
-        1, [("k o t k e", 5), ("k u t k e", 9)])
+        1, [(5, "k o t k e"), (9, "k u t k e")])
 
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
@@ -1209,7 +1210,7 @@ def test_adapt():
                                                ["o", "u"],
                                                ["t", "d"], ["k"], ["e"]]])
     nlargest_mock.assert_called_with(2, [
-        ("k o t k e", 5), ("k u t k e", 9)])
+        (5, "k o t k e"), (9, "k u t k e")])
 
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]

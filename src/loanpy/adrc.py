@@ -509,9 +509,9 @@ vowelharmony_filter=True)  \
 
         # sort results by decreasing likelihood (normalised sum of examples)
         if sort_by_nse:
-            out_nse = [(i, self.get_nse(ipastr, i)) for i in out]  # get nse
-            out_max = [i[1] for i in nlargest(sort_by_nse, out_nse)]
-            out = list(dict.fromkeys(out_max + out))
+            out_nse = [(self.get_nse(ipastr, i)[0], i) for i in out]  # get nse
+            out_max = nlargest(sort_by_nse, out_nse)
+            out = list(dict.fromkeys([i[1] for i in out_max] + out))
 
         # can't have float in slice, but howmany=float("inf") is possible now
         if howmany != float("inf"):
@@ -868,9 +868,12 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
                 return "wrong clusters"
 
         if sort_by_nse:  # sort resutls by likelyhood (nse) if indicated
-            out_nse = [(i, self.get_nse(ipastr, i)) for i in out]  # get nse
+            out_nse = [(self.get_nse(ipastr, i)[0], i) for i in out]  # get nse
+            print("here1", out_nse)
             out_max = [i[1] for i in nlargest(sort_by_nse, out_nse)]
+            print(out_max)
             out = list(dict.fromkeys(out_max + out))
+            print(out)
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
 
     def get_nse(self, left, right):
