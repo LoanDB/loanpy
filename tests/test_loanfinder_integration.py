@@ -195,31 +195,31 @@ def test_phonmatch():
     del search_inst
 
 
-#def test_likeliestphonmatch():
+def test_likeliestphonmatch():
 
-#    search_inst = Search(path2donordf=PATH2READ_DATA, donorcol="col1",
-#                         scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC)
-#
-#    assert_frame_equal(search_inst.likeliestphonmatch(
-#        donor_ad="a, b l u b, c l u b", recip_rc="(b|c)? l u b",
-#        donor_segment="e l u b", recip_segment="d l u b"),
-#        DataFrame({"match": ["b l u b"],
-#                   "nse_rc": [10],
-#                   "se_rc": [50],
-#                   "distr_rc": str([10] * 5),
-#                   "align_rc": "['#-<*-', '#d.l<*b.l', \
-#'u<*u', 'b#<*b', '-#<*-']",
-#                   "nse_ad": [4],
-#                   "se_ad": [20],
-#                   "distr_ad": "[0, 0, 10, 10, 0]",
-#                   "align_ad": "['e<V', 'C<b', 'l<l', 'u<u', 'b<b']",
-#                   "nse_combined": [14],
-#                   "x": [0],
-#                   "y": [0]}),
-#        check_dtype=False)
+    search_inst = Search(path2donordf=PATH2READ_DATA, donorcol="col1",
+                         scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC)
 
-    # tear down
-#    del search_inst
+    assert_frame_equal(search_inst.likeliestphonmatch(
+        donor_ad="a, b l u b, c l u b", recip_rc="(b|c)? l u b",
+        donor_segment="e l u b", recip_segment="d.l u b"),
+        DataFrame({"match": ["b l u b"],
+                   "cv_match": ["b.l u b"],
+                   "nse_rc": [10],
+                   "se_rc": [50],
+                   "distr_rc": str([10] * 5),
+                   "align_rc": "['#-<*-', '#d.l<*b.l', \
+'u<*u', 'b#<*b', '-#<*-']",
+                   "nse_ad": [4],
+                   "se_ad": [20],
+                   "distr_ad": "[0, 0, 10, 10, 0]",
+                   "align_ad": "['e<V', 'C<b', 'l<l', 'u<u', 'b<b']",
+                   "nse_combined": [14]
+                   }),
+        check_dtype=False)
+
+# tear down
+    del search_inst
 
 
 def test_loans():
@@ -283,81 +283,84 @@ def test_loans():
         path2recipdf=Path(__file__).parent / "input_files" / "loans_hun.csv",
         semsim=0.1, scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC)
 
-#    search_inst.loans(
-#        postprocess=True,
-#        merge_with_rest=True,
-#        write_to=path2dummy_results)
-#
-#    assert_frame_equal(read_csv(path2dummy_results),
-#                       DataFrame({
-#                           'recipdf_idx': [0],
-#                           'gensim_multiword': [0.10940766],
-#                           'match': ["blub"],
-#                           'nse_rc': [10],
-#                           'se_rc': [50],
-#                           'distr_rc': [str([10] * 5)],
-#                           'align_rc': "['#-<*-', '#d.l<*b.l', \
-#'u<*u', 'b#<*b', '-#<*-']",
-#                           'nse_ad': [5],
-#                           'se_ad': [20],
-#                           'distr_ad': [str([0, 10, 10, 0])],
-#                           'align_ad': "['b<b', 'l<l', 'u<u', 'b<b']",
-#                           'nse_combined': [15],
-#                           "Segments_x": ["b l u b"],
-#                           "Meaning_x": ["human"],
-#                           "ad": ["blub, club"],
-#                           "bla_x": ["xyz"],
-#                           "Segments_y": ["d l u b"],
-#                           "Meaning_y": ["computer, interface"],
-#                           "rc": ["(b|c)?lub"],
-#                           "bla_y": ["xyz"]}), check_dtype=False)
+    search_inst.loans(
+        postprocess=True,
+        merge_with_rest=True,
+        write_to=path2dummy_results)
+
+    assert_frame_equal(read_csv(path2dummy_results),
+                       DataFrame({
+                           'recipdf_idx': [0],
+                           'gensim_multiword': [0.10940766],
+                           'match': ["b l u b"],
+                           'cv_match': ["b.l u b"],
+                           'nse_rc': [10],
+                           'se_rc': [50],
+                           'distr_rc': [str([10] * 5)],
+                           'align_rc': "['#-<*-', '#d.l<*b.l', \
+'u<*u', 'b#<*b', '-#<*-']",
+                           'nse_ad': [5],
+                           'se_ad': [20],
+                           'distr_ad': [str([0, 10, 10, 0])],
+                           'align_ad': "['b<b', 'l<l', 'u<u', 'b<b']",
+                           'nse_combined': [15],
+                           "Segments_x": ["b l u b"],
+                           "CV_Segments_x": ["b.l u b"],
+                           "Meaning_x": ["human"],
+                           "ad": ["b l u b, c l u b"],
+                           "bla_x": ["xyz"],
+                           "Segments_y": ["d l u b"],
+                           "CV_Segments_y": ["d.l u b"],
+                           "Meaning_y": ["computer, interface"],
+                           "rc": ["(b|c)? l u b"],
+                           "bla_y": ["xyz"]}), check_dtype=False)
 
     # tear down
     plug_in_model(None)
-#    remove(path2dummy_results)
+#   remove(path2dummy_results)
     del search_inst, path2dummy_results
 
+def test_postprocess():
+    """test if postprocessing works fine with test input data"""
+# set up: define input data frame
+    dfin = DataFrame({"match": ["b l u b"],
+                      "recipdf_idx": [0], "Meaning_x": [
+                      "computer, interface"],
+        "Meaning_y": ["human"], "semsim_msr": [0.10940766]})
 
-#def test_postprocess():
-#    """test if postprocessing works fine with test input data"""
-    # set up: define input data frame
-#    dfin = DataFrame({"match": ["b l u b"], "match_cvseg": ["b.l u b"],
-#                      "recipdf_idx": [0], "Meaning_x": [
-#                      "computer, interface"],
-#        "Meaning_y": ["human"], "semsim_msr": [0.10940766]})
+# set up: define expected output data frame
+    dfexp = DataFrame(
+        {
+            "recipdf_idx": [0],
+            "Meaning_x": ["computer, interface"],
+            "Meaning_y": ["human"],
+            "semsim_msr": [0.10940766],
+            "match": ["b l u b"],
+            "cv_match": ["b.l u b"],
+            "nse_rc": [10],
+            "se_rc": [50],
+            "distr_rc": str(
+                [10] * 5),
+            "align_rc": "['#-<*-', '#d.l<*b.l', 'u<*u', 'b#<*b', '-#<*-']",
+            "nse_ad": [5],
+            "se_ad": [20],
+            "distr_ad": "[0, 10, 10, 0]",
+            "align_ad": "['b<b', 'l<l', 'u<u', 'b<b']",
+            "nse_combined": [15]
+            })
+
+    # create instance of class
+    search_inst = Search(
+        path2donordf=Path(__file__).parent / "input_files" / "loans_got.csv",
+        path2recipdf=Path(__file__).parent / "input_files" / "loans_hun.csv",
+        scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC,
+        semsim=0.2)
+    search_inst.postprocess(dfin)
 #
-    # set up: define expected output data frame
-#    dfexp = DataFrame(
-#        {
-#            "recipdf_idx": [0],
-#            "Meaning_x": ["computer, interface"],
-#            "Meaning_y": ["human"],
-#            "semsim_msr": [0.10940766],
-#            "match": ["b l u b"],
-#            "match_cvseg": ["b.l u b"],
-#            "nse_rc": [10],
-#            "se_rc": [50],
-#            "distr_rc": str(
-#                [10] * 5),
-#            "align_rc": "['#-<*-', '#d.l<*b.l', 'u<*u', 'b#<*b', '-#<*-']",
-#            "nse_ad": [5],
-#            "se_ad": [20],
-##            "distr_ad": "[0, 10, 10, 0]",
-#            "align_ad": "['b<b', 'l<l', 'u<u', 'b<b']",
-#            "nse_combined": [15]})
+    assert_frame_equal(search_inst.postprocess(dfin), dfexp, check_dtype=False)
 #
-#    # create instance of class
-#    search_inst = Search(
-#        path2donordf=Path(__file__).parent / "input_files" / "loans_got.csv",
-#        path2recipdf=Path(__file__).parent / "input_files" / "loans_hun.csv",
-#        scdictlist_ad=PATH2SC_AD, scdictlist_rc=PATH2SC_RC,
-#        semsim=0.2)
-#    search_inst.postprocess(dfin)
-#
-#    assert_frame_equal(search_inst.postprocess(dfin), dfexp, check_dtype=False)
-#
-#    # tear down
-#    del dfin, dfexp, search_inst
+    # tear down
+    del dfin, dfexp, search_inst
 
 
 def test_merge_with_rest():
