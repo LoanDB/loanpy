@@ -421,88 +421,87 @@ def test_phonmatch():
     del df, class_phon, SearchMonkey
 
 
-#def test_likeliestphonmatch():
-#    """test if likeliest phonetic match is picked correctly"""
+def test_likeliestphonmatch():
+    """test if likeliest phonetic match is picked correctly"""
+
+# sest up mock class, used throughout this test and nowhere else
+    class SearchMonkey:
+        def __init__(self):
+            self.phonmatch_small_called_with = []
+            self.get_nse_ad_called_with = []
+            self.get_nse_rc_called_with = []
+            self.get_nse_ad_returns = iter(
+                [(8, 32, "[7, 9, 15, 2]", "['bla']"),
+                 (7, 21, [9, 3, 4, 5], "['bli']")])
+            self.get_nse_rc_returns = iter(
+                [(10, 40, "[10, 10, 10, 10]", "['blo']"),
+                 (5, 20, "[4, 4, 4, 4]", "['blu']")])
+            self.doncol = "ad"
+
+        def phonmatch_small(self, *args, dropduplicates):
+            self.phonmatch_small_called_with.append([*args, dropduplicates])
+            return DataFrame(
+                {"match": ["b l u b", "p l u b"],
+                 "cv_match": ["b.l u b", "p.l u b"],
+                 "recipdf_idx": [99, 99]}, index=[1, 1])
+
+        def get_nse_ad(self, *args):
+            self.get_nse_ad_called_with.append([*args])
+            return next(self.get_nse_ad_returns)
+
+        def get_nse_rc(self, *args):
+            self.get_nse_rc_called_with.append([*args])
+            return next(self.get_nse_rc_returns)
+
+    # set up: define return value of mocked pandas Series class
+    srs = Series(["a", "b l u b", "p l u b"], name="ph")
+    # set up: define expected result
+    dfexp = DataFrame({"match": ["b l u b"],
+                       "cv_match": ["b.l u b"],
+                       "nse_rc": [10],
+                       "se_rc": [40],
+                       "distr_rc": str([10] * 4),
+                       "align_rc": "['blo']",
+                       "nse_ad": [8],
+                       "se_ad": [32],
+                       "distr_ad": "[7, 9, 15, 2]",
+                       "align_ad": "['bla']",
+                       "nse_combined": [18]})
+
+    # set up: initiate instance of mock class
+    mocksearch = SearchMonkey()
+    # set up: mock pandas Series object
+    with patch("loanpy.loanfinder.Series") as Series_mock:
+        Series_mock.return_value = srs
+
+        # assert that the expected and actual results
+        # are identical pandas data frames
+    #    print(Search.likeliestphonmatch(
+    #        mocksearch, "a, blub, plub", "(b|p)?lub", "glub", "flub"))
+        assert_frame_equal(Search.likeliestphonmatch(
+                mocksearch, "a, b l u b, p l u b",
+                "?(b|p)? l u b", "g l u b", "f l u b"),
+            dfexp)
+
+    # assert mock Series class was initiated with correct args
+    Series_mock.assert_called_with(["a", "b l u b", "p l u b"], name="match")
 #
-    # sest up mock class, used throughout this test and nowhere else
-#    class SearchMonkey:
-#        def __init__(self):
-#            self.phonmatch_small_called_with = []
-#            self.get_nse_ad_called_with = []
-#            self.get_nse_rc_called_with = []
-#            self.get_nse_ad_returns = iter(
-#                [(8, 32, "[7, 9, 15, 2]", "['bla']"),
-#                 (7, 21, [9, 3, 4, 5], "['bli']")])
-#            self.get_nse_rc_returns = iter(
-#                [(10, 40, "[10, 10, 10, 10]", "['blo']"),
-#                 (5, 20, "[4, 4, 4, 4]", "['blu']")])
-#            self.doncol = "ad"
-#
-#        def phonmatch_small(self, *args, dropduplicates):
-#            self.phonmatch_small_called_with.append([*args, dropduplicates])
-#            return DataFrame(
-#                {"match": ["b l u b", "p l u b"],
-#                 "match_cvseg": ["b.l u b", "p.l u b"],
-#                 "recipdf_idx": [99, 99]}, index=[1, 1])
-#
-#        def get_nse_ad(self, *args):
-#            self.get_nse_ad_called_with.append([*args])
-#            return next(self.get_nse_ad_returns)
-#
-#        def get_nse_rc(self, *args):
-#            self.get_nse_rc_called_with.append([*args])
-#            return next(self.get_nse_rc_returns)
-#
-#    # set up: define return value of mocked pandas Series class
-#    srs = Series(["a", "b l u b", "p l u b"], name="ph")
-#    # set up: define expected result
-#    dfexp = DataFrame({"match": ["b l u b"],
-#                       "match_cvseg": ["b.l u b"],
-#                       "nse_rc": [10],
-#                       "se_rc": [40],
-#                       "distr_rc": str([10] * 4),
-#                       "align_rc": "['blo']",
-#                       "nse_ad": [8],
-#                       "se_ad": [32],
-#                       "distr_ad": "[7, 9, 15, 2]",
-#                       "align_ad": "['bla']",
-#                       "nse_combined": [18]})
-#
-#    # set up: initiate instance of mock class
-#    mocksearch = SearchMonkey()
-#    # set up: mock pandas Series object
-#    with patch("loanpy.loanfinder.Series") as Series_mock:
-#        Series_mock.return_value = srs
-#
-#        # assert that the expected and actual results
-#        # are identical pandas data frames
-#    #    print(Search.likeliestphonmatch(
-#    #        mocksearch, "a, blub, plub", "(b|p)?lub", "glub", "flub"))
-#        assert_frame_equal(Search.likeliestphonmatch(
-#                mocksearch, "a, b l u b, p l u b",
-#                "(b|p)? l u b", "g l u b", "f l u b"),
-#            dfexp)
-#
-#    # assert mock Series class was initiated with correct args
-#    Series_mock.assert_called_with(["a", "b l u b", "p l u b"], name="match")
-##
-#    # assert 3 calls. phonmatch_small, get_nse_rc, get_nse_ad
-#
-#    # assert phonmatch_small was called once with 3 args:
-#    # a pandas series, a regex string and boolean "False"
-#    assert len(mocksearch.phonmatch_small_called_with[0]) == 3
-#    assert_series_equal(mocksearch.phonmatch_small_called_with[0][0], srs)
-#    assert mocksearch.phonmatch_small_called_with[0][1] == "(b|p)? l u b"
-#    assert mocksearch.phonmatch_small_called_with[0][2] is False
-#    # assert the other 2 functions where called with the corrects args
-#    assert mocksearch.get_nse_rc_called_with == [
-#        ["f l u b", "b.l u b"], ["f l u b", "p.l u b"]]
-#    assert mocksearch.get_nse_ad_called_with == [
-#        ["g l u b", "b l u b"], ["g l u b", "p l u b"]]
-#
-#    # tear down
-##    del dfexp, mocksearch, srs, SearchMonkey
-#
+    # assert 3 calls. phonmatch_small, get_nse_rc, get_nse_ad
+
+    # assert phonmatch_small was called once with 3 args:
+    # a pandas series, a regex string and boolean "False"
+    assert len(mocksearch.phonmatch_small_called_with[0]) == 3
+    assert_series_equal(mocksearch.phonmatch_small_called_with[0][0], srs)
+    assert mocksearch.phonmatch_small_called_with[0][1] == "?(b|p)? l u b"
+    assert mocksearch.phonmatch_small_called_with[0][2] is False
+    # assert the other 2 functions where called with the corrects args
+    assert mocksearch.get_nse_rc_called_with == [
+        ["f l u b", "b.l u b"], ["f l u b", "p.l u b"]]
+    assert mocksearch.get_nse_ad_called_with == [
+        ["g l u b", "b l u b"], ["g l u b", "p l u b"]]
+
+    # tear down
+    del dfexp, mocksearch, srs, SearchMonkey
 
 def test_loans():
     """test if the main function is working:
@@ -714,143 +713,144 @@ postprocessed,mwr\nk i k i,99,edge,sharp,0.8,postprobla,mwrbla\n'
          mockgenerator)
 
 
-#def test_postprocess():
-#    """test if phon. matches are replaced with their likeliest version
-#    and nse+other stat. data is displayed correctly"""
-#
-#    # set up: define input data frame
-#    dfin = DataFrame({"match": ["k i k i"], "match_cvseg": ["k i k i"],
-#                      "recipdf_idx": [99], "Meaning_x": [
-#                     "edge"], "Meaning_y": ["sharp"], "semsim_msr": [0.8]},
-#                     index=[1])
-#
-#    # set up: define expected output data frame
-#    dfexp = DataFrame({"recipdf_idx": [99],
-#                       "Meaning_x": ["edge"],
-#                       "Meaning_y": ["sharp"],
-#                       "semsim_msr": [0.8],
-#                       "match": ["h i h i"],
-#                       "match_cvseg": ["h i h i"],
-#                       "nse_rc": [10],
-#                       "se_rc": [40],
-#                       "lst_rc": [[10] * 4],
-#                       "nse_ad": [8],
-#                       "se_ad": [32],
-#                       "lst_ad": [[7, 9, 15, 2]],
-#                       "nse_combined": [18],
-#                       "e_rc": [[[123], [456],
-#                                 [789], [908]]],
-#                       "e_ad": [[[123], [456], [789], [908]]]},
-#                      index=[1])
-#
-#    # set up: define return value of mocked pandas concat function
-#    # autopep8 is responsible for this kind of formatting
-#    dfcc = DataFrame({"recipdf_idx": [99],
-#                      "Meaning_x": ["edge"],
-#                      "Meaning_y": ["sharp"],
-#                      "semsim_msr": [0.8],
-#                      "match": ["h i h i"],
-#                      "match_cvseg": ["h i h i"],
-#                      "nse_rc": [10],
-#                      "se_rc": [40],
-#                      "lst_rc": [[10] * 4],
-#                      "nse_ad": [8],
-#                      "se_ad": [32],
-#                      "lst_ad": [[7, 9, 15, 2]],
-#                      "nse_combined": [18],
-#                      "e_rc": [[[123], [456], [789], [908]]],
-#                      "e_ad": [[[123], [456], [789], [908]]],
-#                      "Segments": ["k i k i"],
-#                      "rc": ["^(k|h) (i) (k|h) (i)$"],
-#                      "CV_Segments": ["k i k i"],
-#                      "ad": ["k i k i, h i h i"]},
-#                     index=[1])
-#
-#    # set up expected call of mock concat
-#    # (not really concating anything to keep simple)
-#    dfcc_calledwith = DataFrame({"recipdf_idx": [99],
-#                                 "Meaning_x": ["edge"],
-#                                 "Meaning_y": ["sharp"],
-#                                 "semsim_msr": [0.8],
-#                                 "CV_Segments": ["k i k i"],
-#                                 "rc": ["^(k|h) (i) (k|h) (i)$"],
-#                                 "Segments": ["k i k i"],
-#                                 "ad": ["k i k i, h i h i"]},
-#                                index=[1])
-#
-#    # set up: mock a search_for data frame (=reconstructed)
-#    dfrc = DataFrame({"CV_Segments": ["k i k i", "b u b a"], "rc": [
-#                     "^(k|h) (i) (k|h) (i)$", "^(b|p) (u) (b|p) (a)$"]}, index=[99, 100])
-#    # set up: mock a search_in data frame (=adapted)
-#    dfad = DataFrame({"Segments": ["k i k i", "b u b a"],
-#                      "ad": ["k i k i, h i h i", "b u b a, p u p a"]}, index=[1, 2])
-#
-#    # set up: mock the result of likeliestphonmatch
-#    out_likeliest = DataFrame({"match": ["h i h i"],
-#                               "match_cvseg": ["h i h i"],
-#                               "nse_rc": [10],
-#                               "se_rc": [40],
-#                               "lst_rc": [[10] * 4],
-#                               "nse_ad": [8],
-#                               "se_ad": [32],
-#                               "lst_ad": [[7, 9, 15, 2]],
-#                               "nse_combined": [18],
-#                               "e_rc": [[[123], [456], [789], [908]]],
-#                               "e_ad": [[[123], [456], [789], [908]]]})
-#
-#    # set up: create a mock class, only used in this test
-#    class MonkeyPostprocess:
-#        def __init__(self):
-#            self.likeliestphonmatch_called_with = []
-#            self.donpath = "got.csv"
-#            self.recpath = "hun.csv"
-#            self.doncol = "ad"
-#            self.reccol = "rc"
-#
-#        def likeliestphonmatch(self, *args):
-#            self.likeliestphonmatch_called_with.append([*args])
-#            return out_likeliest
-#
-#    # initiate instance of mock class
-#    mocksearch = MonkeyPostprocess()
-#
-#    # set up: mock pandas read_csv
-#    with patch("loanpy.loanfinder.read_csv", side_effect=[
-##            dfrc, dfad]) as read_csv_mock:
-#        # set up: mock pandas concat
-#        with patch("loanpy.loanfinder.concat", side_effect=[
-#                out_likeliest, dfcc]) as concat_mock:
-#
-#            # assert that actual and expected outcome is same
-#            # note that self=mocksearch!
-#            assert_frame_equal(Search.postprocess(mocksearch, dfin), dfexp)
-#
-#    # assert 3 calls: pandas.read_csv, mocksearch.likeliestphonmatch
-#    # and concat_mock
-#    read_csv_mock.assert_has_calls([
-#        call("hun.csv", encoding="utf-8", usecols=["CV_Segments", "rc"]),
-#        call("got.csv", encoding="utf-8", usecols=["Segments", "ad"])])
-#    assert mocksearch.likeliestphonmatch_called_with == [
-#        ["k i k i, h i h i", "^(k|h) (i) (k|h) (i)$", "k i k i", "k i k i"]]
-#    # assert first concat calls:
-#    # vertical concatenation of likeliestphonmatch' outcome
-#    assert_frame_equal(
-#        concat_mock.call_args_list[0][0][0][0],
-#        out_likeliest)
-#    # first [0]=first call, 2nd [0] convert call to tuple
-#    # 3rd [0] pick first ele of tup (a list in this case),
-#    # 4th [0]: pick the first element of the list (dfmatches)
-#    assert_frame_equal(
-#        concat_mock.call_args_list[1][0][0][0], dfcc_calledwith)
-#    # üick the second element of the list (dfnewcols)
-#    assert_frame_equal(
-#        concat_mock.call_args_list[1][0][0][1],
-#        out_likeliest)
-#
-#    # tear down
-#    del (mocksearch, MonkeyPostprocess, out_likeliest, dfad, dfrc,
-#         dfcc_calledwith, dfcc, dfexp, dfin)
-#
+def test_postprocess():
+    """test if phon. matches are replaced with their likeliest version
+    and nse+other stat. data is displayed correctly"""
+
+    # set up: define input data frame
+    dfin = DataFrame({"match": ["k i k i"],
+                      "recipdf_idx": [99], "Meaning_x": [
+                     "edge"], "Meaning_y": ["sharp"], "semsim_msr": [0.8]},
+                     index=[1])
+
+    # set up: define expected output data frame
+    dfexp = DataFrame({"recipdf_idx": [99],
+                       "Meaning_x": ["edge"],
+                       "Meaning_y": ["sharp"],
+                       "semsim_msr": [0.8],
+                       "match": ["h i h i"],
+                       "cv_match": ["h i h i"],
+                       "nse_rc": [10],
+                       "se_rc": [40],
+                       "lst_rc": [[10] * 4],
+                       "nse_ad": [8],
+                       "se_ad": [32],
+                       "lst_ad": [[7, 9, 15, 2]],
+                       "nse_combined": [18],
+                       "e_rc": [[[123], [456],
+                                 [789], [908]]],
+                       "e_ad": [[[123], [456], [789], [908]]]},
+                      index=[1])
+
+    # set up: define return value of mocked pandas concat function
+    # autopep8 is responsible for this kind of formatting
+    dfcc = DataFrame({"recipdf_idx": [99],
+                      "Meaning_x": ["edge"],
+                      "Meaning_y": ["sharp"],
+                      "semsim_msr": [0.8],
+                      "match": ["h i h i"],
+                      "cv_match": ["h i h i"],
+                      "nse_rc": [10],
+                      "se_rc": [40],
+                      "lst_rc": [[10] * 4],
+                      "nse_ad": [8],
+                      "se_ad": [32],
+                      "lst_ad": [[7, 9, 15, 2]],
+                      "nse_combined": [18],
+                      "e_rc": [[[123], [456], [789], [908]]],
+                      "e_ad": [[[123], [456], [789], [908]]],
+                      "Segments": ["k i k i"],
+                      "rc": ["^(k|h) (i) (k|h) (i)$"],
+                      "CV_Segments": ["k i k i"],
+                      "ad": ["k i k i, h i h i"]},
+                     index=[1])
+
+    # set up expected call of mock concat
+    # (not really concating anything to keep simple)
+    dfcc_calledwith = DataFrame({"recipdf_idx": [99],
+                                 "Meaning_x": ["edge"],
+                                 "Meaning_y": ["sharp"],
+                                 "semsim_msr": [0.8],
+                                 "CV_Segments": ["k i k i"],
+                                 "rc": ["^(k|h) (i) (k|h) (i)$"],
+                                 "Segments": ["k i k i"],
+                                 "ad": ["k i k i, h i h i"]
+                                 },
+                                index=[1])
+
+    # set up: mock a search_for data frame (=reconstructed)
+    dfrc = DataFrame({"CV_Segments": ["k i k i", "b u b a"], "rc": [
+                     "^(k|h) (i) (k|h) (i)$", "^(b|p) (u) (b|p) (a)$"]}, index=[99, 100])
+    # set up: mock a search_in data frame (=adapted)
+    dfad = DataFrame({"Segments": ["k i k i", "b u b a"],
+                      "ad": ["k i k i, h i h i", "b u b a, p u p a"]}, index=[1, 2])
+
+    # set up: mock the result of likeliestphonmatch
+    out_likeliest = DataFrame({"match": ["h i h i"],
+                               "match_cvseg": ["h i h i"],
+                               "nse_rc": [10],
+                               "se_rc": [40],
+                               "lst_rc": [[10] * 4],
+                               "nse_ad": [8],
+                               "se_ad": [32],
+                               "lst_ad": [[7, 9, 15, 2]],
+                               "nse_combined": [18],
+                               "e_rc": [[[123], [456], [789], [908]]],
+                               "e_ad": [[[123], [456], [789], [908]]]})
+
+    # set up: create a mock class, only used in this test
+    class MonkeyPostprocess:
+        def __init__(self):
+            self.likeliestphonmatch_called_with = []
+            self.donpath = "got.csv"
+            self.recpath = "hun.csv"
+            self.doncol = "ad"
+            self.reccol = "rc"
+
+        def likeliestphonmatch(self, *args):
+            self.likeliestphonmatch_called_with.append([*args])
+            return out_likeliest
+
+    # initiate instance of mock class
+    mocksearch = MonkeyPostprocess()
+
+    # set up: mock pandas read_csv
+    with patch("loanpy.loanfinder.read_csv", side_effect=[
+            dfrc, dfad]) as read_csv_mock:
+        # set up: mock pandas concat
+        with patch("loanpy.loanfinder.concat", side_effect=[
+                out_likeliest, dfcc]) as concat_mock:
+
+            # assert that actual and expected outcome is same
+            # note that self=mocksearch!
+            assert_frame_equal(Search.postprocess(mocksearch, dfin), dfexp)
+
+    # assert 3 calls: pandas.read_csv, mocksearch.likeliestphonmatch
+    # and concat_mock
+    read_csv_mock.assert_has_calls([
+        call("hun.csv", encoding="utf-8", usecols=["CV_Segments", "rc"]),
+        call("got.csv", encoding="utf-8", usecols=["Segments", "ad"])])
+    assert mocksearch.likeliestphonmatch_called_with == [
+        ["k i k i, h i h i", "^(k|h) (i) (k|h) (i)$", "k i k i", "k i k i"]]
+    # assert first concat calls:
+    # vertical concatenation of likeliestphonmatch' outcome
+    assert_frame_equal(
+        concat_mock.call_args_list[0][0][0][0],
+        out_likeliest)
+    # first [0]=first call, 2nd [0] convert call to tuple
+    # 3rd [0] pick first ele of tup (a list in this case),
+    # 4th [0]: pick the first element of the list (dfmatches)
+    assert_frame_equal(
+        concat_mock.call_args_list[1][0][0][0], dfcc_calledwith)
+    # üick the second element of the list (dfnewcols)
+    assert_frame_equal(
+        concat_mock.call_args_list[1][0][0][1],
+        out_likeliest)
+
+    # tear down
+    del (mocksearch, MonkeyPostprocess, out_likeliest, dfad, dfrc,
+         dfcc_calledwith, dfcc, dfexp, dfin)
+
 
 def test_merge_with_rest():
     """test if output is correctly merged with redundant info from input"""
