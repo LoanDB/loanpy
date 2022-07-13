@@ -116,8 +116,8 @@ def test_init():
             monkey_adrc = Adrc(
                 scdictlist="soundchanges.txt",
                 forms_csv="forms.csv",
-                adapting=False,
-                most_frequent_phonotactics=2)
+                adapting=False
+                )
 
             # assert initiation went correctly
             assert monkey_adrc.scdict == d0

@@ -169,8 +169,6 @@ from loanpy.qfysc.Qfy
                  forms_csv=None,
                  source_language=None,
                  target_language=None,
-                 most_frequent_phonotactics=9999999,
-                 phonotactic_inventory=None,
                  adapting=True,
                  scdictbase=None,
                  # only this will be read here.

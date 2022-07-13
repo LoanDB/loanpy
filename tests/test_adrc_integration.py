@@ -83,8 +83,8 @@ def test_init():
         scdictlist=PATH2SC_TEST,
         forms_csv=PATH2FORMS,
         source_language="WOT", target_language="EAH",
-        adapting=False,
-        most_frequent_phonotactics=2)
+        adapting=False
+        )
 
     assert len(adrc_inst.__dict__) == 12
 
