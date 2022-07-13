@@ -172,7 +172,6 @@ from loanpy.qfysc.Qfy
                  most_frequent_phonotactics=9999999,
                  phonotactic_inventory=None,
                  adapting=True,
-                 connector=None,
                  scdictbase=None,
                  vfb=None,
                  # only this will be read here.
@@ -182,7 +181,6 @@ from loanpy.qfysc.Qfy
                          source_language=source_language,
                          target_language=target_language,
                          adapting=adapting,
-                         connector=connector,
                          scdictbase=scdictbase,
                          vfb=vfb)
         # read here - was extracted by loanpy.qfysc.Qfy and written to file

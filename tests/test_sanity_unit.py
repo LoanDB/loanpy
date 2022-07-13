@@ -91,24 +91,24 @@ def test_eval_all():
     check_cache_mock.assert_not_called()
     write_to_cache_mock.assert_not_called()
     time_mock.assert_has_calls([], [])
+    #TODO: remove deprecated args
     adrc_mock.assert_called_with(
         forms_csv=9,
         source_language=9,
         target_language=9,
-        mode='adapt',
+        adapting=True,
         most_frequent_phonotactics=9999999,
         phonotactic_inventory=None,
-        connector=None,
         scdictbase=None,
         vfb=None)
     loop_thru_data_mock.assert_called_with(
         AdrcMonkey, False, False, False, False, 1, 1, 100, 49, False, [
-            10, 50, 100, 500, 1000], 'adapt', False, True)
+            10, 50, 100, 500, 1000], True, False, True)
     postprocess_mock.assert_called_with("ld")
     postprocess2_mock.assert_called_with(
         adrc_monkey,
         [10, 50, 100, 500, 1000],
-        "adapt",
+        True,
         None)
 
     del AdrcMonkey, adrc_monkey
