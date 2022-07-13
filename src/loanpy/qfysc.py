@@ -805,9 +805,11 @@ gets flipped internally.)
 
         invdict = {}
         for col in ["Segments", "CV_Segments", "ProsodicStructure"]:
-            invdict[col] = set()
-            [invdict[col].update(i.split(" ")) for i in self.dfety[f"{col}_tgt"]]
-            [invdict[col].update(i.split(" ")) for i in self.dfrest[f"{col}_tgt"]]
+            invdict[col] = Counter()
+            [invdict[col].update(Counter(i.split(" ")))
+                for i in self.dfety[f"{col}_tgt"]]
+            [invdict[col].update(Counter(i.split(" ")))
+                for i in self.dfrest[f"{col}_tgt"]]
 
         return invdict
 
