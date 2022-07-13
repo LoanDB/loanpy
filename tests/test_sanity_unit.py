@@ -136,7 +136,7 @@ def test_loop_thru_data():
     class AdrcMonkey:
         def __init__(self):
             self.dfety = dfforms_mock
-            self.mode = "adapt"
+            self.adapting = True
 
 #    def tqdm_mock(iterable):
 #        tqdm_mock.called_with = iterable
@@ -164,7 +164,7 @@ def test_loop_thru_data():
                             adrc_monkey, 1, 1, 100, 49,
                             False, False, False, False, False,
                             [10, 50, 100, 500, 1000],
-                            'adapt', False, True) == adrc_monkey
+                            True, False, True) == adrc_monkey
                         # assert dfety was plugged in with good col names
                         assert_frame_equal(adrc_monkey.dfety, df_exp)
 
@@ -179,11 +179,11 @@ def test_loop_thru_data():
 
     eval_one_mock.assert_has_calls([
         call("A pf e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
-             False, False, False, False, [10, 50, 100, 500, 1000], 'adapt'),
+             False, False, False, False, [10, 50, 100, 500, 1000], True),
         call("B a n a n e", adrc_monkey, "b a n a n a", 1, 1, 100, 49, False,
-             False, False, False, False, [10, 50, 100, 500, 1000], 'adapt'),
+             False, False, False, False, [10, 50, 100, 500, 1000], True),
         call("K i r sch e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
-             False, False, False, False, [10, 50, 100, 500, 1000], 'adapt')
+             False, False, False, False, [10, 50, 100, 500, 1000], True)
     ])
 
     DataFrame_mock.assert_called_with({'best_guess': ['a b c', 'd e f', 'g h i'],
@@ -357,7 +357,7 @@ def test_eval_one():
         with patch("loanpy.sanity.eval_adapt") as eval_adapt_mock:
             assert eval_one("a p.p.l e", "A pf e l", adrc_monkey, False,
                             False, False, False, 1, 1, 100, 49, False,
-                            [10, 50, 100, 500, 1000], 'reconstruct'
+                            [10, 50, 100, 500, 1000], False
                             ) == {"guesses": float("inf"), "best_guess": "b l a"}
 
     # eval eval_recon called as many times as guesslist is long
@@ -737,7 +737,7 @@ def test_postprocess():
 
     class MockIn:
         def __init__(self):
-            self.mode = "adapt"
+            self.adapting = True
     mock_in = MockIn()
     # patch functions
     with patch("loanpy.sanity.get_nse4df",
@@ -872,7 +872,7 @@ def test_get_nse4df():
     with patch("loanpy.sanity.concat") as concat_mock:
         concat_mock.return_value = df_exp
         # assert output is correct
-        adrc_monkey.mode = "adapt"
+        adrc_monkey.adapting = True
         out = get_nse4df(adrc_monkey, "Segments_tgt")
         assert isinstance(out, AdrcMonkey)
         assert_frame_equal(out.dfety, df_exp)

@@ -99,7 +99,7 @@ def test_init():
         forms_csv=None,
         source_language=None,
         target_language=None,
-        mode=None,
+        adapting=True,
         connector=None,
         scdictbase=None,
         vfb=None)
@@ -117,7 +117,7 @@ def test_init():
             monkey_adrc = Adrc(
                 scdictlist="soundchanges.txt",
                 forms_csv="forms.csv",
-                mode="reconstruct",
+                adapting=False,
                 most_frequent_phonotactics=2)
 
             # assert initiation went correctly
@@ -139,7 +139,7 @@ def test_init():
     # assert calls
     super_method_mock.assert_called_with(
         forms_csv='forms.csv', source_language=None, target_language=None,
-        mode='reconstruct', connector=None,
+        adapting=False, connector=None,
         scdictbase=None, vfb=None)
     assert read_scdictlist_mock.call_args_list == [call("soundchanges.txt")]
 
@@ -1261,7 +1261,7 @@ def test_get_nse():
             self.edict = {"#-<*-": [1, 2], "#ɟ<*j": [3, 4],
                           "ɒ<*ɑ": [5], "l<*lk": [6, 7, 8], "o<*ɑ": [9]}
             self.connector = "<*"
-            self.mode = "reconstruct"
+            self.adapting = False
 
         def align(self, *args):
             self.align_called_with.append([*args])

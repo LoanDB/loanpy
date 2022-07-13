@@ -276,9 +276,9 @@ semsim_msr=bert_similarity)
         self.semsim_msr = semsim_msr  # semantic similarity measuring function
 
         # normalised sum of examples for adaptions and reconstructions
-        self.get_nse_ad = Adrc(scdictlist=scdictlist_ad, mode="adapt").get_nse
+        self.get_nse_ad = Adrc(scdictlist=scdictlist_ad, adapting=True).get_nse
         self.get_nse_rc = Adrc(scdictlist=scdictlist_rc,
-                               mode="reconstruct").get_nse
+                               adapting=False).get_nse
 
     def phonmatch(self, search_for, index, dropduplicates=True):
         """

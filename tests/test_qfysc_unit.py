@@ -44,7 +44,7 @@ class PairwiseMonkey:
 class EtymMonkeyGetSoundCorresp:
     def __init__(
             self,
-            mode,
+            adapting,
             connector,
             alignreturns1,
             alignreturns2,
@@ -61,7 +61,7 @@ class EtymMonkeyGetSoundCorresp:
                                 "ProsodicStructure_tgt": ["CVCV", "CVCV"],
                                 "ProsodicStructure_src": ["CVCV", "CVCV"],
                                 "Cognacy": [12, 13]})
-        self.mode = mode
+        self.adapting = adapting
         self.connector = connector
         self.scdictbase = {"k": ["h", "c"], "i": ["i", "e"], "b": ["v"],
                            "u": ["o", "u"], "a": ["y", "ü"]}
@@ -277,12 +277,12 @@ def test_read_mode():
 def test_read_connector():
     """test if connector is read correctly"""
     # no setup or teardown needed for these assertions
-    assert read_connector(connector=None, mode="adapt") == "<"
-    assert read_connector(connector=None, mode=None) == "<"
-    assert read_connector(connector=None, mode="reconstruct") == "<*"
+    assert read_connector(connector=None, adapting=True) == "<"
+    assert read_connector(connector=None, adapting=True) == "<"
+    assert read_connector(connector=None, adapting=False) == "<*"
     assert read_connector(
         connector=(" from ", " from *"),
-        mode="reconstruct") == " from *"
+        adapting=False) == " from *"
 
 
 def test_read_scdictbase():
@@ -336,7 +336,7 @@ def test_init():
                             mocketym = Etym()
 
                             # assert
-                            assert mocketym.mode == "adapt"
+                            assert mocketym.adapting is True
                             assert mocketym.connector == "<"
                             assert mocketym.scdictbase == {}
                             assert mocketym.vfb is None
@@ -348,7 +348,7 @@ def test_init():
                             assert len(mocketym.__dict__) == 8
                             assert mocketym.__dict__ == {
                                 'connector': '<',
-                                'mode': 'adapt',
+                                'adapting': True,
                                 'scdictbase': {},
                                 'vfb': None,
                                 'dfety': None,
@@ -356,8 +356,8 @@ def test_init():
                                 'distance_measure': 'distfunc',
                                 'inventories': {}}
 
-                read_mode_mock.assert_called_with("adapt")
-                read_connector_mock.assert_called_with(None, "adapt")
+                read_mode_mock.assert_not_called()
+                read_connector_mock.assert_called_with(None, True)
                 read_scdictbase_mock.assert_called_with(None)
                 cldf2pd_mock.assert_called_with(
                     None, None, None)
@@ -395,7 +395,7 @@ def test_init():
                                     target_language="lg2")
 
                                 # assert
-                                assert mocketym.mode == "adapt"
+                                assert mocketym.adapting is True
                                 assert mocketym.connector == "<"
                                 assert mocketym.scdictbase == {}
                                 assert mocketym.vfb is None
@@ -407,7 +407,7 @@ def test_init():
                                 assert len(mocketym.__dict__) == 8
                                 assert mocketym.__dict__ == {
                                     'connector': '<',
-                                    'mode': 'adapt',
+                                    'adapting': True,
                                     'scdictbase': {},
                                     'vfb': None,
                                     'dfety': "sth3",
@@ -415,8 +415,8 @@ def test_init():
                                     'distance_measure': 'sth7',
                                     'inventories': {"sth4": "xy"}}
 
-                read_mode_mock.assert_called_with("adapt")
-                read_connector_mock.assert_called_with(None, "adapt")
+                read_mode_mock.assert_not_called()
+                read_connector_mock.assert_called_with(None, True)
                 read_scdictbase_mock.assert_called_with(None)
                 cldf2pd_mock.assert_called_with("path", "lg1", "lg2")
                 get_inventories_mock.assert_called_with()
@@ -517,7 +517,7 @@ def test_align():
 
     # initiate mock class, plug in mode
     mockqfy = EtymMonkeyAlign()
-    mockqfy.mode = "adapt"
+    mockqfy.adapting = True
     # assert if lingpy-alignment is assigned correctly if mode=="adapt"
     assert Etym.align(
         self=mockqfy,
@@ -528,7 +528,7 @@ def test_align():
 
     # set up mock class, plug in mode
     mockqfy = EtymMonkeyAlign()
-    mockqfy.mode = "reconstruct"
+    mockqfy.adapting = False
     # assert
     assert Etym.align(
         self=mockqfy,
@@ -615,7 +615,7 @@ def test_get_sound_corresp():
 
     # set up: create instance 1 of mock class
     mockqfy = EtymMonkeyGetSoundCorresp(
-        mode="adapt", connector="<", alignreturns1=DataFrame(
+        adapting=True, connector="<", alignreturns1=DataFrame(
             {
                 "keys": [
                     "k", "i", "k", "i"], "vals": [
@@ -627,7 +627,7 @@ def test_get_sound_corresp():
 
     # set up: create instance 2 of mock class
     mockqfy2 = EtymMonkeyGetSoundCorresp(  # necessary bc of iter()
-        mode="reconstruct", connector="<*", vfb="əœʌ",
+        adapting=False, connector="<*", vfb="əœʌ",
         alignreturns1=DataFrame(
             {"keys": ["#-", "#k", "i", "k", "i#"],
              "vals": ["-", "h", "e", "h", "e"]}),
@@ -704,7 +704,7 @@ def test_get_phonotactics_corresp():
     # vars for expected calls
     # mock pandasDataFrame
     mockqfy = EtymMonkeyGetSoundCorresp(
-        mode="adapt",
+        adapting=True,
         connector="<",
         alignreturns1=None,
         alignreturns2=None)
