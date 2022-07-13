@@ -44,8 +44,10 @@ class EtymMonkeyGetSoundCorresp:
             vfb=None):
         self.df1 = alignreturns1
         self.df2 = alignreturns2
-        self.align_returns = iter([self.df1, self.df2])
-        self.align_called_with = []
+        self.align_lingpy_returns = iter([self.df1, self.df2])
+        self.align_clusterwise_returns = iter([self.df1, self.df2])
+        self.align_lingpy_called_with = []
+        self.align_clusterwise_called_with = []
         self.rank_closest_phonotactics_called_with = []
         self.dfety = DataFrame({"Segments_tgt": ["kiki", "buba"],
                                 "Segments_src": ["hehe", "pupa"],
@@ -73,9 +75,13 @@ class EtymMonkeyGetSoundCorresp:
         "ProdosicStructure": {"CVCV"}
         }
 
-    def align(self, left, right):
-        self.align_called_with.append((left, right))
-        return next(self.align_returns)
+    def align_lingpy(self, left, right):
+        self.align_lingpy_called_with.append((left, right))
+        return next(self.align_lingpy_returns)
+
+    def align_clusterwise(self, left, right):
+        self.align_lingpy_called_with.append((left, right))
+        return next(self.align_clusterwise_returns)
 
     def rank_closest_phonotactics(self, struc):
         self.rank_closest_phonotactics_called_with.append(struc)
@@ -376,48 +382,6 @@ def test_cldf2pd():
     remove("test_cldf2pd.csv")
     del dfout, dfexp, dfin
 
-def test_align():
-    """test if align assigns the correct alignment-function to 2 strings"""
-
-    # set up mock class
-    class EtymMonkeyAlign:
-        def __init__(self):
-            self.align_lingpy_called_with = []
-            self.align_clusterwise_called_with = []
-
-        def align_lingpy(self, *args):
-            self.align_lingpy_called_with.append([*args])
-            return "lingpyaligned"
-
-        def align_clusterwise(self, *args):
-            self.align_clusterwise_called_with.append([*args])
-            return "clusterwisealigned"
-
-    # initiate mock class, plug in mode
-    mockqfy = EtymMonkeyAlign()
-    mockqfy.adapting = True
-    # assert if lingpy-alignment is assigned correctly if mode=="adapt"
-    assert Etym.align(
-        self=mockqfy,
-        left="leftstr",
-        right="rightstr") == "lingpyaligned"
-    # assert call
-    assert mockqfy.align_lingpy_called_with == [['leftstr', 'rightstr']]
-
-    # set up mock class, plug in mode
-    mockqfy = EtymMonkeyAlign()
-    mockqfy.adapting = False
-    # assert
-    assert Etym.align(
-        self=mockqfy,
-        left="leftstr",
-        right="rightstr") == "clusterwisealigned"
-    # assert call
-    assert mockqfy.align_clusterwise_called_with == [["leftstr", "rightstr"]]
-
-    # tear down
-    del mockqfy
-
 
 def test_align_lingpy():
     """test if lingpy's pairwise alignment function is called correctly"""
@@ -544,7 +508,7 @@ def test_get_sound_corresp():
             assert literal_eval(f.read()) == exp2
 
         # assert calls from assert while mode == "adapt"
-        assert mockqfy.align_called_with == [
+        assert mockqfy.align_lingpy_called_with == [
             ("kiki", "hehe"), ("buba", "pupa")]
         assert mockqfy.rank_closest_phonotactics_called_with == []  # no called
         for act, exp in zip(
@@ -557,7 +521,7 @@ def test_get_sound_corresp():
             assert_frame_equal(act, exp)
 
     # assert calls of assert while mode == "reconstruct"
-    assert mockqfy2.align_called_with == [
+    assert mockqfy2.align_lingpy_called_with == [
         ("kiki", "hehe"), ("buba", "pupa")]
     assert mockqfy2.rank_closest_phonotactics_called_with == []  # not called
     for act, exp in zip(

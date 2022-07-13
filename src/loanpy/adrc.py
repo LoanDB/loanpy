@@ -924,7 +924,8 @@ target_language="EAH")
         if not left or not right:
             return (0, 0, [0], [])
         # align the two input strings
-        dfsc = self.align(left, right)
+        dfsc = self.align_lingpy(left, right
+        ) if self.adapting else self.align_clusterwise(left, right)
         # turn alignment-df into one pandas Series of sound correspondences
         sc = dfsc["vals"] + self.connector + dfsc["keys"
         ] if self.adapting else (dfsc["keys"] + self.connector + dfsc["vals"])

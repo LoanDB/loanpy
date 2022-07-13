@@ -1255,17 +1255,17 @@ def test_get_nse():
                 "#-<*-": 10,
                 "#ɟ<*j": 9,
                 "ɒ<*ɑ": 8,
-                "l<*lk": 7,
+                "l<*l.k": 7,
                 "o<*ɑ": 6}
             self.edict = {"#-<*-": [1, 2], "#ɟ<*j": [3, 4],
-                          "ɒ<*ɑ": [5], "l<*lk": [6, 7, 8], "o<*ɑ": [9]}
+                          "ɒ<*ɑ": [5], "l<*l.k": [6, 7, 8], "o<*ɑ": [9]}
             self.connector = "<*"
             self.adapting = False
 
-        def align(self, *args):
+        def align_clusterwise(self, *args):
             self.align_called_with.append([*args])
             return DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
-                              "vals": ['-', 'j', 'ɑ', 'lk', 'ɑ', '-']})
+                              "vals": ['-', 'j', 'ɑ', 'l.k', 'ɑ', '-']})
 
     # test default settings (normalised sum of examples)
 
@@ -1273,12 +1273,12 @@ def test_get_nse():
     monkey_adrc = AdrcMonkeyget_nse()
     # assert
     assert Adrc.get_nse(
-        self=monkey_adrc, left="ɟɒloɡ", right="jɑlkɑ") == (
+        self=monkey_adrc, left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ") == (
         6.67, 40,
         '[10, 9, 8, 7, 6, 0]',
-        "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*lk', 'o<*ɑ', 'ɡ#<*-']")
+        "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*l.k', 'o<*ɑ', 'ɡ#<*-']")
     # assert call
-    assert monkey_adrc.align_called_with == [["ɟɒloɡ", "jɑlkɑ"]]
+    assert monkey_adrc.align_called_with == [["ɟ ɒ l o ɡ", "j ɑ l.k ɑ"]]
 
     # tear down mock class instance
     del monkey_adrc, AdrcMonkeyget_nse

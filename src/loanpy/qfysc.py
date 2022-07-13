@@ -218,7 +218,9 @@ source_language=1, target_language=2, mode="reconstruct")
 
         #start looping through source-target word pairs
         for left, right, cog in zip(tgtsrs, srcsrs, self.dfety["Cognacy"]):
-            dfalign = self.align(left, right)
+            dfalign = self.align_lingpy(left, right
+            ) if self.adapting else self.align_clusterwise(left, right)
+
             soundchange.append(dfalign)
             wordchange += [cog]*len(dfalign)  # col 3 after concat
 
@@ -521,72 +523,6 @@ inv=["CVC", "CVCVV", "CCCC", "VVVVVV"])
         strucs_and_dist = [(edit_distance_with2ops(struc, i), i)
         for i in self.inventories["ProsodicStructure"]]
         return ", ".join([i[1] for i in nsmallest(howmany, strucs_and_dist)])
-
-    def align(self, left, right):
-        """
-        Called by loanpy.qfysc.Qfy.get_sound_corresp. \
-Selects alignment with lingpy if adapting and its own alignment \
-if reconstructing. The alignment function/wrapper can be looked up at \
-loanpy.qfysc.Qfy.align_lingpy and loanpy.qfysc.Qfy.align_clusterwise
-
-        :param left: The string on the left side of the etymology to align.
-        :type left: str
-
-        :param right: The string on the right side of the etymology to align.
-        :type right: str
-
-        Note: In an earlier version, some additional \
-parameters were passed on to \
-lingpy.align.pairwise.Pairwise and \
-lingpy.align.pairwise.Pairwise.align. \
-That feature is not supported in the current version \
-because they bloat the script and \
-find only little practical use at the moment. If necessary, \
-they have to be inserted \
-directly in the source code, where Pairwise() gets initiated and \
-Pairwise.align() called.
-
-        :returns: a pandas data frame with \
-two columns named "keys" and "vals" \
-with one phoneme (cluster) and its aligned counterpart in each row.
-        :rtype: pandas.core.frame.DataFrame
-
-        :Example:
-
-        >>> from loanpy.qfysc import Qfy
-        >>> qfy_obj = Qfy()  # default mode is "adapt", so lingpy aligns
-        >>> qfy_obj.align("budapest", "budimpeʃta")
-          keys vals
-        0    b    b
-        1    u    u
-        2    d    d
-        3    i    a
-        4    m    C
-        5    p    p
-        6    e    e
-        7    ʃ    s
-        8    t    t
-        9    a    V
-
-
-        >>> qfy_obj = Qfy(mode="reconstruct")  # use own alignment
-        >>> qfy_obj.align("budapest", "budimpeʃta")
-          keys vals  # left&right col is flipped b/c source&target is flipped
-        0   #-    -
-        1   #b    b
-        2    u    u
-        3    d    d
-        4    a    i
-        5    p   mp
-        6    e    e
-        7  st#   ʃt
-        8   -#    a
-        """
-
-        if self.adapting:
-            return self.align_lingpy(left, right)
-        else:
-            return self.align_clusterwise(left, right)
 
     def align_lingpy(self, left, right):
         """
