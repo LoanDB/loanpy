@@ -102,7 +102,6 @@ def eval_all(
                 most_frequent_phonotactics=9999999,  # howmany most freq
                 phonotactic_inventory=None,  # chance to hard-code inventory
                 scdictbase=None,  # not bool! Provide path, or dict, else None
-                vfb=None,  # define placeholder vowels else None
                 # These 5 go to both loanpy.adrc.Adrc.adapt AND .reconstruct
                 guesslist=[10, 50, 100, 500, 1000],  # list of args 4 "howmany"
                 clusters=False,  # filter (adapt) / slice (reconstr.) clusters
@@ -343,8 +342,7 @@ mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
                     adapting=adapting,
                     most_frequent_phonotactics=most_frequent_phonotactics,
                     phonotactic_inventory=phonotactic_inventory,
-                    scdictbase=scdictbase,
-                    vfb=vfb)
+                    scdictbase=scdictbase)
 
     # next 10 args to adapt/reconstruct
     adrc_obj = loop_thru_data(
