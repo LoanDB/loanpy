@@ -302,18 +302,16 @@ def test_init():
                     assert mocketym.adapting is True
                     assert mocketym.connector == "<"
                     assert mocketym.scdictbase == {}
-                    assert mocketym.vfb is None
                     assert mocketym.dfety is None
                     assert mocketym.inventories == {}
                     assert mocketym.distance_measure == "distfunc"
 
                     # double check with __dict__
-                    assert len(mocketym.__dict__) == 8
+                    assert len(mocketym.__dict__) == 7
                     assert mocketym.__dict__ == {
                         'connector': '<',
                         'adapting': True,
                         'scdictbase': {},
-                        'vfb': None,
                         'dfety': None,
                         'dfrest': None,
                         'distance_measure': 'distfunc',
@@ -355,18 +353,16 @@ def test_init():
                         assert mocketym.adapting is True
                         assert mocketym.connector == "<"
                         assert mocketym.scdictbase == {}
-                        assert mocketym.vfb is None
                         assert mocketym.dfety is "sth3"
                         assert mocketym.inventories == {"sth4": "xy"}
                         assert mocketym.distance_measure == "sth7"
 
                         # double check with __dict__
-                        assert len(mocketym.__dict__) == 8
+                        assert len(mocketym.__dict__) == 7
                         assert mocketym.__dict__ == {
                             'connector': '<',
                             'adapting': True,
                             'scdictbase': {},
-                            'vfb': None,
                             'dfety': "sth3",
                             'dfrest': "sth5",
                             'distance_measure': 'sth7',
@@ -558,9 +554,9 @@ def test_get_sound_corresp():
            {'d1': 0}, {'d2': 0}, {'d3': 0}]
 
     # set up: the expected outcome of assert while mode=="reconstruct"
-    exp2 = [{'#-': ['-'], '#b': ['p'], '#k': ['h'], 'a#': ['a', 'ə', 'ʌ'],
-             'b': ['p'], 'i': ['e', 'ə', 'œ'], 'i#': ['e', 'ə', 'œ'],
-             'k': ['h'], 'u': ['u', 'ə', 'ʌ']},
+    exp2 = [{'#-': ['-'], '#b': ['p'], '#k': ['h'], 'a#': ['a'],
+             'b': ['p'], 'i': ['e'], 'i#': ['e'],
+             'k': ['h'], 'u': ['u']},
             {'#-<*-': 2, '#b<*p': 1, '#k<*h': 1, 'a#<*a': 1, 'b<*p': 1,
              'i#<*e': 1, 'i<*e': 1, 'k<*h': 1, 'u<*u': 1},
             {'#-<*-': [12, 13], '#b<*p': [13], '#k<*h': [12],

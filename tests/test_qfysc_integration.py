@@ -188,7 +188,7 @@ def test_init():
     qfy = Etym()
 
     # assert number of attributes (super() + rest)
-    assert len(qfy.__dict__) == 8
+    assert len(qfy.__dict__) == 7
 
     # 6 attributes inherited from Etym
     assert qfy.dfety is None
@@ -199,7 +199,6 @@ def test_init():
     assert qfy.adapting is True
     assert qfy.connector == "<"
     assert qfy.scdictbase == {}
-    assert qfy.vfb is None
 
     del qfy
 

@@ -100,8 +100,8 @@ def test_init():
         source_language=None,
         target_language=None,
         adapting=True,
-        scdictbase=None,
-        vfb=None)
+        scdictbase=None)
+
     assert read_scdictlist_mock.call_args_list == [call(None)]
 
     # set up: mock super() method and read_scdictlist
@@ -139,7 +139,7 @@ def test_init():
     super_method_mock.assert_called_with(
         forms_csv='forms.csv', source_language=None, target_language=None,
         adapting=False,
-        scdictbase=None, vfb=None)
+        scdictbase=None)
     assert read_scdictlist_mock.call_args_list == [call("soundchanges.txt")]
 
     # tear down

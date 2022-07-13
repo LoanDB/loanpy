@@ -173,7 +173,6 @@ from loanpy.qfysc.Qfy
                  phonotactic_inventory=None,
                  adapting=True,
                  scdictbase=None,
-                 vfb=None,
                  # only this will be read here.
                  scdictlist=None):
         # inherit from loanpy.qfysc.Qfy
@@ -181,8 +180,7 @@ from loanpy.qfysc.Qfy
                          source_language=source_language,
                          target_language=target_language,
                          adapting=adapting,
-                         scdictbase=scdictbase,
-                         vfb=vfb)
+                         scdictbase=scdictbase)
         # read here - was extracted by loanpy.qfysc.Qfy and written to file
         (self.scdict, self.sedict, self.edict,
             self.scdict_phonotactics) = read_scdictlist(scdictlist)

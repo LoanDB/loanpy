@@ -99,8 +99,7 @@ def test_eval_all():
         adapting=True,
         most_frequent_phonotactics=9999999,
         phonotactic_inventory=None,
-        scdictbase=None,
-        vfb=None)
+        scdictbase=None)
     loop_thru_data_mock.assert_called_with(
         AdrcMonkey, False, False, False, False, 1, 1, 100, 49, False, [
             10, 50, 100, 500, 1000], True, False, True)

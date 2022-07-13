@@ -47,7 +47,7 @@ def test_init():
 
     # check if initiation without args works fine
     adrc_inst = Adrc()
-    assert len(adrc_inst.__dict__) == 13
+    assert len(adrc_inst.__dict__) == 12
 
     # 5 attributes initiated in Adrc, rest inherited
     assert adrc_inst.scdict is None
@@ -60,7 +60,6 @@ def test_init():
     assert adrc_inst.adapting is True
     assert adrc_inst.connector == "<"
     assert adrc_inst.scdictbase == {}
-    assert adrc_inst.vfb is None
 
     # 6 attributes inherited from Etym via Qfy
     assert adrc_inst.dfety is None
@@ -87,7 +86,7 @@ def test_init():
         adapting=False,
         most_frequent_phonotactics=2)
 
-    assert len(adrc_inst.__dict__) == 13
+    assert len(adrc_inst.__dict__) == 12
 
     # assert initiation went correctly
     assert adrc_inst.scdict == d0
@@ -100,7 +99,6 @@ def test_init():
     assert adrc_inst.adapting is False
     assert adrc_inst.connector == "<*"
     assert adrc_inst.scdictbase == {}
-    assert adrc_inst.vfb is None
 
     # 6 attributes inherited from Etym via Qfy
     assert_frame_equal(

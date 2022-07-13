@@ -123,8 +123,8 @@ from loanpy.helpers.Etym
                  # to define here.
                  adapting = True,  # or: "reconstruct"
                  scdictbase=None,  # big file, so not generated every time
-                 distance_measure="weighted_feature_edit_distance",
-                 vfb=None):  # etymological data sometimes has placeholders
+                 distance_measure="weighted_feature_edit_distance"):
+                    # etymological data sometimes has placeholders
                     # for "any vowel", "any front vowel", or "any back vowel".
                     # Those have to be designated by ipa characters that are
                     # not used in the language. Because the tokeniser
@@ -132,7 +132,6 @@ from loanpy.helpers.Etym
         self.adapting = adapting
         self.connector = "<" if adapting else "<*"
         self.scdictbase = read_scdictbase(scdictbase)
-        self.vfb = vfb
         self.distance_measure = read_dst(distance_measure)
         # read data frame forms, turn words of target language to list
         # conclude dfety from dff
@@ -255,21 +254,6 @@ source_language=1, target_language=2, mode="reconstruct")
         scdict = dict(zip(dfsc["keys"], dfsc["vals"]))
         sedict = dict(zip(dfse["soundchange"], dfse["e"]))
         edict = dict(zip(dfe["soundchange"], dfe["wordchange"]))
-
-# insert placeholder vowels. This was necessary for uralic data.
-        if self.vfb:  # "əœʌ"
-            for i in scdict:
-                if (any(self.phon2cv.get(j, "") == "V" for j in scdict[i]) and
-                        self.vfb[0] not in scdict[i]):
-                    scdict[i].append(self.vfb[0])
-                    if (any(self.vow2fb.get(j, "") == "F"
-                            for j in scdict[i]) and
-                            self.vfb[1] not in scdict[i]):
-                        scdict[i].append(self.vfb[1])
-                    if (any(self.vow2fb.get(j, "") == "B"
-                            for j in scdict[i]) and
-                            self.vfb[2] not in scdict[i]):
-                        scdict[i].append(self.vfb[2])
 
 # in loanpy.qfysc.Qfy.align_lingpy "C" and "V" instead of "-" used
 # to mark that a sound disappeared. So has to be removed here again.
