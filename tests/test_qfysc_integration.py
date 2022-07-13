@@ -135,41 +135,23 @@ def test_init():
 
     del qfy
 
-
-def test_align():
-    """test if 2 strings are aligned correctly"""
-    # set up
-    qfy = Etym()
-    # assert
-    assert_frame_equal(qfy.align(left="k a l a", right="h a l"), DataFrame(
-        {"keys": ["h", "a", "l", "V"], "vals": ["k", "a", "l", "a"]}))
-    # overwrite
-    qfy = Etym(adapting=False)
-    # assert
-    assert_frame_equal(qfy.align(left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ"),
-                       DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
-                                  "vals": ['-', 'j', 'ɑ', 'l.k', 'ɑ', '-']}))
-    # tear down
-    del qfy
-
-
 def test_align_lingpy():
     """check if alignments work correctly"""
     # set up
     qfy = Etym()
     # assert
-    assert_frame_equal(qfy.align(left="kala", right="hal"), DataFrame(
+    assert_frame_equal(qfy.align_lingpy(left="kala", right="hal"), DataFrame(
         {"keys": ["h", "a", "l", "V"], "vals": ["k", "a", "l", "a"]}))
 
-    assert_frame_equal(qfy.align(left="aγat͡ʃi", right="aγat͡ʃːɯ"),
+    assert_frame_equal(qfy.align_lingpy(left="aγat͡ʃi", right="aγat͡ʃːɯ"),
                        DataFrame({"keys": ["a", "γ", "a", "t͡ʃː", "ɯ"],
                                   "vals": ["a", "γ", "a", "t͡ʃ", "i"]}))
 
-    assert_frame_equal(qfy.align(left="aldaγ", right="aldaγ"),
+    assert_frame_equal(qfy.align_lingpy(left="aldaγ", right="aldaγ"),
                        DataFrame({"keys": ["a", "l", "d", "a", "γ"],
                                   "vals": ["a", "l", "d", "a", "γ"]}))
 
-    assert_frame_equal(qfy.align(left="ajan", right="ajan"), DataFrame(
+    assert_frame_equal(qfy.align_lingpy(left="ajan", right="ajan"), DataFrame(
         {"keys": ["a", "j", "a", "n"], "vals": ["a", "j", "a", "n"]}))
 
     # tear down
@@ -181,41 +163,41 @@ def test_align_clusterwise():
     # set up
     qfy = Etym(adapting=False)
     # assert
-    assert_frame_equal(qfy.align(left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ"),
+    assert_frame_equal(qfy.align_clusterwise(left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ"),
                        DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
                                   "vals": ['-', 'j', 'ɑ', 'l.k', 'ɑ', '-']}))
 
-    assert_frame_equal(qfy.align(left="k i k i", right="h i h i"),
+    assert_frame_equal(qfy.align_clusterwise(left="k i k i", right="h i h i"),
                        DataFrame({"keys": ['#-', '#k', 'i', 'k', 'i#', '-#'],
                                   "vals": ['-', 'h', 'i', 'h', 'i', '-']}))
-    assert_frame_equal(qfy.align(left="k i k i", right="i h i"),
+    assert_frame_equal(qfy.align_clusterwise(left="k i k i", right="i h i"),
                        DataFrame({"keys": ['#k', 'i', 'k', 'i#', '-#'],
                                   "vals": ['-', 'i', 'h', 'i', '-']}))
 
-    assert_frame_equal(qfy.align(left="i k i", right="h i h i"),
+    assert_frame_equal(qfy.align_clusterwise(left="i k i", right="h i h i"),
                        DataFrame({"keys": ['#-', '#i', 'k', 'i#', '-#'],
                                   "vals": ['h', 'i', 'h', 'i', '-']}))
 
-    assert_frame_equal(qfy.align(left="u.o.a.e.i.a", right="b.r.r.r.z i.e r.r.r.r.r"),
+    assert_frame_equal(qfy.align_clusterwise(left="u.o.a.e.i.a", right="b.r.r.r.z i.e r.r.r.r.r"),
                        DataFrame({"keys": ['#-', 'u.o.a.e.i.a#', '-#'],
                                   "vals": ['b.r.r.r.z', 'i.e', 'r.r.r.r.r']}))
 
-    assert_frame_equal(qfy.align(left="u.o.a.e.i.a", right="b.r.r.r.z i"),
+    assert_frame_equal(qfy.align_clusterwise(left="u.o.a.e.i.a", right="b.r.r.r.z i"),
                        DataFrame({"keys": ['#-', 'u.o.a.e.i.a#', '-#'],
                                   "vals": ['b.r.r.r.z', 'i', '-']}))
 
-    assert_frame_equal(qfy.align(left="u.o.a.e.i.a", right="b.r.r.r.z"),
+    assert_frame_equal(qfy.align_clusterwise(left="u.o.a.e.i.a", right="b.r.r.r.z"),
                        DataFrame({"keys": ['#-', 'u.o.a.e.i.a#'],
                                   "vals": ['b.r.r.r.z', '-']}))
 
-    assert_frame_equal(qfy.align(left="b u d a p e s.t.t.t.t", right="u.a d a s.t"),
+    assert_frame_equal(qfy.align_clusterwise(left="b u d a p e s.t.t.t.t", right="u.a d a s.t"),
                        DataFrame(
                            {"keys": ['#b', 'u', 'd', 'a', 'p', 'e s.t.t.t.t#'],
                             "vals": ['-', 'u.a', 'd', 'a', 's.t', '-']}))
 
     # the only example in ronatasbertawot
     # where one starts with C, the other with V
-    assert_frame_equal(qfy.align(left="i m a d", right="v i m a d"),
+    assert_frame_equal(qfy.align_clusterwise(left="i m a d", right="v i m a d"),
                        DataFrame({"keys": ['#-', '#i', 'm', 'a', 'd#', '-#'],
                                   "vals": ['v', 'i', 'm', 'a', 'd', '-']}))
 
