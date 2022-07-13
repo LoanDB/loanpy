@@ -8,10 +8,7 @@ from unittest.mock import patch, call
 
 from loanpy import qfysc as qs
 from loanpy import helpers as hp
-from loanpy.qfysc import (
-    Etym,
-    cldf2pd,
-    read_scdictbase)
+from loanpy.qfysc import Etym, cldf2pd
 
 from pytest import raises
 from pandas import DataFrame, Series
@@ -251,32 +248,6 @@ def test_rank_closest():
     # tear down
     del mocketym, EtymMonkeyrank_closest
 
-def test_read_scdictbase():
-    """test if scdictbase is generated correctly from ipa_all.csv"""
-
-    # no setup needed for this assertion
-    assert read_scdictbase(None) == {}
-
-    # setup
-    base = {"a": ["e", "o"], "b": ["p", "v"]}
-    path = Path(__file__).parent / "test_read_scdictbase.txt"
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(str(base))
-
-    with patch("loanpy.qfysc.literal_eval") as literal_eval_mock:
-        literal_eval_mock.return_value = base
-
-        # assert
-        assert read_scdictbase(base) == base
-        assert read_scdictbase(path) == base
-
-    # assert call
-    literal_eval_mock.assert_called_with(str(base))
-
-    # tear down
-    remove(path)
-    del base, path
-
 #rewrite this by merging it with the other test_init below.
 def test_init():
     """test if class Etym is initiated correctly"""
@@ -294,33 +265,29 @@ def test_init():
         with patch("loanpy.qfysc.Etym.get_inventories"
                    ) as get_inventories_mock:
             get_inventories_mock.return_value = {}
-            with patch("loanpy.qfysc.read_scdictbase"
-                       ) as read_scdictbase_mock:
-                read_scdictbase_mock.return_value = {}
-                with patch("loanpy.qfysc.Distance.weighted_feature_edit_distance") as dist_mock:
-                    dist_mock.return_value = DistMonkey().weighted_feature_edit_distance
-                    mocketym = Etym()
+            with patch("loanpy.qfysc.Distance.weighted_feature_edit_distance") as dist_mock:
+                dist_mock.return_value = DistMonkey().weighted_feature_edit_distance
+                mocketym = Etym()
 
-                    # assert
-                    assert mocketym.adapting is True
-                    assert mocketym.connector == "<"
-                    assert mocketym.scdictbase == {}
-                    assert mocketym.dfety is None
-                    assert mocketym.inventories == {}
-                    assert mocketym.distance_measure == dist_mock
+                # assert
+                assert mocketym.adapting is True
+                assert mocketym.connector == "<"
+                assert mocketym.scdictbase == {}
+                assert mocketym.dfety is None
+                assert mocketym.inventories == {}
+                assert mocketym.distance_measure == dist_mock
 
-                    # double check with __dict__
-                    assert len(mocketym.__dict__) == 7
-                    assert mocketym.__dict__ == {
-                        'connector': '<',
-                        'adapting': True,
-                        'scdictbase': {},
-                        'dfety': None,
-                        'dfrest': None,
-                        'distance_measure': dist_mock,
-                        'inventories': {}}
+                # double check with __dict__
+                assert len(mocketym.__dict__) == 7
+                assert mocketym.__dict__ == {
+                    'connector': '<',
+                    'adapting': True,
+                    'scdictbase': {},
+                    'dfety': None,
+                    'dfrest': None,
+                    'distance_measure': dist_mock,
+                    'inventories': {}}
 
-                read_scdictbase_mock.assert_not_called()
                 cldf2pd_mock.assert_called_with(
                     None, None, None)
                 get_inventories_mock.assert_called_with()
@@ -337,36 +304,32 @@ def test_init():
             with patch("loanpy.qfysc.Etym.get_inventories"
                        ) as get_inventories_mock:
                 get_inventories_mock.return_value = {"sth4": "xy"}
-                with patch("loanpy.qfysc.read_scdictbase"
-                           ) as read_scdictbase_mock:
-                    read_scdictbase_mock.return_value = {}
-                    with patch("loanpy.qfysc.Distance.weighted_feature_edit_distance") as dist_mock:
-                        dist_mock.return_value = DistMonkey().weighted_feature_edit_distance
+                with patch("loanpy.qfysc.Distance.weighted_feature_edit_distance") as dist_mock:
+                    dist_mock.return_value = DistMonkey().weighted_feature_edit_distance
 
-                        mocketym = Etym(
-                            forms_csv="path", source_language="lg1",
-                            target_language="lg2")
+                    mocketym = Etym(
+                        forms_csv="path", source_language="lg1",
+                        target_language="lg2")
 
-                        # assert
-                        assert mocketym.adapting is True
-                        assert mocketym.connector == "<"
-                        assert mocketym.scdictbase == {}
-                        assert mocketym.dfety is "sth3"
-                        assert mocketym.inventories == {"sth4": "xy"}
-                        assert mocketym.distance_measure == dist_mock
+                    # assert
+                    assert mocketym.adapting is True
+                    assert mocketym.connector == "<"
+                    assert mocketym.scdictbase == {}
+                    assert mocketym.dfety is "sth3"
+                    assert mocketym.inventories == {"sth4": "xy"}
+                    assert mocketym.distance_measure == dist_mock
 
-                        # double check with __dict__
-                        assert len(mocketym.__dict__) == 7
-                        assert mocketym.__dict__ == {
-                            'connector': '<',
-                            'adapting': True,
-                            'scdictbase': {},
-                            'dfety': "sth3",
-                            'dfrest': "sth5",
-                            'distance_measure': dist_mock,
-                            'inventories': {"sth4": "xy"}}
+                    # double check with __dict__
+                    assert len(mocketym.__dict__) == 7
+                    assert mocketym.__dict__ == {
+                        'connector': '<',
+                        'adapting': True,
+                        'scdictbase': {},
+                        'dfety': "sth3",
+                        'dfrest': "sth5",
+                        'distance_measure': dist_mock,
+                        'inventories': {"sth4": "xy"}}
 
-                read_scdictbase_mock.assert_not_called()
                 cldf2pd_mock.assert_called_with("path", "lg1", "lg2")
                 get_inventories_mock.assert_called_with()
 
