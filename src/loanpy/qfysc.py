@@ -903,41 +903,6 @@ column "Target_Forms"
 
     return DataFrame(dfetymology), DataFrame(dfrest)
 
-def read_connector(connector, adapting):
-    """
-    Called by loanpy.qfysc.Qfy.__init__
-
-    :param connector: An iterable that defines the two symbols that connect \
-the words on the left and the right side of the etymology when adapting \
-vs. reconstructing. If None is passed, \
-"<" is used for adapting and \
-"<\*" for reconstructing.
-    :type connector: iterable of str
-
-    :param mode: the mode to choose the connector for, if "reconstruct", \
-then the second element of the iterable will be chosen. If "adapt", the 1st.
-    :type mode: "adapt" | "reconstruct"
-
-    :returns: The string that connects the left and right side of an etymology.
-    :rtype: str
-
-    :Example:
-
-    >>> from loanpy.qfysc import read_connector
-    >>> read_connector(connector=None, mode="adapt")
-    "<"
-    >>> read_connector(connector=None, mode=None)
-    "<"
-    >>> read_connector(connector=None, mode="reconstruct")
-    "<*"
-    >>> read_connector(connector=(" from ", " from *"), mode="reconstruct")
-    " from *"
-    """
-
-    if connector is None:
-        connector = ("<", "<*")
-    return connector[0] if adapting else connector[1]
-
 
 def read_scdictbase(scdictbase):
     """

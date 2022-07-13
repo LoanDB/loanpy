@@ -11,7 +11,6 @@ from loanpy import helpers as hp
 from loanpy.qfysc import (
     Etym,
     cldf2pd,
-    read_connector,
     read_dst,
     read_scdictbase)
 
@@ -253,17 +252,6 @@ def test_rank_closest():
     # tear down
     del mocketym, EtymMonkeyrank_closest
 
-def test_read_connector():
-    """test if connector is read correctly"""
-    # no setup or teardown needed for these assertions
-    assert read_connector(connector=None, adapting=True) == "<"
-    assert read_connector(connector=None, adapting=True) == "<"
-    assert read_connector(connector=None, adapting=False) == "<*"
-    assert read_connector(
-        connector=(" from ", " from *"),
-        adapting=False) == " from *"
-
-
 def test_read_scdictbase():
     """test if scdictbase is generated correctly from ipa_all.csv"""
 
@@ -303,37 +291,34 @@ def test_init():
             with patch("loanpy.qfysc.read_dst"
                        ) as read_dst_mock:
                 read_dst_mock.return_value = "distfunc"
-                with patch("loanpy.qfysc.read_connector") as read_connector_mock:
-                    read_connector_mock.return_value = "<"
-                    # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
-                    #    read_nsedict_mock.return_value = {}
-                    with patch("loanpy.qfysc.read_scdictbase"
-                               ) as read_scdictbase_mock:
-                        read_scdictbase_mock.return_value = {}
-                        mocketym = Etym()
+                # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
+                #    read_nsedict_mock.return_value = {}
+                with patch("loanpy.qfysc.read_scdictbase"
+                           ) as read_scdictbase_mock:
+                    read_scdictbase_mock.return_value = {}
+                    mocketym = Etym()
 
-                        # assert
-                        assert mocketym.adapting is True
-                        assert mocketym.connector == "<"
-                        assert mocketym.scdictbase == {}
-                        assert mocketym.vfb is None
-                        assert mocketym.dfety is None
-                        assert mocketym.inventories == {}
-                        assert mocketym.distance_measure == "distfunc"
+                    # assert
+                    assert mocketym.adapting is True
+                    assert mocketym.connector == "<"
+                    assert mocketym.scdictbase == {}
+                    assert mocketym.vfb is None
+                    assert mocketym.dfety is None
+                    assert mocketym.inventories == {}
+                    assert mocketym.distance_measure == "distfunc"
 
-                        # double check with __dict__
-                        assert len(mocketym.__dict__) == 8
-                        assert mocketym.__dict__ == {
-                            'connector': '<',
-                            'adapting': True,
-                            'scdictbase': {},
-                            'vfb': None,
-                            'dfety': None,
-                            'dfrest': None,
-                            'distance_measure': 'distfunc',
-                            'inventories': {}}
+                    # double check with __dict__
+                    assert len(mocketym.__dict__) == 8
+                    assert mocketym.__dict__ == {
+                        'connector': '<',
+                        'adapting': True,
+                        'scdictbase': {},
+                        'vfb': None,
+                        'dfety': None,
+                        'dfrest': None,
+                        'distance_measure': 'distfunc',
+                        'inventories': {}}
 
-                read_connector_mock.assert_not_called()
                 read_scdictbase_mock.assert_called_with(None)
                 cldf2pd_mock.assert_called_with(
                     None, None, None)
@@ -356,40 +341,37 @@ def test_init():
                 with patch("loanpy.qfysc.read_dst"
                            ) as read_dst_mock:
                     read_dst_mock.return_value = "sth7"
-                    with patch("loanpy.qfysc.read_connector") as read_connector_mock:
-                        read_connector_mock.return_value = "<"
-                        # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
-                        #    read_nsedict_mock.return_value = {}
-                        with patch("loanpy.qfysc.read_scdictbase"
-                                   ) as read_scdictbase_mock:
-                            read_scdictbase_mock.return_value = {}
+                    # with patch("loanpy.qfysc.read_nsedict") as read_nsedict_mock:
+                    #    read_nsedict_mock.return_value = {}
+                    with patch("loanpy.qfysc.read_scdictbase"
+                               ) as read_scdictbase_mock:
+                        read_scdictbase_mock.return_value = {}
 
-                            mocketym = Etym(
-                                forms_csv="path", source_language="lg1",
-                                target_language="lg2")
+                        mocketym = Etym(
+                            forms_csv="path", source_language="lg1",
+                            target_language="lg2")
 
-                            # assert
-                            assert mocketym.adapting is True
-                            assert mocketym.connector == "<"
-                            assert mocketym.scdictbase == {}
-                            assert mocketym.vfb is None
-                            assert mocketym.dfety is "sth3"
-                            assert mocketym.inventories == {"sth4": "xy"}
-                            assert mocketym.distance_measure == "sth7"
+                        # assert
+                        assert mocketym.adapting is True
+                        assert mocketym.connector == "<"
+                        assert mocketym.scdictbase == {}
+                        assert mocketym.vfb is None
+                        assert mocketym.dfety is "sth3"
+                        assert mocketym.inventories == {"sth4": "xy"}
+                        assert mocketym.distance_measure == "sth7"
 
-                            # double check with __dict__
-                            assert len(mocketym.__dict__) == 8
-                            assert mocketym.__dict__ == {
-                                'connector': '<',
-                                'adapting': True,
-                                'scdictbase': {},
-                                'vfb': None,
-                                'dfety': "sth3",
-                                'dfrest': "sth5",
-                                'distance_measure': 'sth7',
-                                'inventories': {"sth4": "xy"}}
+                        # double check with __dict__
+                        assert len(mocketym.__dict__) == 8
+                        assert mocketym.__dict__ == {
+                            'connector': '<',
+                            'adapting': True,
+                            'scdictbase': {},
+                            'vfb': None,
+                            'dfety': "sth3",
+                            'dfrest': "sth5",
+                            'distance_measure': 'sth7',
+                            'inventories': {"sth4": "xy"}}
 
-                read_connector_mock.assert_not_called()
                 read_scdictbase_mock.assert_called_with(None)
                 cldf2pd_mock.assert_called_with("path", "lg1", "lg2")
                 get_inventories_mock.assert_called_with()
