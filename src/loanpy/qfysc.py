@@ -131,14 +131,14 @@ from loanpy.helpers.Etym
                     # accepts only IPA-characters.
         self.adapting = adapting
         self.connector = "<" if adapting else "<*"
-        self.scdictbase = read_scdictbase(scdictbase)
         self.distance_measure = Distance().weighted_feature_edit_distance
-        # read data frame forms, turn words of target language to list
-        # conclude dfety from dff
         self.dfety, self.dfrest = cldf2pd(forms_csv, source_language, target_language)
-        # do NOT extract self.inventories this from dfety but from forms.csv
-        # b/c dfety extracts only from cogset where src and tgt lg are present
         self.inventories = self.get_inventories()
+        try:
+            with open(scdictbase, "r", encoding="utf-8") as f:
+                self.scdictbase = literal_eval(f.read())
+        except TypeError:
+            self.scdictbase = {}
 
     def get_sound_corresp(self, write_to=None):
 
