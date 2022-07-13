@@ -40,59 +40,6 @@ already run once. Classical cache thing.
     """
     pass
 
-
-def cache(method):
-    """
-    Simple decorator function to check if function was already run with \
-given arguments and to store the results in a CSV-file. For more details \
-see loanpy.sanity.check_cache and loanpy.sanity.write_to_cache. Intended \
-to decorate loanpy.sanity.eval_all.
-
-    :param method: The function or method to decorate. \
-    Designed for loanpy.sanity.eval_all.
-    :type method: func
-
-    :raises ArgumentsAlreadyTested: for more details see \
-    loanpy.sanity.check_cache
-
-    :returns: Raises an exception or writes a file, but return value \
-    itself is always None. Uncomment "# return result" to change this \
-    behaviour and return the return value of the decorated function instead.
-    :rtype: None
-
-    :Example:
-
-    >>> # copy lines one by one, try-except throws indentation error \
-when bulk-copying this entire paragraph
-    >>> from pathlib import Path
-    >>> from os import remove
-    >>> from loanpy.sanity import cache, __file__
-    >>> mockpath2cache = Path(__file__).parent / \
-"tests" / "output_files" / "mock_cache.csv"
-    >>> try:
-    >>>     remove(mockpath2cache)  # delete leftovers from last time
-    >>> except FileNotFoundError:
-    >>>     pass
-    >>> def mockfunc(*args, **kwargs):
-    >>>     return "bla", (1, 2, 3), 4, 5
-    >>> mockfunc = cache(mockfunc)  # decorate
-    >>> mockfunc(path2cache=mockpath2cache, a="hi", b="bye")
-    [Inspect results in mock_cache.csv in folder tests/output_files/\
-"mock_cache.csv"]
-
-
-    """
-    @wraps(method)
-    def wrapped(*args, **kwargs):
-        path2cache, init_args = {**kwargs}["path2cache"], {**kwargs} | dict(
-            zip(["forms_csv", "tgt_lg", "src_lg"], [*args]))
-        check_cache(path2cache, init_args)
-        result = method(*args, **kwargs)
-        write_to_cache(path2cache, init_args, result[1], result[2], result[3])
-        # return result
-    return wrapped
-
-
 def eval_all(
                 # Fllowing 9 params will go to loanpy.adrc.Adrc.__init__
                 forms_csv,  # etymological data to evaluate (cldf's forms.csv)
@@ -1478,6 +1425,57 @@ already, see {path2cache} line {idx+1}! (start counting at 1 in 1st row)")
                                         encoding="utf-8")
         # as well as evaluation columns eval_all will create
         # write empty cache to file at indicated location
+
+def cache(method):
+    """
+    Simple decorator function to check if function was already run with \
+given arguments and to store the results in a CSV-file. For more details \
+see loanpy.sanity.check_cache and loanpy.sanity.write_to_cache. Intended \
+to decorate loanpy.sanity.eval_all.
+
+    :param method: The function or method to decorate. \
+    Designed for loanpy.sanity.eval_all.
+    :type method: func
+
+    :raises ArgumentsAlreadyTested: for more details see \
+    loanpy.sanity.check_cache
+
+    :returns: Raises an exception or writes a file, but return value \
+    itself is always None. Uncomment "# return result" to change this \
+    behaviour and return the return value of the decorated function instead.
+    :rtype: None
+
+    :Example:
+
+    >>> # copy lines one by one, try-except throws indentation error \
+when bulk-copying this entire paragraph
+    >>> from pathlib import Path
+    >>> from os import remove
+    >>> from loanpy.sanity import cache, __file__
+    >>> mockpath2cache = Path(__file__).parent / \
+"tests" / "output_files" / "mock_cache.csv"
+    >>> try:
+    >>>     remove(mockpath2cache)  # delete leftovers from last time
+    >>> except FileNotFoundError:
+    >>>     pass
+    >>> def mockfunc(*args, **kwargs):
+    >>>     return "bla", (1, 2, 3), 4, 5
+    >>> mockfunc = cache(mockfunc)  # decorate
+    >>> mockfunc(path2cache=mockpath2cache, a="hi", b="bye")
+    [Inspect results in mock_cache.csv in folder tests/output_files/\
+"mock_cache.csv"]
+
+
+    """
+    @wraps(method)
+    def wrapped(*args, **kwargs):
+        path2cache, init_args = {**kwargs}["path2cache"], {**kwargs} | dict(
+            zip(["forms_csv", "tgt_lg", "src_lg"], [*args]))
+        check_cache(path2cache, init_args)
+        result = method(*args, **kwargs)
+        write_to_cache(path2cache, init_args, result[1], result[2], result[3])
+        # return result
+    return wrapped
 
 
 def write_to_cache(path2cache, init_args, stat, start, end):
