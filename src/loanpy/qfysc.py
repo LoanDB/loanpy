@@ -122,7 +122,6 @@ from loanpy.helpers.Etym
                  target_language=None,
                  # to define here.
                  adapting = True,  # or: "reconstruct"
-                 connector=None,  # will automatically get defined
                  scdictbase=None,  # big file, so not generated every time
                  distance_measure="weighted_feature_edit_distance",
                  vfb=None):  # etymological data sometimes has placeholders

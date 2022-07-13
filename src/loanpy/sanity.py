@@ -98,10 +98,9 @@ def eval_all(
                 forms_csv,  # etymological data to evaluate (cldf's forms.csv)
                 target_language,  # computational target language in forms.csv
                 source_language,  # computational source language in forms.csv
-                mode="adapt",  # adapt or reconstruct?
+                adapting=True,
                 most_frequent_phonotactics=9999999,  # howmany most freq
                 phonotactic_inventory=None,  # chance to hard-code inventory
-                connector=None,  # by default "<" for adapt &  "<*" 4 reconstr.
                 scdictbase=None,  # not bool! Provide path, or dict, else None
                 vfb=None,  # define placeholder vowels else None
                 # These 5 go to both loanpy.adrc.Adrc.adapt AND .reconstruct
@@ -341,10 +340,9 @@ mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
                     forms_csv=forms_csv,
                     source_language=source_language,
                     target_language=target_language,
-                    mode=mode,
+                    adapting=adapting,
                     most_frequent_phonotactics=most_frequent_phonotactics,
                     phonotactic_inventory=phonotactic_inventory,
-                    connector=connector,
                     scdictbase=scdictbase,
                     vfb=vfb)
 
@@ -366,12 +364,12 @@ mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
                                 show_workflow,              # 9 (11)
 
                                 guesslist,  # 10  # pop in eval_one
-                                mode,  # 11 pop in eval_one, picks ad vs rc
+                                adapting,  # 11 pop in eval_one, picks ad vs rc
                                 writesc,  # 12 pop in loop_thru_data
                                 crossval)  # 13 pop in loop_thru_data
 
     adrc_obj = postprocess(adrc_obj)
-    stat = postprocess2(adrc_obj, guesslist, mode, write_to)
+    stat = postprocess2(adrc_obj, guesslist, adapting, write_to)
 
     end = time()
 
