@@ -11,7 +11,7 @@ from pandas.testing import assert_frame_equal
 from pytest import raises
 
 from loanpy.qfysc import (Etym,
-read_scdictbase, read_dst, cldf2pd)
+read_scdictbase, cldf2pd)
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms_3cogs_wot.csv"
 PATH2FORMS2 = Path(__file__).parent / "input_files" / "forms.csv"
@@ -106,14 +106,6 @@ def test_cldf2pd():
 
     # tear down
     del dfexp
-
-
-def test_read_dst():
-    """test if input-string is correctly mapped to
-    method of panphon.distance.Distance"""
-    out = read_dst("weighted_feature_edit_distance")
-    assert ismethod(out)
-
 
 def test_form2list():
     pass  # unit == integration test
