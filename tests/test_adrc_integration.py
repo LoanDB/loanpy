@@ -1,6 +1,6 @@
 """integration tests for loanpy.adrc.py (2.0 BETA) with pytest 7.1.1"""
 
-from collections import OrderedDict
+from collections import Counter, OrderedDict
 from inspect import ismethod
 from os import remove
 from pathlib import Path
@@ -112,11 +112,14 @@ def test_init():
              "ProsodicStructure_tgt": ["VCVCV", "VCCVC", "VCVC"],
              "ProsodicStructure_src": ["VCVCV", "VCCVC", "VCVC"],
              "Cognacy": [1, 2, 3]}))
-    assert adrc_inst.inventories["Segments"] == {'a', 'd', 'i', 'j',
-                                           'l', 'n', 't͡ʃ', 'γ'}
-    assert adrc_inst.inventories["CV_Segments"] == {'a', 'i', 'j', 'l.d',
-                                           'n', 't͡ʃ', 'γ'}
-    assert adrc_inst.inventories["ProsodicStructure"] == {'VCVCV', 'VCCVC', 'VCVC'}
+    assert adrc_inst.inventories["Segments"] == Counter({'a': 6, 'γ': 2,
+    't͡ʃ': 1, 'i': 1, 'l': 1, 'd': 1, 'j': 1, 'n': 1})
+    assert adrc_inst.inventories["CV_Segments"] == Counter({'a': 6, 'γ': 2,
+    't͡ʃ': 1, 'i': 1, 'l.d': 1, 'j': 1, 'n': 1})
+
+    assert adrc_inst.inventories["ProsodicStructure"] == Counter(
+    {'VCVCV': 1, 'VCCVC': 1, 'VCVC': 1})
+
     ismethod(adrc_inst.distance_measure)
     assert_frame_equal(adrc_inst.dfrest,
         DataFrame({"Segments_tgt": [], "CV_Segments_tgt": [],
@@ -685,7 +688,7 @@ def test_adapt():
     ) == "d y d y d æ, tʰ y d y d æ, d y d, tʰ y d, d y d, tʰ y d"
 
     # let's assume 'CVCCV' was an allowed structure
-    adrc_inst.inventories["ProsodicStructure"].add('CVCVCV')
+    adrc_inst.inventories["ProsodicStructure"].update(Counter(['CVCVCV']))
     # apply filter where unallowed structures are filtered out
     assert adrc_inst.adapt(
         ipastr="d e d e d o",
@@ -702,7 +705,7 @@ def test_adapt():
         forms_csv=PATH2FORMS,
         source_language="WOT", target_language="EAH")
     # add this so phonotactics_filter won't be empty
-    adrc_inst.inventories["ProsodicStructure"].add('CVCCV')
+    adrc_inst.inventories["ProsodicStructure"].update(Counter(['CVCCV']))
     assert adrc_inst.adapt(
         ipastr="d a d e",
         howmany=1000,
@@ -713,7 +716,7 @@ def test_adapt():
         cluster_filter=True) == "t͡ʃ a l d a"
 
     # let more things go through filter cluster_filter:
-    adrc_inst.inventories["CV_Segments"].add("d")
+    adrc_inst.inventories["CV_Segments"].update(Counter("d"))
     assert adrc_inst.adapt(
         ipastr="d a d e",
         howmany=1000,
@@ -724,7 +727,7 @@ def test_adapt():
         cluster_filter=True) == "d a l d a, t͡ʃ a l d a"
 
     # sort result by nse (likelihood of reconstruction)
-    adrc_inst.inventories["CV_Segments"].add("d")
+    #adrc_inst.inventories["CV_Segments"].add("d")
     assert adrc_inst.adapt(
         ipastr="d a d e",
         howmany=1000,
