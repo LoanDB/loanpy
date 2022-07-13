@@ -488,7 +488,16 @@ vowelharmony_filter=True)  \
         # skip combinatorics, instead return result if these 3 params are False
         if all(i is False or i == 0 for i in
                [phonotactics_filter, vowelharmony_filter, sort_by_nse]):
-            return f"^{' '.join([list2regex(i) for i in out if i != ['-']])}$"
+            outr = ' '.join([list2regex(i) for i in out if i != ['-']])
+            #bugfix1: We made preceding spaces optional for optional phonemes
+            #but first phoneme has no preceding space to make optional
+            #therefore the postceding space must be made optional instead
+            if outr[0] == "?":
+                #bugfix2: bugfix1 may cause colliding "??" - fix that too
+                outr = outr[1:].replace(")? ", ")? ?", 1).replace("??", "?")
+
+
+            return "^" + outr + "$"
 
         # if one of the 3 params however, apply combinatorics
         out = [" ".join([ph for ph in wd if ph !="-"]) for wd in product(*out)]
