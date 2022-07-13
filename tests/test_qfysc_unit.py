@@ -320,7 +320,7 @@ def test_init():
                         'distance_measure': dist_mock,
                         'inventories': {}}
 
-                read_scdictbase_mock.assert_called_with(None)
+                read_scdictbase_mock.assert_not_called()
                 cldf2pd_mock.assert_called_with(
                     None, None, None)
                 get_inventories_mock.assert_called_with()
@@ -366,7 +366,7 @@ def test_init():
                             'distance_measure': dist_mock,
                             'inventories': {"sth4": "xy"}}
 
-                read_scdictbase_mock.assert_called_with(None)
+                read_scdictbase_mock.assert_not_called()
                 cldf2pd_mock.assert_called_with("path", "lg1", "lg2")
                 get_inventories_mock.assert_called_with()
 
