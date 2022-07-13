@@ -392,13 +392,13 @@ def test_eval_one():
     assert eval_one(
         "g a g a", adrc_obj, "d a d a",
         False, False, False, False, 0, 1, 100, 49, False, [
-            2, 4, 6], "reconstruct") == {
+            2, 4, 6], False) == {
         "guesses": float("inf"), "best_guess": '#d, a, d, a# not old'}
     # assert no keyerror, mode=reconstruct, target missed
     assert eval_one(
         "g a g a", adrc_obj, "aː r uː",
         False, False, False, False, False, 0, 1, 100, 49, [
-            2, 4, 6], "reconstruct") == {
+            2, 4, 6], False) == {
         "guesses": float("inf"), "best_guess": "^(a) (n) (a) (a t͡ʃ i|γ)$"}
     # assert target hit on first try, mode=reconstruct
     assert eval_one(
@@ -415,7 +415,7 @@ def test_eval_one():
         49,
         False,
         [1],
-        "reconstruct") == {
+        False) == {
         "guesses": 1,
         "best_guess": "^(a) (n) (a) (a t͡ʃ i)$"}
 
@@ -447,7 +447,7 @@ def test_get_noncrossval_sc():
     # test with mode=reconstruct
     # set up
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="H",
-                    target_language="EAH", mode="reconstruct")
+                    target_language="EAH", adapting=False)
     # run function
     adrc_obj_out = get_noncrossval_sc(adrc_obj, None)
     # assert result
@@ -565,7 +565,7 @@ def test_get_crossval_data():
         forms_csv=PATH2FORMS,
         source_language="H",
         target_language="EAH",
-        mode="reconstruct")
+        adapting=False)
     # run function
     # first cog isolated, missing sc: a j a n - a j a n
     adrc_obj_out = get_crossval_data(adrc_obj, 2, None)
@@ -596,7 +596,7 @@ def test_get_crossval_data():
         forms_csv=PATH2FORMS,
         source_language="H",
         target_language="EAH",
-        mode="reconstruct")
+        adapting=False)
     # run function
     # first cog isolated, missing sc: a j a n - a j a n
     adrc_obj_out = get_crossval_data(adrc_obj, 2, path2outfolder)
@@ -678,7 +678,7 @@ def test_getnse4df():
         source_language="H",
         target_language="EAH",
         scdictlist=PATH2SC_RC,
-        mode="reconstruct")
+        adapting=False)
 
     out_adrc_obj = get_nse4df(adrc_obj, "CV_Segments_tgt")
     # assert output was correct
@@ -748,7 +748,7 @@ def test_postprocess():
         source_language="H",
         target_language="EAH",
         scdictlist=PATH2SC_RC,
-        mode="reconstruct")
+        adapting=False)
     # pretend guesses are already made
     adrc_obj.dfety["best_guess"] = ["aː t͡ʃ", "b.l a", "ɒ j.n aː r"]
     # run function with show_workflow=False

@@ -57,7 +57,7 @@ def test_init():
     assert adrc_inst.workflow == OrderedDict()
 
     # 4 attributes inherited from Qfy
-    assert adrc_inst.mode == "adapt"
+    assert adrc_inst.adapting is True
     assert adrc_inst.connector == "<"
     assert adrc_inst.scdictbase == {}
     assert adrc_inst.vfb is None
@@ -84,7 +84,7 @@ def test_init():
         scdictlist=PATH2SC_TEST,
         forms_csv=PATH2FORMS,
         source_language="WOT", target_language="EAH",
-        mode="reconstruct",
+        adapting=False,
         most_frequent_phonotactics=2)
 
     assert len(adrc_inst.__dict__) == 13
@@ -97,7 +97,7 @@ def test_init():
     assert adrc_inst.workflow == OrderedDict()
 
     # 4 attributes inherited from Qfy
-    assert adrc_inst.mode == "reconstruct"
+    assert adrc_inst.adapting is False
     assert adrc_inst.connector == "<*"
     assert adrc_inst.scdictbase == {}
     assert adrc_inst.vfb is None
@@ -235,7 +235,7 @@ def test_reconstruct():
 
     # set up adrc instance
     adrc_inst = Adrc(
-        mode="reconstruct", scdictlist=Path(
+        adapting=False, scdictlist=Path(
             __file__).parent / "input_files" / "sc_rc_3cogs.txt")
 
     # assert reconstruct works when sound changes are missing from data
@@ -260,7 +260,7 @@ def test_reconstruct():
 
     # overwrite adrc_inst, now with forms_csv, to read phonotactic_inventory.
     adrc_inst = Adrc(
-        mode="reconstruct", forms_csv=PATH2FORMS,
+        adapting=False, forms_csv=PATH2FORMS,
         source_language="H", target_language="EAH",
         scdictlist=Path(__file__).parent / "input_files" / "sc_rc_3cogs.txt")
 
@@ -785,7 +785,7 @@ def test_get_nse():
         scdictlist=PATH2SC_HANDMADE3,
         forms_csv=PATH2FORMS,
         source_language="H", target_language="EAH",
-        mode="reconstruct")
+        adapting=False)
 
     assert adrc_inst.get_nse("ɟ ɒ l o ɡ", "j ɑ l.k ɑ") == (
         6.67, 40, "[10, 9, 8, 7, 6, 0]",

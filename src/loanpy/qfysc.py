@@ -126,7 +126,7 @@ from loanpy.helpers.Etym
                  source_language=None,
                  target_language=None,
                  # to define here.
-                 mode="adapt",  # or: "reconstruct"
+                 adapting = True,  # or: "reconstruct"
                  connector=None,  # will automatically get defined
                  scdictbase=None,  # big file, so not generated every time
                  distance_measure="weighted_feature_edit_distance",
@@ -135,8 +135,8 @@ from loanpy.helpers.Etym
                     # Those have to be designated by ipa characters that are
                     # not used in the language. Because the tokeniser
                     # accepts only IPA-characters.
-        self.mode = read_mode(mode)
-        self.connector = read_connector(connector, mode)
+        self.adapting = adapting
+        self.connector = read_connector(connector, adapting)
         self.scdictbase = read_scdictbase(scdictbase)
         self.vfb = vfb
         self.distance_measure = read_dst(distance_measure)
@@ -220,7 +220,7 @@ source_language=1, target_language=2, mode="reconstruct")
         #define type of tokenisation depending on self.mode
         tgtsrs, srcsrs = (
         self.dfety["Segments_tgt"], self.dfety["Segments_src"]
-        ) if self.mode == "adapt" else (
+        ) if self.adapting else (
         self.dfety["CV_Segments_tgt"], self.dfety["CV_Segments_src"])
 
         #start looping through source-target word pairs
@@ -236,7 +236,7 @@ source_language=1, target_language=2, mode="reconstruct")
 
         # flip keys and vals if adapting!
         # important! since backwards predictions for rc
-        if self.mode == "adapt":
+        if self.adapting:
             dfsoundchange["soundchange"] = (dfsoundchange["vals"] +
                                             self.connector +
                                             dfsoundchange["keys"])
@@ -279,7 +279,7 @@ source_language=1, target_language=2, mode="reconstruct")
 
 # in loanpy.qfysc.Qfy.align_lingpy "C" and "V" instead of "-" used
 # to mark that a sound disappeared. So has to be removed here again.
-        if self.mode == "adapt":
+        if self.adapting:
             for k in scdict:
                 scdict[k] = ["" if j == "C" or j == "V" else j
                              for j in scdict[k]]
@@ -297,8 +297,7 @@ source_language=1, target_language=2, mode="reconstruct")
 
         out = [scdict, sedict, edict]  # first 3 elements of output
         # the other 3 are only generated if adapting
-        out += self.get_phonotactics_corresp() if self.mode == "\
-adapt" else [{}, {}, {}]
+        out += self.get_phonotactics_corresp() if self.adapting else [{}, {}, {}]
 
         if write_to:  # write to file if indicated so
             with open(write_to, "w", encoding="utf-8") as data:
@@ -357,7 +356,7 @@ target_language=2, mode="reconstruct")
         dfstrucchange["e"] = 1  # each change happened one time. add later.
 
         #  important to flip keys and vals if adapting!
-        if self.mode == "adapt":
+        if self.adapting:
             dfstrucchange["strucchange"] = (dfstrucchange["vals"] +
                                             self.connector +
                                             dfstrucchange["keys"])
@@ -606,10 +605,10 @@ with one phoneme (cluster) and its aligned counterpart in each row.
         8   -#    a
         """
 
-        if self.mode == "reconstruct":
-            return self.align_clusterwise(left, right)
-        elif self.mode == "adapt":
+        if self.adapting:
             return self.align_lingpy(left, right)
+        else:
+            return self.align_clusterwise(left, right)
 
     def align_lingpy(self, left, right):
         """
@@ -946,7 +945,7 @@ must be 'adapt' or 'reconstruct'")
     return mode if mode else "adapt"
 
 
-def read_connector(connector, mode):
+def read_connector(connector, adapting):
     """
     Called by loanpy.qfysc.Qfy.__init__
 
@@ -979,7 +978,7 @@ then the second element of the iterable will be chosen. If "adapt", the 1st.
 
     if connector is None:
         connector = ("<", "<*")
-    return connector[1] if mode == "reconstruct" else connector[0]
+    return connector[0] if adapting else connector[1]
 
 
 def read_scdictbase(scdictbase):

@@ -179,8 +179,8 @@ def test_init():
          call("hun.csv", "reconstructed")])
     Distance_mock.assert_called_with()
     Adrc_mock.assert_has_calls(
-        [call(scdictlist="scad.txt", mode='adapt'),
-         call(scdictlist="scrc.txt", mode='reconstruct')])
+        [call(scdictlist="scad.txt", adapting=True),
+         call(scdictlist="scrc.txt", adapting=False)])
 
     # assert init runs correctly without entering parameters as well
 
@@ -244,8 +244,8 @@ def test_init():
     read_data_mock.assert_has_calls([
         call(None, 'ad'), call(None, 'rc')])
     Distance_mock.assert_called_with()
-    Adrc_mock.assert_has_calls([call(scdictlist=None, mode='adapt'),
-                                call(scdictlist=None, mode='reconstruct')])
+    Adrc_mock.assert_has_calls([call(scdictlist=None, adapting=True),
+                                call(scdictlist=None, adapting=False)])
 
     # tear down
     del (srsad, srsrc, mocksearch, msdict, DistanceMonkey,

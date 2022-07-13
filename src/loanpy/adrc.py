@@ -171,7 +171,7 @@ from loanpy.qfysc.Qfy
                  target_language=None,
                  most_frequent_phonotactics=9999999,
                  phonotactic_inventory=None,
-                 mode=None,
+                 adapting=True,
                  connector=None,
                  scdictbase=None,
                  vfb=None,
@@ -181,7 +181,7 @@ from loanpy.qfysc.Qfy
         super().__init__(forms_csv=forms_csv,
                          source_language=source_language,
                          target_language=target_language,
-                         mode=mode,
+                         adapting=adapting,
                          connector=connector,
                          scdictbase=scdictbase,
                          vfb=vfb)
@@ -935,8 +935,8 @@ target_language="EAH")
         # align the two input strings
         dfsc = self.align(left, right)
         # turn alignment-df into one pandas Series of sound correspondences
-        sc = dfsc["vals"] + self.connector + dfsc["keys"] if self.mode == "\
-adapt" else (dfsc["keys"] + self.connector + dfsc["vals"])
+        sc = dfsc["vals"] + self.connector + dfsc["keys"
+        ] if self.adapting else (dfsc["keys"] + self.connector + dfsc["vals"])
         # read nr of examples for each sound corresp in sum-of-examples-dict
         outlist = [self.sedict.get(i, 0) for i in sc]
         # add up the nr of examples for each corresp in the word

@@ -435,14 +435,14 @@ False, False, False, False, False, \
 
     args, out = [*args], {}
     crossval, writesc, = args.pop(), args.pop()
-    args.insert(1, 0)  # insert empty place for source word!
+    args.insert(1, None)  # insert empty place for source word!
     # get non-crossvalidated sound correspondences if indicated
     if crossval is False:
         args[0] = get_noncrossval_sc(args[0], writesc)
 
     for idx2isolate, row in args[0].dfety.iterrows():
         # get crossvalidated sound correspondences if indicated
-        if args[0].mode == "adapt":
+        if args[0].adapting:
             srcwrd, tgtwrd = row["Segments_src"], row["Segments_tgt"]
         else:
             srcwrd, tgtwrd = row["CV_Segments_src"], row["CV_Segments_tgt"]
@@ -565,7 +565,7 @@ False, False, False, 0, 1, 100, 49, True, [1], "adapt")
 
     """
     args = [*args]
-    eval_func = eval_adapt if args.pop() == "adapt" else eval_recon
+    eval_func = eval_adapt if args.pop() else eval_recon
     for guess in args.pop():  # guesslist
         out = eval_func(tgtwrd, *args[:2], guess, *args[2:])
         if out["guesses"] != float("inf"):
@@ -984,7 +984,7 @@ target_language="EAH", scdictlist=path2sc_ad)
 dtype: float64
 
     """
-    if adrc_obj.mode == "adapt":
+    if adrc_obj.adapting:
         adrc_obj = get_nse4df(adrc_obj, "Segments_tgt")
     else:
         adrc_obj = get_nse4df(adrc_obj, "CV_Segments_tgt")
@@ -1113,7 +1113,7 @@ target_language="EAH", scdictlist=path2sc_ad)
     """
 
     col1, col2 = adrc_obj.dfety[tgt_col], adrc_obj.dfety["Segments_src"]
-    if adrc_obj.mode == "reconstruct":
+    if not adrc_obj.adapting:
         col1, col2 = adrc_obj.dfety["CV_Segments_src"], adrc_obj.dfety[tgt_col]
 
     adrc_obj.dfety = concat(

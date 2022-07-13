@@ -200,7 +200,7 @@ def test_init():
     ismethod(qfy.distance_measure)
 
     # 4 attributes initiated in Etym
-    assert qfy.mode == "adapt"
+    assert qfy.adapting is True
     assert qfy.connector == "<"
     assert qfy.scdictbase == {}
     assert qfy.vfb is None
@@ -216,7 +216,7 @@ def test_align():
     assert_frame_equal(qfy.align(left="k a l a", right="h a l"), DataFrame(
         {"keys": ["h", "a", "l", "V"], "vals": ["k", "a", "l", "a"]}))
     # overwrite
-    qfy = Etym(mode="reconstruct")
+    qfy = Etym(adapting=False)
     # assert
     assert_frame_equal(qfy.align(left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ"),
                        DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
@@ -251,7 +251,7 @@ def test_align_lingpy():
 def test_align_clusterwise():
     """check if our own alignment function works correctly"""
     # set up
-    qfy = Etym(mode="reconstruct")
+    qfy = Etym(adapting=False)
     # assert
     assert_frame_equal(qfy.align(left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ"),
                        DataFrame({"keys": ['#-', '#ɟ', 'ɒ', 'l', 'o', 'ɡ#'],
@@ -345,7 +345,7 @@ def test_get_sound_corresp():
 
 # make sure reconstruction works
     qfy = Etym(forms_csv=PATH2FORMS, source_language="EAH",
-              target_language="H", mode="reconstruct")
+              target_language="H", adapting=False)
 #    print(qfy.left, qfy.dfety) # qfy.dfety[qfy.left]
     assert qfy.get_sound_corresp(write_to=None) == [
         {'#-': ['-'],
