@@ -132,7 +132,7 @@ from loanpy.helpers.Etym
         self.adapting = adapting
         self.connector = "<" if adapting else "<*"
         self.scdictbase = read_scdictbase(scdictbase)
-        self.distance_measure = read_dst(distance_measure)
+        self.distance_measure = Distance().weighted_feature_edit_distance
         # read data frame forms, turn words of target language to list
         # conclude dfety from dff
         self.dfety, self.dfrest = cldf2pd(forms_csv, source_language, target_language)

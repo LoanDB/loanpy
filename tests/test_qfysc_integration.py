@@ -1,6 +1,7 @@
 """integration test for loanpy.qfysc.py (2.0 BETA) for pytest 7.1.1"""
 
 from ast import literal_eval
+from collections import Counter
 from inspect import ismethod
 from os import remove
 from pathlib import Path
@@ -60,10 +61,10 @@ def test_rankclosest():
 
     # assert phonemes are ranked correctly
     etym = Etym()
-    etym.inventories["Segments"] =  set(["a", "b", "c"])
+    etym.inventories["Segments"] =  Counter(["a", "b", "c"])
     assert etym.rank_closest(ph="d") == "b, c, a"
     assert etym.rank_closest(ph="d", howmany=2) == "b, c"
-    etym.inventories["Segments"] =  set(["r", "t", "l"])
+    etym.inventories["Segments"] =  Counter(["r", "t", "l"])
     assert etym.rank_closest(ph="d", howmany=1) == "t"
     del etym
 
