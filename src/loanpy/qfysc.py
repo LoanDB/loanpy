@@ -18,11 +18,6 @@ from tqdm import tqdm
 
 from loanpy.helpers import edit_distance_with2ops
 
-class WrongModeError(Exception):
-    """Raised in loanpy.qfysc.read_mode if mode is neither \
-"adapt" nor "reconstruct" nor None/""/False/[]/0/ etc"""
-    pass
-
 class Etym:
     """
     Read etymological data and customise the way in which to \
@@ -907,43 +902,6 @@ column "Target_Forms"
             continue
 
     return DataFrame(dfetymology), DataFrame(dfrest)
-
-
-def read_mode(mode):
-    """
-    Called by loanpy.qfysc.Qfy.__init__
-
-    :param mode: The mode in which the data should be quantified. If set \
-to "None", default mode jumps to "adapt". This option is useful if there \
-is no time to think so all params are quickly set to None.
-    :type mode: None | "adapt" | "reconstruct"
-
-    :raises WrongModeError: The mode can only be "adapt" or "reconstruct"
-
-    :returns: "adapt" | "reconstruct"
-    :rtype: str
-
-    :Example:
-
-    >>> from loanpy.qfysc import read_mode
-    >>> read_mode("adapt")
-    "adapt"
-    >>> read_mode("reconstruct")
-    "reconstruct"
-    >>> read_mode(None)
-    "adapt"
-    >>> read_mode("")
-    "adapt"
-    >>> read_mode("bla")
-    loanpy.qfysc.WrongModeError: parameter <mode> \
-must be 'adapt' or 'reconstruct'
-
-    """
-    if mode and mode not in ["adapt", "reconstruct"]:
-        raise WrongModeError("parameter <mode> \
-must be 'adapt' or 'reconstruct'")
-    return mode if mode else "adapt"
-
 
 def read_connector(connector, adapting):
     """

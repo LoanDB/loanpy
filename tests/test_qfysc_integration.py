@@ -161,10 +161,6 @@ def test_get_inventories():
     pass
     #TODO: re-write this.
 
-def test_read_mode():
-    pass  # no patches in unittest (equal integration test)
-
-
 def test_read_connector():
     pass  # no patches in unittest (equal integration test)
 

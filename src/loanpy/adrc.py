@@ -877,11 +877,8 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
 
         if sort_by_nse:  # sort resutls by likelyhood (nse) if indicated
             out_nse = [(self.get_nse(ipastr, i)[0], i) for i in out]  # get nse
-            print("here1", out_nse)
             out_max = [i[1] for i in nlargest(sort_by_nse, out_nse)]
-            print(out_max)
             out = list(dict.fromkeys(out_max + out))
-            print(out)
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
 
     def get_nse(self, left, right):

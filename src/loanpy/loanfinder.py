@@ -585,8 +585,6 @@ club", recip_rc="(b|c)?lub",
                           "match", "cv_match", "nse_rc", "se_rc", "distr_rc",
                           "align_rc", "nse_ad", "se_ad", "distr_ad", "align_ad"
                           ])
-        for i in dfph.columns:
-            print(dfph[i])
         # add combined nse
         dfph["nse_combined"] = dfph["nse_rc"] + dfph["nse_ad"]
         # get idx of max combined, keep only that idx (=likeliest match)
