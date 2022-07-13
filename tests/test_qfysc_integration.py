@@ -10,51 +10,10 @@ from pandas import DataFrame, read_csv
 from pandas.testing import assert_frame_equal
 from pytest import raises
 
-from loanpy.qfysc import (Etym,
-read_scdictbase, cldf2pd)
+from loanpy.qfysc import Etym, cldf2pd
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms_3cogs_wot.csv"
 PATH2FORMS2 = Path(__file__).parent / "input_files" / "forms.csv"
-
-def test_get_scdictbase():
-    """test if heuristic sound correspondence dictionary
-    is calculated correctly"""
-    # test with phoneme_inventory manually plugged in
-    etym = Etym()
-    etym.inventories["Segments"] = ["e", "b", "c"]
-    scdictbase = etym.get_scdictbase(write_to=False)
-    assert isinstance(scdictbase, dict)
-    assert len(scdictbase) == 6371
-    assert scdictbase["p"] == ["b", "c", "e"]  # b is obv most similar to p
-    assert scdictbase["h"] == ["c", "b", "e"]
-    assert scdictbase["e"] == ["e", "b", "c"]
-    assert scdictbase["C"] == ["b", "c"]
-    assert scdictbase["V"] == ["e"]
-    assert scdictbase["F"] == ["e"]
-    assert scdictbase["B"] == []
-    del etym, scdictbase
-
-    # test with invetory extracted from forms.csv
-    path2scdict_integr_test = Path(__file__).parent / "integr_test_scdict.txt"
-    etym = Etym(forms_csv=PATH2FORMS2, source_language=1, target_language=2)
-    scdictbase = etym.get_scdictbase(write_to=path2scdict_integr_test)
-    assert isinstance(scdictbase, dict)
-    assert len(scdictbase) == 6371
-    assert scdictbase["p"] == ["z", "x", "y"]  # IPA z is most similar to IPA p
-    assert scdictbase["h"] == ["x", "z", "y"]
-    assert scdictbase["e"] == ["y", "z", "x"]
-    assert scdictbase["C"] == ["x", "z"]
-    assert scdictbase["V"] == ["y"]
-    assert scdictbase["F"] == ["y"]
-    assert scdictbase["B"] == []
-
-    # test if written correctly
-    with open(path2scdict_integr_test, "r", encoding="utf-8") as f:
-        # quite large file, so best to just test like this
-        scdictbase = literal_eval(f.read())
-
-    remove(path2scdict_integr_test)
-    del etym, scdictbase, path2scdict_integr_test
 
 def test_rankclosest():
     """test if closest phonemes from inventory are ranked correctly"""
@@ -156,25 +115,6 @@ def test_get_inventories():
 
 def test_read_connector():
     pass  # no patches in unittest (equal integration test)
-
-
-def test_read_scdictbase():
-    """test if scdictbase is generated correctly from ipa_all.csv"""
-
-    # setup
-    base = {"a": ["e", "o"], "b": ["p", "v"]}
-    path = Path(__file__).parent / "test_read_scdictbase.txt"
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(str(base))
-
-    # assert
-    assert read_scdictbase(base) == base
-    assert read_scdictbase(path) == base
-
-    # tear down
-    remove(path)
-    del base, path
-
 
 def test_init():
     """test if loanpy.qfy.Etym is initiated correctly"""
