@@ -131,7 +131,7 @@ from loanpy.helpers.Etym
                     # not used in the language. Because the tokeniser
                     # accepts only IPA-characters.
         self.adapting = adapting
-        self.connector = read_connector(connector, adapting)
+        self.connector = "<" if adapting else "<*"
         self.scdictbase = read_scdictbase(scdictbase)
         self.vfb = vfb
         self.distance_measure = read_dst(distance_measure)
