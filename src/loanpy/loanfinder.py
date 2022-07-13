@@ -22,103 +22,6 @@ class NoPhonMatch(Exception):
     pass
 
 
-def read_data(path2forms, adrc_col):  # explosion means explode
-    """
-    Reads a column with adapted or reconstructed words in a forms.csv file, \
-drops empty elements, drops elements with certain keywords used by \
-loanpy.adrc.Adrc.adapt and \
-loanpy.adrc.Adrc.reconstruct, such as "not old", "wrong phonotactics", etc. \
-Splits elements by ", " and assigns every word its own spot in the \
-pandas Series which is returned. Called by loanpy.loanfinder.Search.__init__
-
-    :param path2forms: path to CLDF's forms.csv
-    :type path2forms: pathlib.PosixPath | str | None
-
-    :param adrc_col: name of column containing predicted \
-adapted or reconstructed words
-    :type adrc_col: str
-
-    :return: Series object with one word per element. \
-Words can be reg-exes as well
-    :rtype: pandas.core.series.Series
-
-    :Example:
-
-    >>> from pathlib import Path
-    >>> from loanpy.loanfinder import __file__, read_data
-    >>> PATH2READ_DATA = Path(__file__).parent / "tests" / \
-"input_files" / "ad_read_data.csv"
-    >>> read_data(PATH2READ_DATA, "col1")
-    0       a
-    1    blub
-    1    club
-    Name: col1, dtype: object
-
-    """
-    # so the class can be initiated even without path2forms
-    if path2forms is None:
-        return None
-    # these red flags are returned by adapt() and reconstruct()
-    todrop = "wrong clusters|wrong phonotactics|not old|wrong vowel harmony"
-    # reading only 1 column saves RAM. Expensive calculations ahead.
-    df_forms = read_csv(path2forms, encoding="utf-8",
-                        usecols=[adrc_col]).fillna("")
-    # drops columns with red flags
-    df_forms = df_forms[~df_forms[adrc_col].str.contains(todrop)]
-    # reconstructed words don't have ", " so nothing should happen there
-    df_forms[adrc_col] = df_forms[adrc_col].str.split(", ")
-    # explode is the pandas Series equivalent of flattening a nested list
-    df_forms = df_forms.explode(adrc_col)  # one word per row
-    return df_forms[adrc_col]  # a pandas Series object
-
-
-def gen(iterable1, iterable2, function, prefix="Calculating", *args):
-    """
-    A generator that applies a function to two iterables, \
-incl. tqdm-progress-bar with customisable prefix. \
-Called by loanpy.loanfinder.Search.loans to calculate phonological and \
-semantic distances.
-
-    :param iterable1: The first iterable, will be zipped with \
-iterable2 and and looped through.
-    :type iterable1: pathlib.PosixPath | list | iterable
-
-    :param iterable2: The second iterable, will be zipped with \
-iterable1 and and looped through.
-    :type iterable2: pathlib.PosixPath | list | iterable
-
-    :param function: The function that should be applied to the elements of \
-the tuples from the two zipped iterables.
-    :type function: function
-
-    :param prefix: The text that should be displayed by the progress-bar
-    :type prefix: str, default="Calculating"
-
-    :param args: positional arguments that shall be passed to the function
-    :type args: type depends on requirements of function \
-    passed to param <function>.
-
-    :return: the outputs of the function passed to param <function>
-    :rtype: generator object
-
-    :Example:
-
-    >>> from loanpy.loanfinder import gen
-    >>> list(gen([1, 2, 3], [4, 5, 6], lambda x, y: x+y))
-    Calculating: 100%|███████████████████████████████████| \
-3/3 [00:00<00:00, 7639.90it/s]
-    [5, 7, 9]
-
-    >>> from loanpy.loanfinder import gen
-    >>> list(gen([1, 2, 3], [4, 5, 6], lambda x, y, z: x+y+z, "running", 1))
-    running: 100%|███████████████████████████████████| \
-3/3 [00:00<00:00, 7639.90it/s]
-    [6, 8, 10]
-    """
-    for ele1, ele2 in zip(tqdm(iterable1, prefix), iterable2):
-        yield function(ele1, ele2, *args)  # can't pass kwargs!
-
-
 class Search():
     """
         Define the two word lists, the measurements to \
@@ -658,3 +561,99 @@ input forms.csv
         dfmatches = dfmatches.sort_values(by=self.semsim_msr.__name__,
                                           ascending=False)  # unsorted by merge
         return dfmatches
+
+def read_data(path2forms, adrc_col):  # explosion means explode
+    """
+    Reads a column with adapted or reconstructed words in a forms.csv file, \
+drops empty elements, drops elements with certain keywords used by \
+loanpy.adrc.Adrc.adapt and \
+loanpy.adrc.Adrc.reconstruct, such as "not old", "wrong phonotactics", etc. \
+Splits elements by ", " and assigns every word its own spot in the \
+pandas Series which is returned. Called by loanpy.loanfinder.Search.__init__
+
+    :param path2forms: path to CLDF's forms.csv
+    :type path2forms: pathlib.PosixPath | str | None
+
+    :param adrc_col: name of column containing predicted \
+adapted or reconstructed words
+    :type adrc_col: str
+
+    :return: Series object with one word per element. \
+Words can be reg-exes as well
+    :rtype: pandas.core.series.Series
+
+    :Example:
+
+    >>> from pathlib import Path
+    >>> from loanpy.loanfinder import __file__, read_data
+    >>> PATH2READ_DATA = Path(__file__).parent / "tests" / \
+"input_files" / "ad_read_data.csv"
+    >>> read_data(PATH2READ_DATA, "col1")
+    0       a
+    1    blub
+    1    club
+    Name: col1, dtype: object
+
+    """
+    # so the class can be initiated even without path2forms
+    if path2forms is None:
+        return None
+    # these red flags are returned by adapt() and reconstruct()
+    todrop = "wrong clusters|wrong phonotactics|not old|wrong vowel harmony"
+    # reading only 1 column saves RAM. Expensive calculations ahead.
+    df_forms = read_csv(path2forms, encoding="utf-8",
+                        usecols=[adrc_col]).fillna("")
+    # drops columns with red flags
+    df_forms = df_forms[~df_forms[adrc_col].str.contains(todrop)]
+    # reconstructed words don't have ", " so nothing should happen there
+    df_forms[adrc_col] = df_forms[adrc_col].str.split(", ")
+    # explode is the pandas Series equivalent of flattening a nested list
+    df_forms = df_forms.explode(adrc_col)  # one word per row
+    return df_forms[adrc_col]  # a pandas Series object
+
+
+def gen(iterable1, iterable2, function, prefix="Calculating", *args):
+    """
+    A generator that applies a function to two iterables, \
+incl. tqdm-progress-bar with customisable prefix. \
+Called by loanpy.loanfinder.Search.loans to calculate phonological and \
+semantic distances.
+
+    :param iterable1: The first iterable, will be zipped with \
+iterable2 and and looped through.
+    :type iterable1: pathlib.PosixPath | list | iterable
+
+    :param iterable2: The second iterable, will be zipped with \
+iterable1 and and looped through.
+    :type iterable2: pathlib.PosixPath | list | iterable
+
+    :param function: The function that should be applied to the elements of \
+the tuples from the two zipped iterables.
+    :type function: function
+
+    :param prefix: The text that should be displayed by the progress-bar
+    :type prefix: str, default="Calculating"
+
+    :param args: positional arguments that shall be passed to the function
+    :type args: type depends on requirements of function \
+    passed to param <function>.
+
+    :return: the outputs of the function passed to param <function>
+    :rtype: generator object
+
+    :Example:
+
+    >>> from loanpy.loanfinder import gen
+    >>> list(gen([1, 2, 3], [4, 5, 6], lambda x, y: x+y))
+    Calculating: 100%|███████████████████████████████████| \
+3/3 [00:00<00:00, 7639.90it/s]
+    [5, 7, 9]
+
+    >>> from loanpy.loanfinder import gen
+    >>> list(gen([1, 2, 3], [4, 5, 6], lambda x, y, z: x+y+z, "running", 1))
+    running: 100%|███████████████████████████████████| \
+3/3 [00:00<00:00, 7639.90it/s]
+    [6, 8, 10]
+    """
+    for ele1, ele2 in zip(tqdm(iterable1, prefix), iterable2):
+        yield function(ele1, ele2, *args)  # can't pass kwargs!
