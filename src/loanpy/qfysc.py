@@ -129,10 +129,10 @@ from loanpy.helpers.Etym
                     # Those have to be designated by ipa characters that are
                     # not used in the language. Because the tokeniser
                     # accepts only IPA-characters.
-        self.adapting = adapting
+        self.adapting, self.srclg, self.tgtlg = adapting, source_language, target_language
         self.connector = "<" if adapting else "<*"
         self.distance_measure = Distance().weighted_feature_edit_distance
-        self.dfety, self.dfrest = cldf2pd(forms_csv, source_language, target_language)
+        self.dfety, self.dfrest = self.cldf2pd(forms_csv)
         self.inventories = self.get_inventories()
         try:
             with open(scdictbase, "r", encoding="utf-8") as f:
@@ -209,20 +209,23 @@ source_language=1, target_language=2, mode="reconstruct")
 
         soundchange = []
         wordchange = []
-        # align every word and append it to a list of data frames for concat
-        #define type of tokenisation depending on self.mode
-        tgtsrs, srcsrs = (
-        self.dfety["Segments_tgt"], self.dfety["Segments_src"]
-        ) if self.adapting else (
-        self.dfety["CV_Segments_tgt"], self.dfety["CV_Segments_src"])
 
-        #start looping through source-target word pairs
-        for left, right, cog in zip(tgtsrs, srcsrs, self.dfety["Cognacy"]):
-            dfalign = self.align_lingpy(left, right
-            ) if self.adapting else self.align_clusterwise(left, right)
+        #loop through cognate sets
+        for cogid in set(self.dfety.Cognacy):
+            #keep only current cognate set
+            cogset = self.dfety[self.dfety["Cognacy"] == cogid]
+            left = cogset[cogset["Language_ID"] == self.tgtlg].iloc[0]
+            right = cogset[cogset["Language_ID"] == self.srclg].iloc[0]
+
+            if self.adapting:
+                dfalign = self.align_lingpy(
+                            left["Segments"], right["Segments"])
+            else:
+                dfalign = self.align_clusterwise(
+                            left["CV_Segments"], right["CV_Segments"])
 
             soundchange.append(dfalign)
-            wordchange += [cog]*len(dfalign)  # col 3 after concat
+            wordchange += [cogid]*len(dfalign)  # col 3 after concat
 
         dfsoundchange = concat(soundchange)  # one big df of sound corresp
         # cognate set where it happened
@@ -241,7 +244,6 @@ source_language=1, target_language=2, mode="reconstruct")
                                             self.connector +
                                             dfsoundchange["vals"])
             # join source and target with connector
-
 # create the first 3 elements of the output from the big df of sound corresp
 # create 1st element of output. Sort correspondence list by frequency
         dfsc = dfsoundchange.groupby("keys")["vals"].apply(
@@ -328,11 +330,13 @@ target_language=2, mode="reconstruct")
         """
         # create one big data frame out of structural changes
         # column three captures the cognate sets where the change happened
+
         dfstrucchange = DataFrame(zip(
-        self.dfety["ProsodicStructure_src"],
-        self.dfety["ProsodicStructure_tgt"],
-        self.dfety["Cognacy"]),
+        self.dfety[self.dfety["Language_ID"] == self.tgtlg]["ProsodicStructure"],
+        self.dfety[self.dfety["Language_ID"] == self.srclg]["ProsodicStructure"],
+        set(self.dfety["Cognacy"])),
                                   columns=["keys", "vals", "wordchange"])
+
         dfstrucchange["e"] = 1  # each change happened one time. add later.
 
         #  important to flip keys and vals if adapting!
@@ -724,102 +728,82 @@ gets flipped internally.)
             return {}
 
         invdict = {}
+        #keep only target language in dfety for extraction
+        dfety_tgt = self.dfety[self.dfety["Language_ID"] == self.tgtlg]
         for col in ["Segments", "CV_Segments", "ProsodicStructure"]:
             invdict[col] = Counter()
             [invdict[col].update(Counter(i.split(" ")))
-                for i in self.dfety[f"{col}_tgt"]]
+                for i in dfety_tgt[col]]
             [invdict[col].update(Counter(i.split(" ")))
-                for i in self.dfrest[f"{col}_tgt"]]
+                for i in self.dfrest[col]]  # dfrest contains only target lang.
 
         return invdict
 
-def cldf2pd(dfforms, source_language=None, target_language=None):
-    """
-    Called by loanpy.helpers.Etym.__init__; \
-Converts a CLDF based forms.csv to a pandas data frame. \
-Returns None if dfforms is None, so class can be initiated without args too. \
-Runs through forms.csv and creates a new data frame the following way: \
-Checks if a cognate set contains words from both, source and target language. \
-If yes: word from source lg goes to column "Source_Form", \
-word from target lg goes to column "Target_Form" and \
-the number of the cognate set goes to column "Cognacy". \
-Note that if a cognate set doesn't contain words from source and target \
-language, \
-that cognate set is skipped.
+    def cldf2pd(self, dfforms):
+        """
+        Called by loanpy.helpers.Etym.__init__; \
+    Converts a CLDF based forms.csv to a pandas data frame. \
+    Returns None if dfforms is None, so class can be initiated without args too. \
+    Runs through forms.csv and creates a new data frame the following way: \
+    Checks if a cognate set contains words from both, source and target language. \
+    If yes: word from source lg goes to column "Source_Form", \
+    word from target lg goes to column "Target_Form" and \
+    the number of the cognate set goes to column "Cognacy". \
+    Note that if a cognate set doesn't contain words from source and target \
+    language, \
+    that cognate set is skipped.
 
-    :param dfforms: Takes the output of read_forms() as input
-    :type dfforms: pandas.core.frame.DataFrame | None
+        :param dfforms: Takes the output of read_forms() as input
+        :type dfforms: pandas.core.frame.DataFrame | None
 
-    :param source_language: The language who's cognates go to \
-column "Source_Forms"
-    :type source_language: str, default=None
+        :param source_language: The language who's cognates go to \
+    column "Source_Forms"
+        :type source_language: str, default=None
 
-    :param target_language: The language who's cognates go to \
-column "Target_Forms"
-    :type target_language: str, default=None
+        :param target_language: The language who's cognates go to \
+    column "Target_Forms"
+        :type target_language: str, default=None
 
-    :returns: forms.csv data frame with re-positioned information
-    :rtype: pandas.core.frame.DataFrame | None
+        :returns: forms.csv data frame with re-positioned information
+        :rtype: pandas.core.frame.DataFrame | None
 
-    :Example:
+        :Example:
 
-    >>> from pathlib import Path
-    >>> from loanpy.helpers import __file__, cldf2pd, read_forms
-    >>> path2forms = Path(__file__).parent / "tests" \
-/ "input_files" / "forms.csv"
-    >>> forms = read_forms(path2forms)
-    >>> cldf2pd(forms, source_language=1, target_language=2)
-          Target_Form Source_Form  Cognacy
-    0         xyz         abc        1
+        >>> from pathlib import Path
+        >>> from loanpy.helpers import __file__, cldf2pd, read_forms
+        >>> path2forms = Path(__file__).parent / "tests" \
+    / "input_files" / "forms.csv"
+        >>> forms = read_forms(path2forms)
+        >>> cldf2pd(forms, source_language=1, target_language=2)
+              Target_Form Source_Form  Cognacy
+        0         xyz         abc        1
 
-    """
+        """
 
-    if dfforms is None:
-        return None, None
-    dfforms = read_csv(dfforms, usecols=["Segments", "CV_Segments",
-                                         "Cognacy", "Language_ID",
-                                         "ProsodicStructure"])
-    dfetymology = {k: [] for k in [
-    "Segments_tgt", "Segments_src",
-    "CV_Segments_tgt", "CV_Segments_src",
-    "ProsodicStructure_tgt", "ProsodicStructure_src",
-    "Cognacy"]}
-    dfrest = {k: [] for k in [
-    "Segments_tgt", "CV_Segments_tgt",
-    "ProsodicStructure_tgt"]}
+        if dfforms is None:
+            return None, None
+        collist = ["ID", "Segments", "CV_Segments", "Cognacy", "Language_ID",
+                   "ProsodicStructure"]
+        dfforms = read_csv(dfforms, usecols=collist)
 
-    # bugfix: col Cognacy is sometimes empty. if so, fill it
-    if all(isnan(i) for i in dfforms.Cognacy):
-        dfforms["Cognacy"] = list(range(len(dfforms)))
+        # bugfix: col Cognacy is sometimes empty. if so, fill it
+        if all(isnan(i) for i in dfforms.Cognacy):
+            dfforms["Cognacy"] = list(range(len(dfforms)))
 
-    for cogid in range(1, int(list(dfforms["Cognacy"])[-1])+1):
-        cogset = dfforms[dfforms["Cognacy"] == cogid]
+        dfety, dfrest = [], []
+        for cogid in range(1, int(list(dfforms["Cognacy"])[-1])+1):
+            cogset = dfforms[dfforms["Cognacy"] == cogid]
 
-        if all(i in list(cogset["Language_ID"])
-               for i in [target_language, source_language]):
-            dfetymology["Segments_tgt"].append(cogset[cogset["Language_ID"
-            ] == target_language].iloc[0]["Segments"])
-            dfetymology["Segments_src"].append(cogset[cogset["Language_ID"
-            ] == source_language].iloc[0]["Segments"])
-            dfetymology["CV_Segments_tgt"].append(cogset[cogset["Language_ID"
-            ] == target_language].iloc[0]["CV_Segments"])
-            dfetymology["CV_Segments_src"].append(cogset[cogset["Language_ID"
-            ] == source_language].iloc[0]["CV_Segments"])
-            dfetymology["ProsodicStructure_tgt"].append(cogset[cogset[
-            "Language_ID"] == target_language].iloc[0]["ProsodicStructure"])
-            dfetymology["ProsodicStructure_src"].append(cogset[cogset[
-            "Language_ID"] == source_language].iloc[0]["ProsodicStructure"])
-            dfetymology["Cognacy"].append(cogid)
+            if all(lg in list(cogset["Language_ID"])
+                   for lg in [self.tgtlg, self.srclg]):
+                dfety.append(cogset[cogset["Language_ID"] == self.tgtlg])
+                dfety.append(cogset[cogset["Language_ID"] == self.srclg])
+            elif self.tgtlg in list(cogset["Language_ID"]):
+                dfrest.append(cogset[cogset["Language_ID"] == self.tgtlg])
+            else:
+                continue
+        #can't concatenate empty lists
+        dfety = DataFrame(columns=collist) if dfety == [] else concat(dfety)
+        dfrest = DataFrame(columns=collist) if dfrest == [] else concat(dfrest)
 
-        elif target_language in list(cogset["Language_ID"]):
-            dfrest["Segments_tgt"].append(cogset[cogset["Language_ID"
-            ] == target_language].iloc[0]["Segments"])
-            dfrest["CV_Segments_tgt"].append(cogset[cogset["Language_ID"
-            ] == target_language].iloc[0]["CV_Segments"])
-            dfrest["ProsodicStructure_tgt"].append(cogset[cogset[
-            "Language_ID"] == target_language].iloc[0]["ProsodicStructure"])
-
-        else:
-            continue
-
-    return DataFrame(dfetymology), DataFrame(dfrest)
+        return dfety, dfrest

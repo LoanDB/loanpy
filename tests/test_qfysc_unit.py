@@ -8,7 +8,7 @@ from unittest.mock import patch, call
 
 from loanpy import qfysc as qs
 from loanpy import helpers as hp
-from loanpy.qfysc import Etym, cldf2pd
+from loanpy.qfysc import Etym
 
 from pytest import raises
 from pandas import DataFrame, Series
@@ -49,13 +49,12 @@ class EtymMonkeyGetSoundCorresp:
         self.align_lingpy_called_with = []
         self.align_clusterwise_called_with = []
         self.rank_closest_phonotactics_called_with = []
-        self.dfety = DataFrame({"Segments_tgt": ["kiki", "buba"],
-                                "Segments_src": ["hehe", "pupa"],
-                                "CV_Segments_tgt": ["kiki", "buba"],
-                                "CV_Segments_src": ["hehe", "pupa"],
-                                "ProsodicStructure_tgt": ["CVCV", "CVCV"],
-                                "ProsodicStructure_src": ["CVCV", "CVCV"],
-                                "Cognacy": [12, 13]})
+        self.srclg, self.tgtlg = "lg2", "lg1"
+        self.dfety = DataFrame({"Segments": ["kiki", "hehe", "buba", "pupa"],
+                                "CV_Segments": ["kiki", "hehe", "buba", "pupa"],
+                                "ProsodicStructure": ["CVCV", "CVCV", "CVCV", "CVCV"],
+                                "Cognacy": [12, 12, 13, 13],
+                                "Language_ID": ["lg1", "lg2", "lg1", "lg2"]})
         self.adapting = adapting
         self.connector = connector
         self.scdictbase = {"k": ["h", "c"], "i": ["i", "e"], "b": ["v"],
@@ -80,7 +79,7 @@ class EtymMonkeyGetSoundCorresp:
         return next(self.align_lingpy_returns)
 
     def align_clusterwise(self, left, right):
-        self.align_lingpy_called_with.append((left, right))
+        self.align_clusterwise_called_with.append((left, right))
         return next(self.align_clusterwise_returns)
 
     def rank_closest_phonotactics(self, struc):
@@ -266,7 +265,7 @@ def test_init():
             pass
 
     #set up patches
-    with patch("loanpy.qfysc.cldf2pd") as cldf2pd_mock:
+    with patch("loanpy.qfysc.Etym.cldf2pd") as cldf2pd_mock:
         cldf2pd_mock.return_value = None, None
         with patch("loanpy.qfysc.Etym.get_inventories"
                    ) as get_inventories_mock:
@@ -284,7 +283,7 @@ def test_init():
                 assert mocketym.distance_measure == dist_mock
 
                 # double check with __dict__
-                assert len(mocketym.__dict__) == 7
+                assert len(mocketym.__dict__) == 9
                 assert mocketym.__dict__ == {
                     'connector': '<',
                     'adapting': True,
@@ -292,10 +291,12 @@ def test_init():
                     'dfety': None,
                     'dfrest': None,
                     'distance_measure': dist_mock,
-                    'inventories': {}}
+                    'inventories': {},
+                    'srclg': None,
+                    'tgtlg': None
+                    }
 
-                cldf2pd_mock.assert_called_with(
-                    None, None, None)
+                cldf2pd_mock.assert_called_with(None)
                 get_inventories_mock.assert_called_with()
 
     del mocketym
@@ -305,7 +306,7 @@ def test_init():
                "Language_ID": ["lg2", "lg1", "lg2"]})
     with patch("loanpy.qfysc.read_csv") as read_csv_mock:
         read_csv_mock.return_value = dfmk
-        with patch("loanpy.qfysc.cldf2pd") as cldf2pd_mock:
+        with patch("loanpy.qfysc.Etym.cldf2pd") as cldf2pd_mock:
             cldf2pd_mock.return_value = "sth3", "sth5"
             with patch("loanpy.qfysc.Etym.get_inventories"
                        ) as get_inventories_mock:
@@ -326,7 +327,7 @@ def test_init():
                     assert mocketym.distance_measure == dist_mock
 
                     # double check with __dict__
-                    assert len(mocketym.__dict__) == 7
+                    assert len(mocketym.__dict__) == 9
                     assert mocketym.__dict__ == {
                         'connector': '<',
                         'adapting': True,
@@ -334,9 +335,12 @@ def test_init():
                         'dfety': "sth3",
                         'dfrest': "sth5",
                         'distance_measure': dist_mock,
-                        'inventories': {"sth4": "xy"}}
+                        'inventories': {"sth4": "xy"},
+                        'srclg': "lg1",
+                        'tgtlg': "lg2"
+                        }
 
-                cldf2pd_mock.assert_called_with("path", "lg1", "lg2")
+                cldf2pd_mock.assert_called_with("path")
                 get_inventories_mock.assert_called_with()
 
     # tear down
@@ -351,31 +355,44 @@ def test_cldf2pd():
                       "Cognacy": [1, 1, 2, 2, 3, 3, 4, 4],
                       "Language_ID": ["lg1", "lg2", "lg1", "lg3",
                                       "lg3", "lg2", "lg3", "lg4"],
-                      "ProsodicStructure": ["V", "C", "C", "C", "V", "C", "C", "V"]
+                      "ProsodicStructure": ["V", "C", "C", "C", "V", "C", "C", "V"],
+                      "ID": [1, 2, 3, 4, 5, 6, 7, 8]
                       }).to_csv(
                             "test_cldf2pd.csv",
                             encoding="utf-8", index=False
                       )
-    dfexp = DataFrame({"Segments_tgt": ["b"],
-                       "Segments_src": ["a"],
-                       "CV_Segments_tgt": ["jk"],
-                       "CV_Segments_src": ["hi"],
-                       "ProsodicStructure_tgt": ["C"],
-                       "ProsodicStructure_src": ["V"],
-                       "Cognacy": [1],
-                       })
-    dfexp2 = DataFrame({"Segments_tgt": ["f"],
-                        "CV_Segments_tgt": ["rs"],
-                        "ProsodicStructure_tgt": ["C"]})
+    dfexp = DataFrame({"Segments": ["b", "a"],
+                       "CV_Segments": ["jk", "hi"],
+                       "Cognacy": [1, 1],
+                       "Language_ID": ["lg2", "lg1"],
+                       "ProsodicStructure": ["C", "V"],
+                       "ID": [2, 1]
+                       },
+                       index=[1, 0])
+    dfexp2 = DataFrame({"Segments": ["f"],
+                        "CV_Segments": ["rs"],
+                        "Cognacy": [3],
+                        "Language_ID": ["lg2"],
+                        "ProsodicStructure": ["C"],
+                        "ID": [6]
+                        },
+                        index=[5])
+
+    class EtymMonkey2:
+        def __init__(self):
+            self.srclg = "lg1"
+            self.tgtlg = "lg2"
+
     # only cognates are taken, where source and target language occur
-    dfout = cldf2pd(
-    "test_cldf2pd.csv", source_language="lg1", target_language="lg2"
+    dfout = Etym.cldf2pd(
+    self=EtymMonkey2(),
+    dfforms="test_cldf2pd.csv"
     )
 
     # assert
-    assert cldf2pd(None, source_language="whatever",
-                   target_language="wtvr2") == (None, None)
+    assert Etym.cldf2pd(self=EtymMonkey(), dfforms=None) == (None, None)
     assert_frame_equal(dfout[0], dfexp)
+    print(dfout[1])
     assert_frame_equal(dfout[1], dfexp2)
 
     # tear down
@@ -521,7 +538,7 @@ def test_get_sound_corresp():
             assert_frame_equal(act, exp)
 
     # assert calls of assert while mode == "reconstruct"
-    assert mockqfy2.align_lingpy_called_with == [
+    assert mockqfy2.align_clusterwise_called_with == [
         ("kiki", "hehe"), ("buba", "pupa")]
     assert mockqfy2.rank_closest_phonotactics_called_with == []  # not called
     for act, exp in zip(
@@ -551,16 +568,18 @@ def test_get_phonotactics_corresp():
         alignreturns1=None,
         alignreturns2=None)
 
-    mockqfy.dfety = DataFrame({"Segments_tgt": ["k i k i", "b u b a"],
-                               "Segments_src": ["h e h e", "p u p a"],
-                               "CV_Segments_tgt": ["k i k i ", "b u b a"],
-                               "CV_Segments_src": ["h e h e", "p u p a"],
-                               "ProsodicStructure_tgt": ["CVCV", "CVCV"],
-                               "ProsodicStructure_src": ["CVCV", "CVCV"],
-                               "Cognacy": [12, 13]})
-    mockqfy.left = "Target_Form"
-    mockqfy.right = "Source_Form"
+    mockqfy.dfety = DataFrame({"Segments": ["k i k i", "h e h e",
+                                            "p u p a", "b u b a"],
+                               "CV_Segments": ["k i k i ", "h e h e",
+                                               "p u p a", "b u b a"],
+                               "ProsodicStructure": ["CVCV", "CVCV",
+                                                     "CVCV", "CVCV"],
+                               "Cognacy": [12, 12, 13, 13],
+                               "Language_ID": [1, 2, 1, 2]
+                               })
+
     mockqfy.connector = "<"
+    mockqfy.srclg, mockqfy.tgtlg = 2, 1
     exp = [{"CVCV": ["CVCV", "CVC", "CVCCC"]},
            {"CVCV<CVCV": 2},
            {"CVCV<CVCV": [12, 13]}]
@@ -584,6 +603,7 @@ def test_get_phonotactics_corresp():
             assert literal_eval(f.read()) == exp
 
     # assert calls
+    print(DataFrame_mock.call_args_list)
     assert list(DataFrame_mock.call_args_list[0][0][0]) == exp_call1
     assert DataFrame_mock.call_args_list[0][1] == exp_call2
     assert mockqfy.rank_closest_phonotactics_called_with == ["CVCV"]
