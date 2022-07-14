@@ -8,8 +8,8 @@ from time import struct_time
 from unittest.mock import call, patch
 
 from numpy import nan
-from pandas import DataFrame, Series, read_csv
-from pandas.testing import assert_frame_equal, assert_series_equal
+from pandas import DataFrame, RangeIndex, Series, read_csv
+from pandas.testing import assert_frame_equal, assert_series_equal, assert_index_equal
 from pytest import raises
 
 from loanpy.sanity import (
@@ -65,7 +65,7 @@ def test_eval_all():
     """Is the main function doing its job in evaluating etymological data?"""
     class AdrcMonkey:
         def __init__(self):
-            self.dfety = 12345
+            self.dfeval = 12345
     adrc_monkey = AdrcMonkey()
     # patch all functions. wrapper counts as part of eval_all
     with patch("loanpy.sanity.check_cache") as check_cache_mock:
@@ -77,7 +77,7 @@ def test_eval_all():
                     adrc_mock.return_value = AdrcMonkey
                     with patch("loanpy.sanity.loop_thru_data"
                                ) as loop_thru_data_mock:
-                        loop_thru_data_mock.return_value = "ld"
+                        loop_thru_data_mock.return_value = adrc_monkey #"ld"
                         with patch("loanpy.sanity.postprocess"
                                    ) as postprocess_mock:
                             postprocess_mock.return_value = adrc_monkey
@@ -103,7 +103,7 @@ def test_eval_all():
     loop_thru_data_mock.assert_called_with(
         AdrcMonkey, False, False, False, False, 1, 1, 100, 49, False, [
             10, 50, 100, 500, 1000], True, False, True)
-    postprocess_mock.assert_called_with("ld")
+    postprocess_mock.assert_not_called()
     postprocess2_mock.assert_called_with(
         adrc_monkey,
         [10, 50, 100, 500, 1000],
@@ -122,10 +122,18 @@ def test_loop_thru_data():
     })
 
     dfforms_mock = DataFrame({
-        "Segments_src": ["a p p l e", "b a n a n a", "c h e r r y"],
-        "CV_Segments_src": ["a p.p.l e", "b a n a n a", "c.h e r.r y"],
-        "Segments_tgt": ["A pf e l", "B a n a n e", "K i r sch e"],
-        "CV_Segments_tgt": ["A p.f e l", "B a n a n e", "K i r s.c.h e"]
+        "Segments":
+            ["a p p l e", "A p f e l",
+             "b a n a n a", "B a n a n e",
+             "c h e r r y", "K i r s c h e"
+             ],
+        "CV_Segments":
+            ["a p.p.l e", "A p.f e l",
+            "b a n a n a", "B a n a n e",
+            "c.h e r.r y", "K i r.s.c.h e"
+            ],
+        "Cognacy": [1, 1, 2, 2, 3, 3],
+        "Language_ID": ["en", "ger", "en", "ger", "en", "ger"]
     })
 
     out1_eval_one = {"best_guess": "a b c", "guesses": 1}
@@ -136,11 +144,8 @@ def test_loop_thru_data():
         def __init__(self):
             self.dfety = dfforms_mock
             self.adapting = True
-
-#    def tqdm_mock(iterable):
-#        tqdm_mock.called_with = iterable
-#        return iterable
-#    tqdm_real, sanity.tqdm = sanity.tqdm, tqdm_mock
+            self.srclg = "en"
+            self.tgtlg = "ger"
 
     adrc_monkey = AdrcMonkey()
     idxlist = iter([0, 1, 2])
@@ -165,35 +170,32 @@ def test_loop_thru_data():
                             [10, 50, 100, 500, 1000],
                             True, False, True) == adrc_monkey
                         # assert dfety was plugged in with good col names
-                        assert_frame_equal(adrc_monkey.dfety, df_exp)
+                        assert adrc_monkey.dfeval == "dfoutmock"
 
     # assert calls
     # assert 1st patch not called
     get_noncrossval_sc_mock.assert_not_called()
     get_crossval_data_mock.assert_has_calls([
-        call(adrc_monkey, 0, False),
         call(adrc_monkey, 1, False),
-        call(adrc_monkey, 2, False)
+        call(adrc_monkey, 2, False),
+        call(adrc_monkey, 3, False)
     ])
 
     eval_one_mock.assert_has_calls([
-        call("A pf e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
+        call("A p f e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True),
         call("B a n a n e", adrc_monkey, "b a n a n a", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True),
-        call("K i r sch e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
+        call("K i r s c h e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True)
     ])
 
-    DataFrame_mock.assert_called_with({'best_guess': ['a b c', 'd e f', 'g h i'],
-                                       'guesses': [1, 2, 3]})
-    concat_mock.assert_called_with([dfforms_mock, "dfoutmock"], axis=1)
-#    assert isinstance(tqdm_mock.called_with, enumerate)
-
-    # tear down
-#    sanity.tqdm.called_with = None
-
-    # 2nd assertion: loop with crossval=True
+    assert DataFrame_mock.call_args_list[0][0][0] == {
+        'Cognacy': [1, 2, 3],
+        'Language_ID': ['en2ger', 'en2ger', 'en2ger'],
+        'best_guess': ['a b c', 'd e f', 'g h i'],
+        'guesses': [1, 2, 3]
+        }
 
     # fresh instance (old got modified)
     adrc_monkey = AdrcMonkey()
@@ -217,8 +219,8 @@ def test_loop_thru_data():
                             adrc_monkey, 1, 1, 100, 49,
                             False, False, False, False, False,
                             [10, 50, 100, 500, 1000],
-                            'adapt', False, False) == adrc_monkey
-                        assert_frame_equal(adrc_monkey.dfety, df_exp)
+                            True, False, False) == adrc_monkey
+                        assert adrc_monkey.dfeval == "dfoutmock"
 
     # assert calls
     # assert 1st patch not called
@@ -226,21 +228,20 @@ def test_loop_thru_data():
     get_noncrossval_sc_mock.assert_called_with(adrc_monkey, False)
 
     eval_one_mock.assert_has_calls([
-        call("A pf e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
-             False, False, False, False, [10, 50, 100, 500, 1000], 'adapt'),
+        call("A p f e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
+             False, False, False, False, [10, 50, 100, 500, 1000], True),
         call("B a n a n e", adrc_monkey, "b a n a n a", 1, 1, 100, 49, False,
-             False, False, False, False, [10, 50, 100, 500, 1000], 'adapt'),
-        call("K i r sch e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
-             False, False, False, False, [10, 50, 100, 500, 1000], 'adapt')
+             False, False, False, False, [10, 50, 100, 500, 1000], True),
+        call("K i r s c h e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
+             False, False, False, False, [10, 50, 100, 500, 1000], True)
     ])
 
-    DataFrame_mock.assert_called_with({'best_guess': ['a b c', 'd e f', 'g h i'],
-                                       'guesses': [1, 2, 3]})
-    concat_mock.assert_called_with([dfforms_mock, "dfoutmock"], axis=1)
-#    assert isinstance(tqdm_mock.called_with, enumerate)
-
-    # tear down
-#    sanity.tqdm = tqdm_real
+    assert DataFrame_mock.call_args_list[0][0][0] == {
+        'Cognacy': [1, 2, 3],
+        'Language_ID': ['en2ger', 'en2ger', 'en2ger'],
+        'best_guess': ['a b c', 'd e f', 'g h i'],
+        'guesses': [1, 2, 3]
+        }
 
     del adrc_monkey, AdrcMonkey, dfforms_mock, df_exp
 
@@ -702,9 +703,11 @@ def test_get_crossval_data():
     class AdrcMonkey:
         def __init__(self):
             self.get_sound_corresp_called_with = []
-            self.dfety = DataFrame({"Segments_tgt":
-                                    ["a p.p.l e", "banana", "cherry"],
-                                    "color": ["green", "yellow", "red"]})
+            self.dfety = DataFrame({
+                            "Segments":
+                                ["a p p l e", "b a n a n a", "c h e r r y"],
+                            "color": ["green", "yellow", "red"],
+                            "Cognacy": [1, 1, 1]})
 
         def get_sound_corresp(self, *args):
             self.get_sound_corresp_called_with.append([*args])
@@ -731,55 +734,55 @@ def test_get_crossval_data():
     del AdrcMonkey, adrc_monkey, adrc_obj_out
 
 
-def test_postprocess():
-    """Is result of loanpy.sanity.loop_thru_data postprocessed correctly?"""
+    def test_postprocess():
+        """Is result of loanpy.sanity.loop_thru_data postprocessed correctly?"""
 
-    class MockIn:
-        def __init__(self):
-            self.adapting = True
-    mock_in = MockIn()
-    # patch functions
-    with patch("loanpy.sanity.get_nse4df",
-               side_effect=["out1_getnse4df",
-                            "out2_getnse4df"]) as get_nse4df_mock:
-        with patch(
-            "loanpy.sanity.phonotactics_\
-predicted") as phonotactics_predicted_mock:
-            phonotactics_predicted_mock.return_value = "out_phonotacticspred"
-            with patch("loanpy.sanity.get_dist") as get_dist_mock:
-                get_dist_mock.return_value = "out_getldnld"
+        class MockIn:
+            def __init__(self):
+                self.adapting = True
+        mock_in = MockIn()
+        # patch functions
+        with patch("loanpy.sanity.get_nse4df",
+                   side_effect=["out1_getnse4df",
+                                "out2_getnse4df"]) as get_nse4df_mock:
+            with patch(
+                "loanpy.sanity.phonotactics_\
+    predicted") as phonotactics_predicted_mock:
+                phonotactics_predicted_mock.return_value = "out_phonotacticspred"
+                with patch("loanpy.sanity.get_dist") as get_dist_mock:
+                    get_dist_mock.return_value = "out_getldnld"
 
-                # assert return value
-                assert postprocess(mock_in) == "out_getldnld"
+                    # assert return value
+                    assert postprocess(mock_in) == "out_getldnld"
 
-    # assert calls
-    get_dist_mock.assert_called_with("out_phonotacticspred", "best_guess")
-    phonotactics_predicted_mock.assert_called_with("out2_getnse4df")
-    get_nse4df_mock.assert_has_calls(
-        [call(mock_in, 'Segments_tgt'), call('out1_getnse4df', 'best_guess')]
-    )
+        # assert calls
+        get_dist_mock.assert_called_with("out_phonotacticspred", "best_guess")
+        phonotactics_predicted_mock.assert_called_with("out2_getnse4df")
+        get_nse4df_mock.assert_has_calls(
+            [call(mock_in, 'Segments'), call('out1_getnse4df', 'best_guess')]
+        )
 
-    # test with show_workflow=False
-    # patch functions
-    with patch("loanpy.sanity.get_nse4df",
-               side_effect=["out1_getnse4df",
-                            "out2_getnse4df"]) as get_nse4df_mock:
-        with patch("loanpy.\
-sanity.phonotactics_predicted") as phonotactics_predicted_mock:
-            phonotactics_predicted_mock.return_value = "out_phonotacticspred"
-            with patch("loanpy.sanity.get_dist") as get_dist_mock:
-                get_dist_mock.return_value = "out_getldnld"
+        # test with show_workflow=False
+        # patch functions
+        with patch("loanpy.sanity.get_nse4df",
+                   side_effect=["out1_getnse4df",
+                                "out2_getnse4df"]) as get_nse4df_mock:
+            with patch("loanpy.\
+    sanity.phonotactics_predicted") as phonotactics_predicted_mock:
+                phonotactics_predicted_mock.return_value = "out_phonotacticspred"
+                with patch("loanpy.sanity.get_dist") as get_dist_mock:
+                    get_dist_mock.return_value = "out_getldnld"
 
-                # assert return value
-                assert postprocess(mock_in) == "out_getldnld"
+                    # assert return value
+                    assert postprocess(mock_in) == "out_getldnld"
 
-    # assert calls
-    get_dist_mock.assert_called_with("out_phonotacticspred", "best_guess")
-    phonotactics_predicted_mock.assert_called_with(
-        "out2_getnse4df")  # only called if show_workflow
-    get_nse4df_mock.assert_has_calls(
-        [call(mock_in, 'Segments_tgt'), call('out1_getnse4df', 'best_guess')]
-    )
+        # assert calls
+        get_dist_mock.assert_called_with("out_phonotacticspred", "best_guess")
+        phonotactics_predicted_mock.assert_called_with(
+            "out2_getnse4df")  # only called if show_workflow
+        get_nse4df_mock.assert_has_calls(
+            [call(mock_in, 'Segments'), call('out1_getnse4df', 'best_guess')]
+        )
 
 
 def test_postprocess2():
@@ -788,7 +791,7 @@ def test_postprocess2():
     df_exp = DataFrame({"guesses": [1, 2, 3]})
 
     class AdrcMonkey:
-        def __init__(self): self.dfety = df_exp
+        def __init__(self): self.dfeval = df_exp
     adrc_monkey = AdrcMonkey()
 
     # patch functions
@@ -840,137 +843,138 @@ def test_postprocess2():
     del adrc_monkey, AdrcMonkey, path2out
 
 
-def test_get_nse4df():
-    """Is normalised sum of examples for data frame calculated correctly?"""
-    # set up
-    df_exp = DataFrame()
-    dfety = DataFrame({
-    "Segments_src": ["a b c", "d e f", "g h i"],
-    "CV_Segments_src": ["a b.c", "d e f", "g.h i"],
-    "Segments_tgt": ["j k l", "m n o", "p q r"],
-    "CV_Segments_tgt": ["j.k.l", "m.n o", "p.q.r"]})
-    dfetynse = DataFrame({
-        "NSE_Segments_tgt_src": [1, 5, 9],
-        "SE_Segments_tgt_src": [2, 6, 10],
-        "E_distr_Segments_tgt_src": [3, 7, 11],
-        "align_Segments_tgt_src": [4, 8, 12]})
+    def test_get_nse4df():
+        """Is normalised sum of examples for data frame calculated correctly?"""
+        # set up
+        df_exp = DataFrame()
+        dfety = DataFrame({
+        "Segments": ["a b c", "j k l", "d e f", "m n o", "g h i", "p q r"],
+        "CV_Segments": ["a b.c", "j.k.l", "d e f", "m.n o", "g.h i", "p.q.r"],
+        "Cognacy": [1, 1, 2, 2, 3, 3],
+        "Language_ID": ["lg1", "lg2", "lg1", "lg2", "lg1", "lg2"]
+        })
+        dfetynse = DataFrame({
+            "NSE_Segments_tgt_src": [1, 5, 9],
+            "SE_Segments_tgt_src": [2, 6, 10],
+            "E_distr_Segments_tgt_src": [3, 7, 11],
+            "align_Segments_tgt_src": [4, 8, 12]})
 
-    class AdrcMonkey:
-        def __init__(self):
-            self.dfety = dfety
-            self.get_nse_returns = iter(
-                [(1, 2, 3, 4), (5, 6, 7, 8), (9, 10, 11, 12)])
-            self.get_nse_called_with = []
+        class AdrcMonkey:
+            def __init__(self):
+                self.dfety = dfety
+                self.get_nse_returns = iter(
+                    [(1, 2, 3, 4), (5, 6, 7, 8), (9, 10, 11, 12)])
+                self.get_nse_called_with = []
 
-        def get_nse(self, *args):
-            self.get_nse_called_with.append([*args])
-            return next(self.get_nse_returns)
+            def get_nse(self, *args):
+                self.get_nse_called_with.append([*args])
+                return next(self.get_nse_returns)
 
-    adrc_monkey = AdrcMonkey()
+        adrc_monkey = AdrcMonkey()
 
-    with patch("loanpy.sanity.concat") as concat_mock:
-        concat_mock.return_value = df_exp
-        # assert output is correct
-        adrc_monkey.adapting = True
-        out = get_nse4df(adrc_monkey, "Segments_tgt")
-        assert isinstance(out, AdrcMonkey)
-        assert_frame_equal(out.dfety, df_exp)
+        with patch("loanpy.sanity.concat") as concat_mock:
+            concat_mock.return_value = df_exp
+            # assert output is correct
+            adrc_monkey.adapting = True
+            out = get_nse4df(adrc_monkey, "Segments")
+            assert isinstance(out, AdrcMonkey)
+            assert_frame_equal(out.dfety, df_exp)
 
-    # assert calls mock patch
-    assert len(concat_mock.call_args_list[0][0]) == 1  # called with 1 list
-    assert isinstance(concat_mock.call_args_list[0][0][0], list)
-    assert len(concat_mock.call_args_list[0][0][0]) == 2  # len of that list
-    # ele1 of that list
-    assert_frame_equal(concat_mock.call_args_list[0][0][0][0], dfety)
-    # ele2 of that list
-    assert_frame_equal(concat_mock.call_args_list[0][0][0][1], dfetynse)
+        # assert calls mock patch
+        assert len(concat_mock.call_args_list[0][0]) == 1  # called with 1 list
+        assert isinstance(concat_mock.call_args_list[0][0][0], list)
+        assert len(concat_mock.call_args_list[0][0][0]) == 2  # len of that list
+        # ele1 of that list
+        assert_frame_equal(concat_mock.call_args_list[0][0][0][0], dfety)
+        # ele2 of that list
+        assert_frame_equal(concat_mock.call_args_list[0][0][0][1], dfetynse)
 
-    # assert call to monkey
-    assert adrc_monkey.get_nse_called_with == [["j k l", "a b c"], ["m n o", "d e f"],
-                                               ["p q r", "g h i"]]
+        # assert call to monkey
+        assert adrc_monkey.get_nse_called_with == [["j k l", "a b c"], ["m n o", "d e f"],
+                                                   ["p q r", "g h i"]]
 
 
-def test_phonotactics_predicted():
-    """Correct boolean returned when checking if phonotactics was predicted?"""
-    # set up
-    df_in = DataFrame({
-        "Segments_tgt": ["a b c", "d e f", "g h i"],
-        "ProsodicStructure_tgt": ["VCC", "CVC", "CCV"],
-        "predicted_phonotactics": [["CCC", "VVV"], ["CVC"], ["CCV", "CCC"]]})
+    def test_phonotactics_predicted():
+        """Correct boolean returned when checking if phonotactics was predicted?"""
+        # set up
+        df_in = DataFrame({
+            "Segments_tgt": ["a b c", "d e f", "g h i"],
+            "ProsodicStructure_tgt": ["VCC", "CVC", "CCV"],
+            "predicted_phonotactics": [["CCC", "VVV"], ["CVC"], ["CCV", "CCC"]]})
 
-    df_exp = df_in.assign(phonotactics_predicted=[False, True, True])
+        df_exp = df_in.assign(phonotactics_predicted=[False, True, True])
 
-    class AdrcMonkey():
-        def __init__(self):
-            self.dfety = df_in
+        class AdrcMonkey():
+            def __init__(self):
+                self.dfety = df_in
 
-    adrc_monkey = AdrcMonkey()
-    # assert output
-    assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
-
-    # test break - return input if KeyError, i.e. if col is missing from df
-    adrc_monkey = AdrcMonkey()
-    adrc_monkey.dfety = DataFrame()
-    assert phonotactics_predicted(adrc_monkey) == adrc_monkey
-    assert phonotactics_predicted(adrc_monkey).dfety.empty
-
-def test_get_dist():
-    """Are (normalised) Levenshtein Distances calculated correctly?"""
-    # set up 1
-    class DistMonkey:
-        def __init__(self):
-            self.fast_levenshtein_distance_returns = iter([1, 2, 3])
-            self.fast_levenshtein_distance_called_with = []
-            self.fast_levenshtein_distance_div_maxlen_returns = iter([4, 5, 6])
-            self.fast_levenshtein_distance_div_maxlen_called_with = []
-
-        def fast_levenshtein_distance(self, *args):
-            self.fast_levenshtein_distance_called_with.append([*args])
-            return next(self.fast_levenshtein_distance_returns)
-
-        def fast_levenshtein_distance_div_maxlen(self, *args):
-            self.fast_levenshtein_distance_div_maxlen_called_with.append(
-                [*args])
-            return next(self.fast_levenshtein_distance_div_maxlen_returns)
-
-    # set up input
-    dfety = DataFrame({
-        "best_guess": ["will not buy", "record", "scrat.ched"],
-        "Segments_tgt": ["won't buy", "tobacconists", "scrat.ched"]})
-
-    class AdrcMonkey:
-        def __init__(self):
-            self.dfety = dfety
-
-    adrc_monkey = AdrcMonkey()
-    dist_monkey = DistMonkey()
-
-    # set up expected outcome
-    df_exp = dfety.assign(
-        fast_levenshtein_distance_best_guess_tgt=[1, 2, 3],
-        fast_levenshtein_distance_div_maxlen_best_guess_tgt=[4, 5, 6])
-
-    # plug monkey into patch
-    with patch("loanpy.sanity.Distance") as Distance_mock:
-        Distance_mock.return_value = dist_monkey
+        adrc_monkey = AdrcMonkey()
         # assert output
-        assert_frame_equal(get_dist(adrc_monkey, "best_guess").dfety, df_exp)
+        assert_frame_equal(phonotactics_predicted(adrc_monkey).dfety, df_exp)
 
-    # assert call1
-    assert dist_monkey.fast_levenshtein_distance_called_with == [
-        ["willnotbuy", "won'tbuy"],
-        ["record", "tobacconists"],
-        ["scratched", "scratched"]]
-    # assert call2
-    assert dist_monkey.fast_levenshtein_distance_div_maxlen_called_with == [
-        ["willnotbuy", "won'tbuy"],
-        ["record", "tobacconists"],
-        ["scratched", "scratched"]]
-    # assert call3
-    Distance_mock.assert_called_with()
+        # test break - return input if KeyError, i.e. if col is missing from df
+        adrc_monkey = AdrcMonkey()
+        adrc_monkey.dfety = DataFrame()
+        assert phonotactics_predicted(adrc_monkey) == adrc_monkey
+        assert phonotactics_predicted(adrc_monkey).dfety.empty
 
-    # tear down
-    del df_exp, dist_monkey, adrc_monkey, AdrcMonkey, DistMonkey, dfety
+    def test_get_dist():
+        """Are (normalised) Levenshtein Distances calculated correctly?"""
+        # set up 1
+        class DistMonkey:
+            def __init__(self):
+                self.fast_levenshtein_distance_returns = iter([1, 2, 3])
+                self.fast_levenshtein_distance_called_with = []
+                self.fast_levenshtein_distance_div_maxlen_returns = iter([4, 5, 6])
+                self.fast_levenshtein_distance_div_maxlen_called_with = []
+
+            def fast_levenshtein_distance(self, *args):
+                self.fast_levenshtein_distance_called_with.append([*args])
+                return next(self.fast_levenshtein_distance_returns)
+
+            def fast_levenshtein_distance_div_maxlen(self, *args):
+                self.fast_levenshtein_distance_div_maxlen_called_with.append(
+                    [*args])
+                return next(self.fast_levenshtein_distance_div_maxlen_returns)
+
+        # set up input
+        dfety = DataFrame({
+            "best_guess": ["will not buy", "record", "scrat.ched"],
+            "Segments_tgt": ["won't buy", "tobacconists", "scrat.ched"]})
+
+        class AdrcMonkey:
+            def __init__(self):
+                self.dfety = dfety
+
+        adrc_monkey = AdrcMonkey()
+        dist_monkey = DistMonkey()
+
+        # set up expected outcome
+        df_exp = dfety.assign(
+            fast_levenshtein_distance_best_guess_tgt=[1, 2, 3],
+            fast_levenshtein_distance_div_maxlen_best_guess_tgt=[4, 5, 6])
+
+        # plug monkey into patch
+        with patch("loanpy.sanity.Distance") as Distance_mock:
+            Distance_mock.return_value = dist_monkey
+            # assert output
+            assert_frame_equal(get_dist(adrc_monkey, "best_guess").dfety, df_exp)
+
+        # assert call1
+        assert dist_monkey.fast_levenshtein_distance_called_with == [
+            ["willnotbuy", "won'tbuy"],
+            ["record", "tobacconists"],
+            ["scratched", "scratched"]]
+        # assert call2
+        assert dist_monkey.fast_levenshtein_distance_div_maxlen_called_with == [
+            ["willnotbuy", "won'tbuy"],
+            ["record", "tobacconists"],
+            ["scratched", "scratched"]]
+        # assert call3
+        Distance_mock.assert_called_with()
+
+        # tear down
+        del df_exp, dist_monkey, adrc_monkey, AdrcMonkey, DistMonkey, dfety
 
 
 def test_make_stat():

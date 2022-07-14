@@ -313,12 +313,12 @@ mode="reconstruct", clusters=True, sort_by_nse=True, write_to=path2out)
                                 writesc,  # 12 pop in loop_thru_data
                                 crossval)  # 13 pop in loop_thru_data
 
-    adrc_obj = postprocess(adrc_obj)
+    #adrc_obj = postprocess(adrc_obj)  #TODO: uncomment later
     stat = postprocess2(adrc_obj, guesslist, adapting, write_to)
 
     end = time()
 
-    return adrc_obj.dfety, stat, start, end
+    return adrc_obj.dfeval, stat, start, end
 
 
 def loop_thru_data(*args):  # args range(14)
@@ -383,26 +383,35 @@ False, False, False, False, False, \
     if crossval is False:
         args[0] = get_noncrossval_sc(args[0], writesc)
 
-    for idx2isolate, row in args[0].dfety.iterrows():
+    #for idx2isolate, row in args[0].dfety.iterrows():
+    for cogid in set(args[0].dfety.Cognacy):
+        #keep only current cognate set
+        cogset = args[0].dfety[args[0].dfety["Cognacy"] == cogid]
         # get crossvalidated sound correspondences if indicated
-        if args[0].adapting:
-            srcwrd, tgtwrd = row["Segments_src"], row["Segments_tgt"]
-        else:
-            srcwrd, tgtwrd = row["CV_Segments_src"], row["CV_Segments_tgt"]
+        col = "Segments" if args[0].adapting else "CV_Segments"
+        srcwrd = cogset[cogset["Language_ID"] == args[0].srclg].iloc[0][col]
+        tgtwrd = cogset[cogset["Language_ID"] == args[0].tgtlg].iloc[0][col]
 
         if crossval:
-            args[0] = get_crossval_data(args[0], idx2isolate, writesc)
+            args[0] = get_crossval_data(args[0], cogid, writesc)
 
         # make prediction from source word, check if target was hit
         args[1] = srcwrd  # insert sourceword into empty space created for it
         result_eval_one = eval_one(tgtwrd, *args)  # args 0-11 (incl)
-        if out == {}:
+        if out == {}:  # create dict if first round of loop
             out = {k: [result_eval_one[k]] for k in result_eval_one}
-        else:  # update dict
-            for key in out:
+            out["Language_ID"] = [f"{args[0].srclg}2{args[0].tgtlg}"]
+            out["Cognacy"] = [cogid]
+            print(out)
+        else:  # update dict after first round of loop
+            for key in result_eval_one:
                 out[key].append(result_eval_one[key])
+            out["Language_ID"].append(f"{args[0].srclg}2{args[0].tgtlg}")
+            out["Cognacy"].append(cogid)
+            print(out)
 
-    args[0].dfety = concat([args[0].dfety, DataFrame(out)], axis=1)
+    args[0].dfeval = DataFrame(out)
+
     return args[0]  # the adrc_obj
 
 
@@ -743,7 +752,7 @@ target_language="EAH")
     return adrc_obj
 
 
-def get_crossval_data(adrc_obj, idx, writesc=None):
+def get_crossval_data(adrc_obj, cogid, writesc=None):
     """
     Called by loanpy.sanity.loop_thru_data. \
 Get sound correspondences by dropping the indicated row to isolate from \
@@ -797,13 +806,12 @@ target_language="EAH")
 
     """
     # memorise dropped row to plug back in at end of this function
-    dropped_row = DataFrame(dict(adrc_obj.dfety.iloc[idx]), index=[idx])
+    dropped_cogset = adrc_obj.dfety[adrc_obj.dfety["Cognacy"] == cogid]
     # drop the indicated row for training
-    # isolate
-    adrc_obj.dfety = adrc_obj.dfety.drop([adrc_obj.dfety.index[idx]])
+    adrc_obj.dfety = adrc_obj.dfety[adrc_obj.dfety["Cognacy"] != cogid]
     # create filename for corssvalidated training results
     if writesc:
-        writesc = writesc / f"sc{idx}isolated.txt"
+        writesc = writesc / f"sc{cogid}isolated.txt"
 
     # get crossvalidated inventories from crossvalidated dfety
     adrc_obj.inventories = adrc_obj.get_inventories()
@@ -811,9 +819,7 @@ target_language="EAH")
     (adrc_obj.scdict, adrc_obj.sedict, _,  # get sound correspondences
      adrc_obj.scdict_phonotactics, _, _) = adrc_obj.get_sound_corresp(writesc)
     # dropped row plugged in again so df can be reused in next round of loop
-    adrc_obj.dfety = concat([adrc_obj.dfety.head(idx),
-                             dropped_row,  # re-insert isolated row
-                             adrc_obj.dfety.tail(len(adrc_obj.dfety)-idx)])
+    adrc_obj.dfety = concat([adrc_obj.dfety, dropped_cogset])
     return adrc_obj
 
 
@@ -927,11 +933,9 @@ target_language="EAH", scdictlist=path2sc_ad)
 dtype: float64
 
     """
-    if adrc_obj.adapting:
-        adrc_obj = get_nse4df(adrc_obj, "Segments_tgt")
-    else:
-        adrc_obj = get_nse4df(adrc_obj, "CV_Segments_tgt")
-    adrc_obj = get_nse4df(adrc_obj, "best_guess")
+    col = "Segments" if adrc_obj.adapting else "CV_Segments"
+    adrc_obj = get_nse4df(adrc_obj, col, df=adrc_obj.dfety)
+    adrc_obj = get_nse4df(adrc_obj, "best_guess", df=adrc_obj.dfeval)
     adrc_obj = phonotactics_predicted(adrc_obj)
     adrc_obj = get_dist(adrc_obj, "best_guess")
     return adrc_obj
@@ -988,16 +992,16 @@ target_language="EAH", scdictlist=path2sc_ad)
 
     tpr_fpr_opt = get_tpr_fpr_opt(
                                     # howmany guesses were NEEDED
-                                    adrc_obj.dfety.guesses,
+                                    adrc_obj.dfeval.guesses,
                                     guesslist,   # how many guesses were MADE
-                                    len(adrc_obj.dfety)
+                                    len(adrc_obj.dfeval)
                                     )
 
     stat = make_stat(
                         tpr_fpr_opt[2][2],
                         tpr_fpr_opt[2][1],
                         guesslist[-1],
-                        len(adrc_obj.dfety)
+                        len(adrc_obj.dfeval)
                         )
 
     if write_to:
@@ -1007,11 +1011,11 @@ target_language="EAH", scdictlist=path2sc_ad)
                     tpr_fpr_opt,
                     stat[0],
                     stat[2],
-                    len(adrc_obj.dfety),
+                    len(adrc_obj.dfeval),
                     mode
                     )
 
-        adrc_obj.dfety.to_csv(
+        adrc_obj.dfeval.to_csv(
                                 write_to,
                                 encoding="utf_8",
                                 index=False
@@ -1020,7 +1024,7 @@ target_language="EAH", scdictlist=path2sc_ad)
     return stat
 
 
-def get_nse4df(adrc_obj, tgt_col):
+def get_nse4df(adrc_obj, tgt_col, df):
     """
     Called by loanpy.sanity.postprocess. \
     Calcuclates NSE between column Source_Form and given target column
@@ -1054,17 +1058,21 @@ target_language="EAH", scdictlist=path2sc_ad)
      just last two columns missing, [3 rows x 7 columns]]
 
     """
-
-    col1, col2 = adrc_obj.dfety[tgt_col], adrc_obj.dfety["Segments_src"]
-    if not adrc_obj.adapting:
-        col1, col2 = adrc_obj.dfety["CV_Segments_src"], adrc_obj.dfety[tgt_col]
+    dflist = []
+    for cogid in set(df.Cognacy):
+        cogset = adrc_obj.dfety[adrc_obj.dfety["Cognacy"] == cogid]
+        # get crossvalidated sound correspondences if indicated
+        col = "Segments" if adrc_obj.adapting else "CV_Segments"
+        predwrd = cogset[cogset["Language_ID"] == adrc_obj.tgtlg].iloc[0][col]
+        tgtwrd = cogset[cogset["Language_ID"] == adrc_obj.tgtlg].iloc[0][col]
+        dflist.append(adrc_obj.get_nse(tgtwrd, srcwrd))
 
     adrc_obj.dfety = concat(
-        [adrc_obj.dfety, DataFrame([adrc_obj.get_nse(tgt, src)
-         for tgt, src in zip(col1, col2)],
-            columns=[f"NSE_{tgt_col}_src", f"SE_{tgt_col}_src",
-                     f"E_distr_{tgt_col}_src",
-                     f"align_{tgt_col}_src"])], axis=1)
+        [adrc_obj.dfety, DataFrame(
+            dflist, columns=[
+                "NSE_srctgt", "SE_srctgt", "E_distr_srctgt", "align_srctgt"
+                ])
+        ], axis=1)
 
     return adrc_obj
 

@@ -10,7 +10,7 @@ from pandas import DataFrame, read_csv
 from pandas.testing import assert_frame_equal
 from pytest import raises
 
-from loanpy.qfysc import Etym, cldf2pd
+from loanpy.qfysc import Etym
 
 PATH2FORMS = Path(__file__).parent / "input_files" / "forms_3cogs_wot.csv"
 PATH2FORMS2 = Path(__file__).parent / "input_files" / "forms.csv"
@@ -44,23 +44,30 @@ def test_cldf2pd():
     """test if the CLDF format is correctly tranformed to a pandas dataframe"""
 
     # set up
-    dfexp = DataFrame({"Segments_tgt": ["x y z"],
-                       "Segments_src": ["a b c"],
-                       "CV_Segments_tgt": ["x y z"],
-                       "CV_Segments_src": ["a b.c"],
-                       "ProsodicStructure_tgt": ["CVC"],
-                       "ProsodicStructure_src": ["VCC"],
-                       "Cognacy": [1],
-                       })
-    dfexp2 = DataFrame({"Segments_tgt": [], "CV_Segments_tgt": [], "ProsodicStructure_tgt": []})
+    dfexp = DataFrame({
+                       "ID": [2, 1],
+                       "Language_ID": [2, 1],
+                       "Segments": ["x y z", "a b c"],
+                       "CV_Segments": ["x y z", "a b.c"],
+                       "ProsodicStructure": ["CVC", "VCC"],
+                       "Cognacy": [1, 1]
+                       },
+                       index=[1, 0])
+    dfexp2 = DataFrame({
+            "ID": [],
+            "Segments": [],
+            "CV_Segments": [],
+            "Cognacy": [],
+            "Language_ID": [],
+            "ProsodicStructure": []
+            },
+            index=[], dtype="object")
 
     # assert
-    assert cldf2pd(None, source_language="whatever",
-                   target_language="wtvr2") == (None, None)
-    out = cldf2pd(PATH2FORMS2, source_language=1,
-                               target_language=2)
+    etym_obj = Etym(source_language=1, target_language=2)
+    assert etym_obj.cldf2pd(None) == (None, None)
+    out = etym_obj.cldf2pd(PATH2FORMS2)
     assert_frame_equal(out[0], dfexp)
-    print(out[1])
     assert_frame_equal(out[1], dfexp2)
 
     # tear down
@@ -121,7 +128,7 @@ def test_init():
     qfy = Etym()
 
     # assert number of attributes (super() + rest)
-    assert len(qfy.__dict__) == 7
+    assert len(qfy.__dict__) == 9
 
     # 6 attributes inherited from Etym
     assert qfy.dfety is None
@@ -132,6 +139,8 @@ def test_init():
     assert qfy.adapting is True
     assert qfy.connector == "<"
     assert qfy.scdictbase == {}
+    assert qfy.tgtlg == None
+    assert qfy.srclg == None
 
     del qfy
 

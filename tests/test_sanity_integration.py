@@ -514,7 +514,7 @@ def test_get_crossval_data():
                     target_language="EAH")
     # run function
     # first cog isolated, missing sc: a γ a t͡ʃ i - a γ a t͡ʃː ɯ
-    adrc_obj_out = get_crossval_data(adrc_obj, 0, None)
+    adrc_obj_out = get_crossval_data(adrc_obj, 1, None)
     # assert result
     assert adrc_obj_out.scdict == {'a': ['a'], 'd': ['d'], 'j': ['j'],
                                    'l': ['l'], 'n': ['n'], 'γ': ['γ']}
@@ -531,7 +531,7 @@ def test_get_crossval_data():
                     target_language="EAH")
     # run function
     # first cog isolated, missing sc: aː l ɟ uː - a l d a w
-    adrc_obj_out = get_crossval_data(adrc_obj, 1, None)
+    adrc_obj_out = get_crossval_data(adrc_obj, 2, None)
     # assert result
     assert adrc_obj_out.scdict == {'a': ['a'], 'j': ['j'], 'n': ['n'],
                                    't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']}
@@ -548,7 +548,7 @@ def test_get_crossval_data():
                     target_language="EAH")
     # run function
     # first cog isolated, missing sc: a j a n - a j a n
-    adrc_obj_out = get_crossval_data(adrc_obj, 2, None)
+    adrc_obj_out = get_crossval_data(adrc_obj, 3, None)
     # assert result
     assert adrc_obj_out.scdict == {'a': ['a'], 'd': ['d'], 'l': ['l'],
                                    't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']}
@@ -568,7 +568,7 @@ def test_get_crossval_data():
         adapting=False)
     # run function
     # first cog isolated, missing sc: a j a n - a j a n
-    adrc_obj_out = get_crossval_data(adrc_obj, 2, None)
+    adrc_obj_out = get_crossval_data(adrc_obj, 3, None)
     # assert result
     assert adrc_obj_out.scdict == {
         '#-': ['-'],
@@ -599,7 +599,7 @@ def test_get_crossval_data():
         adapting=False)
     # run function
     # first cog isolated, missing sc: a j a n - a j a n
-    adrc_obj_out = get_crossval_data(adrc_obj, 2, path2outfolder)
+    adrc_obj_out = get_crossval_data(adrc_obj, 3, path2outfolder)
     # assert result
     assert adrc_obj_out.scdict == {
         '#-': ['-'],
@@ -619,7 +619,7 @@ def test_get_crossval_data():
         'γ<*t͡ʃ': 1}
     assert adrc_obj_out.scdict_phonotactics == {}
     # assert file written correctly
-    assert literal_eval(open(path2outfolder / "sc2isolated.txt",
+    assert literal_eval(open(path2outfolder / "sc3isolated.txt",
                         encoding="utf-8").read()) == [
         {'#-': ['-'], '#a': ['aː'], 'a': ['uː'], 'a t͡ʃ i#': ['-'],
          'l.d': ['ɟ'], 'γ': ['t͡ʃ'], 'γ#': ['-']},
@@ -629,7 +629,7 @@ def test_get_crossval_data():
          'l.d<*ɟ': [2], 'γ#<*-': [2], 'γ<*t͡ʃ': [1]}, {}, {}, {}]
 
     # tear down
-    remove(path2outfolder / "sc2isolated.txt")
+    remove(path2outfolder / "sc3isolated.txt")
     del adrc_obj_out, adrc_obj, path2outfolder
 
 
@@ -640,139 +640,140 @@ def test_loop_thru_data():
 
     assert loop_thru_data(
         adrc_obj, 1, 1, 100, 49, False, False, False, False, False, [
-            10, 50, 100, 500, 1000], 'adapt', False, True) == adrc_obj
+            10, 50, 100, 500, 1000], True, False, True) == adrc_obj
     # set up expected output
 
     df_exp = DataFrame([
-        ("a γ a t͡ʃ i", "a γ a t͡ʃː ɯ", "a γ a t͡ʃ i", "a γ a t͡ʃː ɯ",
-        "VCVCV", "VCVCV", 1, float("inf"), "KeyError"),
-        ("a l d a γ", "a l d a γ", "a l.d a γ", "a l.d a γ",
-        "VCCVC", "VCCVC", 2, float("inf"), "KeyError"),
-        ("a j a n", "a j a n", "a j a n", "a j a n",
-        "VCVC", "VCVC", 3, float("inf"), "KeyError")],
-        columns=['Segments_tgt', 'Segments_src',
-                 "CV_Segments_tgt", "CV_Segments_src",
-                 'ProsodicStructure_tgt', 'ProsodicStructure_src',
-                 'Cognacy', 'guesses', 'best_guess'])
+        (float("inf"), "KeyError", "WOT2EAH", 1),
+        (float("inf"), "KeyError", "WOT2EAH", 2),
+        (float("inf"), "KeyError", "WOT2EAH", 3)
+        ],
+        columns=[
+            'guesses', 'best_guess', 'Language_ID', 'Cognacy'
+            ],
+        dtype="object"
+        )
 
     # assert output.dfety is correct
-    assert_frame_equal(adrc_obj.dfety, df_exp)
+    assert_frame_equal(adrc_obj.dfeval, df_exp, check_dtype=False)
     # tear down
     del df_exp, adrc_obj
 
 
-def test_getnse4df():
-    """Is normalised sum of examples for data frame calculated correctly?"""
-    # test with mode="adapt"
-    adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
-                    target_language="EAH", scdictlist=PATH2SC_AD)
+    def test_getnse4df():
+        """Is normalised sum of examples for data frame calculated correctly?"""
+        # test with mode="adapt"
+        adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
+                        target_language="EAH", scdictlist=PATH2SC_AD)
 
-    out_adrc_obj = get_nse4df(adrc_obj, "Segments_tgt")
-    # assert output was correct
-    assert_frame_equal(out_adrc_obj.dfety, read_csv(
-        Path(__file__).parent / "expected_files" / "getnse4df_ad.csv"))
+        out_adrc_obj = get_nse4df(adrc_obj, "Segments_tgt")
+        # assert output was correct
+        assert_frame_equal(out_adrc_obj.dfety, read_csv(
+            Path(__file__).parent / "expected_files" / "getnse4df_ad.csv"))
 
-    # test with mode="reconstruct"
-    adrc_obj = Adrc(
-        forms_csv=PATH2FORMS,
-        source_language="H",
-        target_language="EAH",
-        scdictlist=PATH2SC_RC,
-        adapting=False)
+        # test with mode="reconstruct"
+        adrc_obj = Adrc(
+            forms_csv=PATH2FORMS,
+            source_language="H",
+            target_language="EAH",
+            scdictlist=PATH2SC_RC,
+            adapting=False)
 
-    out_adrc_obj = get_nse4df(adrc_obj, "CV_Segments_tgt")
-    # assert output was correct
-    assert_frame_equal(out_adrc_obj.dfety, read_csv(
-        Path(__file__).parent / "expected_files" / "getnse4df_rc.csv"))
+        out_adrc_obj = get_nse4df(adrc_obj, "CV_Segments_tgt")
+        # assert output was correct
+        assert_frame_equal(out_adrc_obj.dfety, read_csv(
+            Path(__file__).parent / "expected_files" / "getnse4df_rc.csv"))
 
-    # tear down
-    del adrc_obj, out_adrc_obj
-
-
-def test_phonotactics_predicted():
-    """Correct boolean returned when checking if phonotactics was predicted?"""
-    adrc_obj = Adrc()
-
-    df_in = DataFrame({
-        "Segments_tgt": ["a b c", "d e f", "g h i"],
-        "ProsodicStructure_tgt": ["VCC", "CVC", "CCV"],
-        "predicted_phonotactics": [["CCC", "VVV"], ["CVC"], ["CCV", "CCC"]]})
-
-    df_exp = df_in.assign(phonotactics_predicted=[False, True, True])
-    adrc_obj.dfety = df_in
-
-    assert_frame_equal(phonotactics_predicted(adrc_obj).dfety, df_exp)
-
-    # tear down
-    del adrc_obj, df_in, df_exp
+        # tear down
+        del adrc_obj, out_adrc_obj
 
 
-def test_get_dist():
-    """Are (normalised) Levenshtein Distances calculated correctly?"""
-    adrc_obj = Adrc()
+    def test_phonotactics_predicted():
+        """Correct boolean returned when checking if phonotactics was predicted?"""
+        adrc_obj = Adrc()
 
-    # set up input
-    dfety = DataFrame({
-        "best_guess": ["will not buy", "record", "scratched"],
-        "Segments_tgt": ["won't buy", "tobacconists", "scratched"]})
+        df_in = DataFrame({
+            "Segments_tgt": ["a b c", "d e f", "g h i"],
+            "ProsodicStructure_tgt": ["VCC", "CVC", "CCV"],
+            "predicted_phonotactics": [["CCC", "VVV"], ["CVC"], ["CCV", "CCC"]]})
 
-    adrc_obj.dfety = dfety
+        df_exp = df_in.assign(phonotactics_predicted=[False, True, True])
+        adrc_obj.dfety = df_in
 
-    # set up expected outcome
-    df_exp = dfety.assign(
-        fast_levenshtein_distance_best_guess_tgt=[4, 10, 0],
-        fast_levenshtein_distance_div_maxlen_best_guess_tgt=[
-            0.4, 0.83, 0.00])
-    assert_frame_equal(get_dist(adrc_obj, "best_guess").dfety, df_exp)
+        assert_frame_equal(phonotactics_predicted(adrc_obj).dfety, df_exp)
 
-    # tear down
-    del adrc_obj, dfety, df_exp
+        # tear down
+        del adrc_obj, df_in, df_exp
 
 
-def test_postprocess():
-    """Is result of loanpy.sanity.loop_thru_data postprocessed correctly?"""
-    # test with mode="adapt"
-    adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
-                    target_language="EAH", scdictlist=PATH2SC_AD)
-    # pretend guesses are already made
-    adrc_obj.dfety["best_guess"] = ["a γ a", "b l a", "a j a n"]
-    # run function with show_workflow=False
-    adrc_obj_out = postprocess(adrc_obj)
+    def test_get_dist():
+        """Are (normalised) Levenshtein Distances calculated correctly?"""
+        adrc_obj = Adrc()
 
-    assert_frame_equal(adrc_obj_out.dfety, read_csv(
-        Path(__file__).parent / "expected_files" / "postprocess_ad.csv"))
+        # set up input
+        dfety = DataFrame({
+            "best_guess": ["will not buy", "record", "scratched"],
+            "Segments_tgt": ["won't buy", "tobacconists", "scratched"]})
 
-    # test with mode="reconstruct"
-    adrc_obj = Adrc(
-        forms_csv=PATH2FORMS,
-        source_language="H",
-        target_language="EAH",
-        scdictlist=PATH2SC_RC,
-        adapting=False)
-    # pretend guesses are already made
-    adrc_obj.dfety["best_guess"] = ["aː t͡ʃ", "b.l a", "ɒ j.n aː r"]
-    # run function with show_workflow=False
-    adrc_obj_out = postprocess(adrc_obj)
+        adrc_obj.dfety = dfety
 
-    assert_frame_equal(adrc_obj_out.dfety, read_csv(
-        Path(__file__).parent / "expected_files" / "postprocess_rc.csv"))
+        # set up expected outcome
+        df_exp = dfety.assign(
+            fast_levenshtein_distance_best_guess_tgt=[4, 10, 0],
+            fast_levenshtein_distance_div_maxlen_best_guess_tgt=[
+                0.4, 0.83, 0.00])
+        assert_frame_equal(get_dist(adrc_obj, "best_guess").dfety, df_exp)
 
-    # test with show_workflow
-    # test with mode="adapt"
-    adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
-                    target_language="EAH", scdictlist=PATH2SC_AD)
-    # pretend guesses are already made
-    adrc_obj.dfety["best_guess"] = ["a γ a", "b l a", "a j a n"]
-    adrc_obj.dfety["predicted_phonotactics"] = [
-        "['VCV', 'CCC']", "['CCC', 'VCC']", "['VCVC']"]
-    # run function with show_workflow=False
-    adrc_obj_out = postprocess(adrc_obj)
-    assert_frame_equal(
-        adrc_obj_out.dfety,
-        read_csv(
-            Path(__file__).parent /
-            "expected_files" /
-            "postprocess_ad_workflow.csv"))
+        # tear down
+        del adrc_obj, dfety, df_exp
+
+
+    def test_postprocess():
+        """Is result of loanpy.sanity.loop_thru_data postprocessed correctly?"""
+        # test with mode="adapt"
+        adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
+                        target_language="EAH", scdictlist=PATH2SC_AD)
+        # pretend guesses are already made
+        adrc_obj.dfety["best_guess"] = [
+        "a γ a", "a γ a", "b l a", "b l a", "a j a n", "a j a n"
+        ]
+        # run function with show_workflow=False
+        adrc_obj_out = postprocess(adrc_obj)
+
+        assert_frame_equal(adrc_obj_out.dfety, read_csv(
+            Path(__file__).parent / "expected_files" / "postprocess_ad.csv"))
+
+        # test with mode="reconstruct"
+        adrc_obj = Adrc(
+            forms_csv=PATH2FORMS,
+            source_language="H",
+            target_language="EAH",
+            scdictlist=PATH2SC_RC,
+            adapting=False)
+        # pretend guesses are already made
+        adrc_obj.dfety["best_guess"] = ["aː t͡ʃ", "b.l a", "ɒ j.n aː r"]
+        # run function with show_workflow=False
+        adrc_obj_out = postprocess(adrc_obj)
+
+        assert_frame_equal(adrc_obj_out.dfety, read_csv(
+            Path(__file__).parent / "expected_files" / "postprocess_rc.csv"))
+
+        # test with show_workflow
+        # test with mode="adapt"
+        adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
+                        target_language="EAH", scdictlist=PATH2SC_AD)
+        # pretend guesses are already made
+        adrc_obj.dfety["best_guess"] = ["a γ a", "b l a", "a j a n"]
+        adrc_obj.dfety["predicted_phonotactics"] = [
+            "['VCV', 'CCC']", "['CCC', 'VCC']", "['VCVC']"]
+        # run function with show_workflow=False
+        adrc_obj_out = postprocess(adrc_obj)
+        assert_frame_equal(
+            adrc_obj_out.dfety,
+            read_csv(
+                Path(__file__).parent /
+                "expected_files" /
+                "postprocess_ad_workflow.csv"))
 
 
 def test_make_stat():
@@ -804,7 +805,7 @@ def test_postprocess2():
     adrc_obj = Adrc(forms_csv=PATH2FORMS, source_language="WOT",
                     target_language="EAH", scdictlist=PATH2SC_AD)
     # pretend guesses are already made
-    adrc_obj.dfety["guesses"] = [1, 2, 3]
+    adrc_obj.dfeval = DataFrame({"guesses": [1, 2, 3]})
 
     assert postprocess2(adrc_obj, [4, 5, 6], "adapt") == (5, '3/3', '100%')
 
@@ -814,7 +815,7 @@ def test_postprocess2():
     assert postprocess2(adrc_obj, [4, 5, 6], "adapt", path2out
                         ) == (5, '3/3', '100%')
     # since guesses were manually inserted!
-    assert_frame_equal(read_csv(path2out), adrc_obj.dfety)
+    assert_frame_equal(read_csv(path2out), adrc_obj.dfeval)
 
     # tear down
     remove(path2out)

@@ -47,7 +47,7 @@ def test_init():
 
     # check if initiation without args works fine
     adrc_inst = Adrc()
-    assert len(adrc_inst.__dict__) == 12
+    assert len(adrc_inst.__dict__) == 14
 
     # 5 attributes initiated in Adrc, rest inherited
     assert adrc_inst.scdict is None
@@ -66,6 +66,8 @@ def test_init():
     assert adrc_inst.dfrest is None
     assert adrc_inst.inventories == {}
     ismethod(adrc_inst.distance_measure)
+    assert adrc_inst.tgtlg == None
+    assert adrc_inst.srclg == None
 
     # assert initiation runs correctly with non-empty params as well
 
@@ -86,7 +88,7 @@ def test_init():
         adapting=False
         )
 
-    assert len(adrc_inst.__dict__) == 12
+    assert len(adrc_inst.__dict__) == 14
 
     # assert initiation went correctly
     assert adrc_inst.scdict == d0
@@ -99,17 +101,37 @@ def test_init():
     assert adrc_inst.adapting is False
     assert adrc_inst.connector == "<*"
     assert adrc_inst.scdictbase == {}
+    assert adrc_inst.tgtlg == "EAH"
+    assert adrc_inst.srclg == "WOT"
+
 
     # 6 attributes inherited from Etym via Qfy
     assert_frame_equal(
         adrc_inst.dfety, DataFrame(
-            {"Segments_tgt": ["a γ a t͡ʃ i", "a l d a γ", "a j a n"],
-             "Segments_src": ["a γ a t͡ʃː ɯ", "a l d a γ", "a j a n"],
-             "CV_Segments_tgt": ["a γ a t͡ʃ i", "a l.d a γ", "a j a n"],
-             "CV_Segments_src": ["a γ a t͡ʃː ɯ", "a l.d a γ", "a j a n"],
-             "ProsodicStructure_tgt": ["VCVCV", "VCCVC", "VCVC"],
-             "ProsodicStructure_src": ["VCVCV", "VCCVC", "VCVC"],
-             "Cognacy": [1, 2, 3]}))
+            {
+            "ID": [
+                "EAH-0_carpenter-1", "WOT-0_carpenter-1",
+                "EAH-1_cannoncatapult-1", "WOT-1_cannoncatapult-1",
+                "EAH-2_tofondlepetcaress-1", "WOT-2_tofondlepetcaress-1"],
+            "Language_ID": ["EAH", "WOT", "EAH", "WOT", "EAH", "WOT"],
+            "Segments": [
+                "a γ a t͡ʃ i", "a γ a t͡ʃː ɯ",
+                "a l d a γ", "a l d a γ",
+                "a j a n", "a j a n"
+                ],
+            "Cognacy": [1, 1, 2, 2, 3, 3],
+            "CV_Segments": [
+                "a γ a t͡ʃ i", "a γ a t͡ʃː ɯ",
+                "a l.d a γ", "a l.d a γ",
+                "a j a n", "a j a n"
+                ],
+            "ProsodicStructure": [
+                "VCVCV", "VCVCV",
+                "VCCVC", "VCCVC",
+                "VCVC",  "VCVC"
+                ],
+             }, index=[1, 2, 6, 7, 9, 10]),
+             check_dtype=False)
     assert adrc_inst.inventories["Segments"] == Counter({'a': 6, 'γ': 2,
     't͡ʃ': 1, 'i': 1, 'l': 1, 'd': 1, 'j': 1, 'n': 1})
     assert adrc_inst.inventories["CV_Segments"] == Counter({'a': 6, 'γ': 2,
@@ -120,8 +142,9 @@ def test_init():
 
     ismethod(adrc_inst.distance_measure)
     assert_frame_equal(adrc_inst.dfrest,
-        DataFrame({"Segments_tgt": [], "CV_Segments_tgt": [],
-                   "ProsodicStructure_tgt": []}))
+        DataFrame({"ID": [], "Segments": [], "CV_Segments": [], "Cognacy": [],
+                   "Language_ID": [], "ProsodicStructure": []
+                   }, index=[], dtype="object"))
 
     # don't remove yet,
     # remove("test_soundchanges.txt")
