@@ -388,9 +388,14 @@ False, False, False, False, False, \
         #keep only current cognate set
         cogset = args[0].dfety[args[0].dfety["Cognacy"] == cogid]
         # get crossvalidated sound correspondences if indicated
-        col = "Segments" if args[0].adapting else "CV_Segments"
-        srcwrd = cogset[cogset["Language_ID"] == args[0].srclg].iloc[0][col]
-        tgtwrd = cogset[cogset["Language_ID"] == args[0].tgtlg].iloc[0][col]
+        srcrow = cogset[cogset["Language_ID"] == args[0].srclg].iloc[0]
+        tgtrow = cogset[cogset["Language_ID"] == args[0].tgtlg].iloc[0]
+        if args[0].adapting:
+            srcwrd = (srcrow["Segments"], srcrow["ProsodicStructure"])
+            tgtwrd = tgtrow["Segments"]
+        else:
+            srcwrd = srcrow["CV_Segments"]
+            tgtwrd = tgtrow["CV_Segments"]
 
         if crossval:
             args[0] = get_crossval_data(args[0], cogid, writesc)
@@ -402,13 +407,11 @@ False, False, False, False, False, \
             out = {k: [result_eval_one[k]] for k in result_eval_one}
             out["Language_ID"] = [f"{args[0].srclg}2{args[0].tgtlg}"]
             out["Cognacy"] = [cogid]
-            print(out)
         else:  # update dict after first round of loop
             for key in result_eval_one:
                 out[key].append(result_eval_one[key])
             out["Language_ID"].append(f"{args[0].srclg}2{args[0].tgtlg}")
             out["Cognacy"].append(cogid)
-            print(out)
 
     args[0].dfeval = DataFrame(out)
 

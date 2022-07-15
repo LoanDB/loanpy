@@ -207,7 +207,7 @@ def test_eval_adapt():
     # assert with show_workflow=True
     # KeyError is triggered before 3rd part of workflow is added.
     # max_phonotactics=0, therefore adapted_phonotactics=tokenised
-    assert eval_adapt("A p f e l", adrc_obj, "a p p l e",
+    assert eval_adapt("A p f e l", adrc_obj, ("a p p l e", "VCCCV"),
                       10, False, False, False, False, 0, 1, 100, 49, True) == {
         "best_guess": "KeyError", "guesses": float("inf"),
         'adapted_phonotactics': "[['a', 'p', 'p', 'l', 'e']]"}
@@ -216,7 +216,7 @@ def test_eval_adapt():
     assert eval_adapt(
         "d a ʃ a",
         adrc_obj,
-        "d a t͡ʃː a",
+        ("d a t͡ʃː a", "CVCV"),
         10,
         False,
         False,
@@ -231,7 +231,7 @@ def test_eval_adapt():
         'guesses': float("inf")}
 
     # assert no keyerror but target missed while showing workflow
-    assert eval_adapt("d a ʃ a", adrc_obj, "d a t͡ʃː a",
+    assert eval_adapt("d a ʃ a", adrc_obj, ("d a t͡ʃː a", "CVCV"),
                       10, False, False, False, False, 0, 1, 100, 49, True) == {
         'best_guess': 'd a t͡ʃ a', 'guesses': float("inf"),
         'adapted_phonotactics': "[['d', 'a', 't͡ʃː', 'a']]",
@@ -239,12 +239,11 @@ def test_eval_adapt():
         }
 
     # no keyerror, target missed, show workflow, max_phonotactics=1
-    assert eval_adapt("d a ʃ a", adrc_obj, "a l d a j d",
+    assert eval_adapt("d a ʃ a", adrc_obj, ("a l d a j d", "VCCVCC"),
                       10, False, False, False, False, 1, 1, 100, 49, True) == {
         'adapted_phonotactics': "[['a', 'l', 'd', 'a', 'd']]",
         'before_combinatorics': "[[['a'], ['l'], ['d'], ['a'], ['d']]]",
         'best_guess': 'a l d a d',
-        'donor_phonotactics': 'VCCVCC',
         'guesses': float("inf"),
         'predicted_phonotactics': "['VCCVC']",
         }
@@ -253,7 +252,7 @@ def test_eval_adapt():
     assert eval_adapt(
         "d a t͡ʃ a",
         adrc_obj,
-        "d a t͡ʃː a",
+        ("d a t͡ʃː a", "CVCV"),
         10,
         False,
         False,
@@ -268,7 +267,7 @@ def test_eval_adapt():
         'guesses': 1}
 
     # assert target hit while showing workflow, no repair_phonotactics
-    assert eval_adapt("d a t͡ʃ a", adrc_obj, "d a t͡ʃː a",
+    assert eval_adapt("d a t͡ʃ a", adrc_obj, ("d a t͡ʃː a", "CVCV"),
                       10, False, False, False, False, 0, 1, 100, 49, True) == {
         'best_guess': 'd a t͡ʃ a', 'guesses': 1,
         'adapted_phonotactics': "[['d', 'a', 't͡ʃː', 'a']]",
@@ -276,12 +275,11 @@ def test_eval_adapt():
         }
 
     # assert target hit, show workflow, max_phonotactics=1
-    assert eval_adapt("a l d a d", adrc_obj, "a l d a j d",
+    assert eval_adapt("a l d a d", adrc_obj, ("a l d a j d", "VCCVCC"),
                       10, False, False, False, False, 1, 1, 100, 49, True) == {
         'adapted_phonotactics': "[['a', 'l', 'd', 'a', 'd']]",
         'before_combinatorics': "[[['a'], ['l'], ['d'], ['a'], ['d']]]",
         'best_guess': 'a l d a d',
-        'donor_phonotactics': 'VCCVCC',
         'guesses': 1,
         'predicted_phonotactics': "['VCCVC']",
          }
@@ -334,13 +332,13 @@ def test_eval_one():
 
     # assert keyerror, mode=adapt
     assert eval_one(
-        "g a g a", adrc_obj, "d a d a",
+        "g a g a", adrc_obj,( "d a d a", "CVCV"),
         False, False, False, False, 0, 1, 100, 49, False, [
             2, 4, 6], "adapt") == {
         "guesses": float("inf"), "best_guess": "d a d a"}
     # assert no keyerror, mode=adapt, target missed
     assert eval_one(
-        "g a g a", adrc_obj, "d a d a",
+        "g a g a", adrc_obj, ("d a d a", "CVCV"),
         False, False, False, False, 0, 1, 100, 49, False, [
             2, 4, 6], "adapt") == {
         "guesses": float("inf"), "best_guess": "d a d a"}
@@ -348,7 +346,7 @@ def test_eval_one():
     assert eval_one(
         "d a d a",
         adrc_obj,
-        "d a d a",
+        ("d a d a", "CVCV"),
         False,
         False,
         False,
@@ -366,7 +364,7 @@ def test_eval_one():
     assert eval_one(
         "d a d a",
         adrc_obj,
-        "d a d a",
+        ("d a d a", "CVCV"),
         False,
         False,
         False,

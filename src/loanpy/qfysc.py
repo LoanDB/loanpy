@@ -429,7 +429,7 @@ ranked according to similarity)
 
         ipa_all = read_csv(Path(path2panphon).parent / "data" / "ipa_all.csv")
         ipa_all["substi"] = [self.rank_closest(ph)
-                             for ph in tqdm(ipa_all["ipa"])]
+                             for ph in tqdm(ipa_all["ipa"], "getting scdictbase")]
         scdictbase = dict(zip(ipa_all["ipa"],
                               ipa_all["substi"].str.split(", ")))
 
