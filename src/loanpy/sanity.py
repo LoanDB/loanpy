@@ -1,6 +1,6 @@
 """Check how sane the model is by evaluating predictions."""
 
-from collections import OrderedDict
+from collections import defaultdict, OrderedDict
 from datetime import datetime
 from functools import wraps
 from math import ceil
@@ -376,7 +376,7 @@ False, False, False, False, False, \
     2        ajan        ajan        3      inf   KeyError
     """
 
-    args, out = [*args], {}
+    args, out = [*args], defaultdict(list)
     crossval, writesc, = args.pop(), args.pop()
     args.insert(1, None)  # insert empty place for source word!
     # get non-crossvalidated sound correspondences if indicated
@@ -403,15 +403,11 @@ False, False, False, False, False, \
         # make prediction from source word, check if target was hit
         args[1] = srcwrd  # insert sourceword into empty space created for it
         result_eval_one = eval_one(tgtwrd, *args)  # args 0-11 (incl)
-        if out == {}:  # create dict if first round of loop
-            out = {k: [result_eval_one[k]] for k in result_eval_one}
-            out["Language_ID"] = [f"{args[0].srclg}2{args[0].tgtlg}"]
-            out["Cognacy"] = [cogid]
-        else:  # update dict after first round of loop
-            for key in result_eval_one:
-                out[key].append(result_eval_one[key])
-            out["Language_ID"].append(f"{args[0].srclg}2{args[0].tgtlg}")
-            out["Cognacy"].append(cogid)
+
+        for key in result_eval_one:
+            out[key].append(result_eval_one[key])
+        out["Language_ID"].append(f"{args[0].srclg}2{args[0].tgtlg}")
+        out["Cognacy"].append(cogid)
 
     args[0].dfeval = DataFrame(out)
 
