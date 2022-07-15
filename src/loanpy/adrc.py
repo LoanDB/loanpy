@@ -6,7 +6,7 @@ from collections import Counter, OrderedDict
 from itertools import count, cycle, product
 from functools import partial
 from heapq import nlargest
-from math import prod
+from math import log, prod
 from operator import itemgetter
 from re import split as re_split
 
@@ -98,7 +98,7 @@ from loanpy.qfysc.Qfy
                          adapting=adapting,
                          scdictbase=scdictbase)
         # read here - was extracted by loanpy.qfysc.Qfy and written to file
-        (self.scdict, self.sedict, self.edict,
+        (self.scdict, self.sedict, self.edict, self.probdict,
             self.scdict_phonotactics) = read_scdictlist(scdictlist)
         # sound correspondence dictionaries
 
@@ -529,7 +529,7 @@ vowelharmony_filter=True)  \
             if out == []:
                 return "wrong vowel harmony"
 
-        # sort results by decreasing likelihood (normalised sum of examples)
+        # sort results by increading entropy
         if sort_by_nse:
             out_nse = [(self.get_nse(ipastr, i)[0], i) for i in out]  # get nse
             out_max = nlargest(sort_by_nse, out_nse)
@@ -851,8 +851,15 @@ target_language="EAH")
         outsum = sum(outlist)
         # divide the sum through the length of the word, round on 2 decimals
         normalised_outsum = round(outsum / len(dfsc), 2)
-        # add the in-between-steps if indicated so (useful for debugging)
-        return normalised_outsum, outsum, str(outlist), str(list(sc))
+        #get probabilities for entropy
+        problist = [self.probdict.get(i, 0) for i in sc]
+        # calculate entropy
+        if 0 in problist:
+            entropy = float("inf")
+        else:
+            entropy = -sum([prob * log(prob, 2) for prob in problist])
+        # return all the info as a tuple. Deprecate unnecessary ones later
+        return normalised_outsum, outsum, str(outlist), round(entropy, 2), str(problist), str(list(sc))
 
 
 def read_scdictlist(scdictlist):
@@ -887,9 +894,9 @@ input is None.
 
     """
     if scdictlist is None:
-        return [None]*4
+        return [None]*5
     with open(scdictlist, "r", encoding="utf-8") as f:
-        return literal_eval(f.read())[:4]
+        return literal_eval(f.read())[:5]
 
 
 def move_sc(sclistlist, whichsound, out):

@@ -490,7 +490,7 @@ def test_get_noncrossval_sc():
     # read and assert result
     out = literal_eval(open(path2noncrossval, encoding="utf-8").read())
     # phonotactic inventory has randomness
-    assert set(out.pop(3)) == {'VCVC', 'VCVCV', 'VCCVC'}
+    assert set(out.pop(4)) == {'VCVC', 'VCVCV', 'VCCVC'}
     assert out == [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'], 'n': ['n'],
                     't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']},
                    {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, 'j<j': 1, 'l<l': 1, 'n<n': 1,
@@ -498,6 +498,14 @@ def test_get_noncrossval_sc():
                    {'a<a': [1, 2, 3], 'd<d': [2],
                     'i<ɯ': [1], 'j<j': [3], 'l<l': [2],
                     'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'γ<γ': [1, 2]},
+                   {'a<a': 100.0,
+                    'd<d': 100.0,
+                    'j<j': 100.0,
+                    'l<l': 100.0,
+                    'n<n': 100.0,
+                    't͡ʃː<t͡ʃ': 100.0,
+                    'ɯ<i': 100.0,
+                    'γ<γ': 100.0},
                    {'VCCVC<VCCVC': 1, 'VCVC<VCVC': 1, 'VCVCV<VCVCV': 1},
                    {'VCCVC<VCCVC': [2], 'VCVC<VCVC': [3], 'VCVCV<VCVCV': [1]}]
     # tear down
@@ -624,7 +632,14 @@ def test_get_crossval_data():
         {'#-<*-': 2, '#a<*aː': 2, 'a<*uː': 1,
          'a t͡ʃ i#<*-': 1, 'l.d<*ɟ': 1, 'γ#<*-': 1, 'γ<*t͡ʃ': 1},
         {'#-<*-': [1, 2], '#a<*aː': [1, 2], 'a<*uː': [2], 'a t͡ʃ i#<*-': [1],
-         'l.d<*ɟ': [2], 'γ#<*-': [2], 'γ<*t͡ʃ': [1]}, {}, {}, {}]
+         'l.d<*ɟ': [2], 'γ#<*-': [2], 'γ<*t͡ʃ': [1]},
+         {'#-<*-': 100.0,
+        '#a<*aː': 100.0,
+        'a t͡ʃ i#<*-': 100.0,
+        'a<*uː': 100.0,
+        'l.d<*ɟ': 100.0,
+        'γ#<*-': 100.0,
+        'γ<*t͡ʃ': 100.0}, {}, {}, {}]
 
     # tear down
     remove(path2outfolder / "sc3isolated.txt")

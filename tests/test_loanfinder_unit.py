@@ -431,11 +431,11 @@ def test_likeliestphonmatch():
             self.get_nse_ad_called_with = []
             self.get_nse_rc_called_with = []
             self.get_nse_ad_returns = iter(
-                [(8, 32, "[7, 9, 15, 2]", "['bla']"),
-                 (7, 21, [9, 3, 4, 5], "['bli']")])
+                [(8, 32, "[7, 9, 15, 2]", 0.1, "[0.2, 0.3, 0.4, 0.5]", "['bla']"),
+                 (7, 21, "[9, 3, 4, 5]", 0.2, "[0.6, 0.7, 0.8, 0.9]", "['bli']")])
             self.get_nse_rc_returns = iter(
-                [(10, 40, "[10, 10, 10, 10]", "['blo']"),
-                 (5, 20, "[4, 4, 4, 4]", "['blu']")])
+                [(10, 40, "[10, 10, 10, 10]", 0.1, "[0.2, 0.3, 0.4, 0.5]", "['blo']"),
+                 (5, 20, "[4, 4, 4, 4]", 0.2, "[0.6, 0.7, 0.8, 0.9]", "['blu']")])
             self.doncol = "ad"
 
         def phonmatch_small(self, *args, dropduplicates):
@@ -461,10 +461,14 @@ def test_likeliestphonmatch():
                        "nse_rc": [10],
                        "se_rc": [40],
                        "distr_rc": str([10] * 4),
+                       "entropy_rc": 0.1,
+                       "entropy_distr_rc": ["[0.2, 0.3, 0.4, 0.5]"],
                        "align_rc": "['blo']",
                        "nse_ad": [8],
                        "se_ad": [32],
                        "distr_ad": "[7, 9, 15, 2]",
+                       "entropy_ad": 0.1,
+                       "entropy_distr_ad": ["[0.2, 0.3, 0.4, 0.5]"],
                        "align_ad": "['bla']",
                        "nse_combined": [18]})
 
@@ -481,7 +485,7 @@ def test_likeliestphonmatch():
         assert_frame_equal(Search.likeliestphonmatch(
                 mocksearch, "a, b l u b, p l u b",
                 "?(b|p)? l u b", "g l u b", "f l u b"),
-            dfexp)
+            dfexp, check_dtype=False)
 
     # assert mock Series class was initiated with correct args
     Series_mock.assert_called_with(["a", "b l u b", "p l u b"], name="match")

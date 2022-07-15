@@ -485,8 +485,11 @@ club", recip_rc="(b|c)?lub",
                           for wrd, wrd_cvseg in zip(
                           dfph["match"], dfph["cv_match"])],
                           columns=[
-                          "match", "cv_match", "nse_rc", "se_rc", "distr_rc",
-                          "align_rc", "nse_ad", "se_ad", "distr_ad", "align_ad"
+                          "match", "cv_match",
+                          "nse_rc", "se_rc", "distr_rc",
+                          "entropy_rc", "entropy_distr_rc", "align_rc",
+                          "nse_ad", "se_ad", "distr_ad",
+                          "entropy_ad", "entropy_distr_ad", "align_ad"
                           ])
         # add combined nse
         dfph["nse_combined"] = dfph["nse_rc"] + dfph["nse_ad"]

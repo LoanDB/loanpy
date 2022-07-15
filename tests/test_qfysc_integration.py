@@ -221,7 +221,7 @@ def test_get_sound_corresp():
               target_language="EAH")
 #    print(qfy.left, qfy.dfety) # qfy.dfety[qfy.left]
     out = qfy.get_sound_corresp(write_to=None)
-    for s_out, s_exp in zip(out.pop(3),
+    for s_out, s_exp in zip(out.pop(4),
                             {'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],
                              'VCVC': ['VCVC', 'VCVCV', 'VCCVC'],
                              'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']}):
@@ -253,6 +253,15 @@ def test_get_sound_corresp():
          'n<n': [3],
          't͡ʃ<t͡ʃː': [1],
          'γ<γ': [1, 2]},
+
+        {'a<a': 100.0,
+         'd<d': 100.0,
+         'j<j': 100.0,
+         'l<l': 100.0,
+         'n<n': 100.0,
+         't͡ʃː<t͡ʃ': 100.0,
+         'ɯ<i': 100.0,
+         'γ<γ': 100.0},
 
         {'VCCVC<VCCVC': 1,
          'VCVC<VCVC': 1,
@@ -304,6 +313,19 @@ def test_get_sound_corresp():
          't͡ʃ#<*γ': [1],
          'uː#<*a': [2],
          'ɟ<*l.d': [2]},
+         
+        {'#-<*-': 100.0,
+        '#aː<*a': 100.0,
+        '#ɒ<*a': 100.0,
+        '-#<*a t͡ʃ i': 50.0,
+        '-#<*γ': 50.0,
+        'aː<*a': 100.0,
+        'j.n<*j': 100.0,
+        'o z#<*-': 100.0,
+        'r<*n': 100.0,
+        't͡ʃ#<*γ': 100.0,
+        'uː#<*a': 100.0,
+        'ɟ<*l.d': 100.0},
         {}, {}, {}
     ]
 
@@ -315,6 +337,7 @@ def test_get_sound_corresp():
            {'a<a': [1, 2, 3], 'd<d': [2], 'i<ɯ': [1],
             'j<j': [3], 'l<l': [2], 'n<n': [3],
             't͡ʃ<t͡ʃː': [1], 'γ<γ': [1, 2]},
+           {},
            {'VCCVC': ['VCCVC', 'VCVC', 'VCVCV'],
             'VCVC': ['VCVC', 'VCCVC', 'VCVCV'],
             'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']},

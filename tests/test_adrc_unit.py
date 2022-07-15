@@ -19,7 +19,7 @@ def test_read_scdictlist():
     """test if list of sound correspondence dictionaries is read correctly"""
 
     # no set up needed for this assertion:
-    assert read_scdictlist(None) == [None, None, None, None]
+    assert read_scdictlist(None) == [None, None, None, None, None]
 
     # set up: creat a mock list of dicts and write it to file
     dict0 = {"dict0": "szia"}
@@ -75,7 +75,7 @@ def test_init():
     # initiate the real class
     with patch("loanpy.adrc.Etym.__init__") as super_method_mock:
         with patch("loanpy.adrc.read_scdictlist") as read_scdictlist_mock:
-            read_scdictlist_mock.return_value = [None] * 4
+            read_scdictlist_mock.return_value = [None] * 5
             monkey_adrc = Adrc()
 
             # assert initiation went correctly
@@ -86,10 +86,11 @@ def test_init():
             assert monkey_adrc.workflow == OrderedDict()
 
             # double check with __dict__
-            assert len(monkey_adrc.__dict__) == 5
+            assert len(monkey_adrc.__dict__) == 6
             assert monkey_adrc.__dict__ == {
                 'edict': None,
                 'scdict': None,
+                'probdict': None,
                 'scdict_phonotactics': None,
                 'sedict': None,
                 'workflow': OrderedDict()}
@@ -108,11 +109,11 @@ def test_init():
     # define side_effect of read_scdictlist in vars
     # initiate the real class
     with patch("loanpy.adrc.Etym.__init__") as super_method_mock:
-        d0, d1, d2, d3 = {"d0": None}, {"d1": None}, {
-            "d2": None}, {"d3": None}
+        d0, d1, d2, d3, d4 = {"d0": None}, {"d1": None}, {
+            "d2": None}, {"d3": None}, {"d4": None}
 
         with patch("loanpy.adrc.read_scdictlist") as read_scdictlist_mock:
-            read_scdictlist_mock.return_value = [d0, d1, d2, d3]
+            read_scdictlist_mock.return_value = [d0, d1, d2, d3, d4]
             monkey_adrc = Adrc(
                 scdictlist="soundchanges.txt",
                 forms_csv="forms.csv",
@@ -123,15 +124,17 @@ def test_init():
             assert monkey_adrc.scdict == d0
             assert monkey_adrc.sedict == d1
             assert monkey_adrc.edict == d2
-            assert monkey_adrc.scdict_phonotactics == d3
+            assert monkey_adrc.probdict == d3
+            assert monkey_adrc.scdict_phonotactics == d4
             assert monkey_adrc.workflow == OrderedDict()
 
             # double check with __dict__
-            assert len(monkey_adrc.__dict__) == 5
+            assert len(monkey_adrc.__dict__) == 6
             assert monkey_adrc.__dict__ == {
                 'edict': {'d2': None},
                 'scdict': {'d0': None},
-                'scdict_phonotactics': {'d3': None},
+                'scdict_phonotactics': {'d4': None},
+                'probdict': {'d3': None},
                 'sedict': {'d1': None},
                 'workflow': OrderedDict()}
 
@@ -1248,11 +1251,17 @@ def test_get_nse():
         def __init__(self):
             self.align_called_with = []
             self.sedict = {
-                "#-<*-": 10,
-                "#ɟ<*j": 9,
-                "ɒ<*ɑ": 8,
-                "l<*l.k": 7,
-                "o<*ɑ": 6}
+                "#-<*-": 5,
+                "#ɟ<*j": 6,
+                "ɒ<*ɑ": 7,
+                "l<*l.k": 8,
+                "o<*ɑ": 9}
+            self.probdict = {
+                "#-<*-": 1,
+                "#ɟ<*j": 1,
+                "ɒ<*ɑ": 1,
+                "l<*l.k": 1,
+                "o<*ɑ": 1}
             self.edict = {"#-<*-": [1, 2], "#ɟ<*j": [3, 4],
                           "ɒ<*ɑ": [5], "l<*l.k": [6, 7, 8], "o<*ɑ": [9]}
             self.connector = "<*"
@@ -1270,8 +1279,7 @@ def test_get_nse():
     # assert
     assert Adrc.get_nse(
         self=monkey_adrc, left="ɟ ɒ l o ɡ", right="j ɑ l.k ɑ") == (
-        6.67, 40,
-        '[10, 9, 8, 7, 6, 0]',
+        5.83, 35, '[5, 6, 7, 8, 9, 0]', float("inf"), '[1, 1, 1, 1, 1, 0]',
         "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*l.k', 'o<*ɑ', 'ɡ#<*-']")
     # assert call
     assert monkey_adrc.align_called_with == [["ɟ ɒ l o ɡ", "j ɑ l.k ɑ"]]

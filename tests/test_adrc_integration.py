@@ -47,13 +47,14 @@ def test_init():
 
     # check if initiation without args works fine
     adrc_inst = Adrc()
-    assert len(adrc_inst.__dict__) == 14
+    assert len(adrc_inst.__dict__) == 15
 
     # 5 attributes initiated in Adrc, rest inherited
     assert adrc_inst.scdict is None
     assert adrc_inst.sedict is None
     assert adrc_inst.edict is None
     assert adrc_inst.scdict_phonotactics is None
+    assert adrc_inst.probdict is None
     assert adrc_inst.workflow == OrderedDict()
 
     # 4 attributes inherited from Qfy
@@ -72,12 +73,13 @@ def test_init():
     # assert initiation runs correctly with non-empty params as well
 
     # set up fake sounndchange.txt file
-    d0, d1, d2, d3 = [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'],
+    d0, d1, d2, d3, d4 = [{'a': ['a'], 'd': ['d'], 'j': ['j'], 'l': ['l'],
                        'n': ['n'], 't͡ʃː': ['t͡ʃ'], 'γ': ['γ'], 'ɯ': ['i']},
                       {'a<a': 6, 'd<d': 1, 'i<ɯ': 1, 'j<j': 1, 'l<l': 1,
                        'n<n': 1, 't͡ʃ<t͡ʃː': 1, 'γ<γ': 2},
                       {'a<a': [1, 2, 3], 'd<d': [2], 'i<ɯ': [1], 'j<j': [3],
                        'l<l': [2], 'n<n': [3], 't͡ʃ<t͡ʃː': [1], 'γ<γ': [1, 2]},
+                      {},
                       {'VCCVC': ['VCCVC'], 'VCVC': ['VCVC'],
                        'VCVCV': ['VCVCV']}]
 
@@ -88,13 +90,14 @@ def test_init():
         adapting=False
         )
 
-    assert len(adrc_inst.__dict__) == 14
+    assert len(adrc_inst.__dict__) == 15
 
     # assert initiation went correctly
     assert adrc_inst.scdict == d0
     assert adrc_inst.sedict == d1
     assert adrc_inst.edict == d2
-    assert adrc_inst.scdict_phonotactics == d3
+    assert adrc_inst.probdict == d3
+    assert adrc_inst.scdict_phonotactics == d4
     assert adrc_inst.workflow == OrderedDict()
 
     # 4 attributes inherited from Qfy
@@ -794,7 +797,8 @@ def test_get_nse():
 
     # assert with show_workflow=True
     assert adrc_inst.get_nse("dade", "dady") == (
-        33.25, 133, "[1, 6, 1, 125]", "['d<d', 'a<a', 'd<d', 'e<y']")
+        33.25, 133, "[1, 6, 1, 125]", 2.01, '[0.25, 0.25, 0.25, 0.48]',
+        "['d<d', 'a<a', 'd<d', 'e<y']")
 
     # assert with mode=="reconstruct"
     adrc_inst = Adrc(
@@ -804,7 +808,8 @@ def test_get_nse():
         adapting=False)
 
     assert adrc_inst.get_nse("ɟ ɒ l o ɡ", "j ɑ l.k ɑ") == (
-        6.67, 40, "[10, 9, 8, 7, 6, 0]",
+        6.67, 40, "[10, 9, 8, 7, 6, 0]", float("inf"),
+        '[1, 1, 1, 1, 1, 0]',
         "['#-<*-', '#ɟ<*j', 'ɒ<*ɑ', 'l<*l.k', 'o<*ɑ', 'ɡ#<*-']")
 
     # tear down

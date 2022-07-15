@@ -253,11 +253,18 @@ source_language=1, target_language=2, mode="reconstruct")
 # create 3rd elem. of output. List up cognate sets where each corresp occurred
         dfe = dfsoundchange.groupby("soundchange")[
             "wordchange"].apply(lambda x: sorted(set(x))).reset_index()
+        # calculate total number of occurences of key
+        dfsum = dfsoundchange.groupby("keys")["e"].sum().reset_index()
+        # calculate distribution of sound changes
+        dfdistr = dfsoundchange.groupby("keys")["vals"].apply(
+            lambda x: [n[1] for n in Counter(x).most_common()]).reset_index()
 
 # turn the 3 pandas dataframes into dictionaries
         scdict = dict(zip(dfsc["keys"], dfsc["vals"]))
         sedict = dict(zip(dfse["soundchange"], dfse["e"]))
         edict = dict(zip(dfe["soundchange"], dfe["wordchange"]))
+        sumdict = dict(zip(dfsum["keys"], dfsum["e"]))
+        distrdict = dict(zip(dfdistr["keys"], dfdistr["vals"]))
 
 # in loanpy.qfysc.Qfy.align_lingpy "C" and "V" instead of "-" used
 # to mark that a sound disappeared. So has to be removed here again.
@@ -277,7 +284,15 @@ source_language=1, target_language=2, mode="reconstruct")
                     scdict[i] = self.scdictbase[i]  # then add it to scdict
 # like this it is ensured that no non-ipa chars are taken
 
-        out = [scdict, sedict, edict]  # first 3 elements of output
+        #calculate probabilities from scdict, distrdict and sumdict here
+        probdict = {}
+        for src in scdict:
+            for tgt, freq in zip(scdict[src], distrdict[src]):
+                key = src + self.connector + tgt
+                probdict[key] = round(freq * 100 / sumdict[src], 2)
+
+
+        out = [scdict, sedict, edict, probdict]  # first 3 elements of output
         # the other 3 are only generated if adapting
         out += self.get_phonotactics_corresp() if self.adapting else [{}, {}, {}]
 
