@@ -132,6 +132,8 @@ def test_loop_thru_data():
             "b a n a n a", "B a n a n e",
             "c.h e r.r y", "K i r.s.c.h e"
             ],
+        "ProsodicStructure": [
+            "VCCCV", "VCCVC", "CVCVCV", "CVCVCV", "CCVCCV", "CVCCCCV"],
         "Cognacy": [1, 1, 2, 2, 3, 3],
         "Language_ID": ["en", "ger", "en", "ger", "en", "ger"]
     })
@@ -182,11 +184,11 @@ def test_loop_thru_data():
     ])
 
     eval_one_mock.assert_has_calls([
-        call("A p f e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
+        call("A p f e l", adrc_monkey, ("a p p l e", "VCCCV"), 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True),
-        call("B a n a n e", adrc_monkey, "b a n a n a", 1, 1, 100, 49, False,
+        call("B a n a n e", adrc_monkey, ("b a n a n a", "CVCVCV"), 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True),
-        call("K i r s c h e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
+        call("K i r s c h e", adrc_monkey, ("c h e r r y", "CCVCCV"), 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True)
     ])
 
@@ -228,11 +230,11 @@ def test_loop_thru_data():
     get_noncrossval_sc_mock.assert_called_with(adrc_monkey, False)
 
     eval_one_mock.assert_has_calls([
-        call("A p f e l", adrc_monkey, "a p p l e", 1, 1, 100, 49, False,
+        call("A p f e l", adrc_monkey, ("a p p l e", "VCCCV"), 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True),
-        call("B a n a n e", adrc_monkey, "b a n a n a", 1, 1, 100, 49, False,
+        call("B a n a n e", adrc_monkey, ("b a n a n a", "CVCVCV"), 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True),
-        call("K i r s c h e", adrc_monkey, "c h e r r y", 1, 1, 100, 49, False,
+        call("K i r s c h e", adrc_monkey, ("c h e r r y", "CCVCCV"), 1, 1, 100, 49, False,
              False, False, False, False, [10, 50, 100, 500, 1000], True)
     ])
 

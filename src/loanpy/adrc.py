@@ -293,22 +293,27 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
   [['d', 't͡ʃ'], ['a', 'e'], ['d', 't͡ʃ'], ['l'], ['e', 'a']]]])])
 
         """
+
         # distribute howmany so that the product of these three approximates it
         (max_phon, max_repaired_phonotactics,
          max_paths2repaired_phonotactics
          ) = get_howmany(howmany, max_repaired_phonotactics,
                          max_paths2repaired_phonotactics)
         # reset workflow variable, tokenise input (must be untokenised ipa str)
-        self.workflow, out = OrderedDict(), ipastr.split(" ")
+        self.workflow, out = OrderedDict(), ipastr[0].split(" ")
 
         # repair the phonotactic structure if indicated
-        out = self.repair_phonotactics(
-                                      out,
-                                      max_repaired_phonotactics,
-                                      max_paths2repaired_phonotactics,
-                                      deletion_cost,
-                                      insertion_cost,
-                                      show_workflow)
+        if max_repaired_phonotactics:
+            out = self.repair_phonotactics(
+                                          ipastr,
+                                          max_repaired_phonotactics,
+                                          max_paths2repaired_phonotactics,
+                                          deletion_cost,
+                                          insertion_cost,
+                                          show_workflow
+                                          )
+        else:
+            out = [out]
         # document how structure was repaired if indicated
         if show_workflow:
             self.workflow["adapted_phonotactics"] = str(out)
@@ -345,7 +350,7 @@ max_repaired_phonotactics=2, max_paths2repaired_phonotactics=2)
                 return "wrong clusters"
 
         if sort_by_nse:  # sort resutls by likelyhood (nse) if indicated
-            out_nse = [(self.get_nse(ipastr, i)[0], i) for i in out]  # get nse
+            out_nse = [(self.get_nse(ipastr[0], i)[0], i) for i in out]  # get nse
             out_max = [i[1] for i in nlargest(sort_by_nse, out_nse)]
             out = list(dict.fromkeys(out_max + out))
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
@@ -610,34 +615,25 @@ show_workflow=True)
 [['VCVCV', 'VCVC']])])
 
         """
-
         # tokenise if input is string
-        if isinstance(ipastr, str):
-            ipastr = ipastr.split(" ")
-        # get phonotactic profile of input string
-        if max_repaired_phonotactics == 0:
-            return [ipastr]
-        donorstruc = prosodic_string(ipastr)
+        ipalist = ipastr[0].split(" ") if isinstance(ipastr[0], str) else ipalist
 
-        # append to workflow if indicated, to check if this went correctly
-        if show_workflow:
-            self.workflow["donor_phonotactics"] = str(donorstruc)
         # check if there is data available for this structure
         try:
             predicted_phonotactics = self.scdict_phonotactics[
-                donorstruc][:max_repaired_phonotactics]
+                ipastr[1]][:max_repaired_phonotactics]
         # if not use heuristics: pick n most similar strucs from inventory
         except KeyError:
             predicted_phonotactics = self.rank_closest_phonotactics(
-                donorstruc, max_repaired_phonotactics).split(", ")
+                ipastr[1], max_repaired_phonotactics).split(", ")
         # append this step to workflow for debugging, if indicated
         if show_workflow:
             self.workflow[
                 "predicted_phonotactics"] = str(predicted_phonotactics)
         # get edit operations between strucs and apply them to input IPA-string
-        return flatten([[apply_edit(ipastr, edop) for edop in
+        return flatten([[apply_edit(ipalist, edop) for edop in
                          editops(
-                                 donorstruc,
+                                 ipastr[1],
                                  pred,
                                  max_paths2repaired_phonotactics,
                                  deletion_cost,

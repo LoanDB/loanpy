@@ -139,8 +139,8 @@ def test_get_scdictbase():
                 "F": ["e"],
                 "B": []}
 
-        def tqdm_mock(pdseries):
-            tqdm_mock.called_with = pdseries
+        def tqdm_mock(pdseries, prefix):
+            tqdm_mock.called_with = (pdseries, prefix)
             return pdseries
         tqdm = qs.tqdm
         qs.tqdm = tqdm_mock
@@ -151,6 +151,12 @@ def test_get_scdictbase():
         assert mocketym.scdictbase == exp
         with open(path2test_scdictbase, "r", encoding="utf-8") as f:
             assert literal_eval(f.read()) == exp
+        #assert tqdm was called correctly
+        assert isinstance(tqdm_mock.called_with, tuple)
+        assert_series_equal(
+            tqdm_mock.called_with[0],
+            Series(["a", "b", "c", "ə"], name="ipa"))
+        assert tqdm_mock.called_with[1] == "getting scdictbase"
 
     # tear down
     qs.tqdm = tqdm

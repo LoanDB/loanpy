@@ -356,41 +356,36 @@ def test_repair_phonotactics():
         forms_csv=PATH2FORMS,  # to extract VCVCV, VCCVC, VCVC for heuristics
         source_language="WOT", target_language="EAH")
 
-    # assert repair_phonotactics works with max_repaired_phonotactics=1
-    assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=0) == [['k', 'i', 'k', 'i']]
     # but also with max_repaired_phonotactics=2
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i",
+        ipastr=("k i k i", "CVCV"),
         max_repaired_phonotactics=2) == [['k', 'i', 'k'],
                                          ['k', 'i', 'C', 'k', 'i']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=3,
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=3,
         # only 2 strucs available
         show_workflow=True) == [['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i']]
-    assert adrc_inst.workflow == OrderedDict([(
-        'donor_phonotactics', 'CVCV'),
+    assert adrc_inst.workflow == OrderedDict([
         ('predicted_phonotactics', "['CVC', 'CVCCV']")])
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=2,
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=2,
         # C can be inserted before or after k
         max_paths2repaired_phonotactics=2) == [['k', 'i', 'k'],
                                                ['k', 'i', 'C', 'k', 'i'],
                                                ['k', 'i', 'k', 'C', 'i']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=2,
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=3,
         show_workflow=True) == [['k', 'i', 'k'], ['k', 'i', 'C', 'k', 'i'],
                                 ['k', 'i', 'k', 'C', 'i']]
-    assert adrc_inst.workflow == OrderedDict([(
-        'donor_phonotactics', 'CVCV'),
+    assert adrc_inst.workflow == OrderedDict([
         ('predicted_phonotactics', "['CVC', 'CVCCV']")])
 
     # can't squeeze out more from this example, this was the max.
-    assert adrc_inst.repair_phonotactics(ipastr="k i k i",
+    assert adrc_inst.repair_phonotactics(ipastr=("k i k i", "CVCV"),
                                         max_repaired_phonotactics=9999999,
                                         # C can be inserted before or after k
                                         max_paths2repaired_phonotactics=9999999
@@ -403,17 +398,18 @@ def test_repair_phonotactics():
     # so "alkjpqf" is"VCCVCCC" but "ja" would be "CV"
     # same story with "r, m, n, w" btw.
     assert adrc_inst.repair_phonotactics(
-        ipastr="a l k j p q f", max_repaired_phonotactics=5, show_workflow=True) == [
+        ipastr=("a l k j p q f", "VCCVCCC"),
+        max_repaired_phonotactics=5, show_workflow=True) == [
         [
             'a', 'l', 'k', 'j', 'f'], [
                 'a', 'l', 'j', 'f'], [
                     'a', 'l', 'V', 'k', 'j']]
-    assert adrc_inst.workflow == OrderedDict(
-        [('donor_phonotactics', 'VCCVCCC'),
+    assert adrc_inst.workflow == OrderedDict([
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
     # same input str, higher max_rep.ph., add max_p2rep.
-    assert adrc_inst.repair_phonotactics(ipastr="a l k j p q f",
+    assert adrc_inst.repair_phonotactics(
+                                        ipastr=("a l k j p q f", "VCCVCCC"),
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10,
                                         show_workflow=True) == [
@@ -437,22 +433,21 @@ def test_repair_phonotactics():
                                              ['a', 'l', 'j', 'p', 'V'],
                                              ['a', 'l', 'j', 'p', 'V']
                                         ]
-    assert adrc_inst.workflow == OrderedDict(
-        [('donor_phonotactics', 'VCCVCCC'),
+    assert adrc_inst.workflow == OrderedDict([
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
     # almost same input str, just "j" replaced by "t" so it's always "C"
     assert adrc_inst.repair_phonotactics(
-        ipastr="a l k t p q f", max_repaired_phonotactics=5, show_workflow=True) == [
+        ipastr=("a l k t p q f", "VCCCCCC"),
+        max_repaired_phonotactics=5, show_workflow=True) == [
         [
             'a', 'l', 'k', 'V', 't'], [
                 'a', 'l', 'V', 'f'], [
                     'a', 'l', 'V', 'f', 'V']]
-    assert adrc_inst.workflow == OrderedDict(
-        [('donor_phonotactics', 'VCCCCCC'),
+    assert adrc_inst.workflow == OrderedDict([
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
-    assert adrc_inst.repair_phonotactics(ipastr="a l k t p q f",
+    assert adrc_inst.repair_phonotactics(ipastr=("a l k t p q f", "VCCCCCC"),
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10,
                                         show_workflow=True) == [
@@ -470,11 +465,10 @@ def test_repair_phonotactics():
         ['a', 't', 'V', 'q', 'V'], ['a', 't', 'V', 'q', 'V'],
         ['a', 't', 'V', 'f', 'V'], ['a', 't', 'V', 'p', 'V'],
         ['a', 't', 'V', 'p', 'V'], ['a', 't', 'V', 'p', 'V']]
-    assert adrc_inst.workflow == OrderedDict(
-        [('donor_phonotactics', 'VCCCCCC'),
+    assert adrc_inst.workflow == OrderedDict([
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
-    assert adrc_inst.repair_phonotactics(ipastr="a a a",
+    assert adrc_inst.repair_phonotactics(ipastr=("a a a", "VVV"),
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10,
                                         show_workflow=True) == [
@@ -483,11 +477,10 @@ def test_repair_phonotactics():
         ['a', 'C', 'C', 'a', 'C'],
         ['a', 'C', 'a', 'C'], ['a', 'C', 'C', 'a', 'C'],
         ['a', 'C', 'C', 'a', 'C']]
-    assert adrc_inst.workflow == OrderedDict(
-        [('donor_phonotactics', 'VVV'),
+    assert adrc_inst.workflow == OrderedDict([
          ('predicted_phonotactics', "['VCVCV', 'VCVC', 'VCCVC']")])
 
-    assert adrc_inst.repair_phonotactics(ipastr="z r r r",
+    assert adrc_inst.repair_phonotactics(ipastr=("z r r r", "CCCC"),
                                         max_repaired_phonotactics=12,
                                         max_paths2repaired_phonotactics=2,
                                         show_workflow=True) == [
@@ -495,36 +488,35 @@ def test_repair_phonotactics():
         ['V', 'r', 'V', 'r'],
         ['V', 'r', 'V', 'r'], ['V', 'r', 'V', 'r', 'V'],
         ['V', 'r', 'V', 'r', 'V']]
-    assert adrc_inst.workflow == OrderedDict(
-        [('donor_phonotactics', 'CCCC'),
+    assert adrc_inst.workflow == OrderedDict([
          ('predicted_phonotactics', "['VCCVC', 'VCVC', 'VCVCV']")])
 
     # test struc missing from dict and rank_closest instead, test show_workflow
     # pretend scdict_phonotactics is empty:
     adrc_inst.scdict_phonotactics = {}
-    assert adrc_inst.repair_phonotactics(ipastr="k i k i",
+    assert adrc_inst.repair_phonotactics(
+                                        ipastr=("k i k i", "CVCV"),
                                         max_repaired_phonotactics=2,
                                         show_workflow=True) == [['V', 'k', 'i',
                                                                  'k', 'i'],
                                                                 ['i', 'k',
                                                                  'i', 'C']]
-    assert adrc_inst.workflow == OrderedDict(
-        [('donor_phonotactics', 'CVCV'),
+    assert adrc_inst.workflow == OrderedDict([
          ('predicted_phonotactics', "['VCVCV', 'VCVC']")])
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=3) == [
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=3) == [
         ['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C'],
         ['V', 'k', 'k', 'i', 'C']]
     # first i gets deleted: kiki-kki-Vkki-VkkiC to get VCCVC
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=4) == [
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=4) == [
         ['V', 'k', 'i', 'k', 'i'], ['i', 'k', 'i', 'C'],
         ['V', 'k', 'k', 'i', 'C']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=2,
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2) == [
         [
             'V', 'k', 'i', 'k', 'i'], [
@@ -533,7 +525,7 @@ def test_repair_phonotactics():
 
     # no change
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=2,
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=3) == [
         [
             'V', 'k', 'i', 'k', 'i'], [
@@ -541,7 +533,7 @@ def test_repair_phonotactics():
                     'V', 'k', 'i', 'k']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=3,
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=3,
         max_paths2repaired_phonotactics=2) == [
         [
             'V', 'k', 'i', 'k', 'i'], [
@@ -551,7 +543,7 @@ def test_repair_phonotactics():
                             'i', 'k', 'C', 'i', 'C']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="k i k i", max_repaired_phonotactics=999,
+        ipastr=("k i k i", "CVCV"), max_repaired_phonotactics=999,
         max_paths2repaired_phonotactics=999) == [
         [
             'V', 'k', 'i', 'k', 'i'], [
@@ -565,17 +557,19 @@ def test_repair_phonotactics():
 
     # test with different input strings now
     assert adrc_inst.repair_phonotactics(
-        ipastr="a l k j p q f", max_repaired_phonotactics=5) == [
+        ipastr=("a l k j p q f", "VCCVCCC"),
+        max_repaired_phonotactics=5) == [
         ['a', 'l', 'k', 'j', 'f'], ['a', 'l', 'j', 'f'],
         ['a', 'l', 'V', 'k', 'j']]
 
     # almost same as before, just "j" replaced with "t" so it's always "C"
     assert adrc_inst.repair_phonotactics(
-        ipastr="a l k t p q f", max_repaired_phonotactics=5) == [
+        ipastr=("a l k t p q f", "VCCCCCC"),
+        max_repaired_phonotactics=5) == [
         ['a', 'l', 'k', 'V', 't'], ['a', 'l', 'V', 'f'],
         ['a', 'l', 'V', 'f', 'V']]
 
-    assert adrc_inst.repair_phonotactics(ipastr="a l k j p q f",
+    assert adrc_inst.repair_phonotactics(ipastr=("a l k j p q f", "VCCVCCC"),
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10
                                         ) == [
@@ -601,7 +595,7 @@ def test_repair_phonotactics():
 
 
     # almost same as before, just "j" replaced with "t" so it's always "C"
-    assert adrc_inst.repair_phonotactics(ipastr="a l k t p q f",
+    assert adrc_inst.repair_phonotactics(ipastr=("a l k t p q f", "VCCCCCC"),
                                         max_repaired_phonotactics=10,
                                         max_paths2repaired_phonotactics=10
                                         ) == [
@@ -621,7 +615,7 @@ def test_repair_phonotactics():
         ['a', 't', 'V', 'p', 'V'], ['a', 't', 'V', 'p', 'V']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="a a a", max_repaired_phonotactics=10,
+        ipastr=("a a a", "VVV"), max_repaired_phonotactics=10,
         max_paths2repaired_phonotactics=10) == [
         [
             'a', 'C', 'a', 'C', 'a'], [
@@ -635,7 +629,7 @@ def test_repair_phonotactics():
                                             'a', 'C', 'C', 'a', 'C']]
 
     assert adrc_inst.repair_phonotactics(
-        ipastr="z r r r", max_repaired_phonotactics=12,
+        ipastr=("z r r r", "CCCC"), max_repaired_phonotactics=12,
         max_paths2repaired_phonotactics=2) == [
         ['V', 'r', 'r', 'V', 'r'], ['V', 'z', 'r', 'V', 'r'],
         ['V', 'r', 'V', 'r'],
@@ -657,20 +651,20 @@ def test_adapt():
 
     # assert adapt is working
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=5,
         max_repaired_phonotactics=0) == "d a d y, d a tʰ y, d e d y, d e tʰ y, tʰ a d y"
 
     # change max_repaired_phonotactics to 2 from 1.
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=6,
         max_repaired_phonotactics=2
     ) == "d a d, d e d, tʰ a d, tʰ e d, d a j d y, d e j d y"
 
     # change max_paths2repaired_phonotactics to 2 from 1.
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2
@@ -678,7 +672,7 @@ def test_adapt():
 
     # assert nothing changes if weights stay same relative to each other
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -688,7 +682,7 @@ def test_adapt():
 
     # assert nothing changes if weights stay same relative to each other
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -699,7 +693,7 @@ def test_adapt():
     # o is a back vowel and will be replaced by "F"
     # which in turn turns to æ
     assert adrc_inst.adapt(
-        ipastr="d e d e d o",
+        ipastr=("d e d e d o", "CVCVCV"),
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -712,7 +706,7 @@ def test_adapt():
     adrc_inst.inventories["ProsodicStructure"].update(Counter(['CVCVCV']))
     # apply filter where unallowed structures are filtered out
     assert adrc_inst.adapt(
-        ipastr="d e d e d o",
+        ipastr=("d e d e d o", "CVCVCV"),
         howmany=6,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -728,7 +722,7 @@ def test_adapt():
     # add this so phonotactics_filter won't be empty
     adrc_inst.inventories["ProsodicStructure"].update(Counter(['CVCCV']))
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=1000,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -739,7 +733,7 @@ def test_adapt():
     # let more things go through filter cluster_filter:
     adrc_inst.inventories["CV_Segments"].update(Counter("d"))
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=1000,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -750,7 +744,7 @@ def test_adapt():
     # sort result by nse (likelihood of reconstruction)
     #adrc_inst.inventories["CV_Segments"].add("d")
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=1000,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -761,7 +755,7 @@ def test_adapt():
 
     # test show_workflow - run adapt first, then check workflow
     assert adrc_inst.adapt(
-        ipastr="d a d e",
+        ipastr=("d a d e", "CVCV"),
         howmany=1000,
         max_repaired_phonotactics=2,
         max_paths2repaired_phonotactics=2,
@@ -773,8 +767,6 @@ def test_adapt():
 
     assert adrc_inst.workflow == OrderedDict(
         [
-            ('donor_phonotactics',
-             'CVCV'),
             ('predicted_phonotactics',
              "['CVC', 'CVCCV']"),
             ('adapted_phonotactics',

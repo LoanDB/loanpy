@@ -793,12 +793,7 @@ def test_repair_phonotactics():
             self.rank_closest_phonotactics_called_with.append([*args])
             return self.rank_closest_phonotactics_returns
 
-    # test first break (max_repaired_phonotactics=0)
-    assert Adrc.repair_phonotactics(self=AdrcMonkeyrepair_phonotactics(
-    ), ipastr="k i k i",
-       max_repaired_phonotactics=0) == [["k", "i", "k", "i"]]
-
-    # test all in dict (no break
+    # test all in dict
 
     # teardown/setup: overwrite mock class, plug in scdict_phonotactics,
     monkey_adrc = AdrcMonkeyrepair_phonotactics()
@@ -817,7 +812,7 @@ def test_repair_phonotactics():
                 # assert repair_phonotactics is working
                 assert Adrc.repair_phonotactics(
                     self=monkey_adrc,
-                    ipastr="k i k i",
+                    ipastr=("k i k i", "CVCV"),
                     max_repaired_phonotactics=2) == [
                     'k i k',
                     'k i C k i']
@@ -851,7 +846,7 @@ def test_repair_phonotactics():
                 # assert repair_phonotactics is working
                 assert Adrc.repair_phonotactics(
                     self=monkey_adrc,
-                    ipastr="k i k i",
+                    ipastr=("k i k i", "CVCV"),
                     max_repaired_phonotactics=2,
                     show_workflow=True) == ['k i k', 'k i C k i']
 
@@ -860,8 +855,7 @@ def test_repair_phonotactics():
     prosodic_string_mock.assert_called_with == [
         [["k", "i", "k", "i"]]]
     assert monkey_adrc.rank_closest_phonotactics_called_with == [["CVCV", 2]]
-    assert monkey_adrc.workflow == OrderedDict(
-        [('donor_phonotactics', 'CVCV'),
+    assert monkey_adrc.workflow == OrderedDict([
          ('predicted_phonotactics', "['CVC', 'CVCCV']")])
     editops_mock.assert_has_calls(
         [call("CVCV", "CVC", 1, 100, 49), call("CVCV", "CVCCV", 1, 100, 49)])
@@ -933,7 +927,7 @@ def test_adapt():
                 # assert adapt is working
                 assert Adrc.adapt(
                     self=monkey_adrc,
-                    ipastr="k i k i",
+                    ipastr=("k i k i", "CVCV"),
                     howmany=8
                     ) == "k e k, k o k, h e k, h o k, k e t k e, k o t k e, h e t k e, h o t k e"
 
@@ -944,7 +938,7 @@ def test_adapt():
         [["k", "h"], ["e", "o"], ["t"], ["k"], ["e"]]])
     get_howmany_mock.assert_called_with(8, 0, 1)
     assert monkey_adrc.repair_phonotactics_called_with == [
-        ["k", "i", "k", "i"], 1, 1, 100, 49, False]
+        ("k i k i", "CVCV"), 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
         [['kik'], 8], [['kiCki'], 8]]
     repair_harmony_mock.assert_not_called()
@@ -980,7 +974,7 @@ def test_adapt():
                                 # assert adapt works
                                 assert Adrc.adapt(
                                     self=monkey_adrc,
-                                    ipastr="k i k i",
+                                    ipastr=("k i k i", "CVCV"),
                                     howmany=6,
                                     max_repaired_phonotactics=2,
                                     max_paths2repaired_phonotactics=2,
@@ -1001,7 +995,7 @@ def test_adapt():
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
     assert monkey_adrc.repair_phonotactics_called_with == [
-        ["k", "i", "k", "i"], 2, 2, 100, 49, True]
+        ("k i k i", "CVCV"), 2, 2, 100, 49, True]
     assert monkey_adrc.read_sc_called_with == [
         [["k", "B", "k"], 2], [["k", "i", "C", "k", "i"], 2]]
     repair_harmony_mock.assert_has_calls([
@@ -1040,7 +1034,8 @@ def test_adapt():
 
             # assert adapt returns error message as string
             assert Adrc.adapt(
-                self=monkey_adrc, ipastr="k i k i", phonotactics_filter=True
+                self=monkey_adrc, ipastr=("k i k i", "CVCV"),
+                phonotactics_filter=True
             ) == "wrong phonotactics"
 
     # assert 4 calls: tokenise, repair_phonotactics,
@@ -1051,7 +1046,7 @@ def test_adapt():
         [["k", "h"], ["e", "o"], ["k"]], [["k", "h"],
                                           ["e", "o"], ["t"], ["k"], ["e"]]])
     assert monkey_adrc.repair_phonotactics_called_with == [
-        ["k", "i", "k", "i"], 1, 1, 100, 49, False]
+        ("k i k i", "CVCV"), 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
         [['kik'], 1], [['kiCki'], 1]]
 
@@ -1071,7 +1066,8 @@ def test_adapt():
 
             # make sure adapt works (i.e. returns error message as string)
             assert Adrc.adapt(
-                self=monkey_adrc, ipastr="k i k i", cluster_filter=True
+                self=monkey_adrc, ipastr=("k i k i", "CVCV"),
+                cluster_filter=True
             ) == "wrong clusters"
 
     # assert 4 calls: tokenise, repair_phonotactics, read_sc, combine_ipalists
@@ -1080,7 +1076,7 @@ def test_adapt():
         [["k", "h"], ["e", "o"], ["k"]], [["k", "h"],
                                           ["e", "o"], ["t"], ["k"], ["e"]]])
     assert monkey_adrc.repair_phonotactics_called_with == [
-        ["k", "i", "k", "i"], 1, 1, 100, 49, False]
+        ("k i k i", "CVCV"), 1, 1, 100, 49, False]
     assert monkey_adrc.read_sc_called_with == [
         [['kik'], 1], [['kiCki'], 1]]
 
@@ -1114,7 +1110,7 @@ def test_adapt():
                                 # assert adapt works
                                 assert Adrc.adapt(
                                     self=monkey_adrc,
-                                    ipastr="k i k i",
+                                    ipastr=("k i k i", "CVCV"),
                                     howmany=6,
                                     max_repaired_phonotactics=2,
                                     max_paths2repaired_phonotactics=2,
@@ -1137,7 +1133,7 @@ def test_adapt():
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
     assert monkey_adrc.repair_phonotactics_called_with == [
-        ["k", "i", "k", "i"], 2, 2, 100, 49, True]
+        ("k i k i", "CVCV"), 2, 2, 100, 49, True]
     assert monkey_adrc.read_sc_called_with == [
         [["k", "B", "k"], 2], [["k", "i", "C", "k", "i"], 2]]
     repair_harmony_mock.assert_has_calls([
@@ -1191,7 +1187,7 @@ def test_adapt():
                                 # assert adapt works
                                 assert Adrc.adapt(
                                     self=monkey_adrc,
-                                    ipastr="k i k i",
+                                    ipastr=("k i k i", "CVCV"),
                                     howmany=6,
                                     max_repaired_phonotactics=2,
                                     max_paths2repaired_phonotactics=2,
@@ -1214,7 +1210,7 @@ def test_adapt():
     assert list(flatten_mock.call_args_list[0][0][0]) == [
         [[['kBk'], ['kiCki']]], [[['kBk'], ['kiCki']]]]
     assert monkey_adrc.repair_phonotactics_called_with == [
-        ["k", "i", "k", "i"], 2, 2, 100, 49, True]
+        ("k i k i", "CVCV"), 2, 2, 100, 49, True]
     assert monkey_adrc.read_sc_called_with == [
         [["k", "B", "k"], 2], [["k", "i", "C", "k", "i"], 2]]
     repair_harmony_mock.assert_has_calls([
