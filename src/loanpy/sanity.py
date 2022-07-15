@@ -746,7 +746,7 @@ target_language="EAH")
      'VCVCV': ['VCVCV', 'VCVC', 'VCCVC']}
     """
     # if not crossvalidate just get sound corresp from big file
-    (adrc_obj.scdict, adrc_obj.sedict, _,  # get sound correspondences
+    (adrc_obj.scdict, adrc_obj.sedict, _, _,  # get sound correspondences
      adrc_obj.scdict_phonotactics, _, _) = adrc_obj.get_sound_corresp(writesc)
     return adrc_obj
 
@@ -815,7 +815,7 @@ target_language="EAH")
     # get crossvalidated inventories from crossvalidated dfety
     adrc_obj.inventories = adrc_obj.get_inventories()
     # train model on crossvalidated data (chosen row is isolated)
-    (adrc_obj.scdict, adrc_obj.sedict, _,  # get sound correspondences
+    (adrc_obj.scdict, adrc_obj.sedict, _, _, # get sound correspondences
      adrc_obj.scdict_phonotactics, _, _) = adrc_obj.get_sound_corresp(writesc)
     # dropped row plugged in again so df can be reused in next round of loop
     adrc_obj.dfety = concat([adrc_obj.dfety, dropped_cogset])

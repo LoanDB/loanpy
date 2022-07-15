@@ -208,11 +208,15 @@ def test_likeliestphonmatch():
                    "nse_rc": [10],
                    "se_rc": [50],
                    "distr_rc": str([10] * 5),
+                   "entropy_rc": float("inf"),
+                   "entropy_distr_rc": ["[0, 0, 0, 0, 0]"],
                    "align_rc": "['#-<*-', '#d.l<*b.l', \
 'u<*u', 'b#<*b', '-#<*-']",
                    "nse_ad": [4],
                    "se_ad": [20],
                    "distr_ad": "[0, 0, 10, 10, 0]",
+                   "entropy_ad": float("inf"),
+                   "entropy_distr_ad": ["[0, 0, 0, 0, 0]"],
                    "align_ad": "['e<V', 'C<b', 'l<l', 'u<u', 'b<b']",
                    "nse_combined": [14]
                    }),
@@ -297,11 +301,15 @@ def test_loans():
                            'nse_rc': [10],
                            'se_rc': [50],
                            'distr_rc': [str([10] * 5)],
+                           "entropy_rc": float("inf"),
+                           "entropy_distr_rc": ["[0, 0, 0, 0, 0]"],
                            'align_rc': "['#-<*-', '#d.l<*b.l', \
 'u<*u', 'b#<*b', '-#<*-']",
                            'nse_ad': [5],
                            'se_ad': [20],
                            'distr_ad': [str([0, 10, 10, 0])],
+                           "entropy_ad": float("inf"),
+                           "entropy_distr_ad": ["[0, 0, 0, 0]"],
                            'align_ad': "['b<b', 'l<l', 'u<u', 'b<b']",
                            'nse_combined': [15],
                            "Segments_x": ["b l u b"],
@@ -341,10 +349,14 @@ def test_postprocess():
             "se_rc": [50],
             "distr_rc": str(
                 [10] * 5),
+            "entropy_rc": float("inf"),
+            "entropy_distr_rc": ["[0, 0, 0, 0, 0]"],
             "align_rc": "['#-<*-', '#d.l<*b.l', 'u<*u', 'b#<*b', '-#<*-']",
             "nse_ad": [5],
             "se_ad": [20],
             "distr_ad": "[0, 10, 10, 0]",
+            "entropy_ad": float("inf"),
+            "entropy_distr_ad": ["[0, 0, 0, 0]"],
             "align_ad": "['b<b', 'l<l', 'u<u', 'b<b']",
             "nse_combined": [15]
             })

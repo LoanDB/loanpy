@@ -679,21 +679,21 @@ def test_get_noncrossval_sc():
 
         def get_sound_corresp(self, *args):
             self.get_sound_corresp_called_with.append([*args])
-            return [1, 2, 3, 4, 5, 6]
+            return [1, 2, 3, 4, 5, 6, 7]
 
     # test with writesc=False
     adrc_monkey = AdrcMonkey()
     get_noncrossval_sc(adrc_monkey, False)
     assert adrc_monkey.__dict__ == {
         'get_sound_corresp_called_with': [[False]],
-        'scdict': 1, 'scdict_phonotactics': 4, 'sedict': 2}
+        'scdict': 1, 'scdict_phonotactics': 5, 'sedict': 2}
 
     # test with writesc=Path
     adrc_monkey, path = AdrcMonkey(), Path()
     get_noncrossval_sc(adrc_monkey, path)
     assert adrc_monkey.__dict__ == {
         'get_sound_corresp_called_with': [[path]],
-        'scdict': 1, 'scdict_phonotactics': 4, 'sedict': 2}
+        'scdict': 1, 'scdict_phonotactics': 5, 'sedict': 2}
 
     del adrc_monkey, AdrcMonkey
 
@@ -713,7 +713,7 @@ def test_get_crossval_data():
 
         def get_sound_corresp(self, *args):
             self.get_sound_corresp_called_with.append([*args])
-            return [{"d1": "scdict"}, {"d2": "sedict"}, {},
+            return [{"d1": "scdict"}, {"d2": "sedict"}, {}, {},
                     {"d3": "scdict_phonotactics"}, {}, {}]
 
         def get_inventories(self, *args):
