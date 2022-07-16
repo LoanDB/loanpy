@@ -16,7 +16,8 @@ from loanpy.helpers import gensim_multiword, get_clusters
 from loanpy.adrc import Adrc
 
 logger = getLogger(__name__)
-
+BANNED = "wrong clusters|wrong phonotactics|not old\
+|wrong vowel harmony|wrong year"
 
 class NoPhonMatch(Exception):
     pass
@@ -601,13 +602,11 @@ Words can be reg-exes as well
     # so the class can be initiated even without path2forms
     if path2forms is None:
         return None
-    # these red flags are returned by adapt() and reconstruct()
-    todrop = "wrong clusters|wrong phonotactics|not old|wrong vowel harmony"
     # reading only 1 column saves RAM. Expensive calculations ahead.
     df_forms = read_csv(path2forms, encoding="utf-8",
                         usecols=[adrc_col]).fillna("")
     # drops columns with red flags
-    df_forms = df_forms[~df_forms[adrc_col].str.contains(todrop)]
+    df_forms = df_forms[~df_forms[adrc_col].str.contains(BANNED)]
     # reconstructed words don't have ", " so nothing should happen there
     df_forms[adrc_col] = df_forms[adrc_col].str.split(", ")
     # explode is the pandas Series equivalent of flattening a nested list
