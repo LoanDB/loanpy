@@ -20,8 +20,11 @@ Development version:
 
 Documentation
 ==============
-
+Single functions:
 https://martino-vic.github.io/loanpy/documentation.html
+|
+Big picture workflow:
+https://github.com/martino-vic/loanpy/blob/2.0.1/workflow.pdf
 
 Citation
 ==========
@@ -32,16 +35,13 @@ BibTex:
 
 .. line-block::
 
-  @software{viktor_martinovic_2022_6628976,
-    author       = {Viktor Martinović},
-    title        = {martino-vic/loanpy: Second stable release},
-    month        = jun,
-    year         = 2022,
-    publisher    = {Zenodo},
-    version      = {v.2.0-beta},
-    doi          = {10.5281/zenodo.6628976},
-    url          = {https://doi.org/10.5281/zenodo.6628976}
-  }
+@Article{Martinovic2022,
+  author    = {Viktor Martinovi{\'c}},
+  title     = {martino-vic/loanpy: Second stable release},
+  year      = {2022},
+  doi       = {10.5281/zenodo.6628976},
+  publisher = {Zenodo},
+}
 
 License
 ==========
