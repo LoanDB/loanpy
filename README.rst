@@ -16,7 +16,7 @@ Development version:
 
 ::
 
-    $ python -m pip install python3 -m pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
+    $ python -m pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
 
 Documentation
 ==============
