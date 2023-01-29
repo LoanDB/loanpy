@@ -20,11 +20,11 @@ Development version:
 
 Documentation
 ==============
-Single functions:
-https://martino-vic.github.io/loanpy/documentation.html
+| Single functions:
+| https://martino-vic.github.io/loanpy/documentation.html
 |
-Big picture workflow:
-https://github.com/martino-vic/loanpy/blob/2.0.1/workflow.pdf
+| Big picture workflow:
+| https://github.com/martino-vic/loanpy/blob/2.0.1/workflow.pdf
 
 Citation
 ==========
