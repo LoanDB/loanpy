@@ -33,17 +33,16 @@ https://zenodo.org/record/6628976
 
 BibTex:
 
-.. line-block::
+.. code-block:: sh
+   :caption: BibTex
 
-```
-@Article{Martinovic2022,
-  author    = {Viktor Martinovi{\'c}},
-  title     = {martino-vic/loanpy: Second stable release},
-  year      = {2022},
-  doi       = {10.5281/zenodo.6628976},
-  publisher = {Zenodo},
-}
-```
+   @Article{Martinovic2022,
+     author    = {Viktor Martinovi{\'c}},
+     title     = {martino-vic/loanpy: Second stable release},
+     year      = {2022},
+     doi       = {10.5281/zenodo.6628976},
+     publisher = {Zenodo},
+   }
 
 License
 ==========
