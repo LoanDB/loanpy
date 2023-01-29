@@ -33,16 +33,22 @@ https://zenodo.org/record/6628976
 
 BibTex:
 
-.. code-block:: sh
-   :caption: BibTex
+::
 
-   @Article{Martinovic2022,
-     author    = {Viktor Martinovi{\'c}},
-     title     = {martino-vic/loanpy: Second stable release},
-     year      = {2022},
-     doi       = {10.5281/zenodo.6628976},
-     publisher = {Zenodo},
-   }
+   @InProceedings{Mortensen-et-al:2018,
+     author = {Mortensen, David R.  and Dalmia, Siddharth and Littell, Patrick},
+     title = {Epitran: Precision {G2P} for Many Languages},
+     booktitle = {Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018)},
+     year = {2018},
+     month = {May},
+     date = {7--12},
+     location = {Miyazaki, Japan},
+     editor = {Nicoletta Calzolari (Conference chair) and Khalid Choukri and Christopher Cieri and Thierry Declerck and Sara Goggi and Koiti Hasida and Hitoshi Isahara and Bente Maegaard and Joseph Mariani and H\'el\`ene Mazo and Asuncion Moreno and Jan Odijk and Stelios Piperidis and Takenobu Tokunaga},
+     publisher = {European Language Resources Association (ELRA)},
+     address = {Paris, France},
+     isbn = {979-10-95546-00-9},
+     language = {english}
+     }
 
 License
 ==========
