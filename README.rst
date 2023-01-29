@@ -35,6 +35,7 @@ BibTex:
 
 .. line-block::
 
+```
 @Article{Martinovic2022,
   author    = {Viktor Martinovi{\'c}},
   title     = {martino-vic/loanpy: Second stable release},
@@ -42,6 +43,7 @@ BibTex:
   doi       = {10.5281/zenodo.6628976},
   publisher = {Zenodo},
 }
+```
 
 License
 ==========
