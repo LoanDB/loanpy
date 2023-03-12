@@ -4,8 +4,13 @@ recover sound correspondences
 # TODO: write tests and documentation with ChatGPT
 
 from collections import defaultdict, Counter
+from heapq import nsmallest
+import json
 
-def qfy(table, heuristics=False):
+from panphon import FeatureTable
+from panphon.distance import Distance
+
+def qfy(table, heur=""):
     """
     Get sound correspondences
     """
@@ -31,14 +36,56 @@ def qfy(table, heuristics=False):
         except StopIteration:
             break
 
-    for k in out[0]:   # sort keys by freq
-        out[0][k] = [i[0] for i in Counter(out[0][k]).most_common()]
-    for k in out[3]:   # sort keys by freq
-        out[3][k] = [i[0] for i in Counter(out[3][k]).most_common()]
+    for i in [0, 3]: # sort by freq
+        out[i] = {k: [j[0] for j in Counter(out[i][k]).most_common()]
+                  for k in out[i]}
 
-    if heuristics:
-        # 1. create heuristics file with helpers (see qfysc.py on github)
-        # 2. json_read the file and merge the info
-        pass
+    if heur:
+        with open(f"loanpy/{heur}", "r") as f:
+            he = json.load(f)
+        return {k: (list(dict.fromkeys(out[k] + he[k])) if k in out else he[k])
+                for k in he}
 
     return out
+
+def get_heur(n=5):
+
+    # read and define data
+    ft = FeatureTable()
+    ipa_all = list(ft.seg_dict)
+    with open ("cldf/.transcription-report.json") as f:
+        inv = json.load(f)["by_language"]["EAH"]["segments"]
+    msr = Distance().weighted_feature_edit_distance
+
+    # run the analysis
+    heur = {ph: [j[1] for j in nsmallest(n,
+        [(msr(ph, i), i) for i in inv])] for ph in ipa_all}
+
+    # add heuristics for C V F B
+    for cvfb, c, b in zip("CVFB", [1, -1, -1, -1], [0, 0, -1, 1]):
+        cond = {"cons": c} if cvfb in "CV" else {"cons": c, "back": b}
+        heur[cvfb] = [ph for ph in heur["ə"] if ft.word_fts(ph)[0].match(cond)]
+
+    return heur
+
+def uralign(left, right):
+    """
+    custom alignment for Hungarian-preHungarian
+    """
+
+    left, right = left.split(), right.split()
+    # tag word initial & final cluster, only in left
+    left[0], left[-1] = "#" + left[0], left[-1] + "#"
+
+    # go sequentially and squeeze the leftover together to one suffix
+    # e.g. "a,b","c,d,e,f,g->"a,b,-#","c,d,efg
+    diff = abs(len(right) - len(left))
+    if len(left) < len(right):
+        left += ["-#"]
+        right = right[:-diff] + ["".join(right[-diff:])]
+    elif len(left) > len(right):
+        left = left[:-diff] + ["+"] + ["".join(left[-diff:])]
+    else:
+        left, right = left + ["-#"], right + ["-"]
+
+    return f'{" ".join(left)}\n{" ".join(right)}'
