@@ -4,6 +4,7 @@ Some of the functions may also be useful for the user in \
 other linguistic contexts.
 
 """
+from collections import Counter
 from datetime import datetime
 from functools import partial
 from itertools import product
@@ -13,10 +14,106 @@ from gensim.downloader import load
 from lingpy.sequence.sound_classes import token2class
 from networkx import DiGraph, all_shortest_paths, shortest_path
 from numpy import array_equiv, subtract, zeros
+from panphon import FeatureTable
+from panphon.distance import Distance
+from re import split
 from tqdm import tqdm
+
 
 logger = getLogger(__name__)
 model = None
+ft = FeatureTable()
+
+def cvgaps(str1, str2):
+    """
+    Input two aligned strings
+    Replace "-" by C or V depending on the other sound
+    return the new strings as a list
+    """
+    new = []
+    cnt = 0
+    for i, j in zip(str1.split(" "), str2.split(" ")):
+        if i == "-":
+            if ft.word_fts(j)[0].match({"cons": 1}):
+                new.append("C")
+            elif ft.word_fts(j)[0].match({"cons": -1}):
+                new.append("V")
+            else:
+                new.append(i)
+        else:
+            new.append(i)
+
+    return [" ".join(new), str2]
+
+def prefilter(data, srclg, tgtlg):
+    """
+    Keep only cogsets where source and target language occurs.
+    """
+    data = [i.split(",") for i in data.split("\n")[1:][:-1]]
+    cogids = []
+
+    # take only rows with src/tgtlg
+    data = [row for row in data if row[2] in {srclg, tgtlg}]
+    # get list of cogids and count how often each one occurs
+    cogids = Counter([row[9] for row in data])
+    # take only cogsets that have 2 entries
+    cogids = [i for i in cogids if cogids[i] == 2]  # allowedlist
+    data = [row for row in data if row[9] in cogids]
+
+    evalsrctgt(data, srclg, tgtlg)
+    return data
+
+def evalsrctgt(data, srclg, tgtlg):
+    """
+    assert entire table goes srclg-tgtlg-srclg-tgtlg...
+    Doculect (=Language_ID) must be in col 2. Col name doesn't matter.
+    """
+    itertable = iter(data)
+    rownr = 0
+    while True:
+        try:
+            assert next(itertable)[2] == srclg
+            rownr += 1
+            assert next(itertable)[2] == tgtlg
+            rownr += 1
+        except StopIteration:
+            break
+        except AssertionError:
+            print("Problem in row ", rownr)
+            return False
+
+    return True
+
+def evalsamelen(data, srclg, tgtlg):
+    """
+    Assert that alignments within a cogset have the same length.
+    Alignments must be in col 3, col name doesn't matter
+    """
+    itertable = iter(data)
+    rownr = 0
+    while True:
+        try:
+            first = next(itertable)[3].split(" ")
+            second = next(itertable)[3].split(" ")
+            rownr += 2
+            try:
+                assert len(first) == len(second)
+            except AssertionError:
+                print(rownr, "\n", first, "\n", second)
+                return False
+        except StopIteration:
+            break
+    return True
+
+def pros(ipastr):
+    ipa = split("[ |.]", ipastr)
+    out = ""
+    for ph in ipa:
+        if ft.word_fts(ph)[0].match({"cons": 1}):
+            out += "C"
+        elif ft.word_fts(ph)[0].match({"cons": -1}):
+            out += "V"
+    return out
 
 def get_front_back_vowels(segments):
     """
@@ -641,9 +738,8 @@ removed and replaced with a question mark at the end.
 
     """
 
-    if "-" in sclist:
-        return "?(" + "|".join([i for i in sclist if i != "-"]) + ")?"
-    return "(" + "|".join(sclist) + ")"
+    suff = ")?" if "-" in sclist else ")"
+    return "(" + "|".join([i for i in sclist if i != "-"]) + suff
 
 
 def flatten(nested_list):
@@ -752,19 +848,3 @@ leftover will be sliced away in loanpy.adrc.Adrc.adapt.
                 return x, y, z
 
     return x, y, z
-
-def get_clusters(segments):
-    """
-    Takes a list of phonemes and segments them into consonant and vowel
-    clusters, like so: "abcdeaofgh" -> ["a", "bcd", "eao", "fgh"]
-    (c) List 2022"""
-    out = [segments[0]]
-    for i in range(1, len(segments)):
-        # can be optimized
-        prev, this = token2class(segments[i-1], "cv"), token2class(
-                segments[i], "cv")
-        if prev == this:
-            out[-1] += "."+segments[i]
-        else:
-            out += [segments[i]]
-    return " ".join(out)
