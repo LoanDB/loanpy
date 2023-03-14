@@ -5,7 +5,7 @@ recover sound correspondences
 
 from collections import defaultdict, Counter
 from heapq import nsmallest
-import json
+from json import load
 
 from panphon import FeatureTable
 from panphon.distance import Distance
@@ -29,7 +29,7 @@ def qfy(table, heur=""):
                 out[0][i].append(j)
                 out[1][f"{i} {j}"] += 1
                 out[2][f"{i} {j}"].append(row2[cols["COGID"]])
-            cv1, cv2 = row1[cols["CV_SEGMENTS"]], row2[cols["CV_SEGMENTS"]]
+            cv1, cv2 = row1[cols["PROSODY"]], row2[cols["PROSODY"]]
             out[3][cv1].append(cv2)
             out[4][f"{cv1} {cv2}"] += 1
             out[5][f"{cv1} {cv2}"].append(row2[cols["COGID"]])
@@ -37,24 +37,24 @@ def qfy(table, heur=""):
             break
 
     for i in [0, 3]: # sort by freq
-        out[i] = {k: [j[0] for j in Counter(out[i][k]).most_common()]
-                  for k in out[i]}
+        out[i] = {k: sorted(Counter(out[i][k])) for k in out[i]}
 
     if heur:
         with open(f"loanpy/{heur}", "r") as f:
-            he = json.load(f)
-        return {k: (list(dict.fromkeys(out[k] + he[k])) if k in out else he[k])
-                for k in he}
+            he = load(f)
+        out[0] = {k: (list(dict.fromkeys(out[k] + he[k])) if k in out else he[k])
+                  for k in he}
+        #TODO add heur for CVCV aka out[3]
 
     return out
 
-def get_heur(n=5):
+def get_heur(tgtlg, n=5):
 
     # read and define data
     ft = FeatureTable()
     ipa_all = list(ft.seg_dict)
     with open ("cldf/.transcription-report.json") as f:
-        inv = json.load(f)["by_language"]["EAH"]["segments"]
+        inv = load(f)["by_language"][tgtlg]["segments"]
     msr = Distance().weighted_feature_edit_distance
 
     # run the analysis
@@ -89,3 +89,20 @@ def uralign(left, right):
         left, right = left + ["-#"], right + ["-"]
 
     return f'{" ".join(left)}\n{" ".join(right)}'
+
+def get_invs(data):
+    """
+    Input edicted.tsv table
+    Loop through rows
+    return all types of CVCV and phons in target lg (i.e. uneven rows)
+    """
+
+    invd = {"seg": set(), "pros": set()}
+    #keep only target language in dfety for extraction
+    for i, row in enumerate(data.split("\n")[1:][:-1]):
+        if i%2:
+            row = row.split("\t")
+            invd["seg"].update(set(row[2].split(" ")))
+            invd["pros"].add(row[4])
+
+    return {k: list(invd[k]) for k in invd}
