@@ -1,2 +1,0 @@
-recipdf_idx,gensim_multiword,match,cv_match,nse_rc,se_rc,distr_rc,entropy_rc,entropy_distr_rc,align_rc,nse_ad,se_ad,distr_ad,entropy_ad,entropy_distr_ad,align_ad,nse_combined,Segments_x,CV_Segments_x,Meaning_x,ad,bla_x,Segments_y,CV_Segments_y,Meaning_y,rc,bla_y
-0,0.10940766,b l u b,b.l u b,10.0,50,"[10, 10, 10, 10, 10]",inf,"[0, 0, 0, 0, 0]","['#-<*-', '#d.l<*b.l', 'u<*u', 'b#<*b', '-#<*-']",5.0,20,"[0, 10, 10, 0]",inf,"[0, 0, 0, 0]","['b<b', 'l<l', 'u<u', 'b<b']",15.0,b l u b,b.l u b,human,"b l u b, c l u b",xyz,d l u b,d.l u b,"computer, interface",(b|c)? l u b,xyz

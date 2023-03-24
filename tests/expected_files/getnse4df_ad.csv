@@ -1,4 +1,0 @@
-Segments_tgt,Segments_src,CV_Segments_tgt,CV_Segments_src,ProsodicStructure_tgt,ProsodicStructure_src,Cognacy,NSE_Segments_tgt_src,SE_Segments_tgt_src,E_distr_Segments_tgt_src,align_Segments_tgt_src
-a γ a t͡ʃ i,a γ a t͡ʃː ɯ,a γ a t͡ʃ i,a γ a t͡ʃː ɯ,VCVCV,VCVCV,1,3.2,16,"[6, 2, 6, 1, 1]","['a<a', 'γ<γ', 'a<a', 't͡ʃ<t͡ʃː', 'i<ɯ']"
-a l d a γ,a l d a γ,a l.d a γ,a l.d a γ,VCCVC,VCCVC,2,3.2,16,"[6, 1, 1, 6, 2]","['a<a', 'l<l', 'd<d', 'a<a', 'γ<γ']"
-a j a n,a j a n,a j a n,a j a n,VCVC,VCVC,3,3.5,14,"[6, 1, 6, 1]","['a<a', 'j<j', 'a<a', 'n<n']"
