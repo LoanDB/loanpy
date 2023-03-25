@@ -17,8 +17,34 @@ def test_adapt(tmp_path):
     assert adrc.adapt("d a d a", 100000) == "dada, dadx, daxa, daxx, dxda, \
 dxdx, dxxa, dxxx, xada, xadx, xaxa, xaxx, xxda, xxdx, xxxa, xxxx"
 
-    # phonotactic repair from data
-    assert adrc.adapt("d a d a", 1, "CVCV") == "dada"
+    # phonotactic repair from data, 1 deletion
+    assert adrc.adapt("d a d a", 1, "CVCV") == "dad"
+    assert adrc.adapt("d a d a", 2, "CVCV") == "dad, xad"
+    assert adrc.adapt("d a d a", 3, "CVCV") == "dad, dax, xad"
+    assert adrc.adapt("d a d a", 5, "CVCV") == "dad, dax, dxd, dxx, xad"
+    assert adrc.adapt("d a d a", 100000, "CVCV") == "\
+dad, dax, dxd, dxx, xad, xax, xxd, xxx"
+
+    # phonotactic repair from heuristics
+    sc_path.write_text('[{"d": ["d", "x"], "a": ["a", "x"], "C": ["k"]}, \
+{"d d": 5, "d x": 4, "a a": 7, "a x": 1, "C k": 8}, {}, {}]')
+    invs_path = tmp_path / "inventories.json"
+    # two insertions cheaper than two deletions, so it should pick the 2nd
+    invs_path.write_text('{"seg": [], "pros": ["CV", "CVCVCC"]}')
+    adrc = Adrc(sc=sc_path, invs=invs_path)
+    assert adrc.adapt("d a d a", 1, "CVCV") == "dadakk"
+    assert adrc.adapt("d a d a", 2, "CVCV") == "dadakk, xadakk"
+    assert adrc.adapt("d a d a", 3, "CVCV") == "dadakk, daxakk, xadakk"
+    assert adrc.adapt("d a d a", 5, "CVCV") == "\
+dadakk, daxakk, dxdakk, dxxakk, xadakk"
+    assert adrc.adapt("d a d a", 100000, "CVCV") == "\
+dadakk, dadxkk, daxakk, daxxkk, dxdakk, dxdxkk, dxxakk, dxxxkk, xadakk, \
+xadxkk, xaxakk, xaxxkk, xxdakk, xxdxkk, xxxakk, xxxxkk"
+
+    # try substitutions
+    invs_path.write_text('{"seg": [], "pros": ["CCCV"]}')
+    adrc = Adrc(sc=sc_path, invs=invs_path)
+    assert adrc.adapt("d a d a", 1, "CVCV") == "ddka"
 
 def test_get_diff(tmp_path):
     """test if the difference is calculated correctly

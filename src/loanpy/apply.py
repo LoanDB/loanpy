@@ -89,10 +89,10 @@ class Adrc():
                  commas.
         :rtype: str
         """
-
+        ipalist = ipastr.split(" ")
         if prosody:
-            out = self.repair_phonotactics(ipastr, prosody)
-        out = self.read_sc(ipastr.split(" "), howmany)
+            ipalist = self.repair_phonotactics(ipalist, prosody)
+        out = self.read_sc(ipalist, howmany)
         out = ["".join(word) for word in product(*out)]
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
 
@@ -140,7 +140,7 @@ class Adrc():
         return "^" + out + "$"  # regex
 
     def repair_phonotactics(self,
-                            ipastr,
+                            ipalist,
                             prosody
                             ):
         """
@@ -185,11 +185,9 @@ class Adrc():
         matrix = get_mtx(prosody, predicted_phonotactics)
         graph = mtx2graph(matrix)
         end = (len(matrix)-1, len(matrix[0])-1)
-        print("matrix:", matrix)
-        print("end:", end)
         path = dijkstra(graph=graph, start=(0, 0), end=end)
         editops = tuples2editops(path, prosody, predicted_phonotactics)
-        return apply_edit(ipastr, editops)
+        return apply_edit(ipalist, editops)
 
     def get_diff(self, sclistlist, ipa):
         """
@@ -639,8 +637,6 @@ def mtx2graph(matrix, w_del=100, w_ins=49):
                 weight = 0 if matrix[i + 1][j + 1] == matrix[i][j] else None
                 if weight is not None:
                     graph[current_node][(i + 1, j + 1)] = weight
-
-    return graph
 
     return graph
 
