@@ -2,7 +2,7 @@
 
 import pytest
 from loanpy.apply import (Adrc, move_sc, edit_distance_with2ops, apply_edit,
-                          combine_ipalists, list2regex, tuples2editops, get_mtx,
+                          list2regex, tuples2editops, get_mtx,
                           mtx2graph, dijkstra)
 from unittest.mock import patch, call
 from tempfile import TemporaryDirectory
@@ -317,9 +317,10 @@ def test_reconstruct3(list2regex_mock):
         call(["k", "h"]), call(["i"]),
         call(["h"]), call(["e"])]
 
+@patch("loanpy.apply.mtx2graph")
 @patch("loanpy.apply.apply_edit")
 @patch("loanpy.apply.dijkstra")
-def test_repair_phonotactics1(dijkstra_mock, apply_edit_mock):
+def test_repair_phonotactics1(dijkstra_mock, apply_edit_mock, mtx2graph_mock):
     """test if phonotactic structures are adapted correctly"""
 
     # test all in dict
@@ -338,6 +339,7 @@ def test_repair_phonotactics1(dijkstra_mock, apply_edit_mock):
     monkey_adrc = AdrcMonkeyrepair_phonotactics()
 
     dijkstra_mock.return_value = ("keep C", "keep V", "delete C", "delete V")
+    mtx2graph_mock.return_value = ("mtx2graph", "returned", "this")
     apply_edit_mock.return_value = "k i"
 
     # assert repair_phonotactics is working
@@ -348,44 +350,60 @@ def test_repair_phonotactics1(dijkstra_mock, apply_edit_mock):
 
     # assert 5 calls were made: word2phonotactics, get_closest_phonotactics,
     # dijkstra, apply_edit, tokenise
-    assert monkey_adrc.get_closest_phonotactics_called_with
-    dijkstra_mock.assert_called_with("CVCV", "CV")
+    assert monkey_adrc.get_closest_phonotactics_called_with == [['CVCV']]
+    dijkstra_mock.assert_called_with("mtx2graph", "returned", "this")
+    mtx2graph_mock.assert_called_with("CVCV", "CV")
     apply_edit_mock.assert_called_with("k i k i", dijkstra_mock.return_value)
 
-@patch("loanpy.apply.apply_edit")
+@patch("loanpy.apply.get_mtx")
+@patch("loanpy.apply.mtx2graph")
 @patch("loanpy.apply.dijkstra")
-def test_repair_phonotactics2(dijkstra_mock, apply_edit_mock):
-    """test if phonotactic structures are adapted correctly"""
+@patch("loanpy.apply.tuples2editops")
+@patch("loanpy.apply.apply_edit")
+def test_repair_phonotactics2(apply_edit_mock, tuples2editops_mock,
+    dijkstra_mock, mtx2graph_mock, get_mtx_mock):
+    """
+    test if phonotactic structures are adapted correctly
+    when data is available
+    """
 
     # test all in dict
     # set up mock class, used multiple times throughout this test
     class AdrcMonkeyrepair_phonotactics:
         def __init__(self):
-            self.get_closest_phonotactics_returns = "CVC, CVCCV"
-            self.get_closest_phonotactics_called_with = []
             self.sc = [{}, {}, {}, {}, {}, {}]
             self.invs = {"seg": [], "pros": []}
 
-        def get_closest_phonotactics(self, *args):
-            self.get_closest_phonotactics_called_with.append([*args])
-            return self.get_closest_phonotactics_returns
     # teardown/setup: overwrite mock class, plug in sc[3],
     monkey_adrc = AdrcMonkeyrepair_phonotactics()
-    monkey_adrc.sc[3] = {"CVCV": ["CVC", "CVCCV"]}
+    monkey_adrc.sc[3] = {"C": ["V", "CV"]}
 
-    dijkstra_mock.return_value = ("keep C", "keep V", "keep C", "delete V")
-    apply_edit_mock.return_value = "k i k"
+    get_mtx_mock.return_value = [[0, 0], [0, 1]]
+    mtx2graph_mock.return_value = {
+        (0, 0): {(0, 1): 100, (1, 0): 49},
+        (0, 1): {(1, 1): 49},
+        (1, 0): {(1, 1): 100},
+        (1, 1): {}
+        }
+    dijkstra_mock.return_value = [(0, 0), (1, 0), (1, 1)]
+    tuples2editops_mock.return_value = ['substitute C by V']
+    apply_edit_mock.return_value = "V"
 
     # assert repair_phonotactics is working
     assert Adrc.repair_phonotactics(
         self=monkey_adrc,
-        ipastr="k i k i",
-        prosody="CVCV") == 'k i k'
+        ipastr="k",
+        prosody="C") == 'V'
 
     # dijkstra, apply_edit
-    assert not monkey_adrc.get_closest_phonotactics_called_with
-    dijkstra_mock.assert_called_with("CVCV", "CVC")
-    apply_edit_mock.assert_called_with("k i k i", dijkstra_mock.return_value)
+    get_mtx_mock.assert_called_with("C", "V")
+    mtx2graph_mock.assert_called_with(get_mtx_mock.return_value)
+    dijkstra_mock.assert_called_with(graph=mtx2graph_mock.return_value,
+                                     start=(0, 0), end=(1, 1)
+                                     )
+    tuples2editops_mock.assert_called_with(dijkstra_mock.return_value,
+                                           "C", "V")
+    apply_edit_mock.assert_called_with("k", tuples2editops_mock.return_value)
 
 # set up mock class, used multiple times throughout this test.
 class AdrcMonkeyAdapt:
@@ -411,34 +429,37 @@ class AdrcMonkeyAdapt:
 
     # create instance of mock class
 
-@patch("loanpy.apply.combine_ipalists")
-def test_adapt1(combine_ipalists_mock):
+@patch("loanpy.apply.product")
+def test_adapt1(product_mock):
     """test if words are adapted correctly without prosody, howmany=4"""
 
     adrc_monkey = AdrcMonkeyAdapt()
-    combine_ipalists_mock.return_value = [
-        "k e t e", "k o t e", "h e t e", "h o t e"
+    product_mock.return_value = [
+        ("k", "e", "t", "e"), ("k", "o", "t", "e"),
+        ("h", "e", "t", "e"), ("h", "o", "t", "e")
                                          ]
     # assert adapt is working
     assert Adrc.adapt(
         self=adrc_monkey,
         ipastr="k i k i",
         howmany=4
-        ) == "k e t e, k o t e, h e t e, h o t e"
+        ) == "kete, kote, hete, hote"
 
     assert not adrc_monkey.repair_phonotactics_called_with
     assert adrc_monkey.read_sc_called_with == [[["k", "i", "k", "i"], 4]]
-    combine_ipalists_mock.assert_called_with([
-            ["k", "h"], ["e", "o"], ["k"], ["e"]])
+    product_mock.assert_called_with(
+            ["k", "h"], ["e", "o"], ["k"], ["e"]
+                                   )
 
-@patch("loanpy.apply.combine_ipalists")
-def test_adapt2(combine_ipalists_mock):
+@patch("loanpy.apply.product")
+def test_adapt2(product_mock):
     """test if words are adapted correctly with prosody, howmany=8"""
 
     adrc_monkey = AdrcMonkeyAdapt()
-    combine_ipalists_mock.return_value = [
-        "k e k", "k o k", "h e k", "h o k",
-        "k e t k e", "k o t k e", "h e t k e", "h o t k e"]
+    product_mock.return_value = [
+        ("k", "e", "k"), ("k", "o", "k"), ("h", "e", "k"), ("h", "o", "k"),
+        ("k", "e", "t", "k", "e"), ("k", "o", "t", "k", "e"),
+        ("h", "e", "t", "k", "e"), ("h", "o", "t", "k", "e")]
 
     # assert adapt is working
     assert Adrc.adapt(
@@ -446,19 +467,18 @@ def test_adapt2(combine_ipalists_mock):
         ipastr="k i k i",
         prosody="CVCV",
         howmany=8
-        ) == "k e k, k o k, h e k, h o k, k e t k e, \
-k o t k e, h e t k e, h o t k e"
+        ) == "kek, kok, hek, hok, ketke, \
+kotke, hetke, hotke"
 
 class TestRankClosestPhonotactics:
-
-    with TemporaryDirectory() as temp_dir:
-        with open("invs.json", "w+") as f:
-            f.write(json.dumps({
-        "pros": ["CVCV", "CVVC", "VCVC", "CCVV", "CVC", "CVV", "VCV", "CV"]}))
-
-        @pytest.fixture
-        def adrc_instance(self):
-            return Adrc(invs="invs.json")
+    @pytest.fixture
+    def adrc_instance(self):
+        with TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir) / "invs.json"
+            with open(temp_path, "w+") as f:
+                f.write(json.dumps({
+            "pros": ["CVCV", "CVVC", "VCVC", "CCVV", "CVC", "CVV", "VCV", "CV"]}))
+            yield Adrc(invs=temp_path)
 
     @patch('loanpy.apply.edit_distance_with2ops')
     @patch('loanpy.apply.min')
@@ -540,26 +560,6 @@ def test_apply_edit():
                        "keep ø",
                        "substitute t͡ʃ by t͡ʃː")) == ['f', 'r', 'ø', 't͡ʃː']
 
-@patch("loanpy.apply.product", side_effect=[
-    [('k', 'i'), ('k', 'e'), ('g', 'i'), ('g', 'e')],
-    [('b', 'u'), ('b', 'o'), ('p', 'u'), ('p', 'o')]
-                                          ])
-def test_combine_ipalists(product_mock):
-    """test if old sounds are combined correctly"""
-    # set up
-    inlist = [[["k", "g"], ["i", "e"]], [["b", "p"], ["u", "o"]]]
-    out = ["ki", "ke", "gi", "ge", "bu", "bo", "pu", "po"]
-
-    # assert
-    assert combine_ipalists(inlist) == out
-
-    # assert calls
-    product_mock.assert_has_calls([call(["k", "g"], ["i", "e"]),
-                                   call(["b", "p"], ["u", "o"])])
-
-    # tear down
-    del inlist, out
-
 def test_list2regex():
     """test if list of phonemes is correctly converted to regular expression"""
     assert list2regex(["b", "k", "v"]) == "(b|k|v)"
@@ -598,45 +598,19 @@ def test_get_mtx():
     # tear down
     del exp
 
-@patch("loanpy.apply.get_mtx")
-def test_mtx2graph(get_mtx_mock):
-    get_mtx_mock.return_value = [[0, 1, 2], [1, 2, 3], [2, 3, 2]]
-    expected =    {
-                    (2, 2): {
-                        (2, 1): 100,
-                        (1, 2): 49,
-                        (1, 1): 0
-                    },
-                    (2, 1): {
-                        (2, 0): 100,
-                        (1, 1): 49
-                    },
-                    (2, 0): {
-                        (1, 0): 49
-                    },
-                    (1, 2): {
-                        (1, 1): 100,
-                        (0, 2): 49
-                    },
-                    (1, 1): {
-                        (1, 0): 100,
-                        (0, 1): 49
-                    },
-                    (1, 0): {
-                        (0, 0): 49
-                    },
-                    (0, 2): {
-                        (0, 1): 100
-                    },
-                    (0, 1): {
-                        (0, 0): 100
-                    }
-                }
+def test_mtx2graph():
+    expected = {(0, 0): {(0, 1): 100, (1, 0): 49},
+                (0, 1): {(0, 2): 100, (1, 1): 49},
+                (0, 2): {(1, 2): 49},
+                (1, 0): {(1, 1): 100, (2, 0): 49},
+                (1, 1): {(1, 2): 100, (2, 1): 49, (2, 2): 0},
+                (1, 2): {(2, 2): 49},
+                (2, 0): {(2, 1): 100},
+                (2, 1): {(2, 2): 100},
+                (2, 2): {}}
 
-    assert mtx2graph("ló", "hó")[0] == expected
-
-    # assert call
-    get_mtx_mock.assert_called_with("ló", "hó")
+    # "ló", "hó"
+    assert mtx2graph([[0, 1, 2], [1, 2, 3], [2, 3, 2]]) == expected
 
 def test_dijkstra():
     # Test 1: Basic graph with a simple shortest path

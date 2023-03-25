@@ -151,7 +151,7 @@ def get_prosody(ipastr):
     ipastr = re.split("[ |.]", ipastr)
     return "".join(["V" if phoneme in vowels else "C" for phoneme in ipastr])
 
-def modify_ipa_table(input_file, output_file):
+def modify_ipa_all(input_file, output_file):
     """
     Original file is from folder "data" in panphon 0.20.0
     and was copied with the written permission of the author.
@@ -183,16 +183,12 @@ def modify_ipa_table(input_file, output_file):
         assert all(len(row) == row_length for row in rows), \
         "All rows must have the same length"
 
-        # Add the additional phonemes
+        # Add C and V for any consonant or any vowel
         rows.append(['C', 0, 0, 1] + [0] * (len(header) - 4))
         rows.append(['V', 0, 0, -1] + [0] * (len(header) - 4))
-        rows.append(['F', 0, 0, -1] + [0] * (len(header) - 4))
-        rows[-1][header.index('back')] = -1
-        rows.append(['B', 0, 0, -1] + [0] * (len(header) - 4))
-        rows[-1][header.index('back')] = 1
 
     # Write the modified data to a new CSV file
     with open(output_file, 'w') as outfile:
-        outfile.write(','.join(header) + '\n')
+        outfile.write(','.join(header))
         for row in rows:
-            outfile.write(','.join(str(x) for x in row) + '\n')
+            outfile.write('\n' + ','.join(str(x) for x in row))

@@ -3,7 +3,8 @@ import pytest
 from unittest.mock import patch
 
 from loanpy.help import (find_optimal_year_cutoff, cvgaps, prefilter,
-is_valid_language_sequence, is_same_length_alignments, read_ipa_all, get_prosody)
+is_valid_language_sequence, is_same_length_alignments, read_ipa_all, get_prosody,
+modify_ipa_all)
 
 # Sample input data
 tsv_string = """form\tsense\tyear\torigin\tLoan
@@ -190,3 +191,25 @@ def test_get_prosody(read_ipa_all_mock):
     assert get_prosody("e.a b.d") == "VVCC"
 
     read_ipa_all_mock.assert_called_with()
+
+def test_modify_ipa_all(tmp_path):
+    # Create temporary files for sound correspondence dictionary and inventories
+    sc_path = tmp_path / "ipa_all.csv"
+    out_path = tmp_path / "ipa_all2.csv"
+    sc_path.write_text('ipa,bla,back,cons,bla\n\
+a,-,0,-,+\n\
+b,-,+,+,-\n\
+j,0,+,0,-\n\
+wᵏ,0,+,0,-')
+
+    expected = 'ipa,bla,back,cons,bla\n\
+a,-1,0,-1,1\n\
+b,-1,1,1,-1\n\
+j,0,1,1,-1\n\
+wᵏ,0,1,1,-1\n\
+C,0,0,1,0\n\
+V,0,0,-1,0'
+
+    modify_ipa_all(sc_path, out_path)
+    with open(out_path) as file:
+        assert file.read() == expected

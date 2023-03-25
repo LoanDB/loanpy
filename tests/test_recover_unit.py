@@ -131,7 +131,7 @@ def test_get_heur(read_ipa_all_mock):
  ]
     # set up
     tmp_dir = Path.cwd() / "cldf"
-    if tmp_dir.exists():
+    if tmp_dir.exists():  # pragma: no cover
         shutil.rmtree(tmp_dir)
     tmp_dir.mkdir()
     file_path = tmp_dir / ".transcription-report.json"

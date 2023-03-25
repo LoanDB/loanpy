@@ -92,7 +92,8 @@ class Adrc():
 
         if prosody:
             out = self.repair_phonotactics(ipastr, prosody)
-        out = combine_ipalists(self.read_sc(ipastr.split(), howmany))
+        out = self.read_sc(ipastr.split(" "), howmany)
+        out = ["".join(word) for word in product(*out)]
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
 
     def reconstruct(self,
@@ -121,7 +122,7 @@ class Adrc():
         :rtype: str
         """
 
-        ipalist = ipastr.split()
+        ipalist = ipastr.split(" ")
 
         # apply uralign tags TODO: outsource to pre-processing.
         ipalist[0], ipalist[-1] = f"#{ipalist[0]}", f"{ipalist[-1]}#"
@@ -181,7 +182,14 @@ class Adrc():
             predicted_phonotactics = self.get_closest_phonotactics(prosody)
 
         # Get edit operations between structures, apply them 2 input IPA string
-        return apply_edit(ipastr, dijkstra(prosody, predicted_phonotactics))
+        matrix = get_mtx(prosody, predicted_phonotactics)
+        graph = mtx2graph(matrix)
+        end = (len(matrix)-1, len(matrix[0])-1)
+        print("matrix:", matrix)
+        print("end:", end)
+        path = dijkstra(graph=graph, start=(0, 0), end=end)
+        editops = tuples2editops(path, prosody, predicted_phonotactics)
+        return apply_edit(ipastr, editops)
 
     def get_diff(self, sclistlist, ipa):
         """
@@ -436,29 +444,6 @@ Applies a list of human readable edit operations to a string.
             out.append(op[len("insert "):])
     return out
 
-def combine_ipalists(words):
-    """
-    Called by loanpy.adrc.Adrc.adapt. \
-Combines and flattens a list of lists of sound correspondence lists.
-
-    :param wrds: list of words consisting of lists of sound correspondence \
-    lists.
-    :type wrds: list of lists of lists of str
-
-    :returns: a list of words without empty strings as elements
-    :rtype: list of strings
-
-    :Example:
-
-    >>> from loanpy.helpers import combine_ipalists
-    >>> combine_ipalists([[["a", "b"], ["c"], ["d"]], [["e", "f"], \
-["g"], ["h"]]])
-    ['acd', 'bcd', 'egh', 'fgh']
-    """
-
-    nested_list = [list(map("".join, product(*word))) for word in words]
-    return [item for sublist in nested_list for item in sublist if item]
-
 def list2regex(sclist):
     """
     Called by loanpy.adrc.Adrc.reconstruct. \
@@ -539,16 +524,19 @@ substitution.
 
 def substitute_operations(operations):
     i = 0
-    while i < len(operations):
-        if (i+1 < len(operations) and operations[i].startswith('delete ') and
-                operations[i+1].startswith('insert ')
-            ):
+    while i < len(operations) - 1:
+        if operations[i].startswith('delete ') and operations[i+1].startswith('insert '):
             x = operations[i][7:]
             y = operations[i+1][7:]
             operations[i:i+2] = [f'substitute {x} by {y}']
+        elif operations[i].startswith('insert ') and operations[i+1].startswith('delete '):
+            x = operations[i][7:]
+            y = operations[i+1][7:]
+            operations[i:i+2] = [f'substitute {y} by {x}']
         else:
             i += 1
     return operations
+
 
 
 def get_mtx(target, source):
@@ -629,27 +617,32 @@ def add_edge(graph, u, v, weight):
         graph[u] = {}
     graph[u][v] = weight
 
-def mtx2graph(s1, s2, w_del=100, w_ins=49):
-    mtx = get_mtx(s1, s2)
-    s1, s2 = "#" + s1, "#" + s2
+def mtx2graph(matrix, w_del=100, w_ins=49):
+
     graph = {}
-    h, w = len(mtx), len(mtx[0])
+    rows, cols = len(matrix), len(matrix[0])
 
-    for r in reversed(range(h)):  # create vertical edges
-        for c in reversed(range(w - 1)):
-            add_edge(graph, (r, c + 1), (r, c), w_del)
+    for i in range(rows):
+        for j in range(cols):
+            current_node = (i, j)
+            graph[current_node] = {}
 
-    for r in reversed(range(h - 1)):  # create horizontal edges
-        for c in reversed(range(w)):
-            add_edge(graph, (r + 1, c), (r, c), w_ins)
+            if j < cols - 1:  # Right neighbor
+                weight = 100 if matrix[i][j + 1] != matrix[i][j] else 0
+                graph[current_node][(i, j + 1)] = weight
 
-    for r in reversed(range(h - 1)):  # add diagonal edges where cost=0
-        for c in reversed(range(w - 1)):
-            if mtx[r + 1][c + 1] == mtx[r][c]:
-                if s1[c + 1] == s2[r + 1]:
-                    add_edge(graph, (r + 1, c + 1), (r, c), 0)
+            if i < rows - 1:  # Down neighbor
+                weight = 49 if matrix[i + 1][j] != matrix[i][j] else 0
+                graph[current_node][(i + 1, j)] = weight
 
-    return graph, h, w
+            if i < rows - 1 and j < cols - 1:  # Diagonal down-right neighbor
+                weight = 0 if matrix[i + 1][j + 1] == matrix[i][j] else None
+                if weight is not None:
+                    graph[current_node][(i + 1, j + 1)] = weight
+
+    return graph
+
+    return graph
 
 def dijkstra(graph, start, end):
     dist = {node: float('inf') for node in graph}
