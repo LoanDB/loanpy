@@ -1,17 +1,31 @@
 version: 2.1
 
+orbs:
+  win: circleci/windows@2.2.0
+
 commands:
-  install-dependencies:
+  install-python-windows:
+    parameters:
+      python_version:
+        type: string
     steps:
       - run:
-          name: "Install latest commit of loanpy from git"
-          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
-      - run:    
-          name: "Install pytest"
-          command: pip install pytest
+          name: "Download Python Installer"
+          command: |
+            $PythonUrl = "https://www.python.org/ftp/python/<< parameters.python_version >>/python-<< parameters.python_version >>-amd64.exe"
+            Invoke-WebRequest -Uri $PythonUrl -OutFile "python-installer.exe" -ErrorAction SilentlyContinue -ErrorVariable WebError
+            if ($WebError) {
+              Write-Host "Failed to download Python installer. Exiting."
+              exit 1
+            }
       - run:
-          name: "Run unit and integration tests"
-          command: python -m pytest
+          name: "Install Python"
+          command: |
+            .\python-installer.exe /quiet InstallAllUsers=1 PrependPath=1 TargetDir="C:\Python<< parameters.python_version >>" -ErrorAction SilentlyContinue -ErrorVariable InstallError
+            if ($InstallError) {
+              Write-Host "Failed to install Python. Exiting."
+              exit 1
+            }
 
 jobs:
   build-linux:
@@ -22,25 +36,33 @@ jobs:
       - image: python:<< parameters.python_version >>
     steps:
       - checkout
-      - install-dependencies
+      - run:
+          name: "Set up Python environment"
+          command: python -m venv venv && . venv/bin/activate
+      - run:
+          name: "Install latest commit of loanpy from git"
+          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
+      - run:
+          name: "Run unit and integration tests"
+          command: python -m pytest
 
   build-windows:
     parameters:
       python_version:
         type: string
-    machine:
-      image: windows-default
-    environment:
-      DOCKER_PYTHON_VERSION: << parameters.python_version >>
+    executor:
+      name: win/default
+      shell: powershell.exe
     steps:
       - checkout
+      - install-python-windows:
+          python_version: << parameters.python_version >>
       - run:
-          name: "Pull Python Docker image"
-          command: docker pull python:$env:DOCKER_PYTHON_VERSION-windowsservercore
+          name: "Install latest commit of loanpy from git"
+          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
       - run:
-          name: "Run tests in Docker container"
-          command: |
-            docker run --rm -v "$(pwd):C:/project" -w "C:/project" python:$env:DOCKER_PYTHON_VERSION-windowsservercore powershell -Command "pip install --upgrade pip; .\install-dependencies"
+          name: "Run unit and integration tests"
+          command: python -m pytest
 
 workflows:
   version: 2
