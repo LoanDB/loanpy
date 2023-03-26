@@ -6,7 +6,6 @@ Output a list of candidate loanwords
 """
 import heapq
 import re
-from functools import lru_cache
 
 def phonetic_matches(df_ad, df_rc):
     """
@@ -89,7 +88,7 @@ def semantic_matches(phmtsv, get_semsim):
     # Sort results in descending order by semsim and ascending order by loanID
     sorted1000 = heapq.nlargest(
         1000, results[1:], key=lambda x: (float(x[7]), int(x[0]))
-        )
+        )  # pick only 1000 best results, discard rest
 
     # Write results to output file
     lines = "\t".join(results[0])
