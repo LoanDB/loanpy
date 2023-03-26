@@ -61,15 +61,19 @@ def eval_one(edicted, heur, adapt, howmany, pros=True):
     out = []
     for i in range(1, len(edicted), 2):  # 1 bc skip header
         srcrow, tgtrow = edicted.pop(i), edicted.pop(i)
-        src, tgt = srcrow[3], tgtrow[3]
+        src, tgt = srcrow[3], "".join(tgtrow[3].replace("-", "").replace(" ", "").replace(".", ""))
         src_pros = srcrow[4] if pros else ""
         adrc = Adrc()
         adrc.sc = get_correspondences(edicted, heur)
         adrc.invs = get_invs(edicted)
         if adapt:
-            out.append(tgt in adrc.adapt(src, howmany, src_pros).split(", "))
+            ad = adrc.adapt(src, howmany, src_pros).split(", ")
+            #print("tgt: ", tgt, "src: ", src, ", ad: ", ad)
+            out.append(tgt in ad)
         else:
-            out.append(bool(re.match(adrc.reconstruct(src, howmany))))
+            rc = adrc.reconstruct(src, howmany)
+            #print(rc, tgt)
+            out.append(bool(re.match(rc, tgt)))
         edicted.insert(i, tgtrow)
         edicted.insert(i, srcrow)
     return round(len([i for i in out if i])/len(out), 2)

@@ -1,0 +1,825 @@
+ID	COGID	DOCULECT	ALIGNMENT	PROSODY
+0	1	H	#aː t͡ʃ# -#	VC
+1	1	EAH	a.ɣ.a t͡ʃ i	VCVCV
+2	2	H	#aː ɟ uː#	VCV
+3	2	EAH	a l.d a.ɣ	VCCVC
+4	3	H	#ɒ j n	VCC
+5	3	EAH	a j.a n	VCVC
+6	6	H	#aː l# -#	VC
+7	6	EAH	aː l -	VC
+8	7	H	#ɒ l ɒ t͡ʃ# -#	VCVC
+9	7	EAH	a l a t͡ʃ -	VCVC
+10	11	H	#ɒ l.m ɒ# -#	VCCV
+11	11	EAH	a l.m a -	VCCV
+12	13	H	#aː t ɒ l ɒ ɡ# -#	VCVCVC
+13	13	EAH	a l.t a l a ɡ -	VCCVCVC
+14	14	H	#aː p	VC
+15	14	EAH	o p	VC
+16	15	H	#aː p o r o	VCVCV
+17	15	EAH	o p o r o	VCVCV
+18	16	H	#ɒ p.r oː#	VCCV
+19	16	EAH	o p.u.r uɣ	VCVCVC
+20	17	H	#ɒ r ɒ t# -#	VCVC
+21	17	EAH	o r a t -	VCVC
+22	19	H	#aː r	VC
+23	19	EAH	aː r	VC
+24	20	H	#aː r.t# -#	VCC
+25	20	EAH	aː r.t a.t	VCCVC
+26	21	H	#aː r.k aː ɲ# -#	VCCVC
+27	21	EAH	a r.k a n -	VCCVC
+28	22	H	#aː r o k# -#	VCVC
+29	22	EAH	aː r u k -	VCVC
+30	23	H	#aː r.p ɒ# -#	VCCV
+31	23	EAH	a r.p a -	VCCV
+32	24	H	#aː r.t aː ɲ#	VCCVC
+33	24	EAH	a r.i.t a n	VCVCVC
+34	25	H	#aː s o k# -#	VCVC
+35	25	EAH	a s - k i	VCCV
+36	26	H	#b aː j# -#	CVC
+37	26	EAH	b a j -	CVC
+38	27	H	#b ɒ l.k aː ɲ# -#	CVCCVC
+39	27	EAH	b a l.k a n -	CVCCVC
+40	28	H	#b ɒ l.t ɒ# -#	CVCCV
+41	28	EAH	b a l.t a -	CVCCV
+42	29	H	#b aː l.v aː ɲ# -#	CVCCVC
+43	29	EAH	b a l.v a n -	CVCCVC
+44	31	H	#b aː n#	CVC
+45	31	EAH	b a.ɣ.i n	CVCVC
+46	32	H	#b ɒ r aː ɡ# -#	CVCVC
+47	32	EAH	b a r a ɡ -	CVCVC
+48	33	H	#b aː r.t͡s ɒ# -#	CVCCV
+49	33	EAH	b aː s a -	CVCV
+50	34	H	#b ɒ r o m# -#	CVCVC
+51	34	EAH	b a r u m -	CVCVC
+52	35	H	#b aː r.ʃ o ɲ# -#	CVCCVC
+53	35	EAH	b a r.t͡ʃ u n -	CVCCVC
+54	36	H	#b ɒ s	CVC
+55	36	EAH	b a s	CVC
+56	37	H	#b aː t o r# -#	CVCVC
+57	37	EAH	b a.ɣ.a t u r -	CVCVCVC
+58	38	H	#b e t͡ʃ y l# -#	CVCVC
+59	38	EAH	b ɛ t͡ʃ ɛ l -	CVCVC
+60	39	H	#b eː k ɒ# -#	CVCV
+61	39	EAH	b a k a -	CVCV
+62	40	H	#b eː k oː#	CVCV
+63	40	EAH	b i k a.ɣ.u	CVCVCV
+64	41	H	#b eː k.j oː#	CVCCV
+65	41	EAH	b i k a.ɣ.u	CVCVCV
+66	42	H	#b eː j ɛ ɡ# -#	CVCVC
+67	42	EAH	b ɛ l ɛ ɡ -	CVCVC
+68	43	H	#b eː r# -#	CVC
+69	43	EAH	b eː r y	CVCV
+70	44	H	#b ɛ r.t͡s ɛ l# -#	CVCCVC
+71	44	EAH	b ɛ r.s i l -	CVCCVC
+72	45	H	#b ɛ r.t yː#	CVCCV
+73	45	EAH	b y r.t i.ɣ	CVCCVC
+74	46	H	#b ɛ ʃ ɛ# -#	CVCV
+75	46	EAH	b ɛ ʃ ɛ -	CVCV
+76	47	H	#b ɛ ʃ ɛ ɲ øː#	CVCVCV
+77	47	EAH	b ɛ ʃ ɛ n ɛ.ɣ	CVCVCVC
+78	48	H	#b ɛ t yː#	CVCV
+79	48	EAH	b i t i.ɣ	CVCVC
+80	49	H	#b i t͡ʃ ɒ k# -#	CVCVC
+81	49	EAH	b i t͡ʃ a k -	CVCVC
+82	52	H	#b i k ɒ# -#	CVCV
+83	52	EAH	b i k a -	CVCV
+84	53	H	#b i l i n.t͡ʃ# -#	CVCVCC
+85	53	EAH	b i l ɛ t͡ʃ ɛk	CVCVCVC
+86	54	H	#b iː r oː#	CVCV
+87	54	EAH	b i r u.ɣ	CVCVC
+88	55	H	#b o t͡ʃ aː n -#	CVCVC
+89	55	EAH	b o l.t͡ʃ a n -	CVCCVC
+90	56	H	#b o t͡ʃ aː t# -#	CVCVC
+91	56	EAH	b u l.t͡ʃ a t -	CVCCVC
+92	57	H	#b oː d ɒ#	CVCV
+93	57	EAH	b a l.d a.w	CVCCVC
+94	58	H	#b o ɡ# -#	CVC
+95	58	EAH	b o ɡ -	CVC
+96	59	H	#b o ɡ.j ɒ#	CVCCV
+97	59	EAH	b o ɡ.u.l -	CVCVC
+98	60	H	#b o j.t#	CVCC
+99	60	EAH	b u ɣ.u.t	CVCVC
+100	61	H	#b o j.t o r.j aː n# -#	CVCCVCCVC
+101	61	EAH	b a l.t u r.ɣ a n -	CVCCVCCVC
+102	62	H	#b o k ɒ# -#	CVCV
+103	62	EAH	b a k a -	CVCV
+104	63	H	#b ɒ k ɒ	CVCVC
+105	64	EAH	b ɒ k ɒ	CVCV
+106	65	H	#b o j# -#	CVC
+107	65	EAH	b o.ɣ.o l -	CVCVC
+108	66	H	#b o r# -#	CVC
+109	66	EAH	b o r -	CVC
+110	68	H	#b u r	CVC
+111	68	EAH	b u r	CVC
+112	69	H	#b o r.j uː#	CVCCV
+113	69	EAH	b u r a.ɣ.u	CVCVCV
+114	70	H	#b o r.ʃ# -#	CVCC
+115	70	EAH	b u r.t͡ʃ -	CVCC
+116	71	H	#b o r.ʃ oː#	CVCCV
+117	71	EAH	b u r.t͡ʃ a.ɣ	CVCCVC
+118	72	H	#b o r.z# -#	CVCC
+119	72	EAH	b o r.s i	CVCCV
+120	73	H	#b o s o r.k aː ɲ# -#	CVCVCCVC
+121	73	EAH	b a s a r.k a n -	CVCVCCVC
+122	74	H	#b o sː ɒ n# -#	CVCVC
+123	74	EAH	b u s a n -	CVCVC
+124	75	H	#b o sː uː#	CVCV
+125	75	EAH	b o s u.ɣ	CVCVC
+126	76	H	#b o t# -#	CVC
+127	76	EAH	b u t i.ɣ	CVCVC
+128	78	H	#b u t# -#	CVC
+129	78	EAH	b u t i.ɣ	CVCVC
+130	80	H	#b o z ɒ# -#	CVCV
+131	80	EAH	b o z a -	CVCV
+132	81	H	#b øː#	CV
+133	81	EAH	b ɛ.ɣ	CVC
+134	82	H	#b ø ɡ ø j# -#	CVCVC
+135	82	EAH	b ø ɡ ø l øk	CVCVCVC
+136	83	H	#b ø j.t# -#	CVCC
+137	83	EAH	b y ɣ.t ɛ	CVCCV
+138	84	H	#b ø l.t͡ʃ# -#	CVCC
+139	84	EAH	b y.ɣ.y t͡ʃ i	CVCVCV
+140	85	H	#b ø l.t͡ʃ øː#	CVCCV
+141	85	EAH	b ɛ l.t͡ʃ ɛ.ɣ	CVCCVC
+142	86	H	#b ø l eː ɲ# -#	CVCVC
+143	86	EAH	b ɛ l ɛ n -	CVCVC
+144	87	H	#b ø r.t ø n# -#	CVCCVC
+145	87	EAH	b ɛ r.t ɛ n -	CVCCVC
+146	89	H	#b uː ʃ# -#	CVC
+147	89	EAH	b u ɣ -	CVC
+148	90	H	#b uː t͡ʃ uː#	CVCV
+149	90	EAH	b u l.t͡ʃ u.ɣ	CVCCVC
+150	91	H	#b u ɡ ɒ# -#	CVCV
+151	91	EAH	b u ɡ a -	CVCV
+152	92	H	#b u l ɒ r# -#	CVCVC
+153	92	EAH	b u l a r -	CVCVC
+154	93	H	#b uː s# -#	CVC
+155	93	EAH	b uː s -	CVC
+156	94	H	#b uː z ɒ# -#	CVCV
+157	94	EAH	b u.ɣ z a i	CVCCVV
+158	95	H	#b u z o ɡ aː ɲ#	CVCVCVC
+159	95	EAH	b u z - ɡ a n	CVCCVC
+160	96	H	#b y kː# -#	CVC
+161	96	EAH	b i k -	CVC
+162	97	H	#b yː n# -#	CVC
+163	97	EAH	b yː n -	CVC
+164	98	H	#b y t y#	CVCV
+165	98	EAH	b y t y.ɣ	CVCVC
+166	99	H	#b yː	CV
+167	99	EAH	b y.ɣ.y	CVCV
+168	100	H	#t͡s i ɡ.l ɛ# -#	CVCCV
+169	100	EAH	t͡ʃ i ɡ.l ɛ -	CVCCV
+170	105	H	#t͡ʃ i ɡ o j ɒ# -#	CVCVCV
+171	105	EAH	t͡ʃ i ɡ - l a -	CVCCV
+172	107	H	#t͡s ø t.k eː ɲ# -#	CVCCVC
+173	107	EAH	s y t.k ɛ n -	CVCCVC
+174	109	H	#t͡ʃ ɒ b ɒ k# -#	CVCVC
+175	109	EAH	t͡ʃ a b a k -	CVCVC
+176	110	H	#t͡ʃ ɒ k# -#	CVC
+177	110	EAH	t͡ʃ a k -	CVC
+178	111	H	#t͡ʃ aː k aː ɲ# -#	CVCVC
+179	111	EAH	t͡ʃ a k a n -	CVCVC
+180	114	H	#t͡ʃ ɒ l aː n#	CVCVC
+181	114	EAH	t͡ʃ a l a.ɣ.a n	CVCVCVC
+182	115	H	#t͡ʃ ɒ l i t# -#	CVCVC
+183	115	EAH	t͡ʃ a l i t -	CVCVC
+184	117	H	#t͡ʃ ɒ n ɒ k# -#	CVCVC
+185	117	EAH	t͡ʃ a n a k -	CVCVC
+186	118	H	#t͡ʃ ɒ t ɒ# -#	CVCV
+187	118	EAH	t͡ʃ a t a -	CVCV
+188	121	H	#t͡ʃ ɒ t# -#	CVC
+189	121	EAH	t͡ʃ a t i	CVCV
+190	122	H	#t͡ʃ eː t͡ʃ# -#	CVC
+191	122	EAH	t͡ʃ e t͡ʃ -	CVC
+192	124	H	#t͡ʃ ɛ k	CVCVC
+193	124	EAH	t͡ʃ i k	CVC
+194	125	H	#t͡ʃ ɛ p yː#	CVCV
+195	125	EAH	t͡ʃ ø p y.ɣ	CVCVC
+196	129	H	#t͡ʃ i ɡ ɒ# -#	CVCV
+197	129	EAH	t͡ʃ ɯ ɡ a -	CVCV
+198	130	H	#t͡ʃ i ɡ ɛ r# -#	CVCVC
+199	130	EAH	t͡ʃ i ɡ i r -	CVCVC
+200	132	H	#t͡ʃ i p ɒ#	CVCV
+201	132	EAH	t͡ʃ a p a.ɣ	CVCVC
+202	133	H	#t͡ʃ o l aː k# -#	CVCVC
+203	133	EAH	t͡ʃ o l a k -	CVCVC
+204	134	H	#t͡ʃ o m ɒ k# -#	CVCVC
+205	134	EAH	t͡ʃ o m a k -	CVCVC
+206	135	H	#t͡ʃ øː d ø r# -#	CVCVC
+207	135	EAH	t͡ʃ ɛ w.d y r -	CVCCVC
+208	138	H	#t͡ʃ ø k# -#	CVC
+209	138	EAH	t͡ʃ y k -	CVC
+210	141	H	#t͡ʃ ø k ø ɲ	CVCVC
+211	141	EAH	t͡ʃ y k y n	CVCVC
+212	142	H	#t͡ʃ øː s# -#	CVC
+213	142	EAH	t͡ʃ ɛ.y ʃ -	CVVC
+214	143	H	#t͡ʃ uː ɲ ɒ#	CVCV
+215	143	EAH	t͡ʃ u n a.ɣ	CVCVC
+216	144	H	#t͡ʃ yː r#	CVC
+217	144	EAH	t͡ʃ ɛ.w.y r	CVCVC
+218	146	H	#d ɒ k.ʃ i# -#	CVCCV
+219	146	EAH	d͡ʒʲ a k.ʃ i -	CVCCV
+220	147	H	#d ɒ k u# -#	CVCV
+221	147	EAH	d a k u -	CVCV
+222	148	H	#d ɒ r ɒ# -#	CVCV
+223	148	EAH	d a r a -	CVCV
+224	149	H	#d ɒ r ɒ# -#	CVCV
+225	149	EAH	d a r a -	CVCV
+226	150	H	#d eː l# -#	CVC
+227	150	EAH	t ø l i	CVCV
+228	151	H	#d eː l# -#	CVC
+229	151	EAH	d ø l i	CVCV
+230	152	H	#d i.oː#	CVV
+231	152	EAH	d͡ʒʲ i.ɣ.a.ɣ	CVCVC
+232	154	H	#d i s.n oː#	CVCCV
+233	154	EAH	d͡ʒʲ i s.n a.ɣ	CVCCVC
+234	155	H	#d øː l# -#	CVC
+235	155	EAH	d y l -	CVC
+236	157	H	#d u ɡ# -#	CVC
+237	157	EAH	d ɯ ɡ -	CVC
+238	159	H	#e ɟ#	VCCVC
+239	159	EAH	e ɟ	VC
+240	162	H	#ɛ k ɛ#	VCV
+241	162	EAH	ɛ k ɛ.ɣ	VCVC
+242	163	H	#ɛ n.ɡ	VCC
+243	163	EAH	ɛ n.ɡ	VCC
+244	165	H	#ɛ n øː#	VCV
+245	165	EAH	i n ɛ.ɣ	VCVC
+246	166	H	#eː r# -#	VC
+247	166	EAH	ɛ r -	VC
+248	167	H	#eː r.d ɛ m# -#	VCCVC
+249	167	EAH	ɛ r.d ɛ m -	VCCVC
+250	168	H	#ɛ r.k ø l.t͡ʃ# -#	VCCVCC
+251	168	EAH	ɛ r.k ɛ l.t͡ʃ -	VCCVCC
+252	169	H	#ɛ r.ɲ ɛ d# -#	VCCVC
+253	169	EAH	ɛ r i n -	VCVC
+254	170	H	#ɛ r øː#	VCV
+255	170	EAH	ɛ r i.ɣ	VCVC
+256	171	H	#ɛ ʃ# -#	VC
+257	171	EAH	i t͡ʃ y	VCV
+258	172	H	#ɛ ʃ.k y# -#	VCCV
+259	172	EAH	i t͡ʃ.k y -	VCCV
+260	173	H	#eː s# -#	VC
+261	173	EAH	ɛ s -	VC
+262	174	H	#ɛ t ɛ l# -#	VCVC
+263	174	EAH	ɛ t i l -	VCVC
+264	176	H	#ɡ ɒ z# -#	CVC
+265	176	EAH	k a.ɣ z u	CVCCV
+266	177	H	#ɡ ø d eː ɲ# -#	CVCVC
+267	177	EAH	ɡ y d ɛ n -	CVCVC
+268	179	H	#ɡ ø r eː ɲ# -#	CVCVC
+269	179	EAH	ɡ y r ɛ n -	CVCVC
+270	181	H	#ɡ y ɟ yː#	CVCV
+271	181	EAH	k y d ɛ.ɣ.y	CVCVCV
+272	182	H	#ɡ y z y#	CVCV
+273	182	EAH	k y s ɛ.ɣ.y	CVCVCV
+274	183	H	#ɟ ɒ l aː	CVCV
+275	183	EAH	d͡ʒʲ a l a	CVCV
+276	184	H	#ɟ ɒ l o m# -#	CVCVC
+277	184	EAH	d͡ʒʲ a l u m -	CVCVC
+278	185	H	#ɟ ɒ n uː#	CVCV
+279	185	EAH	d͡ʒʲ o n a.ɣ	CVCVC
+280	186	H	#ɟ ɒ p.j uː# -#	CVCCV
+281	186	EAH	d͡ʒʲ a p.ɣ u -	CVCCV
+282	187	H	#ɟ ɒ p o t# -#	CVCVC
+283	187	EAH	d͡ʒʲ a p u t -	CVCVC
+284	188	H	#ɟ ɒ r ɒ p -#	CVCVC
+285	188	EAH	d͡ʒʲ a r - p a	CVCCV
+286	190	H	#ɟ ɒ r.l oː#	CVCCV
+287	190	EAH	d͡ʒʲ a r.l ɯ.ɣ	CVCCVC
+288	191	H	#ɟ aː r.t#	CVCC
+289	191	EAH	d͡ʒʲ a r.a.t	CVCVC
+290	192	H	#ɟ aː s# -#	CVC
+291	192	EAH	d͡ʒʲ a s -	CVC
+292	193	H	#ɟ eː k eː ɲ# -#	CVCVC
+293	193	EAH	d͡ʒʲ ɛ k ɛ n -	CVCVC
+294	194	H	#ɟ e n.ɡ ɛ# -#	CVCCV
+295	194	EAH	d͡ʒʲ ɛ n.ɡ ɛ -	CVCCV
+296	195	H	#ɟ ɛ p.l øː#	CVCCV
+297	195	EAH	d͡ʒʲ i p.l i.ɣ	CVCCVC
+298	196	H	#ɟ ɛ p yː#	CVCV
+299	196	EAH	d͡ʒʲ ɛ p i.ɣ	CVCVC
+300	197	H	#ɟ ɛ p# -#	CVC
+301	197	EAH	d͡ʒʲ ɛ p i	CVCV
+302	198	H	#ɟ ɛ r.m ɛ k# -#	CVCCVC
+303	198	EAH	d͡ʒʲ ɛ r.m ɛ k -	CVCCVC
+304	199	H	#ɟ ɛ r.m ɛ k# -#	CVCCVC
+305	199	EAH	d͡ʒʲ ɛ r.m ɛ k -	CVCCVC
+306	200	H	#ɟ ɛ r.c ɒ# -#	CVCCV
+307	200	EAH	d͡ʒʲ a r.t a -	CVCCV
+308	201	H	#ɟ ɛ r.c aː n#	CVCCVC
+309	201	EAH	d͡ʒʲ a r.t a.ɣ.a n	CVCCVCVC
+310	202	H	#ɟ i l.k o ʃ# -#	CVCCVC
+311	202	EAH	d͡ʒʲ i l.k u ʃ -	CVCCVC
+312	203	H	#ɟ o m# -#	CVC
+313	203	EAH	d͡ʒʲ o m -	CVC
+314	204	H	#ɟ o m o r# -#	CVCVC
+315	204	EAH	d͡ʒʲ u m u r -	CVCVC
+316	205	H	#ɟ oː n# -#	CVC
+317	205	EAH	d͡ʒʲ uː n -	CVC
+318	207	H	#ɟ o p aː r# -#	CVCVC
+319	207	EAH	d͡ʒʲ ɯ p a r -	CVCVC
+320	208	H	#ɟ ø n.ɟ# -#	CVCC
+321	208	EAH	d͡ʒʲ i n.d͡ʒʲ y	CVCCV
+322	209	H	#ɟ ø t ø r# -#	CVCVC
+323	209	EAH	d͡ʒʲ i t y r -	CVCVC
+324	210	H	#ɟ øː z#	CVC
+325	210	EAH	d͡ʒʲ ɛ.ɣ.y z	CVCVC
+326	211	H	#ɟ uː l# -#	CVC
+327	211	EAH	d͡ʒʲ u l -	CVC
+328	212	H	#ɟ uː r#	CVC
+329	212	EAH	d͡ʒʲ u.ɣ.u r	CVCVC
+330	213	H	#ɟ yː l#	CVC
+331	213	EAH	d͡ʒʲ i.ɣ.i l	CVCVC
+332	214	H	#ɟ yː j.t# -#	CVCC
+333	214	EAH	ɟ yː l -	CVC
+334	215	H	#ɟ yː l ø l#	CVCVC
+335	215	EAH	d͡ʒʲ ɛ.ɣ.i l ɛ -	CVCVCV
+336	216	H	#ɟ y m ø l.t͡ʃ# -#	CVCVCC
+337	216	EAH	d͡ʒʲ ɛ m i l.t͡ʃ -	CVCVCC
+338	217	H	#ɟ y m ø l.t͡ʃ eː ɲ# -#	CVCVCCVC
+339	217	EAH	d͡ʒʲ ɛ m i l.t͡ʃ ɛ n -	CVCVCCVC
+340	219	H	#ɟ yː r yː#	CVCV
+341	219	EAH	d͡ʒʲ y r y.ɣ	CVCVC
+342	220	H	#ɟ yː s yː#	CVCV
+343	220	EAH	d͡ʒʲ y.ɣ s y.ɣ	CVCCVC
+344	221	H	#h ɒ j oː#	CVCV
+345	221	EAH	h a j i.ɣ	CVCVC
+346	222	H	#h ɒ r ɒ n.ɡ# -#	CVCVCC
+347	222	EAH	h a r a ng -	CVCCVC
+348	223	H	#h ɛ r.j oː#	CVCCV
+349	223	EAH	x i r.ɣ u.j	CVCCVC
+350	224	H	#h o m o k# -#	CVCVC
+351	224	EAH	h u m o k i	CVCVCV
+352	225	H	#h u r o k#	CVCVC
+353	225	EAH	- u r o k	VCVC
+354	226	H	#i d øː#	VCV
+355	226	EAH	y d ɛ.ɣ	VCVC
+356	227	H	#i ɡ ɛ# -#	VCV
+357	227	EAH	y ɡ ɛ -	VCV
+358	228	H	#i ɡ ɛ n# -#	VCVC
+359	228	EAH	ɛ ɡ ɛ n -	VCVC
+360	229	H	#i j ɛ	VCV
+361	229	EAH	ɛ j i	VCV
+362	231	H	#i k ɛ r# -#	VCVC
+363	231	EAH	i k i r -	VCVC
+364	232	H	#i l.d o m# -#	VCCVC
+365	232	EAH	i l.d a m -	VCCVC
+366	233	H	#i lː	VC
+367	233	EAH	i l	VC
+368	234	H	#i m	VC
+369	234	EAH	w.i m	CVC
+370	235	H	#i n.ɡ#	VCC
+371	235	EAH	y mː.ɛ.ɡ	VCVC
+372	236	H	#iː r# -#	VC
+373	236	EAH	i r -	VC
+374	237	H	#iː r oː#	VCV
+375	237	EAH	i r a.ɣ	VCVC
+376	238	H	#i zː i	VCV
+377	238	EAH	i s i	VCV
+378	242	H	#k ɒ l ɒ.u z# -#	CVCVVC
+379	242	EAH	k a l a.u z -	CVCVVC
+380	243	H	#k ɒ l oː z# -#	CVCVC
+381	243	EAH	k a l a.u z -	CVCVVC
+382	244	H	#k aː l i z# -#	CVCVC
+383	244	EAH	k a l i z -	CVCVC
+384	245	H	#k ɒ l o k aː ɲ# -#	CVCVCVC
+385	245	EAH	k a r.l u k a n -	CVCCVCVC
+386	252	H	#k ɒ n.ɟ iː k ɒ# -#	CVCCVCV
+387	252	EAH	k ɒ n.ɟ i k ɒ -	CVCCVCV
+388	254	H	#k ɒ ɲ ɒ r oː#	CVCVCV
+389	254	EAH	k a m a r u.ɣ	CVCVCVC
+390	255	H	#k ɒ p.t aː ɲ# -#	CVCCVC
+391	255	EAH	k a p.k a n -	CVCCVC
+392	256	H	#k ɒ p u#	CVCV
+393	256	EAH	k a p u.ɣ	CVCVC
+394	257	H	#k ɒ r# -#	CVC
+395	257	EAH	k a r -	CVC
+396	259	H	#k ɒ r ɒ k aː n# -#	CVCVCVC
+397	259	EAH	k a r a k a n -	CVCVCVC
+398	260	H	#k ɒ r aː m# -#	CVCVC
+399	260	EAH	k o r aː m -	CVCVC
+400	261	H	#k ɒ r ɒ m.b eː l# -#	CVCVCCVC
+401	261	EAH	k a r a m.p i l -	CVCVCCVC
+402	263	H	#k ɒ r oː#	CVCV
+403	263	EAH	k a r o.ɣ	CVCVC
+404	264	H	#k aː r oː k ɒ t o n	CVCVCVCVC
+405	264	EAH	k a r a k o t a n	CVCVCVCVC
+406	265	H	#k ɒ r.v ɒ j# -#	CVCCVC
+407	265	EAH	k a r.ɣ a j -	CVCCVC
+408	266	H	#k ɒ t aː n.ɡ# -#	CVCVCC
+409	266	EAH	k a t aː n.ɡ -	CVCVCC
+410	267	H	#k ɒ z aː r# -#	CVCVC
+411	267	EAH	k a z a r -	CVCVC
+412	269	H	#k ɛ t͡ʃ.k ɛ#	CVCCV
+413	269	EAH	k ɛ t͡ʃ.ɛ.k ɛ	CVCVCV
+414	270	H	#k eː k# -#	CVC
+415	270	EAH	k ɛ.j k -	CVCC
+416	271	H	#k ɛ l ɛ n.ɟ ɛ#	CVCVCCV
+417	271	EAH	k ɛ l i n.t͡ʃ ɛ.ɣ	CVCVCCVC
+418	272	H	#k ɛ n.d ɛ r# -#	CVCCVC
+419	272	EAH	k ɛ n.d i r -	CVCCVC
+420	273	H	#k eː n ɛ ʃ øː# -#	CVCVCV
+421	273	EAH	k ɛ n ɛ ʃ yː -	CVCVCV
+422	275	H	#k ɛ p ɛ#	CVCV
+423	275	EAH	k ɛ p ɛ.ɣ	CVCVC
+424	277	H	#k eː r	CVC
+425	277	EAH	k eː r	CVC
+426	278	H	#k eː r øː#	CVCV
+427	278	EAH	k ɛ.w.ɛ r ɛ.ɣ	CVCVCVC
+428	279	H	#k ɛ r.t# -#	CVCC
+429	279	EAH	k ɛ r.t ɛ	CVCCV
+430	280	H	#k ɛ ʃ ɛ j yː#	CVCVCV
+431	280	EAH	k y t͡ʃ ɛ l ɛ.ɣ	CVCVCVC
+432	281	H	#k eː ʃ	CVC
+433	281	EAH	k eː t͡ʃ	CVC
+434	282	H	#k i t͡ʃ i ɲ# -#	CVCVC
+435	282	EAH	k i t͡ʃ i n -	CVCVC
+436	285	H	#k i ʃ# -#	CVC
+437	285	EAH	k i t͡ʃ iɣ	CVCVC
+438	286	H	#k iː j.t͡s#	CVCC
+439	286	EAH	k i j.i.z	CVCVC
+440	287	H	#k i k ɛ r i t͡ʃ# -#	CVCVCVC
+441	287	EAH	k y k ɛ r i l.t͡ʃ -	CVCVCVCC
+442	288	H	#k i k ø t͡ʃ eː ɲ# -#	CVCVCVC
+443	288	EAH	k y k ɛ r.t͡ʃ ɛ n -	CVCVCCVC
+444	289	H	#k iː n# -#	CVC
+445	289	EAH	k iː n -	CVC
+446	290	H	#k o b ɒ k# -#	CVCVC
+447	290	EAH	k ɒ b ɒ k -	CVCVC
+448	291	H	#k o b o z# -#	CVCVC
+449	291	EAH	k o b o z -	CVCVC
+450	292	H	#k o l.d u	CVCCV
+451	292	EAH	k o l.d u	CVCCV
+452	295	H	#k o m.l oː#	CVCCV
+453	295	EAH	k u m.l a.ɣ	CVCCVC
+454	296	H	#k o m oː t͡ʃ i n# -#	CVCVCVC
+455	296	EAH	k ɒ m i t͡ʃ i n -	CVCVCVC
+456	297	H	#k o m o n.d o r# -#	CVCVCCVC
+457	297	EAH	k u m a n.d u r -	CVCVCCVC
+458	298	H	#k o m o r# -#	CVCVC
+459	298	EAH	k o m u r -	CVCVC
+460	299	H	#k o p o r.ʃ oː#	CVCVCCV
+461	299	EAH	k o p u r.t͡ʃ a.ɣ	CVCVCCVC
+462	300	H	#k o r# -#	CVC
+463	300	EAH	k u r -	CVC
+464	301	H	#k o r.h aː ɲ# -#	CVCCVC
+465	301	EAH	k o r.ɣ a n -	CVCCVC
+466	302	H	#k oː r oː#	CVCV
+467	302	EAH	k u r o.ɣ	CVCVC
+468	303	H	#k o r o m# -#	CVCVC
+469	303	EAH	k u r u m -	CVCVC
+470	304	H	#k o ʃ# -#	CVC
+471	304	EAH	k o t͡ʃ -	CVC
+472	305	H	#k o z.m ɒ#	CVCCV
+473	305	EAH	k a s.m a.ɣ	CVCCVC
+474	306	H	#k ø d.m ø n# -#	CVCCVC
+475	306	EAH	k ɛ d.m ɛ n -	CVCCVC
+476	307	H	#k ø d.m ɛ n# -#	CVCCVC
+477	307	EAH	k ɛ d.m ɛ n -	CVCCVC
+478	308	H	#k ø k eː ɲ# -#	CVCVC
+479	308	EAH	k ø k ɛ n -	CVCVC
+480	309	H	#k ø l.t͡ʃ ø n# -#	CVCCVC
+481	309	EAH	k y l.t͡ʃ ɛ n -	CVCCVC
+482	310	H	#k ø l.d ø k# -#	CVCCVC
+483	310	EAH	k i n.d i k -	CVCCVC
+484	311	H	#k ø j ø k# -#	CVCVC
+485	311	EAH	k y l ɛ k -	CVCVC
+486	312	H	#k ø j yː#	CVCV
+487	312	EAH	k ɛ l i.ɣ	CVCVC
+488	313	H	#k ø m øː d ø r ø ɡ# -#	CVCVCVCVC
+489	313	EAH	k ø m ø n.d ø r ø k -	CVCVCCVCVC
+490	314	H	#k ɛ n.t.r ɛ ɡ#	CVCCCVC
+491	314	EAH	k ø m.ø.n.d.ø.r ø k	CVCVCCVCVC
+492	315	H	#k ø ɲ.v#	CVCC
+493	315	EAH	k y ɲ.y.ɣ	CVCVC
+494	317	H	#k ø p.t͡s ø	CVCCVC
+495	317	EAH	k ø p.t͡ʃ ɛ.ɣ	CVCCVC
+496	318	H	#k ø p ɛ t͡s# -#	CVCVC
+497	318	EAH	k ø p ɛ k -	CVCVC
+498	319	H	#k ø p ø ɲ ɛ k# -#	CVCVCVC
+499	319	EAH	k ɛ p ɛ n ɛ k -	CVCVCVC
+500	320	H	#k ø p yː# -#	CVCV
+501	320	EAH	k y p y ɣ	CVCVC
+502	321	H	#k øː r i ʃ# -#	CVCVC
+503	321	EAH	k ɛ w.r i t͡ʃ -	CVCCVC
+504	322	H	#k øː r øː#	CVCV
+505	322	EAH	k ɛ.w r ɛ.ɣ	CVCCVC
+506	323	H	#k ø r.t.v eː j# -#	CVCCCVC
+507	323	EAH	k ɛ r.t.β ɛ l i	CVCCCVCV
+508	325	H	#k ø s ø n# -#	CVCVC
+509	325	EAH	k y s ɛ n -	CVCVC
+510	326	H	#k u n# -#	CVC
+511	326	EAH	k u.w.a n -	CVCVC
+512	327	H	#k u v ɒ s# -#	CVCVC
+513	327	EAH	k u w a z -	CVCVC
+514	328	H	#k y lː øː#	CVCV
+515	328	EAH	k y lː ɛ.ɣ	CVCVC
+516	331	H	#m oː n aː r	CVCVC
+517	331	EAH	m u n a r	CVCVC
+518	332	H	#ɲ ø ɡ eː r# -#	CVCVC
+519	332	EAH	n ø ɡ ɛ r -	CVCVC
+520	333	H	#o t͡ʃ uː#	VCV
+521	333	EAH	u t͡ʃ o.ɣ	VCVC
+522	334	H	#o k# -#	VC
+523	334	EAH	u k -	VC
+524	336	H	#oː l#	VC
+525	336	EAH	a.ɣ.u l	VCVC
+526	337	H	#o l.t͡ʃ oː#	VCCV
+527	337	EAH	u t͡ʃ a.ɣ	VCVC
+528	338	H	#o lː oː#	VCV
+529	338	EAH	o ɣ.l a.ɣ	VCCVC
+530	339	H	#o n.d oː#	VCCV
+531	339	EAH	u n.d a.ɣ	VCCVC
+532	342	H	#o r o s# -#	VCVC
+533	342	EAH	u r u s -	VCVC
+534	343	H	#o r o s.l aː n# -#	VCVCCVC
+535	343	EAH	u r u s.l aː n -	VCVCCVC
+536	344	H	#o r.ʃ oː#	VCCV
+537	344	EAH	u r.t͡ʃ u.ɣ	VCCVC
+538	345	H	#o r.v#	VCC
+539	345	EAH	u ɣ.r.u	VCCV
+540	346	H	#o r.v o ʃ# -#	VCCVC
+541	346	EAH	u r.v o t͡ʃ i	VCCVCV
+542	347	H	#o ʃ# -#	VC
+543	347	EAH	a l.t͡ʃ uk	VCCVC
+544	348	H	#ø k ø r# -#	VCVC
+545	348	EAH	y k y r -	VCVC
+546	349	H	#ø l.t# -#	VCC
+547	349	EAH	i l.t -	VCC
+548	350	H	#ø j.v#	VCC
+549	350	EAH	ɛ l.i.ɣ	VCVC
+550	351	H	#ø n	VC
+551	351	EAH	y n	VC
+552	352	H	#øː r#	VC
+553	352	EAH	ɛ.w.i r	VCVC
+554	354	H	#ø r.m eː ɲ# -#	VCCVC
+555	354	EAH	ɛ r.m ɛ n i	VCCVCV
+556	355	H	#ø r ø k# -#	VCVC
+557	355	EAH	y r y k -	VCVC
+558	356	H	#ø r	VC
+559	356	EAH	ø.ɣ.i r	VCVC
+560	357	H	#øː r y l# -#	VCVC
+561	357	EAH	ɛ.w r i l -	VCCVC
+562	358	H	#ø r.v	VCCVC
+563	358	EAH	ɛ.ɣ.i r	VCVC
+564	359	H	#øː r eː m# -#	VCVC
+565	359	EAH	ɛ.ɣ r i m -	VCCVC
+566	361	H	#ø r.m eː ɲ# -#	VCCVC
+567	361	EAH	ø r.m ɛ n -	VCCVC
+568	364	H	#ø z ø n# -#	VCVC
+569	364	EAH	y z ɛ n -	VCVC
+570	365	H	#ʃ ɒ j.t# -#	CVCC
+571	365	EAH	t͡ʃ a ɣ.t -	CVCC
+572	367	H	#ʃ aː r# -#	CVC
+573	367	EAH	ʃ a r -	CVC
+574	369	H	#ʃ aː r.ɡ ɒ#	CVCCV
+575	369	EAH	ʃ a r.u.ɡ -	CVCVC
+576	370	H	#ʃ aː r.k aː ɲ# -#	CVCCVC
+577	370	EAH	ʃ aː r.k aː n -	CVCCVC
+578	371	H	#ʃ ɒ r.l oː#	CVCCV
+579	371	EAH	t͡ʃ a r.l a.ɣ	CVCCVC
+580	372	H	#ʃ aː r.m ɒ#	CVCCV
+581	372	EAH	ʃ a r.m a.ɣ	CVCCVC
+582	373	H	#ʃ ɒ r u#	CVCV
+583	373	EAH	t͡ʃ a r u.ɣ	CVCVC
+584	374	H	#ʃ aː t o r# -#	CVCVC
+585	374	EAH	t͡ʃ a t u r -	CVCVC
+586	375	H	#ʃ ɛ b	CVC
+587	375	EAH	ʃ ɛ b	CVC
+588	376	H	#ʃ ɛ p ɛ r# -#	CVCVC
+589	376	EAH	ʃ i p i r -	CVCVC
+590	377	H	#ʃ ɛ p.r yː# -#	CVCCV
+591	377	EAH	ʃ i p.i.r i.ɣ -	CVCVCVC
+592	380	H	#ʃ eː r# -#	CVC
+593	380	EAH	ʃ i r -	CVC
+594	381	H	#ʃ ɛ r ɛ ɡ# -#	CVCVC
+595	381	EAH	t͡ʃ ɛ r i ɡ -	CVCVC
+596	382	H	#ʃ ɛ r.k ɛ# -#	CVCCV
+597	382	EAH	ʃ i r.k ɛ -	CVCCV
+598	383	H	#ʃ ɛ r.l ɛ ɡ# -#	CVCCVC
+599	383	EAH	ʃ ɛ r.l ɛ ɡ -	CVCCVC
+600	384	H	#ʃ ɛ r.t	CVCC
+601	384	EAH	ʃ i r.t	CVCC
+602	385	H	#ʃ iː k# -#	CVC
+603	385	EAH	ʃ i k -	CVC
+604	386	H	#ʃ i m ɒ# -#	CVCV
+605	386	EAH	ʃ i m a -	CVCV
+606	387	H	#ʃ i.oː# -#	CVV
+607	387	EAH	ʃ i.u -	CVV
+608	388	H	#ʃ eː	CV
+609	388	EAH	ʃ i.u	CVV
+610	390	H	#ʃ oː j o	CVCV
+611	390	EAH	t͡ʃ a.w l i	CVCCV
+612	392	H	#ʃ o m# -#	CVC
+613	392	EAH	t͡ʃ u m -	CVC
+614	393	H	#ʃ o m.j oː#	CVCCV
+615	393	EAH	ʃ u m.l u.ɣ	CVCCVC
+616	394	H	#ʃ ø r# -#	CVC
+617	394	EAH	ʃ ɛ r ɛ	CVCV
+618	395	H	#ʃ øː r ɛ ɡ# -#	CVCVC
+619	395	EAH	ʃ ɛ.w r ɛ ɡ ɛ	CVCCVCV
+620	396	H	#ʃ y lː øː#	CVCV
+621	396	EAH	ʃ i lː ɛ.ɣ	CVCVC
+622	397	H	#ʃ y j#	CVC
+623	397	EAH	ʃ i ɣ.y.l	CVCVC
+624	398	H	#ʃ yː r yː#	CVCV
+625	398	EAH	t͡ʃ i r ɛ.ɣ	CVCVC
+626	399	H	#ʃ yː#	CV
+627	399	EAH	s i.ɣ	CVC
+628	400	H	#ʃ y v# -#	CVC
+629	400	EAH	s i ɣ -	CVC
+630	401	H	#s aː ɡ o m# -#	CVCVC
+631	401	EAH	s a ɡ u m -	CVCVC
+632	402	H	#s ɒ k ɒ#	CVCV
+633	402	EAH	s a k a.ɣ	CVCVC
+634	403	H	#s ɒ k aː lː# -#	CVCVC
+635	403	EAH	s a k a l -	CVCVC
+636	404	H	#s aː l# -#	CVC
+637	404	EAH	s a l -	CVC
+638	405	H	#s aː m# -#	CVC
+639	405	EAH	s a m -	CVC
+640	406	H	#s aː n#	CVC
+641	406	EAH	s a.ɣ.i n	CVCVC
+642	409	H	#s ɒ p u#	CVCV
+643	409	EAH	s a p a.ɣ	CVCVC
+644	410	H	#s aː r# -#	CVC
+645	410	EAH	s a r -	CVC
+646	411	H	#s aː r.ɲ# -#	CVCC
+647	411	EAH	sʲ aː r.n -	CVCC
+648	412	H	#s ɒ t oː t͡ʃ# -#	CVCVC
+649	412	EAH	s a t i.ɣ t͡ʃ i	CVCVCCV
+650	413	H	#s eː k# -#	CVC
+651	413	EAH	s ɛ k y	CVCV
+652	414	H	#s eː l# -#	CVC
+653	414	EAH	s eː l -	CVC
+654	415	H	#s ɛ n.d	CVCC
+655	415	EAH	s ɛ n	CVC
+656	417	H	#s eː p# -#	CVC
+657	417	EAH	s i p -	CVC
+658	418	H	#s ɛ p.l øː#	CVCCV
+659	418	EAH	s ɛ p.l ɛ.ɣ	CVCCVC
+660	419	H	#s ɛ r# -#	CVC
+661	419	EAH	sʲ ɛ r -	CVC
+662	420	H	#s eː r yː#	CVCV
+663	420	EAH	s y r y.ɣ	CVCVC
+664	421	H	#s ɛ s# -#	CVC
+665	421	EAH	s i s -	CVC
+666	422	H	#s iː n# -#	CVC
+667	422	EAH	s i n -	CVC
+668	423	H	#s i r o ɲ# -#	CVCVC
+669	423	EAH	s i j.r u m -	CVCCVC
+670	424	H	#s i r o ɲ# -#	CVCVC
+671	424	EAH	s i j.r u m -	CVCCVC
+672	426	H	#s oː#	CV
+673	426	EAH	s a.w	CVC
+674	427	H	#s o n.ɡ o r# -#	CVCCVC
+675	427	EAH	s o n.k o r -	CVCCVC
+676	428	H	#s oː r#	CVC
+677	428	EAH	s a.w.u r	CVCVC
+678	429	H	#s ø t͡ʃ.k	CVCC
+679	429	EAH	s ɛ k	CVC
+680	430	H	#s ø k	CVC
+681	430	EAH	s ɛ k	CVC
+682	431	H	#s øː l øː#	CVCV
+683	431	EAH	sʲ ɛ l ɛ.ɣ	CVCVC
+684	432	H	#s ø lː øː#	CVCV
+685	432	EAH	sʲ ɛ l ɛ.ɣ	CVCVC
+686	433	H	#s uː ɲ o ɡ# -#	CVCVC
+687	433	EAH	s i n u k -	CVCVC
+688	434	H	#s yː t͡ʃ# -#	CVC
+689	434	EAH	sʲ i.ɣ t͡ʃ i	CVCCV
+690	435	H	#s yː n	CVC
+691	435	EAH	s ø n	CVC
+692	436	H	#s yː r# -#	CVC
+693	436	EAH	s y r -	CVC
+694	437	H	#s yː z# -#	CVC
+695	437	EAH	s y z ø.k	CVCVC
+696	438	H	#t aː l.t o ʃ# -#	CVCCVC
+697	438	EAH	t a l.t u t͡ʃ i	CVCCVCV
+698	439	H	#t ɒ n aː t͡ʃ# -#	CVCVC
+699	439	EAH	t a n i l.t͡ʃ -	CVCVCC
+700	440	H	#t ɒ n uː# -#	CVCV
+701	440	EAH	t a n u -	CVCV
+702	441	H	#t aː p.l aː	CVCCV
+703	441	EAH	t a p.l a.ɣ	CVCCVC
+704	442	H	#t ɒ p.l oː#	CVCCV
+705	442	EAH	t o p.l u.ɣ	CVCCVC
+706	443	H	#t ɒ r# -#	CVC
+707	443	EAH	t a r -	CVC
+708	444	H	#t aː r#	CVC
+709	444	EAH	t a.v.a r	CVCVC
+710	445	H	#t ɒ r.l oː#	CVCCV
+711	445	EAH	t a r.l a.ɣ	CVCCVC
+712	446	H	#t ɒ r.t# -#	CVCC
+713	446	EAH	t a r.t -	CVCC
+714	447	H	#t ɒ t aː r# -#	CVCVC
+715	447	EAH	t a t a r -	CVCVC
+716	448	H	#t aː t o r.j aː n# -#	CVCVCCVC
+717	448	EAH	t a t u r.ɣ a n -	CVCVCCVC
+718	450	H	#t ɛ k ɛ r# -#	CVCVC
+719	450	EAH	t ɛ k ɛ r -	CVCVC
+720	451	H	#t ɛ k.n øː#	CVCCV
+721	451	EAH	t ɛ k.ɛ.n ɛ.ɣ	CVCVCVC
+722	452	H	#t ɛ l ɛ k# -#	CVCVC
+723	452	EAH	t ɛ l y k -	CVCVC
+724	454	H	#t ɛ n.ɡ	CVCCVCVC
+725	454	EAH	t ɛ n.ɡ	CVCC
+726	455	H	#t ɛ n.ɡ ɛ j# -#	CVCCVC
+727	455	EAH	t ɛ n.ɡ ɛ l -	CVCCVC
+728	456	H	#t ɛ n.ɡ ɛ r# -#	CVCCVC
+729	456	EAH	t ɛ ŋ i r -	CVCVC
+730	457	H	#t eː r	CVC
+731	457	EAH	t ɛ.v.i r	CVCVC
+732	459	H	#t eː r.d# -#	CVCC
+733	459	EAH	t iː r -	CVC
+734	460	H	#t ɛ r ɛ m# -#	CVCVC
+735	460	EAH	t ɛ r ɛ m -	CVCVC
+736	461	H	#t ɛ v ɛ# -#	CVCV
+737	461	EAH	t ɛ v ɛ -	CVCV
+738	462	H	#t i l oː#	CVCV
+739	462	EAH	t a l.k i.ɣ	CVCCVC
+740	463	H	#t i n oː# -#	CVCV
+741	463	EAH	t a n a -	CVCV
+742	464	H	#t o j	CVC
+743	464	EAH	t u ɣ	CVC
+744	466	H	#t o k# -#	CVC
+745	466	EAH	t o k u	CVCV
+746	467	H	#t o k.j oː# -#	CVCCV
+747	467	EAH	t o k.l u -	CVCCV
+748	468	H	#t o l.m aː t͡ʃ# -#	CVCCVC
+749	468	EAH	t o l.m a t͡ʃ -	CVCCVC
+750	469	H	#t o r.m ɒ# -#	CVCCV
+751	469	EAH	t u r.m a -	CVCCV
+752	471	H	#t o r.l	CVCCV
+753	471	EAH	t o r.o	CVCV
+754	472	H	#t o r o n.t aː l# -#	CVCVCCVC
+755	472	EAH	t u r u n.t a j -	CVCVCCVC
+756	473	H	#t oː t# -#	CVC
+757	473	EAH	t aː t -	CVC
+758	474	H	#t ø k eː	CVCV
+759	474	EAH	t y k ɛ	CVCV
+760	475	H	#t ø m eː n	CVCVC
+761	475	EAH	t y m ɛ n	CVCVC
+762	476	H	#t ø r#	CVC
+763	476	EAH	t y.ɣ.y r	CVCVC
+764	477	H	#t øː r# -#	CVC
+765	477	EAH	t øː r -	CVC
+766	478	H	#t ø r ø k# -#	CVCVC
+767	478	EAH	t y r - k y	CVCCV
+768	479	H	#t ø r.t eː n	CVCCVC
+769	479	EAH	t ø r.t y n	CVCCVC
+770	480	H	#t ø r.v eː ɲ#	CVCCVC
+771	480	EAH	t y r.y.ɣ ɛ n	CVCVCVC
+772	481	H	#t øː z ɛ ɡ# -#	CVCVC
+773	481	EAH	t ø z ɛ k -	CVCVC
+774	482	H	#t u l o k# -#	CVCVC
+775	482	EAH	t u l o k -	CVCVC
+776	483	H	#t uː r oː#	CVCV
+777	483	EAH	t o r a.ɣ	CVCVC
+778	484	H	#t u r u l# -#	CVCVC
+779	484	EAH	t u.ɣ r ɯ l -	CVCCVC
+780	485	H	#t uː z o k# -#	CVCVC
+781	485	EAH	t o.ɣ z a k -	CVCCVC
+782	487	H	#t y k ø r# -#	CVCVC
+783	487	EAH	t y k ɛ r -	CVCVC
+784	488	H	#t yː r# -#	CVC
+785	488	EAH	t y r -	CVC
+786	490	H	#c uː k#	CVC
+787	490	EAH	t i.ɣ.u k	CVCVC
+788	491	H	#u ɡ# -#	VC
+789	491	EAH	u ɡ u	VCV
+790	492	H	#uː r# -#	VC
+791	492	EAH	u r i	VCV
+792	493	H	#y d y	VCV
+793	493	EAH	ɛ d y	VCV
+794	494	H	#y nː ɛ p# -#	VCVC
+795	494	EAH	i d.n a p -	VCCVC
+796	495	H	#y n øː#	VCV
+797	495	EAH	i n ɛ.ɣ	VCVC
+798	497	H	#y r.ɡ ɛ# -#	VCCV
+799	497	EAH	y r.ɡ ɛ -	VCCV
+800	498	H	#y r ø m# -#	VCVC
+801	498	EAH	ɛ r i m -	VCVC
+802	500	H	#y r y#	VCV
+803	500	EAH	i r i.ɣ	VCVC
+804	501	H	#y s ø k# -#	VCVC
+805	501	EAH	i s y ɡ -	VCVC
+806	502	H	#y s ø ɡ# -#	VCVC
+807	502	EAH	i s y ɡ -	VCVC
+808	503	H	#y v ɛ t͡ʃ# -#	VCVC
+809	503	EAH	ø v ɛ t͡ʃ -	VCVC
+810	504	H	#v aː j# -#	CVC
+811	504	EAH	v a j -	CVC
+812	505	H	#v aː j uː#	CVCV
+813	505	EAH	v a l a.ɣ	CVCVC
+814	506	H	#v ɛ j.s ɛ#	CVCCV
+815	506	EAH	v ɛ j.s ɛ.ɣ	CVCCVC
+816	508	H	#v eː k# -#	CVC
+817	508	EAH	v ɛ k y	CVCV
+818	509	H	#v ɛ n.d eː ɡ# -#	CVCCVC
+819	509	EAH	v ɛ n.d ɛ ɡ -	CVCCVC
+820	511	H	#v eː r.t ɛ l ɛ k# -#	CVCCVCVC
+821	511	EAH	v ɛ r.t ɛ l y k -	CVCCVCVC
+822	512	H	#z ɛ r.ɡ ɛ# -#	CVCCV
+823	512	EAH	s ɛ r.ɡ ɛ -	CVCCV

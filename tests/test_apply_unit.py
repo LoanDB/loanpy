@@ -247,7 +247,7 @@ def test_reconstruct1(list2regex_mock):
     # assert reconstruct works
     assert Adrc.reconstruct(
         self=monkey_adrc,
-        ipastr="k i k i") == "i, i# not old"
+        ipastr="k i k i") == "i not old"
 
 # set up mock class, will be used multiple times throughout this test
 class AdrcMonkeyReconstruct:
@@ -284,7 +284,7 @@ def test_reconstruct2(list2regex_mock):
 
     # assert 3 calls: tokenise, read_sc, list2regex
     assert monkey_adrc.read_sc_called_with == [
-        (['#k', 'i', 'k', 'i#', '-#'], 1)]
+        (['k', 'i', 'k', 'i',], 1)]
     assert list2regex_mock.call_args_list == [
         call(["k"]), call(["i"]),
         call(["h"]), call(["e"])]
@@ -309,7 +309,7 @@ def test_reconstruct3(list2regex_mock):
 
     # assert 3 calls: clusterise, read_sc, list2regex
     assert monkey_adrc.read_sc_called_with == [
-        (['#k', 'i', 'k', 'i#', '-#'], 2)]
+        (['k', 'i', 'k', 'i',], 2)]
     assert list2regex_mock.call_args_list == [
         call(["k", "h"]), call(["i"]),
         call(["h"]), call(["e"])]

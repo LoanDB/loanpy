@@ -62,29 +62,29 @@ def test_reconstruct():
 
     # assert reconstruct works when sound changes are missing from data
     assert adrc_inst.reconstruct(
-        ipastr="k i k i") == "#k, i, k, i# not old"
+        ipastr="k i k i")[-7:] == "not old"
 
     # assert it's actually clusterising by default
     assert adrc_inst.reconstruct(
-        ipastr="k.r i.e k.r i.e") == "#k.r, i.e, k.r, i.e# not old"
+        ipastr="k.r i.e k.r i.e")[-7:] == "not old"
 
     # try r can be old!
     assert adrc_inst.reconstruct(
-        ipastr="k r i e k r i e") == "#k, i, e, k, i, e# not old"
+        ipastr="k r i e k r i e")[-7:] == "not old"
 
     # test 2nd break: phonotactics_filter and vowelharmony_filter are False
     assert adrc_inst.reconstruct(
-        ipastr="aː r uː") == "^(a)(n)(a)(at͡ʃi)$"
+        ipastr="#aː r uː# -#") == "^(a)(n)(a)(at͡ʃi)$"
 
     # test same break again but param <howmany> is greater than 1 now
     assert adrc_inst.reconstruct(
-        ipastr="aː r uː", howmany=2) == "^(a)(n)(a)(at͡ʃi|γ)$"
+        ipastr="#aː r uː# -#", howmany=2) == "^(a)(n)(a)(at͡ʃi|γ)$"
 
     assert adrc_inst.reconstruct(
-        ipastr="aː r uː", howmany=3) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
+        ipastr="#aː r uː# -#", howmany=3) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
 
     assert adrc_inst.reconstruct(
-        ipastr="aː r uː", howmany=100) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
+        ipastr="#aː r uː# -#", howmany=100) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
 
 def test_repair_phontactics():
     adrc = Adrc(sc=PATH2SC_AD, invs=PATH2INVS)

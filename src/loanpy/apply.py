@@ -93,7 +93,7 @@ class Adrc():
         if prosody:
             ipalist = self.repair_phonotactics(ipalist, prosody)
         out = self.read_sc(ipalist, howmany)
-        out = ["".join(word) for word in product(*out)]
+        out = ["".join(word).replace("-", "") for word in product(*out)]
         return ", ".join(out[:howmany])  # cut off leftover, turn to string
 
     def reconstruct(self,
@@ -125,13 +125,13 @@ class Adrc():
         ipalist = ipastr.split(" ")
 
         # apply uralign tags TODO: outsource to pre-processing.
-        ipalist[0], ipalist[-1] = f"#{ipalist[0]}", f"{ipalist[-1]}#"
-        ipalist = ipalist + ["-#"]
+#        ipalist[0], ipalist[-1] = f"#{ipalist[0]}", f"{ipalist[-1]}#"
+#        ipalist = ipalist + ["-#"]
 
         # if phonemes missing from sound correspondence dict, return which ones
         if not all(phon in self.sc[0] for phon in ipalist):
             missing = [i for i in ipalist if i not in self.sc[0]]
-            return ', '.join(missing) + " not old"
+            return ', '.join(set(missing)) + " not old"
 
         # read the correct number of sound correspondences per phoneme
         out = self.read_sc(ipalist, howmany)
@@ -180,7 +180,7 @@ class Adrc():
             predicted_phonotactics = self.sc[3][prosody][0]
         except KeyError:
             predicted_phonotactics = self.get_closest_phonotactics(prosody)
-
+        #print("predicted phonotactics: ", predicted_phonotactics)
         # Get edit operations between structures, apply them 2 input IPA string
         matrix = get_mtx(prosody, predicted_phonotactics)
         graph = mtx2graph(matrix)
