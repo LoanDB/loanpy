@@ -6,7 +6,7 @@ jobs:
       python_version:
         type: string
     docker:
-      - image: circleci/python:<< parameters.python_version >>
+      - image: python:<< parameters.python_version >>
     steps:
       - checkout
       - run:
