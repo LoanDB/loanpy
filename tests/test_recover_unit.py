@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 import json
 from loanpy.recover import get_correspondences, uralign, get_heur, get_invs

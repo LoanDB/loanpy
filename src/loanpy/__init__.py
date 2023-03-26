@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 .. image:: ../../docs/source/images/white_logo_dark_background.jpg
    :scale: 20%

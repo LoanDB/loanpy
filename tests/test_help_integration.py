@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from loanpy.help import prefilter
 
 def test_prefilter1():

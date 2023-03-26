@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 #from pytest_mock import MockerFixture
 from unittest.mock import patch

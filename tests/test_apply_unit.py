@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """unit tests for loanpy.apply.py 2.5 with pytest 7.1.2"""
 
 import pytest

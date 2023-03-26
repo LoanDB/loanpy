@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 from loanpy.eval import eval_all, eval_one
 from unittest.mock import call, patch, MagicMock

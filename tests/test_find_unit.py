@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 from loanpy.find import phonetic_matches, semantic_matches
 from unittest.mock import patch, call

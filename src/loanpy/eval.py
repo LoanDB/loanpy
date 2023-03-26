@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Check how sane the model is by evaluating predictions."""
 import re
 

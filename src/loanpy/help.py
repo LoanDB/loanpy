@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Contains helper functions and class Etym, which are called internally.
 Some of the functions may also be useful for the user in \

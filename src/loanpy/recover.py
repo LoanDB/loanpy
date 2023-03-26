@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 The recover module of the loanpy package contains several functions to \
 extract \

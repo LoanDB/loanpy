@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This module provides tools for predicting and analyzing changes in the
 horizontal or vertical transfer of words in languages. It includes the

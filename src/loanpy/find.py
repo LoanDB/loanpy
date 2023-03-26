@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Read two dataframes: donor and recipient lanague
 Search for phonetic matches
