@@ -1,18 +1,41 @@
 version: 2.1
 
+orbs:
+  win: circleci/windows@2.4.0
+
+executors:
+  python-windows-executor:
+    machine:
+      image: windows-2019
+    resource_class: windows.medium
+
 jobs:
   build:
     parameters:
       python_version:
         type: string
-    docker:
-      - image: python:<< parameters.python_version >>
+      os:
+        type: string
+        default: "linux"
+    executor:
+      name: << parameters.os >>_executor
+      tag: << parameters.python_version >>
     steps:
       - checkout
-      - run:
-          name: "Set up Python environment"
-          command: python -m venv venv && . venv/bin/activate
-
+      - when:
+          condition:
+            equal: [<< parameters.os >>, "linux"]
+          steps:
+            - run:
+                name: "Set up Python environment (Linux)"
+                command: python -m venv venv && . venv/bin/activate
+      - when:
+          condition:
+            equal: [<< parameters.os >>, "windows"]
+          steps:
+            - run:
+                name: "Set up Python environment (Windows)"
+                command: python -m venv venv && venv\Scripts\Activate
       - run:
           name: "Install latest commit of loanpy from git"
           command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
@@ -33,3 +56,4 @@ workflows:
           matrix:
             parameters:
               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+              os: ["linux", "windows"]
