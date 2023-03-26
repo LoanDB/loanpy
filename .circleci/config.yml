@@ -1,185 +1,34 @@
-executors:
-  linux-executor:
-    docker:
-    - image: circleci/python:<< pipeline.parameters.python-version >>
-  macos-executor:
-    macos:
-      xcode: 12.5.1
-  windows-executor:
-    machine:
-      image: windows-server-2019-vs2019
-jobs:
-  test-linux-python-3.10:
-    executor: linux-executor
-    parameters:
-      python-version:
-        default: '3.10'
-        type: string
-    steps: []
-  test-linux-python-3.11:
-    executor: linux-executor
-    parameters:
-      python-version:
-        default: '3.11'
-        type: string
-    steps: []
-  test-linux-python-3.7:
-    executor: linux-executor
-    parameters:
-      python-version:
-        default: '3.7'
-        type: string
-    steps: []
-  test-linux-python-3.8:
-    executor: linux-executor
-    parameters:
-      python-version:
-        default: '3.8'
-        type: string
-    steps: []
-  test-linux-python-3.9:
-    executor: linux-executor
-    parameters:
-      python-version:
-        default: '3.9'
-        type: string
-    steps: []
-  test-macos-python-3.10:
-    executor: macos-executor
-    parameters:
-      python-version:
-        default: '3.10'
-        type: string
-    steps: []
-  test-macos-python-3.11:
-    executor: macos-executor
-    parameters:
-      python-version:
-        default: '3.11'
-        type: string
-    steps: []
-  test-macos-python-3.7:
-    executor: macos-executor
-    parameters:
-      python-version:
-        default: '3.7'
-        type: string
-    steps: []
-  test-macos-python-3.8:
-    executor: macos-executor
-    parameters:
-      python-version:
-        default: '3.8'
-        type: string
-    steps: []
-  test-macos-python-3.9:
-    executor: macos-executor
-    parameters:
-      python-version:
-        default: '3.9'
-        type: string
-    steps: []
-  test-windows-python-3.10:
-    executor: windows-executor
-    parameters:
-      python-version:
-        default: '3.10'
-        type: string
-    steps: []
-  test-windows-python-3.11:
-    executor: windows-executor
-    parameters:
-      python-version:
-        default: '3.11'
-        type: string
-    steps: []
-  test-windows-python-3.7:
-    executor: windows-executor
-    parameters:
-      python-version:
-        default: '3.7'
-        type: string
-    steps: []
-  test-windows-python-3.8:
-    executor: windows-executor
-    parameters:
-      python-version:
-        default: '3.8'
-        type: string
-    steps: []
-  test-windows-python-3.9:
-    executor: windows-executor
-    parameters:
-      python-version:
-        default: '3.9'
-        type: string
-    steps: []
-orbs:
-  linux: circleci/linux@1.0.0
-  macos: circleci/macos@1.0.0
-  windows: circleci/windows@2.2.0
 version: 2.1
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  build:
+    parameters:
+      python_version:
+        type: string
+    executor:
+      name: win/default
+      shell: powershell.exe
+    steps:
+      - checkout
+      - run:
+          name: "Install Python"
+          command: choco install python --version=<< parameters.python_version >>
+
+      - run:
+          name: "Install latest commit of loanpy from git"
+          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
+
+      - run:
+          name: "Run unit and integration tests"
+          command: python -m pytest
+
 workflows:
-  test-all-python-versions:
-    jobs:
-    - build-and-test:
-        executor: linux-executor
-        name: test-linux-python-3.10
-        python-version: '3.10'
-    - build-and-test:
-        executor: linux-executor
-        name: test-linux-python-3.11
-        python-version: '3.11'
-    - build-and-test:
-        executor: linux-executor
-        name: test-linux-python-3.7
-        python-version: '3.7'
-    - build-and-test:
-        executor: linux-executor
-        name: test-linux-python-3.8
-        python-version: '3.8'
-    - build-and-test:
-        executor: linux-executor
-        name: test-linux-python-3.9
-        python-version: '3.9'
-    - build-and-test:
-        executor: macos-executor
-        name: test-macos-python-3.10
-        python-version: '3.10'
-    - build-and-test:
-        executor: macos-executor
-        name: test-macos-python-3.11
-        python-version: '3.11'
-    - build-and-test:
-        executor: macos-executor
-        name: test-macos-python-3.7
-        python-version: '3.7'
-    - build-and-test:
-        executor: macos-executor
-        name: test-macos-python-3.8
-        python-version: '3.8'
-    - build-and-test:
-        executor: macos-executor
-        name: test-macos-python-3.9
-        python-version: '3.9'
-    - build-and-test:
-        executor: windows-executor
-        name: test-windows-python-3.10
-        python-version: '3.10'
-    - build-and-test:
-        executor: windows-executor
-        name: test-windows-python-3.11
-        python-version: '3.11'
-    - build-and-test:
-        executor: windows-executor
-        name: test-windows-python-3.7
-        python-version: '3.7'
-    - build-and-test:
-        executor: windows-executor
-        name: test-windows-python-3.8
-        python-version: '3.8'
-    - build-and-test:
-        executor: windows-executor
-        name: test-windows-python-3.9
-        python-version: '3.9'
   version: 2
+  build-and-test:
+    jobs:
+      - build:
+          matrix:
+            parameters:
+              python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
