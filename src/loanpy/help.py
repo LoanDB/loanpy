@@ -144,7 +144,7 @@ def is_same_length_alignments(data):
 def read_ipa_all():
     module_path = Path(__file__).parent.absolute()
     data_path = module_path / 'ipa_all.csv'
-    with data_path.open("r") as f:
+    with data_path.open("r", encoding="utf-8") as f:
         return [row.split(",") for row in f.read().strip().split("\n")]
 
 def get_prosody(ipastr):
