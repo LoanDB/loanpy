@@ -193,3 +193,9 @@ def modify_ipa_all(input_file, output_file):
         outfile.write(','.join(header))
         for row in rows:
             outfile.write('\n' + ','.join(str(x) for x in row))
+
+def prod(iterable):
+    result = 1
+    for item in iterable:
+        result *= item
+    return result
