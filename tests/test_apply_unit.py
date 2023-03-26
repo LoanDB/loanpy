@@ -486,7 +486,7 @@ class TestRankClosestPhonotactics:
     def adrc_instance(self):
         with TemporaryDirectory() as temp_dir:
             temp_path = Path(temp_dir) / "invs.json"
-            with open(temp_path, "w+") as f:
+            with open(temp_path, "w+", encoding='utf-8') as f:
                 f.write(json.dumps(["CVCV", "CVVC", "VCVC",
                 "CCVV", "CVC", "CVV", "VCV", "CV"]))
             yield Adrc(invs=temp_path)

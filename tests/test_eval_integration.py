@@ -29,10 +29,10 @@ def test_eval_one_adapt():
     assert eval_one(edicted, heur, True, 1000, ()) == 0.0
 
 
-    with open(TESTFILESDIR / "WOT2EAHedicted.tsv", "r") as f:
+    with open(TESTFILESDIR / "WOT2EAHedicted.tsv", "r", encoding='utf-8') as f:
         eded = [row.split("\t") for row in f.read().strip().split("\n")]
         # always make sure the slice is an uneven number!
-    with open(TESTFILESDIR / "heur.json", "r") as f:
+    with open(TESTFILESDIR / "heur.json", "r", encoding='utf-8') as f:
         heur = json.load(f)
 
 
@@ -80,7 +80,7 @@ def test_eval_one_adapt():
     assert eval_one(eded, heur, True, 100, True) == 0.34
     assert eval_one(eded, heur, True, 1000, True) == 0.4
 
-with open(TESTFILESDIR / "H2EAHedicted.tsv", "r") as f:
+with open(TESTFILESDIR / "H2EAHedicted.tsv", "r", encoding='utf-8') as f:
     eded = [row.split("\t") for row in f.read().strip().split("\n")]
     heur=None
     #recstr. repair phonotactics = false, different sizes and places of slices

@@ -164,7 +164,7 @@ def modify_ipa_all(input_file, output_file):
     "any front vowel" and "any back vowel"
     3) Any phoneme containing "j" or "w" is defined as a consonant
     """
-    with open(input_file, 'r') as infile:
+    with open(input_file, 'r', encoding='utf-8') as infile:
         header = infile.readline().strip().split(',')
 
         rows = []
@@ -189,7 +189,7 @@ def modify_ipa_all(input_file, output_file):
         rows.append(['V', 0, 0, -1] + [0] * (len(header) - 4))
 
     # Write the modified data to a new CSV file
-    with open(output_file, 'w') as outfile:
+    with open(output_file, 'w', encoding='utf-8') as outfile:
         outfile.write(','.join(header))
         for row in rows:
             outfile.write('\n' + ','.join(str(x) for x in row))

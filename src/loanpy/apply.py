@@ -47,10 +47,10 @@ class Adrc():
         self.invs = None
         self.workflow = None  # will be filled by self.adapt()
         if sc:
-            with open(sc, "r") as f:
+            with open(sc, "r", encoding='utf-8') as f:
                 self.sc = load(f) #  sound correspondence dictionaries
         if invs:
-            with open(invs, "r") as f:
+            with open(invs, "r", encoding='utf-8') as f:
                 self.invs = load(f) # CVCV and phoneme inventories
 
 

@@ -136,7 +136,7 @@ def test_get_heur(read_ipa_all_mock):
     tmp_dir.mkdir()
     file_path = tmp_dir / ".transcription-report.json"
 
-    with open(file_path, "w+") as f:
+    with open(file_path, "w+", encoding='utf-8') as f:
         f.write(json.dumps({
         "by_language": {"eng": {"segments": {"a": 1, "b": 2}}}}))
 

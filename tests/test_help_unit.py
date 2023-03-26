@@ -212,7 +212,7 @@ C,0,0,1,0\n\
 V,0,0,-1,0'
 
     modify_ipa_all(sc_path, out_path)
-    with open(out_path) as file:
+    with open(out_path, 'r', encoding='utf-8') as file:
         assert file.read() == expected
 
 def test_prod_empty_list():
