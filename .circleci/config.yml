@@ -6,14 +6,14 @@ jobs:
       python_version:
         type: string
     docker:
-      - image: python:{{ parameters.python_version }}{{ if eq .Platform "windows" }}-windowsservercore-ltsc2019{{ end }}
+      - image: python:{{ parameters.python_version }}{{ if eq .Executor "windows" }}-windowsservercore-ltsc2019{{ end }}
     steps:
       - checkout
       - run:
           name: "Set up Python environment"
           command: |
             python -m venv venv
-            venv\Scripts\activate.bat{{ if eq .Platform "linux" }};{{ else }} &&{{ end }}
+            source venv/bin/activate{{ if eq .Executor "windows" }}.bat{{ end }}
 
       - run:
           name: "Install latest commit of loanpy from git"
@@ -32,6 +32,9 @@ workflows:
   build-and-test:
     jobs:
       - build:
+          executor:
+            name: python/default
+            tag: "{{ parameters.python_version }}"
           matrix:
             parameters:
               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
