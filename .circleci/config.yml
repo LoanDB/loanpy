@@ -26,7 +26,6 @@ jobs:
         default: "linux"
     executor:
       name: << parameters.os >>_executor
-      tag: << parameters.python_version >>
     steps:
       - checkout
       - when:
