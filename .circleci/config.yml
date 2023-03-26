@@ -8,7 +8,7 @@ executors:
     machine:
       image: ubuntu-2004:202110-01
     shell: /bin/bash
-    resource_class: medium
+    resource_class: large
 
   windows_executor:
     machine:
