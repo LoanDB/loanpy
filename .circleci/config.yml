@@ -6,9 +6,13 @@ jobs:
       python_version:
         type: string
     working_directory: C:\project
-    executor: python-${{ parameters.python_version }}
     steps:
       - checkout
+
+      - run:
+          name: "Install Python"
+          command: |
+            choco install python --version ${python_version} -y
 
       - run:
           name: "Set up Python environment"
@@ -29,12 +33,14 @@ jobs:
           command: python -m pytest
 
   build-windows-3.11:
-    parameters:
-      python_version: {default: "3.11"}
     working_directory: C:\project
-    executor: python-${{ parameters.python_version }}
     steps:
       - checkout
+
+      - run:
+          name: "Install Python"
+          command: |
+            choco install python --version 3.11.0 -y
 
       - run:
           name: "Set up Python environment"
@@ -59,7 +65,11 @@ workflows:
   build-and-test:
     jobs:
       - build:
-          matrix:
-            parameters:
-              python_version: ["3.7", "3.8", "3.9", "3.10"]
+          python_version: "3.7"
+      - build:
+          python_version: "3.8"
+      - build:
+          python_version: "3.9"
+      - build:
+          python_version: "3.10"
       - build-windows-3.11
