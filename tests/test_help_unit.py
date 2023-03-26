@@ -198,11 +198,13 @@ def test_modify_ipa_all(tmp_path):
     # Create temporary files for sound correspondence dictionary and inventories
     sc_path = tmp_path / "ipa_all.csv"
     out_path = tmp_path / "ipa_all2.csv"
-    sc_path.write_text('ipa,bla,back,cons,bla\n\
+    with open(sc_path, "w+", encoding="utf-8") as file:
+        file.write('ipa,bla,back,cons,bla\n\
 a,-,0,-,+\n\
 b,-,+,+,-\n\
 j,0,+,0,-\n\
 wᵏ,0,+,0,-')
+    #sc_path.write_text()
 
     expected = 'ipa,bla,back,cons,bla\n\
 a,-1,0,-1,1\n\
