@@ -4,9 +4,16 @@ orbs:
   win: circleci/windows@2.4.0
 
 executors:
-  python-windows-executor:
+  linux_executor:
+    machine:
+      image: ubuntu-2004:202110-01
+    shell: /bin/bash
+    resource_class: medium
+
+  windows_executor:
     machine:
       image: windows-2019
+    shell: cmd.exe
     resource_class: windows.medium
 
 jobs:
