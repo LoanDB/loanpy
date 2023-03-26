@@ -1,23 +1,17 @@
 version: 2.1
 
-orbs:
-  win: circleci/windows@2.2.0
-
 commands:
-  install-python-windows:
-    parameters:
-      python_version:
-        type: string
+  install-dependencies:
     steps:
       - run:
-          name: "Download Python Installer"
-          command: |
-            $PythonUrl = "https://www.python.org/ftp/python/<< parameters.python_version >>/python-<< parameters.python_version >>-amd64.exe"
-            Invoke-WebRequest -Uri $PythonUrl -OutFile "python-installer.exe"
+          name: "Install latest commit of loanpy from git"
+          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
+      - run:    
+          name: "Install pytest"
+          command: pip install pytest
       - run:
-          name: "Install Python"
-          command: |
-            .\python-installer.exe /quiet InstallAllUsers=1 PrependPath=1 TargetDir="C:\Python<< parameters.python_version >>"
+          name: "Run unit and integration tests"
+          command: python -m pytest
 
 jobs:
   build-linux:
@@ -28,44 +22,25 @@ jobs:
       - image: python:<< parameters.python_version >>
     steps:
       - checkout
-      - run:
-          name: "Set up Python environment"
-          command: python -m venv venv && . venv/bin/activate
-
-      - run:
-          name: "Install latest commit of loanpy from git"
-          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
-
-      - run:
-          name: "Install pytest"
-          command: pip install pytest
-
-      - run:
-          name: "Run unit and integration tests"
-          command: python -m pytest
+      - install-dependencies
 
   build-windows:
     parameters:
       python_version:
         type: string
-    executor:
-      name: win/default
-      shell: powershell.exe
+    machine:
+      image: windows-default
+    environment:
+      DOCKER_PYTHON_VERSION: << parameters.python_version >>
     steps:
       - checkout
-      - install-python-windows:
-          python_version: << parameters.python_version >>
       - run:
-          name: "Install latest commit of loanpy from git"
-          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
-
+          name: "Pull Python Docker image"
+          command: docker pull python:$env:DOCKER_PYTHON_VERSION-windowsservercore
       - run:
-          name: "Install pytest"
-          command: pip install pytest
-          
-      - run:
-          name: "Run unit and integration tests"
-          command: python -m pytest
+          name: "Run tests in Docker container"
+          command: |
+            docker run --rm -v "$(pwd):C:/project" -w "C:/project" python:$env:DOCKER_PYTHON_VERSION-windowsservercore powershell -Command "pip install --upgrade pip; .\install-dependencies"
 
 workflows:
   version: 2
