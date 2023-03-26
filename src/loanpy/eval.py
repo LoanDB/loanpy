@@ -4,7 +4,7 @@ import re
 from loanpy.apply import Adrc
 from loanpy.recover import get_correspondences, get_invs
 
-def eval_all(edicted, heur, adapt, guess_list, *args):
+def eval_all(edicted, heur, adapt, guess_list, pros=True):
     """
     Get a table of False Positives (how many guesses) vs True Positives.
 
@@ -27,7 +27,7 @@ def eval_all(edicted, heur, adapt, guess_list, *args):
 
     # Iterate through the guess list and calculate evaluation results
     for num_guesses in guess_list:
-        eval_result = eval_one(edicted, heur, adapt, num_guesses, *args)
+        eval_result = eval_one(edicted, heur, adapt, num_guesses, pros)
         true_positives.append(eval_result)  # already normalised
 
     # Normalize guess list values
@@ -39,7 +39,7 @@ def eval_all(edicted, heur, adapt, guess_list, *args):
     return fp_vs_tp
 
 
-def eval_one(edicted, heur, adapt, howmany, *args):
+def eval_one(edicted, heur, adapt, howmany, pros=True):
     """
     Evaluate the quality of the adapted and reconstructed words.
 
@@ -58,18 +58,18 @@ def eval_one(edicted, heur, adapt, howmany, *args):
              (rounded to 2 decimal places) and a list of workflows.
     :rtype: tuple
     """
-    args = [*args]
     out = []
     for i in range(1, len(edicted), 2):  # 1 bc skip header
         srcrow, tgtrow = edicted.pop(i), edicted.pop(i)
         src, tgt = srcrow[3], tgtrow[3]
+        src_pros = srcrow[4] if pros else ""
         adrc = Adrc()
         adrc.sc = get_correspondences(edicted, heur)
         adrc.invs = get_invs(edicted)
         if adapt:
-            out.append(tgt in adrc.adapt(src, howmany, *args).split(", "))
+            out.append(tgt in adrc.adapt(src, howmany, src_pros).split(", "))
         else:
-            out.append(bool(re.match(adrc.reconstruct(src, howmany, *args))))
+            out.append(bool(re.match(adrc.reconstruct(src, howmany))))
         edicted.insert(i, tgtrow)
         edicted.insert(i, srcrow)
     return round(len([i for i in out if i])/len(out), 2)

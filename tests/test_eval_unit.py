@@ -9,8 +9,8 @@ def test_evaluate_all_returns_expected_output(mock_eval_one):
         edicted="x", heur="y", adapt=True, guess_list=[1, 2, 3]
         )
     assert fp_vs_tp == [(0.33, 0.4), (0.67, 0.5), (1.0, 0.6)]
-    assert mock_eval_one.call_args_list == [call('x', 'y', True, 1),
-        call('x', 'y', True, 2), call('x', 'y', True, 3)]
+    assert mock_eval_one.call_args_list == [call('x', 'y', True, 1, True),
+        call('x', 'y', True, 2, True), call('x', 'y', True, 3, True)]
 
 # Mock the external dependencies
 class AdrcMonkey:
@@ -54,7 +54,9 @@ def test_eval_one_adapt(get_invs_mock, get_correspondences_mock, adrc_mock):
     assert result == 0.0
 
     # assert calls
-    assert adrc_monkey.adapt_called_with == [['#aː t͡ʃ# -#', 2], ['#aː ɟ uː#', 2]]
+    assert adrc_monkey.adapt_called_with == [['#aː t͡ʃ# -#', 2, "VC"],
+                                            ['#aː ɟ uː#', 2, "VCV"]
+                                            ]
     get_correspondences_mock.assert_called_with(edicted, heuristic)
     get_invs_mock.assert_called_with(edicted)
     assert not adrc_monkey.init_called_with
