@@ -3,6 +3,22 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 
+commands:
+  install-python-windows:
+    parameters:
+      python_version:
+        type: string
+    steps:
+      - run:
+          name: "Download Python Installer"
+          command: |
+            $PythonUrl = "https://www.python.org/ftp/python/<< parameters.python_version >>/python-<< parameters.python_version >>-amd64.exe"
+            Invoke-WebRequest -Uri $PythonUrl -OutFile "python-installer.exe"
+      - run:
+          name: "Install Python"
+          command: |
+            .\python-installer.exe /quiet InstallAllUsers=1 PrependPath=1 TargetDir="C:\Python<< parameters.python_version >>"
+
 jobs:
   build-linux:
     parameters:
@@ -21,10 +37,6 @@ jobs:
           command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
 
       - run:
-          name: "Install pytest"
-          command: pip install pytest
-
-      - run:
           name: "Run unit and integration tests"
           command: python -m pytest
 
@@ -37,17 +49,11 @@ jobs:
       shell: powershell.exe
     steps:
       - checkout
-      - run:
-          name: "Install Python"
-          command: choco install python --version=<< parameters.python_version >>
-
+      - install-python-windows:
+          python_version: << parameters.python_version >>
       - run:
           name: "Install latest commit of loanpy from git"
           command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
-
-      - run:
-          name: "Install pytest"
-          command: pip install pytest
 
       - run:
           name: "Run unit and integration tests"
