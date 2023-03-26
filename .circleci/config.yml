@@ -5,22 +5,15 @@ jobs:
     parameters:
       python_version:
         type: string
-    executor:
-      name: python-${{ parameters.python_version }}
-      runs-on: ${{ matrix.os }}
-      docker:
-        image: circleci/python:${{ parameters.python_version }}-stretch
+    docker:
+      - image: circleci/python:${{ parameters.python_version }}-stretch
     steps:
       - checkout
       - run:
           name: "Set up Python environment"
           command: |
             python -m venv venv
-            if [ "${{ matrix.os }}" == "windows-latest" ]; then
-              ./venv/Scripts/activate.bat
-            else
-              source venv/bin/activate
-            fi
+            source venv/bin/activate
 
       - run:
           name: "Install latest commit of loanpy from git"
@@ -34,16 +27,17 @@ jobs:
           name: "Run unit and integration tests"
           command: python -m pytest
 
-    strategy:
-      matrix:
-        os:
-          - ubuntu-20.04
-          - windows-latest
+    matrix:
+      python_version:
+        - "3.7"
+        - "3.8"
+        - "3.9"
+        - "3.10"
+        - "3.11"
 
-workflows:
-  version: 2
+  workflows:
   build-and-test:
     jobs:
       - build:
-          matrix:
-            python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+          parameters:
+            python_version: ${{ matrix.python_version }}
