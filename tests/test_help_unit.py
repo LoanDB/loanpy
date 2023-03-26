@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from loanpy.help import (find_optimal_year_cutoff, cvgaps, prefilter,
 is_valid_language_sequence, is_same_length_alignments, read_ipa_all, get_prosody,
-modify_ipa_all)
+modify_ipa_all, prod)
 
 # Sample input data
 tsv_string = """form\tsense\tyear\torigin\tLoan
@@ -214,3 +214,22 @@ V,0,0,-1,0'
     modify_ipa_all(sc_path, out_path)
     with open(out_path) as file:
         assert file.read() == expected
+
+def test_prod_empty_list():
+    assert prod([]) == 1
+
+def test_prod_single_element():
+    assert prod([5]) == 5
+
+def test_prod_two_elements():
+    assert prod([2, 3]) == 6
+
+def test_prod_multiple_elements():
+    assert prod([1, 2, 3, 4]) == 24
+
+def test_prod_negative_numbers():
+    assert prod([-1, 2, -3, 4]) == 24
+    assert prod([-1, 2, 3, 4]) == -24
+
+def test_prod_zero():
+    assert prod([0, 1, 2, 3]) == 0
