@@ -1,22 +1,26 @@
 version: 2.1
 
-executors:
-  windows-2019:
-    docker:
-      - image: mcr.microsoft.com/windows:2019
-
 jobs:
   build:
     parameters:
       python_version:
         type: string
     executor:
-      name: windows-2019
+      name: python-${{ parameters.python_version }}
+      runs-on: ${{ matrix.os }}
+      docker:
+        image: circleci/python:${{ parameters.python_version }}-stretch
     steps:
       - checkout
       - run:
           name: "Set up Python environment"
-          command: C:\\Python\\Python${{ matrix.python_version }}\\python.exe -m venv venv && . venv\\Scripts\\activate
+          command: |
+            python -m venv venv
+            if [ "${{ matrix.os }}" == "windows-latest" ]; then
+              ./venv/Scripts/activate.bat
+            else
+              source venv/bin/activate
+            fi
 
       - run:
           name: "Install latest commit of loanpy from git"
@@ -28,20 +32,18 @@ jobs:
 
       - run:
           name: "Run unit and integration tests"
-          command: C:\\Python\\Python${{ matrix.python_version }}\\python.exe -m pytest
+          command: python -m pytest
 
-    matrix:
-      python_version:
-        - "3.7"
-        - "3.8"
-        - "3.9"
-        - "3.10"
-        - "3.11"
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+          - windows-latest
 
 workflows:
   version: 2
   build-and-test:
     jobs:
       - build:
-          parameters:
-            python_version: "{{ matrix.python_version }}"
+          matrix:
+            python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
