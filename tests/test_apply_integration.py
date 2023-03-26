@@ -2,6 +2,12 @@
 
 import pytest
 from loanpy.apply import Adrc
+from pathlib import Path
+
+testfilesdir = Path(__file__).parent.parent / "test_files"
+PATH2SC_AD = testfilesdir / "sc_ad.json"
+PATH2SC_RC = testfilesdir / "sc_rc.json"
+PATH2INVS = testfilesdir / "invs.json"
 
 def test_adapt(tmp_path):
     sc_path = tmp_path / "sound_correspondences.json"
@@ -30,7 +36,7 @@ dad, dax, dxd, dxx, xad, xax, xxd, xxx"
 {"d d": 5, "d x": 4, "a a": 7, "a x": 1, "C k": 8}, {}, {}]')
     invs_path = tmp_path / "inventories.json"
     # two insertions cheaper than two deletions, so it should pick the 2nd
-    invs_path.write_text('{"seg": [], "pros": ["CV", "CVCVCC"]}')
+    invs_path.write_text('["CV", "CVCVCC"]')
     adrc = Adrc(sc=sc_path, invs=invs_path)
     assert adrc.adapt("d a d a", 1, "CVCV") == "dadakk"
     assert adrc.adapt("d a d a", 2, "CVCV") == "dadakk, xadakk"
@@ -42,9 +48,43 @@ dadakk, dadxkk, daxakk, daxxkk, dxdakk, dxdxkk, dxxakk, dxxxkk, xadakk, \
 xadxkk, xaxakk, xaxxkk, xxdakk, xxdxkk, xxxakk, xxxxkk"
 
     # try substitutions
-    invs_path.write_text('{"seg": [], "pros": ["CCCV"]}')
+    invs_path.write_text('["CCCV"]')
     adrc = Adrc(sc=sc_path, invs=invs_path)
     assert adrc.adapt("d a d a", 1, "CVCV") == "ddka"
+
+def test_reconstruct():
+    """test if reconstructions based on sound correspondences work"""
+
+    # test first break: some sounds are not in scdict
+
+    # set up adrc instance
+    adrc_inst = Adrc(sc=PATH2SC_RC)
+
+    # assert reconstruct works when sound changes are missing from data
+    assert adrc_inst.reconstruct(
+        ipastr="k i k i") == "#k, i, k, i# not old"
+
+    # assert it's actually clusterising by default
+    assert adrc_inst.reconstruct(
+        ipastr="k.r i.e k.r i.e") == "#k.r, i.e, k.r, i.e# not old"
+
+    # try r can be old!
+    assert adrc_inst.reconstruct(
+        ipastr="k r i e k r i e") == "#k, i, e, k, i, e# not old"
+
+    # test 2nd break: phonotactics_filter and vowelharmony_filter are False
+    assert adrc_inst.reconstruct(
+        ipastr="aː r uː") == "^(a)(n)(a)(at͡ʃi)$"
+
+    # test same break again but param <howmany> is greater than 1 now
+    assert adrc_inst.reconstruct(
+        ipastr="aː r uː", howmany=2) == "^(a)(n)(a)(at͡ʃi|γ)$"
+
+    assert adrc_inst.reconstruct(
+        ipastr="aː r uː", howmany=3) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
+
+    assert adrc_inst.reconstruct(
+        ipastr="aː r uː", howmany=100) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
 
 def test_get_diff(tmp_path):
     """test if the difference is calculated correctly
@@ -108,3 +148,85 @@ def test_read_sc():
 
     assert adrc.read_sc(ipa=["k", "i", "p"],
                         howmany=3) == [["k", "h", "s"], ["e"], ["b"]]
+
+    # set up mock class, plug in mock scdict, mock tokenise, mock math.prod
+    adrc_inst = Adrc(sc=PATH2SC_AD)
+
+    # assert
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=1) == [["d"], ["a"], ["d"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=2) == [["d", "tʰ"], ["a"], ["d"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=3) == [["d", "tʰ"], ["a", "e"], ["d"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=4) == [["d", "tʰ"], ["a", "e"], ["d"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=5) == [["d", "tʰ"], ["a", "e"], ["d", "tʰ"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=6) == [["d", "tʰ"], ["a", "e"], ["d", "tʰ"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=7) == [["d", "tʰ"], ["a", "e"], ["d", "tʰ"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=12) == [["d", "tʰ", "t"], ["a", "e"],
+                                    ["d", "tʰ"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=18) == [["d", "tʰ", "t"], ["a", "e", "i"],
+                                    ["d", "tʰ"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=24) == [["d", "tʰ", "t", "tː"], ["a", "e", "i"],
+                                    ["d", "tʰ"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=36) == [["d", "tʰ", "t", "tː"], ["a", "e", "i"],
+                                    ["d", "tʰ", "t"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=48) == [["d", "tʰ", "t", "tː"], ["a", "e", "i"],
+                                    ["d", "tʰ", "t", "tː"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=64) == [["d", "tʰ", "t", "tː"],
+                                    ["a", "e", "i", "o"],
+                                    ["d", "tʰ", "t", "tː"], ["y"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=128) == [["d", "tʰ", "t", "tː"],
+                                     ["a", "e", "i", "o"],
+                                     ["d", "tʰ", "t", "tː"], ["y", "u"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=160) == [["d", "tʰ", "t", "tː"],
+                                     ["a", "e", "i", "o", "u"],
+                                     ["d", "tʰ", "t", "tː"], ["y", "u"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=240) == [["d", "tʰ", "t", "tː"],
+                                     ["a", "e", "i", "o", "u"],
+                                     ["d", "tʰ", "t", "tː"], ["y", "u", "e"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=99999999) == [["d", "tʰ", "t", "tː"],
+                                          ["a", "e", "i", "o", "u"],
+                                          ["d", "tʰ", "t", "tː"],
+                                          ["y", "u", "e"]]
+    assert adrc_inst.read_sc(
+        ipa="dade", howmany=float("inf")) == [["d", "tʰ", "t", "tː"],
+                                              ["a", "e", "i", "o", "u"],
+                                              ["d", "tʰ", "t", "tː"],
+                                              ["y", "u", "e"]]
+
+    # tear down
+    del adrc_inst
+
+def test_repair_phontactics():
+    adrc = Adrc(sc=PATH2SC_AD, invs=PATH2INVS)
+    # test heuristics: keep, delete, insert
+    assert adrc.repair_phonotactics(["l", "o", "l"], "CVC") == ["l", "o", "l"]
+    assert adrc.repair_phonotactics(["r", "o", "f", "l"],
+                                    "CVCC") == ["r", "o", "f", "l", "V"]
+    assert adrc.repair_phonotactics(["b", "l", "a", "b", "l", "a"],
+                                    "CCVCCV") == ["b", "a", "b", "l", "a"]
+    assert adrc.repair_phonotactics(["b", "r", "b"],
+                                    "CCC") == ["b", "V", "r", "b", "V"]
+    assert adrc.repair_phonotactics(["a", "e", "i", "o"],
+                                    "VVVV") == ["C", "a", "C", "e", "C", "i"]
+
+    # test data
+    assert adrc.repair_phonotactics(["d", "a", "d", "a"],
+                                    "CVCV") == ["d", "a", "d"]
+    assert adrc.repair_phonotactics(["j", "a", "j", "a", "j", "a"],
+                                    "CVCVCV") == ["j", "a", "j", "a", "j", "a"]

@@ -158,7 +158,7 @@ def get_heur(tgtlg):
     return heur
 
 
-def get_invs(data):
+def get_invs(table):
     """
     Extracts all types of CVCV and phonemes from uneven rows of the
     given table.
@@ -169,15 +169,4 @@ def get_invs(data):
              and one for prosody.
     :rtype: dict
     """
-    segments_set = set()
-    prosody_set = set()
-
-    # Extract relevant information from the table
-    rows = data.strip().split("\n")[2::2]
-    for row in rows:
-        columns = row.strip().split("\t")
-        segments_set.update(set(columns[3].split()))
-        prosody_set.add(columns[4])
-
-    # Return the extracted information
-    return {"seg": list(segments_set), "pros": list(prosody_set)}
+    return list(set([row[4] for row in table[2::2]]))

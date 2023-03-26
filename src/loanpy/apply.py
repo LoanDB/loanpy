@@ -291,9 +291,8 @@ class Adrc():
         :rtype: str
         """
         dist_and_strucs = [
-            (edit_distance_with2ops(struc, i), i)
-            for i in self.invs["pros"]
-        ]
+            (edit_distance_with2ops(struc, i), i) for i in self.invs
+            ]
 
         return min(dist_and_strucs)[1]
 

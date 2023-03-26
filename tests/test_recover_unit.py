@@ -159,19 +159,15 @@ import pytest
 
 @pytest.fixture
 def data():
-    return """ID	COGID	DOCULECT	ALIGNMENT	PROSODY
-0	1	H	#aː t͡ʃ# -#	VC
-1	1	EAH	a.ɣ.a t͡ʃ i	VCVCV
-2	2	H	#aː ɟ uː#	VCV
-3	2	EAH	a l.d a.ɣ	VCCVC
-4	3	H	#ɒ j n	VCC
-5	3	EAH	a j.a n	VCVC
-"""
+    return [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+  [0, 1, 'H', '#aː t͡ʃ# -#', 'VC'],
+  [1, 1, 'EAH', 'a.ɣ.a t͡ʃ i', 'VCVCV'],
+  [2, 2, 'H', '#aː ɟ uː#', 'VCV'],
+  [3, 2, 'EAH', 'a l.d a.ɣ', 'VCCVC'],
+  [4, 3, 'H', '#ɒ j n', 'VCC'],
+  [5, 3, 'EAH', 'a j.a n', 'VCVC']
+]
+
 
 def test_extract_cvcv_and_phonemes(data):
-    extracted_data = get_invs(data)
-    assert isinstance(extracted_data, dict)
-    assert set(extracted_data.keys()) == {"seg", "pros"}
-    assert set(extracted_data["seg"]) == {'t͡ʃ', 'n', 'j.a', 'i', 'a.ɣ', 'a',
-                                          'l.d', 'a.ɣ.a'}
-    assert set(extracted_data["pros"]) == {"VCVCV", "VCCVC", "VCVC"}
+    assert set(get_invs(data)) == {"VCVCV", "VCCVC", "VCVC"}
