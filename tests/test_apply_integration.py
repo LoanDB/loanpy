@@ -86,6 +86,25 @@ def test_reconstruct():
     assert adrc_inst.reconstruct(
         ipastr="aː r uː", howmany=100) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
 
+def test_repair_phontactics():
+    adrc = Adrc(sc=PATH2SC_AD, invs=PATH2INVS)
+    # test heuristics: keep, delete, insert
+    assert adrc.repair_phonotactics(["l", "o", "l"], "CVC") == ["l", "o", "l"]
+    assert adrc.repair_phonotactics(["r", "o", "f", "l"],
+                                    "CVCC") == ["r", "o", "f", "l", "V"]
+    assert adrc.repair_phonotactics(["b", "l", "a", "b", "l", "a"],
+                                    "CCVCCV") == ["b", "a", "b", "l", "a"]
+    assert adrc.repair_phonotactics(["b", "r", "b"],
+                                    "CCC") == ["b", "V", "r", "b", "V"]
+    assert adrc.repair_phonotactics(["a", "e", "i", "o"],
+                                    "VVVV") == ["C", "a", "C", "e", "C", "i"]
+
+    # test data
+    assert adrc.repair_phonotactics(["d", "a", "d", "a"],
+                                    "CVCV") == ["d", "a", "d"]
+    assert adrc.repair_phonotactics(["j", "a", "j", "a", "j", "a"],
+                                    "CVCVCV") == ["j", "a", "j", "a", "j", "a"]
+
 def test_get_diff(tmp_path):
     """test if the difference is calculated correctly
     between the first two sound of a sound correspondence list"""
@@ -212,21 +231,51 @@ def test_read_sc():
     # tear down
     del adrc_inst
 
-def test_repair_phontactics():
-    adrc = Adrc(sc=PATH2SC_AD, invs=PATH2INVS)
-    # test heuristics: keep, delete, insert
-    assert adrc.repair_phonotactics(["l", "o", "l"], "CVC") == ["l", "o", "l"]
-    assert adrc.repair_phonotactics(["r", "o", "f", "l"],
-                                    "CVCC") == ["r", "o", "f", "l", "V"]
-    assert adrc.repair_phonotactics(["b", "l", "a", "b", "l", "a"],
-                                    "CCVCCV") == ["b", "a", "b", "l", "a"]
-    assert adrc.repair_phonotactics(["b", "r", "b"],
-                                    "CCC") == ["b", "V", "r", "b", "V"]
-    assert adrc.repair_phonotactics(["a", "e", "i", "o"],
-                                    "VVVV") == ["C", "a", "C", "e", "C", "i"]
+def test_get_closest_phonotactics():
+    """test if most similar phonotactic profiles from inventory
+    is picked correctly"""
 
-    # test data
-    assert adrc.repair_phonotactics(["d", "a", "d", "a"],
-                                    "CVCV") == ["d", "a", "d"]
-    assert adrc.repair_phonotactics(["j", "a", "j", "a", "j", "a"],
-                                    "CVCVCV") == ["j", "a", "j", "a", "j", "a"]
+    # assert structures are ranked correctly
+    adrc = Adrc(invs=PATH2INVS)
+    # identical one in invs is the closest
+    assert adrc.get_closest_phonotactics("CVC") == "CVC"
+    assert adrc.get_closest_phonotactics("CVCCV") == "CVCCV"
+    assert adrc.get_closest_phonotactics("CVCVCV") == "CVCVCV"
+
+    # prefer insertion over deletion
+    assert adrc.get_closest_phonotactics("CVCC") == "CVCCV"  # not CVC
+    assert adrc.get_closest_phonotactics("C") == "CVC"  # 2 insertions only
+    assert adrc.get_closest_phonotactics("V") == "CVC"
+    assert adrc.get_closest_phonotactics("CVCCVCV") == "CVCVCV"
+    assert adrc.get_closest_phonotactics("VVV") == "CVCVCV"
+    assert adrc.get_closest_phonotactics("CVCVCVVVVCCCCVCVVCVCV") == "CVCVCV"
+
+def test_move_sc():  # pragma: no cover
+    pass  # unit == integration test (no patches)
+
+def test_editdistance_with2ops():  # pragma: no cover
+    pass # unit == integration test (no patches)
+
+def test_apply_edit():  # pragma: no cover
+    pass # unit == integration test (no patches)
+
+def list2regex():  # pragma: no cover
+    pass # unit == integration test (no patches)
+
+def tuples2editops():  # pragma: no cover
+    pass # unit == integration test (no patches)
+
+def substitute_operations():  # pragma: no cover
+    pass # unit == integration test (no patches)
+
+def get_mtx():  # pragma: no cover
+    pass # unit == integration test (no patches)
+
+def add_edge():  # pragma: no cover
+    pass # unit == integration test (no patches)
+
+def mtx2graph():  # pragma: no cover
+    pass # unit == integration test (no patches)
+
+def dijkstra():  # pragma: no cover
+    pass # unit == integration test (no patches) (could have patched heapq tho)

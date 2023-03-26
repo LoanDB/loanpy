@@ -88,6 +88,7 @@ def prefilter(data, srclg, tgtlg):
         return int(row[9]), col2_order.get(row[2], 2)
 
     data = sorted(data, key=sorting_key)
+    #print(data)
     assert is_valid_language_sequence(data, srclg, tgtlg)
     return data
 
@@ -112,7 +113,7 @@ def is_valid_language_sequence(data, source_lang, target_lang):
         return False
     for idx, row in enumerate(data):
         expected_lang = source_lang if idx % 2 == 0 else target_lang
-        if row[1] != expected_lang:
+        if row[2] != expected_lang:
             print(f"Problem in row {idx}")
             return False
     return True

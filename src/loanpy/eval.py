@@ -24,13 +24,11 @@ def eval_all(edicted, heur, adapt, guess_list, *args):
     :rtype: tuple
     """
     true_positives = []
-    workflow = []
 
     # Iterate through the guess list and calculate evaluation results
     for num_guesses in guess_list:
         eval_result = eval_one(edicted, heur, adapt, num_guesses, *args)
-        true_positives.append(eval_result[0])  # already normalised
-        workflow.append(eval_result[1])
+        true_positives.append(eval_result)  # already normalised
 
     # Normalize guess list values
     normalised_guess_list = [round(i / guess_list[-1], 2) for i in guess_list]
@@ -38,7 +36,7 @@ def eval_all(edicted, heur, adapt, guess_list, *args):
     # Combine normalized guess list with true positive results
     fp_vs_tp = list(zip(normalised_guess_list, true_positives))
 
-    return fp_vs_tp, workflow
+    return fp_vs_tp
 
 
 def eval_one(edicted, heur, adapt, howmany, *args):
@@ -62,8 +60,7 @@ def eval_one(edicted, heur, adapt, howmany, *args):
     """
     args = [*args]
     out = []
-    workflow = []
-    for i in range(1, len(edicted)-2, 2):  # 1 bc skip header
+    for i in range(1, len(edicted), 2):  # 1 bc skip header
         srcrow, tgtrow = edicted.pop(i), edicted.pop(i)
         src, tgt = srcrow[3], tgtrow[3]
         adrc = Adrc()
@@ -71,10 +68,8 @@ def eval_one(edicted, heur, adapt, howmany, *args):
         adrc.invs = get_invs(edicted)
         if adapt:
             out.append(tgt in adrc.adapt(src, howmany, *args).split(", "))
-            if adrc.workflow:
-                workflow.append(adrc.workflow)
         else:
             out.append(bool(re.match(adrc.reconstruct(src, howmany, *args))))
         edicted.insert(i, tgtrow)
         edicted.insert(i, srcrow)
-    return round(len([i for i in out if i])/len(out), 2), workflow
+    return round(len([i for i in out if i])/len(out), 2)

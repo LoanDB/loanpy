@@ -534,8 +534,6 @@ def substitute_operations(operations):
             i += 1
     return operations
 
-
-
 def get_mtx(target, source):
     """
     Called by loanpy.helpers.mtx2graph. Similar to \

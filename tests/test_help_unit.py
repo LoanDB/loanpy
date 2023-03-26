@@ -11,10 +11,10 @@ tsv_string = """form\tsense\tyear\torigin\tLoan
 a¹\teine Interjektion\t1833\t\t
 á\t〈eine Interjektion〉\t1372\tLang\t
 aba ×\tFlausch, Fries, Flanell, Besatz am Rock\t1556\tLang\tTrue
-abajdoc\tgemischt, , Mischkorn, schmutziges Getreide, Fraß, Gekoch\t1320\tLang\tTrue
+abajdoc\tgemischt, , Mischkorn, schmutziges Getreide, Fraß, Gekoch\
+\t1320\tLang\tTrue
 """
 tsv = [row.split("\t") for row in tsv_string.split("\n")]
-print(tsv)
 origins = ["Lang"]
 
 def test_find_optimal_year_cutoff_sample():
@@ -32,7 +32,8 @@ def test_find_optimal_year_cutoff_no_matching_origins():
     assert find_optimal_year_cutoff(tsv, non_matching_origins) == 1320
 
 def test_find_optimal_year_cutoff_single_entry():
-    single_entry_tsv = "form\tsense\tyear\torigin\tLoan\na\texample\t1900\tProto-Finno-Ugric\tTrue"
+    single_entry_tsv = "form\tsense\tyear\torigin\tLoan\na\texample\t1900\
+\tProto-Finno-Ugric\tTrue"
     tsv = [row.split("\t") for row in single_entry_tsv.split("\n")]
     origins = ["Proto-Finno-Ugric"]
     assert find_optimal_year_cutoff(tsv, origins) == 1900
@@ -73,7 +74,7 @@ def test_prefilter1(is_valid_language_sequence_mock):
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
     ]
 
-    expected2 = [#
+    expected2 = [
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
@@ -98,10 +99,10 @@ def test_prefilter2(is_valid_language_sequence_mock):
 def test_is_valid_language_sequence():
     # Test case 1: Valid sequence
     data1 = [
-        ["row1", "en", "data1"],
-        ["row2", "fr", "data2"],
-        ["row3", "en", "data3"],
-        ["row4", "fr", "data4"],
+        ["row1", "x", "en", "data1"],
+        ["row2", "x", "fr", "data2"],
+        ["row3", "x", "en", "data3"],
+        ["row4", "x", "fr", "data4"],
     ]
     assert is_valid_language_sequence(data1, "en", "fr") == True
 
@@ -124,10 +125,10 @@ def test_is_valid_language_sequence():
 
     # Test case 4: Valid sequence with different languages
     data4 = [
-        ["row1", "es", "data1"],
-        ["row2", "de", "data2"],
-        ["row3", "es", "data3"],
-        ["row4", "de", "data4"],
+        ["row1", "x", "es", "data1"],
+        ["row2", "x", "de", "data2"],
+        ["row3", "x", "es", "data3"],
+        ["row4", "x", "de", "data4"],
     ]
     assert is_valid_language_sequence(data4, "es", "de") == True
 

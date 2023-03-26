@@ -2,18 +2,13 @@ import pytest
 from loanpy.eval import eval_all, eval_one
 from unittest.mock import call, patch, MagicMock
 
-@patch('loanpy.eval.eval_one', side_effect=[
-    (0.4, "a"), (0.5, "b"), (0.6, "c")])
+@patch('loanpy.eval.eval_one', side_effect=[0.4, 0.5, 0.6])
 def test_evaluate_all_returns_expected_output(mock_eval_one):
 
-    fp_vs_tp, workflow = eval_all(
-        edicted="x", heur="y", adapt=True, guess_list=[1, 2, 3])
-
-    expected_fp_vs_tp = [(0.33, 0.4), (0.67, 0.5), (1.0, 0.6)]
-    expected_workflow = ["a", "b", "c"]
-
-    assert fp_vs_tp == expected_fp_vs_tp
-    assert workflow == expected_workflow
+    fp_vs_tp = eval_all(
+        edicted="x", heur="y", adapt=True, guess_list=[1, 2, 3]
+        )
+    assert fp_vs_tp == [(0.33, 0.4), (0.67, 0.5), (1.0, 0.6)]
     assert mock_eval_one.call_args_list == [call('x', 'y', True, 1),
         call('x', 'y', True, 2), call('x', 'y', True, 3)]
 
@@ -23,7 +18,6 @@ class AdrcMonkey:
         self.init_called_with = [*args]
         self.sc = []
         self.invs = []
-        self.workflow = "sample_workflow"
         self.adapt_returns = iter(["tip", "sip"])
         self.adapt_called_with = []
         self.reconstruct_returns = iter(["tip", "sip"])
@@ -36,7 +30,7 @@ class AdrcMonkey:
         return next(self.reconstruct_returns)
 
 adrc_monkey = AdrcMonkey()
-@patch("loanpy.eval.Adrc", side_effect=[adrc_monkey])
+@patch("loanpy.eval.Adrc", side_effect=[adrc_monkey, adrc_monkey])
 @patch("loanpy.eval.get_correspondences")
 @patch("loanpy.eval.get_invs")
 def test_eval_one_adapt(get_invs_mock, get_correspondences_mock, adrc_mock):
@@ -57,16 +51,16 @@ def test_eval_one_adapt(get_invs_mock, get_correspondences_mock, adrc_mock):
 
     # assert results
     result = eval_one(edicted, heuristic, adapt, howmany, *additional_args)
-    assert result == (0.0, ["sample_workflow"])
+    assert result == 0.0
 
     # assert calls
-    assert adrc_monkey.adapt_called_with == [['#aː t͡ʃ# -#', 2]]
+    assert adrc_monkey.adapt_called_with == [['#aː t͡ʃ# -#', 2], ['#aː ɟ uː#', 2]]
     get_correspondences_mock.assert_called_with(edicted, heuristic)
     get_invs_mock.assert_called_with(edicted)
     assert not adrc_monkey.init_called_with
 
 adrc_monkey2 = AdrcMonkey()
-@patch("loanpy.eval.Adrc", side_effect=[adrc_monkey2])
+@patch("loanpy.eval.Adrc", side_effect=[adrc_monkey2, adrc_monkey2])
 @patch("loanpy.eval.get_correspondences")
 @patch("loanpy.eval.get_invs")
 @patch("loanpy.eval.re.match")
@@ -87,4 +81,4 @@ def test_eval_one_reconstruct(match_mock, get_invs_mock, get_correspondences_moc
     additional_args = ()
 
     result = eval_one(edicted, heuristic, adapt, num_reconstructions, *additional_args)
-    assert result == (1.0, [])
+    assert result == 1.0
