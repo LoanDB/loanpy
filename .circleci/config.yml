@@ -1,47 +1,23 @@
 version: 2.1
 
-orbs:
-  win: circleci/windows@2.4.0
-
 executors:
-  linux_executor:
-    machine:
-      image: ubuntu-2004:202110-01
-    shell: /bin/bash
-    resource_class: large
-
-  windows_executor:
-    machine:
-      image: windows-2019
-    shell: cmd.exe
-    resource_class: windows.medium
+  windows-2019:
+    docker:
+      - image: mcr.microsoft.com/windows:2019
 
 jobs:
   build:
     parameters:
       python_version:
         type: string
-      os:
-        type: string
-        default: "linux"
     executor:
-      name: << parameters.os >>_executor
+      name: windows-2019
     steps:
       - checkout
-      - when:
-          condition:
-            equal: [<< parameters.os >>, "linux"]
-          steps:
-            - run:
-                name: "Set up Python environment (Linux)"
-                command: python -m venv venv && . venv/bin/activate
-      - when:
-          condition:
-            equal: [<< parameters.os >>, "windows"]
-          steps:
-            - run:
-                name: "Set up Python environment (Windows)"
-                command: python -m venv venv && venv\Scripts\Activate
+      - run:
+          name: "Set up Python environment"
+          command: C:\\Python\\Python${{ matrix.python_version }}\\python.exe -m venv venv && . venv\\Scripts\\activate
+
       - run:
           name: "Install latest commit of loanpy from git"
           command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
@@ -52,14 +28,18 @@ jobs:
 
       - run:
           name: "Run unit and integration tests"
-          command: python -m pytest
+          command: C:\\Python\\Python${{ matrix.python_version }}\\python.exe -m pytest
+
+    matrix:
+      python_version:
+        - "3.7"
+        - "3.8"
+        - "3.9"
+        - "3.10"
+        - "3.11"
 
 workflows:
   version: 2
   build-and-test:
     jobs:
-      - build:
-          matrix:
-            parameters:
-              python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-              os: ["linux", "windows"]
+      - build
