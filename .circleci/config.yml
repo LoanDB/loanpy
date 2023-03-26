@@ -6,14 +6,14 @@ jobs:
       python_version:
         type: string
     docker:
-      - image: circleci/python:${{ parameters.python_version }}-stretch
+      - image: python:{{ parameters.python_version }}{{ if eq .Platform "windows" }}-windowsservercore-ltsc2019{{ end }}
     steps:
       - checkout
       - run:
           name: "Set up Python environment"
           command: |
             python -m venv venv
-            source venv/bin/activate
+            venv\Scripts\activate.bat{{ if eq .Platform "linux" }};{{ else }} &&{{ end }}
 
       - run:
           name: "Install latest commit of loanpy from git"
@@ -27,17 +27,11 @@ jobs:
           name: "Run unit and integration tests"
           command: python -m pytest
 
-    matrix:
-      python_version:
-        - "3.7"
-        - "3.8"
-        - "3.9"
-        - "3.10"
-        - "3.11"
-
-  workflows:
+workflows:
+  version: 2
   build-and-test:
     jobs:
       - build:
-          parameters:
-            python_version: ${{ matrix.python_version }}
+          matrix:
+            parameters:
+              python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
