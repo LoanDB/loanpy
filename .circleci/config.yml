@@ -1,28 +1,21 @@
 version: 2.1
-orbs:
-  win: circleci/windows@2.2.0
 
 jobs:
   build:
     parameters:
       python_version:
         type: string
-    executor:
-      name: win/default
-      shell: powershell.exe
+    docker:
+      - image: circleci/python:<< parameters.python_version >>
     steps:
       - checkout
       - run:
-          name: "Install Python"
-          command: choco install python --version=<< parameters.python_version >>
+          name: "Set up Python environment"
+          command: python -m venv venv && . venv/bin/activate
 
       - run:
           name: "Install latest commit of loanpy from git"
           command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
-
-      - run:
-          name: "Install pytest"
-          command: pip install pytest
 
       - run:
           name: "Run unit and integration tests"
