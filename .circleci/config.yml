@@ -39,7 +39,17 @@ jobs:
       - checkout
       - run:
           name: "Install Python"
-          command: choco install python --version=<< parameters.python_version >>
+          command: |
+            if ( "<< parameters.python_version >>" -eq "3.7" ) {
+              choco install pyenv-win --force
+              refreshenv
+              pyenv install 3.7.0
+              pyenv global 3.7.0
+              $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
+              python --version
+            } else {
+              choco install python --version=<< parameters.python_version >>
+            }
 
       - run:
           name: "Install latest commit of loanpy from git"
