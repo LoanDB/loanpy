@@ -70,7 +70,7 @@ jobs:
       python_version:
         type: string
     docker:
-      - image: circleci/python:<< parameters.python_version >>  # Use the official CircleCI Python Docker image
+      - image: cimg/python:<< parameters.python_version >>  # Use the official CircleCI Python Docker image
     steps:
       - checkout
       - run:
