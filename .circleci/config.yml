@@ -66,8 +66,11 @@ jobs:
           command: python -m pytest
 
   build-macos:
+    parameters:
+      python_version:
+        type: string
     docker:
-      - image: circleci/python:3.10  # Use the official CircleCI Python Docker image
+      - image: circleci/python:<< parameters.python_version >>  # Use the official CircleCI Python Docker image
     steps:
       - checkout
       - run:
