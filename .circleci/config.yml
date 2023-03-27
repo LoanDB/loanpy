@@ -91,14 +91,14 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      # - build-linux:
-      #     matrix:
-      #       parameters:
-      #         python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-      # - build-windows:
-      #     matrix:
-      #       parameters:
-      #         python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+       - build-linux:
+           matrix:
+             parameters:
+               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+       - build-windows:
+           matrix:
+             parameters:
+               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       - build-macos:
           matrix:
             parameters:
