@@ -83,7 +83,7 @@ jobs:
       - run:
           name: "Ensure pip is installed"
           command: |
-            command -v pip >/dev/null 2>&1 || { echo "Installing pip..."; sudo easy_install pip; }
+            python -m ensurepip --default-pip
       - run:
           name: "Install latest commit of loanpy from git"
           command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
