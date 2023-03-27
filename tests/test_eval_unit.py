@@ -10,8 +10,8 @@ def test_evaluate_all_returns_expected_output(mock_eval_one):
         edicted="x", heur="y", adapt=True, guess_list=[1, 2, 3]
         )
     assert fp_vs_tp == [(0.33, 0.4), (0.67, 0.5), (1.0, 0.6)]
-    assert mock_eval_one.call_args_list == [call('x', 'y', True, 1, True),
-        call('x', 'y', True, 2, True), call('x', 'y', True, 3, True)]
+    assert mock_eval_one.call_args_list == [call('x', 'y', True, 1, False),
+        call('x', 'y', True, 2, False), call('x', 'y', True, 3, False)]
 
 # Mock the external dependencies
 class AdrcMonkey:
@@ -48,10 +48,10 @@ def test_eval_one_adapt(get_invs_mock, get_correspondences_mock, adrc_mock):
     heuristic = "some_heuristic"
     adapt = True
     howmany = 2
-    additional_args = ()
+    pros = True
 
     # assert results
-    result = eval_one(edicted, heuristic, adapt, howmany, *additional_args)
+    result = eval_one(edicted, heuristic, adapt, howmany, pros)
     assert result == 0.0
 
     # assert calls

@@ -2,9 +2,28 @@
 import json
 from pathlib import Path
 
-from loanpy.eval import eval_one
+from loanpy.eval import eval_one, eval_all
 
 TESTFILESDIR = Path(__file__).parent.parent / "test_files"
+
+def test_evaluate_all_returns_expected_output():
+
+    eded = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+                  [0, 1, 'WOT', 'a ɣ a t͡ʃː ɯ', 'VCVCV'],
+                  [1, 1, 'EAH', 'a ɣ a t͡ʃ i', 'VCVCV'],
+                  [2, 2, 'WOT', 'a l d a ɣ', 'VCCVC'],
+                  [3, 2, 'EAH', 'a l d a ɣ', 'VCCVC']
+                ]
+    heur = {"a": ["a", "e", "i", "o", "u"], "ɣ": ["g", "k", "h", "j", "w"],
+            "t͡ʃː": ["t", "s", "ʃ", "t͡s", "z"], "ɯ": ["o", "u", "i", "a", "e"],
+            "i": ["i", "e", "a", "u", "o"], "l": ["r", "j", "w", "h", "x"],
+            "d": ["d", "t", "v", "w", "k"]
+            }
+
+    fp_vs_tp = eval_all(
+        edicted=eded, heur=heur, adapt=True, guess_list=[1, 2, 5, 1000]
+        )
+    assert fp_vs_tp == [(0.0, 0.0), (0.0, 0.0), (0.01, 0.0), (1.0, 0.0)]
 
 def test_eval_one_adapt():
     """

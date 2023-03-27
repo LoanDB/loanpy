@@ -66,33 +66,21 @@ jobs:
           command: python -m pytest
 
   build-macos:
-    parameters:
-      python_version:
-        type: string
-    macos:
-      xcode: "12.5.1"
+    docker:
+      - image: circleci/python:3.10  # Use the official CircleCI Python Docker image
     steps:
       - checkout
       - run:
-          name: "Install Python"
+          name: Set up virtual environment and install pytest
           command: |
-            brew install pyenv
-            pyenv install << parameters.python_version >>
-            pyenv global << parameters.python_version >>
-            eval "$(pyenv init --path)"
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install pytest
       - run:
-          name: "Ensure pip is installed"
+          name: Run tests
           command: |
-            python -m ensurepip --default-pip
-      - run:
-          name: "Install latest commit of loanpy from git"
-          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
-      - run:
-          name: "Install pytest"
-          command: pip install pytest
-      - run:
-          name: "Run unit and integration tests"
-          command: python -m pytest
+            . venv/bin/activate
+            pytest
 
 
 workflows:

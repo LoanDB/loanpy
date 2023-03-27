@@ -5,7 +5,7 @@ import re
 from loanpy.apply import Adrc
 from loanpy.recover import get_correspondences, get_invs
 
-def eval_all(edicted, heur, adapt, guess_list, pros=True):
+def eval_all(edicted, heur, adapt, guess_list, pros=False):
     """
     Get a table of False Positives (how many guesses) vs True Positives.
 
@@ -40,7 +40,7 @@ def eval_all(edicted, heur, adapt, guess_list, pros=True):
     return fp_vs_tp
 
 
-def eval_one(edicted, heur, adapt, howmany, pros=True):
+def eval_one(edicted, heur, adapt, howmany, pros=False):
     """
     Evaluate the quality of the adapted and reconstructed words.
 
