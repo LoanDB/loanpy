@@ -99,7 +99,7 @@ workflows:
            matrix:
              parameters:
                python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-      - build-macos:
+       - build-macos:
           matrix:
             parameters:
               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
