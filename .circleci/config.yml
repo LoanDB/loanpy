@@ -79,6 +79,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install pytest
+            pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
       - run:
           name: Run tests
           command: |
