@@ -58,6 +58,7 @@ def eval_all(edicted, heur, adapt, guess_list, pros=False):
 def eval_one(edicted, heur, adapt, howmany, pros=False):
     """
     Evaluate the quality of the adapted and reconstructed words.
+    Called by loanpy.eval.eval_all.
 
     :param edicted: The input tsv-table, edited with the Edictor.
                     Tokenised IPA source and target strings must be

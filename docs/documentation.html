@@ -744,7 +744,8 @@ representing false positives vs true positives</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.eval.eval_one">
 <span class="sig-prename descclassname"><span class="pre">loanpy.eval.</span></span><span class="sig-name descname"><span class="pre">eval_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edicted</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heur</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">howmany</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.eval.eval_one" title="Permalink to this definition"></a></dt>
-<dd><p>Evaluate the quality of the adapted and reconstructed words.</p>
+<dd><p>Evaluate the quality of the adapted and reconstructed words.
+Called by loanpy.eval.eval_all.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -771,10 +772,8 @@ Created with loanpy.recover.get_correspondences</p></li>
 </section>
 <section id="module-loanpy.find">
 <span id="find"></span><h2>find<a class="headerlink" href="#module-loanpy.find" title="Permalink to this heading"></a></h2>
-<p>Read two dataframes: donor and recipient lanague
-Search for phonetic matches
-Calculate their semantic similarity
-Output a list of candidate loanwords</p>
+<p>This module is designed to identify and analyze potential loanwords between a donor and a recipient language. It processes two input dataframes, one representing the donor language with adapted forms and the other representing the recipient language with reconstructed forms. The module first identifies phonetic matches between the two languages and then calculates their semantic similarity. The output is a list of candidate loanwords, which can be further analyzed for linguistic or historical purposes.</p>
+<p>The primary functions in this module are responsible for finding phonetic matches between the given donor and recipient language data and calculating their semantic similarity. These functions process the input dataframes and compare the phonetic patterns, as well as calculate the semantic similarity based on a user-provided function. The module returns a list of candidate loanwords ranked by their phonetic and semantic similarities. The output can then be used to study linguistic borrowing, adaptation, and reconstruction processes between the donor and recipient languages.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.find.phonetic_matches">
 <span class="sig-prename descclassname"><span class="pre">loanpy.find.</span></span><span class="sig-name descname"><span class="pre">phonetic_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_ad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_rc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.find.phonetic_matches" title="Permalink to this definition"></a></dt>
@@ -785,12 +784,18 @@ and returns the matched data as a string in TSV format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>donor_tsv_name</strong> (<em>str</em>) – The file path of the donor TSV file.</p></li>
-<li><p><strong>recipient_tsv_name</strong> (<em>str</em>) – The file path of the recipient TSV file.</p></li>
+<li><p><strong>df_ad</strong> (<em>list</em><em> of </em><em>lists. Column 5 must be a list</em><em> of </em><em>predicted
+loanword adaptations. Col 0: ID in df_ad</em><em>,
+</em><em>Col 2: The form</em><em> of </em><em>the word</em><em>, </em><em>Col 4: its meanings.</em>) – Table of the donor language data with adapted forms.</p></li>
+<li><p><strong>df_rc</strong> (<em>list</em><em> of </em><em>lists. Column 4 must contain predicted
+reconstructions as a regular expression. Col 0: The ID in
+df_rc</em><em>, </em><em>Col 2: The form</em><em> of </em><em>the word. Col 3: its meanings.</em>) – Table of the recipient language data with reconstructed
+forms.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A string containing the matched data in TSV format, with the following columns:
+<dd class="field-even"><p>A string containing the matched data in TSV format,
+with the following columns:
 ID, loanID, adrcID, df, form, predicted, meaning.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -802,31 +807,28 @@ ID, loanID, adrcID, df, form, predicted, meaning.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.find.semantic_matches">
 <span class="sig-prename descclassname"><span class="pre">loanpy.find.</span></span><span class="sig-name descname"><span class="pre">semantic_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phmtsv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_semsim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.find.semantic_matches" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate semantic similarity between pairs of rows in phmtsv
+<dd><p>Calculate the semantic similarity between pairs of rows in phmtsv
 using the function
 get_semsim, and add columns with the calculated similarity
 and the closest semantic match to each row.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>phmtsv</strong> (<em>list</em><em> of </em><em>lists</em>) – A list of lists where each sublist represents a
-row of data. The first
-sublist should contain the header row, and each
-subsequent sublist
-should contain the data for one row.
-The meanings have to be in column 6.
-They have to already be splitted to a list</p></li>
+<li><p><strong>phmtsv</strong> (<em>list</em><em> of </em><em>lists</em>) – phonetic matches tsv, generated by
+loanpy.find.phonetic_matches. Each sublist represents a
+row of data. The first sublist should contain the header
+row, and each subsequent sublist should contain the data
+for one row. The meanings have to be in column 6.</p></li>
 <li><p><strong>get_semsim</strong> (<em>function</em>) – A function that calculates the semantic similarity
 between two strings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tab-separated string representing
-the top 1000 rows in phmtsv with the added
-columns for semantic similarity and closest
-semantic match, sorted in
-descending order by semantic similarity and
-ascending order by loanID.</p>
+<dd class="field-even"><p>A tab-separated string representing the top 1000 semantically
+most similar meanings in phmtsv with the added columns for
+semantic similarity and closest semantic match, sorted in
+descending order by semantic similarity and ascending order
+by loanID.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
