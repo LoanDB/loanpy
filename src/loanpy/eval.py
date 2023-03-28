@@ -1,5 +1,21 @@
 # -*- coding: utf-8 -*-
-"""Check how sane the model is by evaluating predictions."""
+"""
+This module focuses on evaluating the quality of adapted and reconstructed \
+words in a linguistic dataset by leveraging data-driven and heuristic \
+prosodic and phonetic correspondences. It processes the input data, \
+which consists of tokenised IPA source and target strings, as well as \
+prosodic strings, and applies the correspondences to predict the best \
+possible adaptations or reconstructions. The module then \
+calculates the accuracy of the predictions by generating a table of \
+false positives (how many guesses) vs true positives, \
+providing insights into the effectiveness of this method. \
+Additionally, the module offers the option to apply phonotactic repairs, \
+allowing for more refined analysis of the linguistic data. \
+Overall, this module aims to facilitate a deeper understanding of \
+loanword adaptation and historical sound change processes \
+by quantifying the success rate of predictive models.
+
+"""
 import re
 
 from loanpy.apply import Adrc
@@ -11,17 +27,16 @@ def eval_all(edicted, heur, adapt, guess_list, pros=False):
 
     :param edicted: The input tsv-table, edited with the Edictor.
     :type edicted: list of lists
-    :param heur: The heuristic sound and prosodic correspondences.
-    :type heur: dict
+    :param heur: The heuristic prosodic correspondences.
+    :type heur: list
     :param adapt: Whether words are adapted or reconstructed.
     :type adapt: bool
-    :param guess_list: The list of guesses to evaluate.
-    :type guess_list: list
-    :param args: Additional arguments for
-                 loanpy.apply.Adrc.adapt and loanpy.apply.Adrc.reconstruct
-    :type args: list
-    :return: A tuple containing a list of tuples representing FP vs TP
-             and a list of workflow results.
+    :param guess_list: The list of number of guesses to evaluate.
+    :type guess_list: list of int
+    :param pros: Wheter phonotactic repairs should be applied
+    :type pros: bool, default=False
+    :return: A list of tuples of integer-pairs
+             representing false positives vs true positives
     :rtype: tuple
     """
     true_positives = []
@@ -45,24 +60,26 @@ def eval_one(edicted, heur, adapt, howmany, pros=False):
     Evaluate the quality of the adapted and reconstructed words.
 
     :param edicted: The input tsv-table, edited with the Edictor.
+                    Tokenised IPA source and target strings must be
+                    in column 3. Prosodic strings in column 4.
     :type edicted: list of lists
     :param heur: The heuristic sound and prosodic correspondences.
+                 Created with loanpy.recover.get_correspondences
     :type heur: dict
     :param adapt: Whether words are adapted or reconstructed.
     :type adapt: bool
-    :param guess_list: The list of guesses to evaluate.
-    :type guess_list: list
-    :param args: Additional arguments for
-                 loanpy.apply.Adrc.adapt and loanpy.apply.Adrc.reconstruct
-    :type args: list
+    :param howmany: Howmany guesses should be made. Treated as false positives.
+    :type howmany: list
+    :param pros: Whether phonotactic/prosodic repairs should apply
+    :type pros: bool, default=False
     :return: A tuple with the ratio of successful adaptations/reconstructions
-             (rounded to 2 decimal places) and a list of workflows.
+             (rounded to 2 decimal places).
     :rtype: tuple
     """
     out = []
     for i in range(1, len(edicted), 2):  # 1 bc skip header
         srcrow, tgtrow = edicted.pop(i), edicted.pop(i)
-        src, tgt = srcrow[3], "".join(tgtrow[3].replace("-", "").replace(" ", "").replace(".", ""))
+        src, tgt = srcrow[3], "".join(re.sub("[-. ]", "", tgtrow[3]))
         src_pros = srcrow[4] if pros else ""
         adrc = Adrc()
         adrc.sc = get_correspondences(edicted, heur)

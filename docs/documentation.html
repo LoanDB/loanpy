@@ -716,7 +716,7 @@ of a node in the matrix/graph, e.g. (0, 0).</p>
 </section>
 <section id="module-loanpy.eval">
 <span id="eval"></span><h2>eval<a class="headerlink" href="#module-loanpy.eval" title="Permalink to this heading"></a></h2>
-<p>Check how sane the model is by evaluating predictions.</p>
+<p>This module focuses on evaluating the quality of adapted and reconstructed words in a linguistic dataset by leveraging data-driven and heuristic prosodic and phonetic correspondences. It processes the input data, which consists of tokenised IPA source and target strings, as well as prosodic strings, and applies the correspondences to predict the best possible adaptations or reconstructions. The module then calculates the accuracy of the predictions by generating a table of false positives (how many guesses) vs true positives, providing insights into the effectiveness of this method. Additionally, the module offers the option to apply phonotactic repairs, allowing for more refined analysis of the linguistic data. Overall, this module aims to facilitate a deeper understanding of loanword adaptation and historical sound change processes by quantifying the success rate of predictive models.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.eval.eval_all">
 <span class="sig-prename descclassname"><span class="pre">loanpy.eval.</span></span><span class="sig-name descname"><span class="pre">eval_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edicted</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heur</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guess_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.eval.eval_all" title="Permalink to this definition"></a></dt>
@@ -725,16 +725,15 @@ of a node in the matrix/graph, e.g. (0, 0).</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>edicted</strong> (<em>list</em><em> of </em><em>lists</em>) – The input tsv-table, edited with the Edictor.</p></li>
-<li><p><strong>heur</strong> (<em>dict</em>) – The heuristic sound and prosodic correspondences.</p></li>
+<li><p><strong>heur</strong> (<em>list</em>) – The heuristic prosodic correspondences.</p></li>
 <li><p><strong>adapt</strong> (<em>bool</em>) – Whether words are adapted or reconstructed.</p></li>
-<li><p><strong>guess_list</strong> (<em>list</em>) – The list of guesses to evaluate.</p></li>
-<li><p><strong>args</strong> (<em>list</em>) – Additional arguments for
-loanpy.apply.Adrc.adapt and loanpy.apply.Adrc.reconstruct</p></li>
+<li><p><strong>guess_list</strong> (<em>list</em><em> of </em><em>int</em>) – The list of number of guesses to evaluate.</p></li>
+<li><p><strong>pros</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Wheter phonotactic repairs should be applied</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple containing a list of tuples representing FP vs TP
-and a list of workflow results.</p>
+<dd class="field-even"><p>A list of tuples of integer-pairs
+representing false positives vs true positives</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -749,17 +748,19 @@ and a list of workflow results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>edicted</strong> (<em>list</em><em> of </em><em>lists</em>) – The input tsv-table, edited with the Edictor.</p></li>
-<li><p><strong>heur</strong> (<em>dict</em>) – The heuristic sound and prosodic correspondences.</p></li>
+<li><p><strong>edicted</strong> (<em>list</em><em> of </em><em>lists</em>) – The input tsv-table, edited with the Edictor.
+Tokenised IPA source and target strings must be
+in column 3. Prosodic strings in column 4.</p></li>
+<li><p><strong>heur</strong> (<em>dict</em>) – The heuristic sound and prosodic correspondences.
+Created with loanpy.recover.get_correspondences</p></li>
 <li><p><strong>adapt</strong> (<em>bool</em>) – Whether words are adapted or reconstructed.</p></li>
-<li><p><strong>guess_list</strong> (<em>list</em>) – The list of guesses to evaluate.</p></li>
-<li><p><strong>args</strong> (<em>list</em>) – Additional arguments for
-loanpy.apply.Adrc.adapt and loanpy.apply.Adrc.reconstruct</p></li>
+<li><p><strong>howmany</strong> (<em>list</em>) – Howmany guesses should be made. Treated as false positives.</p></li>
+<li><p><strong>pros</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether phonotactic/prosodic repairs should apply</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple with the ratio of successful adaptations/reconstructions
-(rounded to 2 decimal places) and a list of workflows.</p>
+(rounded to 2 decimal places).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
