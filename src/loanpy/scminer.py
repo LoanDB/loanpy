@@ -166,11 +166,12 @@ def get_heur(tgtlg):
 
 def get_inventory(table):
     """
-    Extracts all types of prosodic structures (e.g. CVCV) \
-from uneven rows of the given table.
+    Extracts all types of prosodic structures (e.g. CVCV)
+    from uneven rows of the given table.
 
     :param data: A tab-separated table in string format.
     :type data: str
+
     :return: A dictionary containing two sets, one for segments
              and one for prosody.
     :rtype: dict

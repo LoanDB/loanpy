@@ -31,6 +31,7 @@ class Adrc():
 
     :param sc: The tab separated correspondence dictionary file.
     :type sc: str, optional
+
     :param inventory: Path to the prosodic inventory file.
     :type inventory: str, optional
     """
@@ -41,9 +42,11 @@ class Adrc():
 
         :param sc: Path to the sound correspondence dictionary file.
         :type sc: str, optional
+
         :param inventory: Path to the CVCV and phoneme inventories file.
         :type inventory: str, optional
         """
+
         self.sc = None
         self.inventory = None
         self.workflow = None  # will be filled by self.adapt()
@@ -63,12 +66,20 @@ class Adrc():
         Predict the adaptation of a loanword in a target recipient language.
 
         :param ipastr: Space-separated tokenised input IPA string.
+        :type ipastr: str
+
         :param howmany: Number of adapted words to return. Default is 1.
-        :param prosody: Prosodic structure of the adapted words (e.g. CVCV). \
-    Default is an empty string. Providing this triggers phonotactic repair.
+        :type howmany: int
+
+        :param prosody: Prosodic structure of the adapted words (e.g. CVCV).
+                        Default is an empty string. Providing this triggers
+                        phonotactic repair.
+        :type prosody: str of 'C' and 'V'
+
         :return: A string containing the adapted loanwords, separated by ", ".
         :rtype: str
         """
+
         ipalist = ipastr.split(" ")
         if prosody:
             ipalist = self.repair_phonotactics(ipalist, prosody)
@@ -86,13 +97,19 @@ class Adrc():
 
         :param ipastr: A string of space-separated IPA symbols representing the
                        phonetic form to be reconstructed.
+        :type ipastr: str
+
         :param howmany: The maximum number of phonological forms to
                         return. Default is 1.
-        :return: A string of reconstructed phonological forms that match
-                 the given IPA string, based on the sound correspondence dictionary.
-        :raises ValueError: If any of the IPA symbols in the input string are missing
-                            from the sound correspondence dictionary.
+        :type howmany: int
+
+        :return: A string of reconstructed phonological forms that match the
+                 given IPA string, based on the sound correspondence
+                 dictionary.
         :rtype: str
+
+        :raises ValueError: If any of the IPA symbols in the input string are
+                            missing from the sound correspondence dictionary.
         """
 
         ipalist = ipastr.split(" ")
@@ -116,9 +133,14 @@ class Adrc():
         Repairs the phonotactics (prosody) of an IPA string.
 
         :param ipalist: A list of IPA symbols representing the input word.
-        :param prosody: A string representing the prosodic structure of the input word.
+        :type ipalist: list of str
+
+        :param prosody: A string representing the prosodic structure of the
+                        input word.
+        :type prosody: str
+
         :return: A list of repaired IPA strings.
-        :rtype: list
+        :rtype: list of str
         """
 
         # check if there is data available data for this structure
@@ -143,13 +165,16 @@ class Adrc():
 
         :param sclistlist: A list of sound correspondence lists.
         :type sclistlist: list
+
         :param ipa: A space-separated string of IPA symbols
                     representing the word.
         :type ipa: str
+
         :return: A list of differences between the number of examples for each
                  sound correspondence in the input word.
         :rtype: list
         """
+
         # difference in nr of examples between current and next sound corresp
         # for each phoneme or cluster in a word
         difflist = []  # this will be returned
@@ -183,11 +208,13 @@ class Adrc():
 
         :param ipa: a tokenized/clusterized word
         :type ipa: list
+
         :param howmany: The desired number of possible combinations.
                         This is the false positive rate if the prediction
                         is wrong but the false positive rate -1 if the
                         prediction is right.
         :type howmany: int, default=1
+
         :return: The information about which sounds each input sound can
                  correspond to.
         :rtype: list of lists
@@ -227,14 +254,16 @@ class Adrc():
 
     def get_closest_phonotactics(self, struc):
         """
-        Get the closest prosodic structure (e.g. CVCV) from the inventory \
-of a given language based on edit distance.
+        Get the closest prosodic structure (e.g. CVCV) from the inventory
+        of a given language based on edit distance.
 
         :param struc: The phonotactic structure to compare against.
         :type struc: str
+
         :return: The closest prosodic structure (e.g. CVCV) in the inventory
         :rtype: str
         """
+
         dist_and_strucs = [
             (edit_distance_with2ops(struc, i), i) for i in self.inventory
             ]
@@ -249,48 +278,29 @@ def move_sc(sclistlist, whichsound, out):
 
     :param sclistlist: A list of lists containing sound correspondences.
     :type sclistlist: list of lists
+
     :param whichsound: The index of the sound to be moved.
     :type whichsound: int
+
     :param out: The output list where the sound correspondence will be
                 moved to.
     :type out: list of lists
+
     :return: An updated tuple containing the modified sclistlist and out.
     :rtype: tuple of (list of lists, list of lists)
-
     """
+
     out[whichsound].append(sclistlist[whichsound][1])  # move sound #1 to out
     sclistlist[whichsound].pop(0)  # move input by 1 (remove sound #0)
     return sclistlist, out  # tuple
 
 def edit_distance_with2ops(string1, string2, w_del=100, w_ins=49):
     """
-    Called by loanpy.helpers.Etym.rank_closest_phonotactics and \
-loanpy.qfysc.Qfy.get_phonotactics_corresp. \
-Takes two strings and calculates their similarity by \
-only allowing two operations: insertion and deletion. \
-In line with the "Threshold Principle" by Carole Paradis and \
-Darlene LaCharité (1997) \
-the distance is weighted in a way that two insertions are cheaper than \
-one deletion: "The problem is really not very different from the dilemma \
-of a landlord stuck with a limited budget for maintenance and a building \
-which no longer meets municipal guidelines. Beyond a certain point, \
-renovating is not viable (there are too many steps to be taken) and \
-demolition is in order. Similarly, we posit that I) languages have \
-a limited budget for adapting ill- formed phonological structures, \
-and that 2) the limit for the budget is universally set at two steps, \
-beyond which a repair by 'demolition' may apply. In other words, we \
-predict that a segment is deleted if (but only if) its rescue is too \
-costly in terms of the Threshold Principle" (p.385, Preservation \
-and Minimality \
-in Loanword Adaptation, \
-Author(s): Carole Paradis and Darlene Lacharité, \
-Source: Journal of Linguistics , Sep., 1997, Vol. 33, No. 2 (Sep., 1997), \
-pp. 379-430, \
-Published by: Cambridge University Press, \
-Stable URL: http://www.jstor.com/stable/4176422). \
-The code is based on a post by ita_c on \
-https://www.geeksforgeeks.org/edit-distance-and-lcs-longest-common-subsequence\
- (last access: June 8th, 2022)
+    Called by loanpy.scapplier.Adrc.get_closest_phonotactics.
+    Takes two strings and calculates their similarity by
+    only allowing two operations: insertion and deletion.
+    In line with the "Threshold Principle" `(Paradis and LaCharité 1997:
+    385) <http://www.jstor.com/stable/4176422>`_ \
 
     :param string1: The first of two strings to be compared to each other
     :type string1: str
@@ -298,34 +308,18 @@ https://www.geeksforgeeks.org/edit-distance-and-lcs-longest-common-subsequence\
     :param string2: The second of two strings to be compared to each other
     :type string2: str
 
-    :param w_del: weight (cost) for deleting a phoneme. Default should \
-always stay 100, since only relative costs between inserting and deleting \
-count.
-    :type w_del: int | float, default=100
+    :param w_del: weight (cost) for deleting a phoneme. Default should
+                  always stay 100, since only relative costs between inserting
+                  and deleting count.
+    :type w_del: int or float, default=100
 
-    :param w_ins: weight (cost) for inserting a phoneme. Default 49 \
-is in accordance with the "Threshold Principle": \
-2 insertions (2*49=98) are cheaper than a deletion \
-(100).
-    :type w_ins: int | float, default=49.
+    :param w_ins: weight (cost) for inserting a phoneme. Default 49
+                  is in accordance with the "Threshold Principle":
+                  2 insertions (2*49=98) are cheaper than a deletion (100).
+    :type w_ins: int or float, default=49.
 
     :returns: The distance between two input strings
-    :rtype: int | float
-
-    :Example:
-
-    >>> from loanpy.helpers import edit_distance_with2ops
-    >>> edit_distance_with2ops("hey","hey")
-    0
-
-    >>> from loanpy.helpers import edit_distance_with2ops
-    >>> edit_distance_with2ops("hey","he")
-    100
-
-    >>> from loanpy.helpers import edit_distance_with2ops
-    >>> edit_distance_with2ops("hey","heyy")
-    49
-
+    :rtype: int or float
     """
 
     m = len(string1)     # Find longest common subsequence (LCS)
@@ -349,8 +343,8 @@ is in accordance with the "Threshold Principle": \
 
 def apply_edit(word, editops):
     """
-    Called by loanpy.adrc.Adrc.repair_phonotactics. \
-Applies a list of human readable edit operations to a string.
+    Called by loanpy.scapplier.Adrc.repair_phonotactics.
+    Applies a list of human readable edit operations to a string.
 
     :param word: The input word
     :type word: an iterable (e.g. list of phonemes, or string)
@@ -360,17 +354,8 @@ Applies a list of human readable edit operations to a string.
 
     :returns: transformed input word
     :rtype: list of str
-
-    :Example:
-
-    >>> from loanpy.helpers import apply_edit
-    >>> apply_edit(["l", "ó"], ('substitute l by h', 'keep ó'))
-    ['h', 'ó']
-    >>> apply_edit("ló", ('keep C', 'insert C', 'insert V', 'keep V'))
-    ['l', 'C', 'V', 'ó']
-    >>> apply_edit("ló", ('insert C', 'keep C', 'insert V', 'keep V'))
-    ['C', 'l', 'V', 'ó']
     """
+
     out, letter = [], iter(word)
     for i, op in enumerate(editops):
         if i != len(editops):  # to avoid stopiteration
@@ -388,26 +373,15 @@ Applies a list of human readable edit operations to a string.
 
 def list2regex(sclist):
     """
-    Called by loanpy.adrc.Adrc.reconstruct. \
-Turns a list of phonemes into a regular expression.
+    Called by loanpy.scapplier.Adrc.reconstruct.
+    Turns a list of phonemes into a regular expression.
 
     :param sclist: a list of phonemes
     :type sclist: list of str
 
-    :returns: The phonemes from the input list separated by a pipe. "-" is \
-removed and replaced with a question mark at the end.
+    :returns: The phonemes from the input list separated by a pipe. "-" is
+              removed and replaced with a question mark at the end.
     :rtype: str
-
-    :Example:
-
-    >>> from loanpy.helpers import list2regex
-    >>> list2regex(["b", "k", "v"])
-    '(b|k|v)'
-
-    >>> from loanpy.helpers import list2regex
-    >>> list2regex(["b", "k", "-", "v"])
-    '(b|k|v)?'
-
     """
 
     s = ")?" if "-" in sclist else ")"
@@ -415,16 +389,16 @@ removed and replaced with a question mark at the end.
 
 def tuples2editops(op_list, s1, s2):
     """
-    Called by loanpy.helpers.editops. \
-The path how string1 is converted to string2 is given in form of tuples \
-that contain the x and y coordinates of every step through the matrix \
-shaped graph. \
-This function converts those numerical instructions to human readable ones. \
-The x values stand for horizontal movement, y values for vertical ones. \
-Vertical movement means deletion, horizontal means insertion. \
-Diagonal means the value is kept. \
-Moving horizontally and vertically after each other means \
-substitution.
+    Called by loanpy.scapplier.editops.
+    The path how string1 is converted to string2 is given in form of tuples
+    that contain the x and y coordinates of every step through the matrix
+    shaped graph.
+    This function converts those numerical instructions to human readable ones.
+    The x values stand for horizontal movement, y values for vertical ones.
+    Vertical movement means deletion, horizontal means insertion.
+    Diagonal means the value is kept.
+    Moving horizontally and vertically after each other means
+    substitution.
 
     :param op_list: The numeric list of edit operations
     :type op_list: list of tuples of 2 int
@@ -437,19 +411,8 @@ substitution.
 
     :returns: list of human readable edit operations
     :rtype: list of strings
-
-    :Example:
-
-    >>> from loanpy.helpers import tuples2editops
-    >>> tuples2editops([(0, 0), (0, 1), (1, 1), (2, 2)], "ló", "hó")
-    ['substitute l by h', 'keep ó']
-    >>>  # What happened under the hood:
-    # (0, 0), (0, 1): move 1 vertically = 1 deletion
-    # (0, 1), (1, 1): move 1 horizontally = 1 insertion
-    # insertion and deletion after each other equals substitution
-    # (1, 1), (2, 2): move 1 diagonally = keep the sound
-
     """
+
     s1, s2 = "#" + s1, "#" + s2
     out = []
     for i in range(1, len(op_list)):
@@ -475,6 +438,7 @@ def substitute_operations(operations):
     :returns: Updated operations
     :rtype: List of strings, e.g. ['substitute l by h', 'keep ó']
     """
+
     i = 0
     while i < len(operations) - 1:
         if operations[i].startswith('delete ') and operations[i+1].startswith('insert '):
@@ -491,18 +455,12 @@ def substitute_operations(operations):
 
 def get_mtx(target, source):
     """
-    Called by loanpy.helpers.mtx2graph. Similar to \
-loanpy.helpers.edit_distance_with2ops but without \
-weights (i.e. deletion and insertion \
-both always cost one) and the matrix is returned.
-
-    From https://www.youtube.com/watch?v=AY2DZ4a9gyk. \
-(Last access: June 8th, 2022) \
-Draws a matrix of minimum edit distances between every substring of two \
-input strings. The ~secret~ to fill the matrix: \
-If two letters are not the same, look at the \
-upper and left hand cell, pick the minimum and add one. If they are the same, \
-pick the value from the upper left diagonal cell.
+    Called by loanpy.scapplier.Adrc.repair_phonotactics. Similar to
+    loanpy.scapplier.edit_distance_with2ops but without
+    weights (i.e. deletion and insertion
+    both always cost one) and the matrix is returned.
+    Draws a matrix of minimum edit distances between every substring of two
+    input strings.
 
     :param target: The target word
     :type target: iterable, e.g. str or list
@@ -510,26 +468,26 @@ pick the value from the upper left diagonal cell.
     :param source: The source word
     :type source: iterable, e.g. str or list
 
-    :returns: A matrix where every cell tells the cost of turning one \
-substring to the other (only delete and insert with cost 1 for both)
-    :rtype: numpy.ndarray
+    :returns: A matrix where every cell tells the cost of turning one
+              substring to the other (only delete and insert with cost 1 for
+              both)
+    :rtype: list of lists
 
     :Example:
 
-    >>> from loanpy.helpers import get_mtx
-    >>> get_mtx("bcde", "de")
-    array([[0., 1., 2., 3., 4.],
-       [1., 2., 3., 2., 3.],
-       [2., 3., 4., 3., 2.]])
-    >>>  # What in reality happened (example from video):
-         # deletion costs 1, insertion costs 1, so the distances are:
-      # B C D E  # hashtag stands for empty string
-    # 0 1 2 3 4  # distance B-#=1, BC-#=2, BCD-#=3, BCDE-#=4
-    D 1 2 3 2 3  # distance D-#=1, D-B=2, D-BC=3, D-BCD=2, D-BCDE=3
-    E 2 3 4 3 2  # distance DE-#=2, DE-B=3, DE-BC=4, DE-BCD=3, DE-BCDE=2
-    # the min. edit distance from BCDE-DE=2: delete B, delete C
+        # What happens under the hood:
+        # deletion costs 1, insertion costs 1, so the distances are:
+        # B C D E  # hashtag stands for empty string
+        # 0 1 2 3 4  # distance B-#=1, BC-#=2, BCD-#=3, BCDE-#=4
+        # D 1 2 3 2 3  # distance D-#=1, D-B=2, D-BC=3, D-BCD=2, D-BCDE=3
+        # E 2 3 4 3 2  # distance DE-#=2, DE-B=3, DE-BC=4, DE-BCD=3, DE-BCDE=2
+        # the min. edit distance from BCDE-DE=2: delete B, delete C
 
+    .. seealso::
+        `YouTube tutorial by Rylan Fowers
+        <https://www.youtube.com/watch?v=AY2DZ4a9gyk>`_
     """
+
     # build matrix of correct size
     target = ['#'] + [k for k in target]  # add hashtag as starting value
     source = ['#'] + [k for k in source]  # starting value is always zero
@@ -564,7 +522,7 @@ substring to the other (only delete and insert with cost 1 for both)
 
 def add_edge(graph, u, v, weight):
     """
-    Add an edge to a graph. Called by loanpy.apply.mtx2graph.
+    Add an edge to a graph. Called by loanpy.scapplier.mtx2graph.
 
     :param graph: The graph to be populated
     :type graph: dict
@@ -581,6 +539,7 @@ def add_edge(graph, u, v, weight):
     :return: Updates the graph in-place
     :rtype: None
     """
+
     if u not in graph:
         graph[u] = {}
     graph[u][v] = weight
@@ -605,7 +564,7 @@ def mtx2graph(matrix, w_del=100, w_ins=49):
             (integers) as values.
             All tuples contain two integers that represent the position
             of a node in the matrix/graph, e.g. (0, 0).
-            """
+    """
 
     graph = {}
     rows, cols = len(matrix), len(matrix[0])
@@ -662,6 +621,7 @@ def dijkstra(graph, start, end):
         `Dijkstra's algorithm on Wikipedia
         <https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm>`_
     """
+    
     dist = {node: float('inf') for node in graph}
     dist[start] = 0
     queue = [(0, start)]

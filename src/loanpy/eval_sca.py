@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-This module focuses on evaluating the quality of adapted and reconstructed \
-words in a linguistic dataset by leveraging data-driven and heuristic \
-prosodic and phonetic correspondences. It processes the input data, \
-which consists of tokenised IPA source and target strings, as well as \
-prosodic strings, and applies the correspondences to predict the best \
-possible adaptations or reconstructions. The module then \
-calculates the accuracy of the predictions by generating a table of \
-false positives (how many guesses) vs true positives, \
-providing insights into the effectiveness of this method. \
-Additionally, the module offers the option to apply phonotactic repairs, \
-allowing for more refined analysis of the linguistic data. \
-Overall, this module aims to facilitate a deeper understanding of \
-loanword adaptation and historical sound change processes \
+This module focuses on evaluating the quality of adapted and reconstructed
+words in a linguistic dataset by leveraging data-driven and heuristic
+prosodic and phonetic correspondences. It processes the input data,
+which consists of tokenised IPA source and target strings, as well as
+prosodic strings, and applies the correspondences to predict the best
+possible adaptations or reconstructions. The module then
+calculates the accuracy of the predictions by generating a table of
+false positives (how many guesses) vs true positives,
+providing insights into the effectiveness of this method.
+Additionally, the module offers the option to apply phonotactic repairs,
+allowing for more refined analysis of the linguistic data.
+Overall, this module aims to facilitate a deeper understanding of
+loanword adaptation and historical sound change processes
 by quantifying the success rate of predictive models.
-
 """
+
 import re
 
 from loanpy.scapplier import Adrc
@@ -39,6 +39,7 @@ def eval_all(edicted, heur, adapt, guess_list, pros=False):
              representing false positives vs true positives
     :rtype: tuple
     """
+
     true_positives = []
 
     # Iterate through the guess list and calculate evaluation results
@@ -77,6 +78,7 @@ def eval_one(edicted, heur, adapt, howmany, pros=False):
              (rounded to 2 decimal places).
     :rtype: tuple
     """
+    
     out = []
     for i in range(1, len(edicted), 2):  # 1 bc skip header
         srcrow, tgtrow = edicted.pop(i), edicted.pop(i)
