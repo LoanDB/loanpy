@@ -4,7 +4,7 @@ This module provides tools for predicting and analyzing changes in the
 horizontal or vertical transfer of words in languages. It includes the
 Adrc class, which supports the adaptation and reconstruction of words based
 on sound and prosodic correspondences and inventories. The module also
-contains functions for repairing phonotactics, handling vowel harmony, and
+contains functions for repairing phonotactics, and
 working with IPA strings.
 
 Horizontal transfer refers to the borrowing of words and linguistic features
@@ -60,34 +60,13 @@ class Adrc():
               howmany=1,
               prosody=""):
         """
-        Adapt loanwords based on various parameters.
+        Predict the adaptation of a loanword in a target recipient language.
 
         :param ipastr: Space-separated tokenised input IPA string.
-        :type ipastr: str
-        :param howmany: Number of adapted words to return.
-        :type howmany: int, optional, default: 1
-        :param prosody: Prosodic structure, e.g. "CVCV"
-        :type prosody: str, optional, default: ""
-        :param phonotactics_filter: Whether to apply a phonotactics filter.
-        :type phonotactics_filter: bool, optional, default: False
-        :param repair_vowelharmony: Whether to repair vowel harmony.
-        :type repair_vowelharmony: bool, optional, default: False
-        :param max_repaired_phonotactics: Maximum number of repaired
-                                          phonotactics.
-        :type max_repaired_phonotactics: int, optional, default: 0
-        :param max_paths2repaired_phonotactics: Maximum number of paths to
-                                                repaired phonotactics.
-        :type max_paths2repaired_phonotactics: int, optional, default: 1
-        :param deletion_cost: Cost of deletion in the phonotactics repair
-                              process.
-        :type deletion_cost: int, optional, default: 100
-        :param insertion_cost: Cost of insertion in the phonotactics
-                               repair process.
-        :type insertion_cost: int, optional, default: 49
-        :param show_workflow: Whether to show the workflow information.
-        :type show_workflow: bool, optional, default: False
-        :return: A string containing the adapted loanwords, separated by
-                 commas.
+        :param howmany: Number of adapted words to return. Default is 1.
+        :param prosody: Prosodic structure of the adapted words (e.g. CVCV). \
+    Default is an empty string. Providing this triggers phonotactic repair.
+        :return: A string containing the adapted loanwords, separated by ", ".
         :rtype: str
         """
         ipalist = ipastr.split(" ")
@@ -107,27 +86,16 @@ class Adrc():
 
         :param ipastr: A string of space-separated IPA symbols representing the
                        phonetic form to be reconstructed.
-        :type ipastr: str
         :param howmany: The maximum number of phonological forms to
-                        return, defaults to 1.
-        :type howmany: int
-        :param phonotactics_filter: If True, applies a phonotactics filter
-                                    to the resulting forms. Defaults to False.
-        :type phonotactics_filter: bool
-        :param vowelharmony_filter: If True, applies a vowel harmony filter
-                                    to the resulting forms. Defaults to False.
-        :type vowelharmony_filter: bool
+                        return. Default is 1.
         :return: A string of reconstructed phonological forms that match
-                 the given IPA string, based on the
-                 sound correspondence dictionary.
+                 the given IPA string, based on the sound correspondence dictionary.
+        :raises ValueError: If any of the IPA symbols in the input string are missing
+                            from the sound correspondence dictionary.
         :rtype: str
         """
 
         ipalist = ipastr.split(" ")
-
-        # apply uralign tags TODO: outsource to pre-processing.
-#        ipalist[0], ipalist[-1] = f"#{ipalist[0]}", f"{ipalist[-1]}#"
-#        ipalist = ipalist + ["-#"]
 
         # if phonemes missing from sound correspondence dict, return which ones
         if not all(phon in self.sc[0] for phon in ipalist):
@@ -147,31 +115,8 @@ class Adrc():
         """
         Repairs the phonotactics (prosody) of an IPA string.
 
-        :param ipalist: A list of IPA symbols representing the
-                       input word.
-        :type ipastr: list
-        :param prosody: A string representing the
-                        prosodic structure of the input word.
-        :type prosody: str
-        :param max_repaired_phonotactics: The maximum number of phonotactics
-                                          structures to use for repairing.
-        :type max_repaired_phonotactics: int, optional
-        :param max_paths2repaired_phonotactics: The maximum number of different
-                                                paths to consider when
-                                                computing
-                                                edit distances between
-                                                phonotactics
-                                                .
-        :type max_paths2repaired_phonotactics: int, optional
-        :param deletion_cost: The cost of deleting a phoneme during the
-                              repair process.
-        :type deletion_cost: int, optional
-        :param insertion_cost: The cost of inserting a phoneme during the
-                               repair process.
-        :type insertion_cost: int, optional
-        :param show_workflow: Whether to display the workflow for debugging
-                              purposes.
-        :type show_workflow: bool, optional
+        :param ipalist: A list of IPA symbols representing the input word.
+        :param prosody: A string representing the prosodic structure of the input word.
         :return: A list of repaired IPA strings.
         :rtype: list
         """
