@@ -9,7 +9,7 @@ Welcome to loanpy's documentation!
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
-   
+
    tutorial.rst
    documentation.rst
 

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial &mdash; Loanpy 3.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Loanpy Documentation" href="documentation.html" />
+    <link rel="prev" title="Welcome to loanpy’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Loanpy
+          </a>
+              <div class="version">
+                3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-installing-loanpy">Step 1: Installing loanpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-importing-loanpy">Step 2: Importing loanpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-loading-data">Step 3: Loading data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-4-analyzing-data">Step 4: Analyzing data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-5-visualizing-results">Step 5: Visualizing results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Loanpy Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Loanpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
+<p>This tutorial will walk you through the process of using loanpy to analyze loanword adaptation patterns.</p>
+<section id="step-1-installing-loanpy">
+<h2>Step 1: Installing loanpy<a class="headerlink" href="#step-1-installing-loanpy" title="Permalink to this heading"></a></h2>
+<p>Before you can use loanpy, you’ll need to install it on your computer. You can do this using pip:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install loanpy</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-importing-loanpy">
+<h2>Step 2: Importing loanpy<a class="headerlink" href="#step-2-importing-loanpy" title="Permalink to this heading"></a></h2>
+<p>Once you’ve installed loanpy, you can import it into your Python script using the <cite>import</cite> statement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">loanpy</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-loading-data">
+<h2>Step 3: Loading data<a class="headerlink" href="#step-3-loading-data" title="Permalink to this heading"></a></h2>
+<p>To analyze loanword adaptation patterns, you’ll need some data to work with. You can load data from a CSV file using the <cite>load_data</cite> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">loanpy</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;mydata.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-4-analyzing-data">
+<h2>Step 4: Analyzing data<a class="headerlink" href="#step-4-analyzing-data" title="Permalink to this heading"></a></h2>
+<p>Now that you have some data loaded into memory, you can analyze it using loanpy’s functions. For example, you can use the <cite>analyze_adaptation</cite> function to compute statistics on loanword adaptation patterns:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">loanpy</span><span class="o">.</span><span class="n">analyze_adaptation</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-5-visualizing-results">
+<h2>Step 5: Visualizing results<a class="headerlink" href="#step-5-visualizing-results" title="Permalink to this heading"></a></h2>
+<p>Finally, you can visualize your results using loanpy’s plotting functions. For example, you can use the <cite>plot_results</cite> function to create a bar chart of the adaptation statistics:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">loanpy</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<p>Congratulations, you’ve completed this tutorial on loanpy! You should now have a good understanding of how to use loanpy to analyze loanword adaptation patterns in your own data. If you have any questions or feedback, please don’t hesitate to reach out to the loanpy development team.</p>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this heading"></a></h2>
+<p>For more information on loanpy and its functions, please refer to the API documentation and user guide on the loanpy website: <a class="reference external" href="https://loanpy.org/">https://loanpy.org/</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to loanpy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="documentation.html" class="btn btn-neutral float-right" title="Loanpy Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Viktor Martinović.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
