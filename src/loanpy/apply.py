@@ -31,28 +31,28 @@ class Adrc():
 
     :param sc: The tab separated correspondence dictionary file.
     :type sc: str, optional
-    :param invs: Path to the prosodic and phoneme inventories file.
-    :type invs: str, optional
+    :param inventory: Path to the prosodic inventory file.
+    :type inventory: str, optional
     """
 
-    def __init__(self, sc="", invs=""):
+    def __init__(self, sc="", inventory=""):
         """
         Constructor for the ADRC class.
 
         :param sc: Path to the sound correspondence dictionary file.
         :type sc: str, optional
-        :param invs: Path to the CVCV and phoneme inventories file.
-        :type invs: str, optional
+        :param inventory: Path to the CVCV and phoneme inventories file.
+        :type inventory: str, optional
         """
         self.sc = None
-        self.invs = None
+        self.inventory = None
         self.workflow = None  # will be filled by self.adapt()
         if sc:
             with open(sc, "r", encoding='utf-8') as f:
                 self.sc = load(f) #  sound correspondence dictionaries
-        if invs:
-            with open(invs, "r", encoding='utf-8') as f:
-                self.invs = load(f) # CVCV and phoneme inventories
+        if inventory:
+            with open(inventory, "r", encoding='utf-8') as f:
+                self.inventory = load(f) # CVCV and phoneme inventories
 
 
     def adapt(self,
@@ -237,7 +237,7 @@ class Adrc():
         :rtype: str
         """
         dist_and_strucs = [
-            (edit_distance_with2ops(struc, i), i) for i in self.invs
+            (edit_distance_with2ops(struc, i), i) for i in self.inventory
             ]
 
         return min(dist_and_strucs)[1]

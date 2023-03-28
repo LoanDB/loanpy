@@ -8,7 +8,7 @@ from pathlib import Path
 testfilesdir = Path(__file__).parent.parent / "test_files"
 PATH2SC_AD = testfilesdir / "sc_ad.json"
 PATH2SC_RC = testfilesdir / "sc_rc.json"
-PATH2INVS = testfilesdir / "invs.json"
+PATH2inventory = testfilesdir / "inventory.json"
 
 def test_adapt(tmp_path):
     sc_path = tmp_path / "sound_correspondences.json"
@@ -35,10 +35,10 @@ dad, dax, dxd, dxx, xad, xax, xxd, xxx"
     # phonotactic repair from heuristics
     sc_path.write_text('[{"d": ["d", "x"], "a": ["a", "x"], "C": ["k"]}, \
 {"d d": 5, "d x": 4, "a a": 7, "a x": 1, "C k": 8}, {}, {}]')
-    invs_path = tmp_path / "inventories.json"
+    inventory_path = tmp_path / "inventories.json"
     # two insertions cheaper than two deletions, so it should pick the 2nd
-    invs_path.write_text('["CV", "CVCVCC"]')
-    adrc = Adrc(sc=sc_path, invs=invs_path)
+    inventory_path.write_text('["CV", "CVCVCC"]')
+    adrc = Adrc(sc=sc_path, inventory=inventory_path)
     assert adrc.adapt("d a d a", 1, "CVCV") == "dadakk"
     assert adrc.adapt("d a d a", 2, "CVCV") == "dadakk, xadakk"
     assert adrc.adapt("d a d a", 3, "CVCV") == "dadakk, daxakk, xadakk"
@@ -49,8 +49,8 @@ dadakk, dadxkk, daxakk, daxxkk, dxdakk, dxdxkk, dxxakk, dxxxkk, xadakk, \
 xadxkk, xaxakk, xaxxkk, xxdakk, xxdxkk, xxxakk, xxxxkk"
 
     # try substitutions
-    invs_path.write_text('["CCCV"]')
-    adrc = Adrc(sc=sc_path, invs=invs_path)
+    inventory_path.write_text('["CCCV"]')
+    adrc = Adrc(sc=sc_path, inventory=inventory_path)
     assert adrc.adapt("d a d a", 1, "CVCV") == "ddka"
 
 def test_reconstruct():
@@ -88,7 +88,7 @@ def test_reconstruct():
         ipastr="#aː r uː# -#", howmany=100) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
 
 def test_repair_phontactics():
-    adrc = Adrc(sc=PATH2SC_AD, invs=PATH2INVS)
+    adrc = Adrc(sc=PATH2SC_AD, inventory=PATH2inventory)
     # test heuristics: keep, delete, insert
     assert adrc.repair_phonotactics(["l", "o", "l"], "CVC") == ["l", "o", "l"]
     assert adrc.repair_phonotactics(["r", "o", "f", "l"],
@@ -237,8 +237,8 @@ def test_get_closest_phonotactics():
     is picked correctly"""
 
     # assert structures are ranked correctly
-    adrc = Adrc(invs=PATH2INVS)
-    # identical one in invs is the closest
+    adrc = Adrc(inventory=PATH2inventory)
+    # identical one in inventory is the closest
     assert adrc.get_closest_phonotactics("CVC") == "CVC"
     assert adrc.get_closest_phonotactics("CVCCV") == "CVCCV"
     assert adrc.get_closest_phonotactics("CVCVCV") == "CVCVCV"

@@ -3,7 +3,7 @@
 import re
 
 from loanpy.apply import Adrc
-from loanpy.recover import get_correspondences, get_invs
+from loanpy.recover import get_correspondences, get_inventory
 
 def eval_all(edicted, heur, adapt, guess_list, pros=False):
     """
@@ -66,7 +66,7 @@ def eval_one(edicted, heur, adapt, howmany, pros=False):
         src_pros = srcrow[4] if pros else ""
         adrc = Adrc()
         adrc.sc = get_correspondences(edicted, heur)
-        adrc.invs = get_invs(edicted)
+        adrc.inventory = get_inventory(edicted)
         if adapt:
             ad = adrc.adapt(src, howmany, src_pros).split(", ")
             #print("tgt: ", tgt, "src: ", src, ", ad: ", ad)

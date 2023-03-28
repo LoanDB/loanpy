@@ -18,7 +18,7 @@ class AdrcMonkey:
     def __init__(self, *args):
         self.init_called_with = [*args]
         self.sc = []
-        self.invs = []
+        self.inventory = []
         self.adapt_returns = iter(["tip", "sip"])
         self.adapt_called_with = []
         self.reconstruct_returns = iter(["tip", "sip"])
@@ -33,10 +33,10 @@ class AdrcMonkey:
 adrc_monkey = AdrcMonkey()
 @patch("loanpy.eval.Adrc", side_effect=[adrc_monkey, adrc_monkey])
 @patch("loanpy.eval.get_correspondences")
-@patch("loanpy.eval.get_invs")
-def test_eval_one_adapt(get_invs_mock, get_correspondences_mock, adrc_mock):
+@patch("loanpy.eval.get_inventory")
+def test_eval_one_adapt(get_inventory_mock, get_correspondences_mock, adrc_mock):
     # define patched functions' return value
-    get_invs_mock.return_value = 321
+    get_inventory_mock.return_value = 321
     get_correspondences_mock.return_value = 123
     # define input variables
     edicted = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
@@ -59,17 +59,17 @@ def test_eval_one_adapt(get_invs_mock, get_correspondences_mock, adrc_mock):
                                             ['#aː ɟ uː#', 2, "VCV"]
                                             ]
     get_correspondences_mock.assert_called_with(edicted, heuristic)
-    get_invs_mock.assert_called_with(edicted)
+    get_inventory_mock.assert_called_with(edicted)
     assert not adrc_monkey.init_called_with
 
 adrc_monkey2 = AdrcMonkey()
 @patch("loanpy.eval.Adrc", side_effect=[adrc_monkey2, adrc_monkey2])
 @patch("loanpy.eval.get_correspondences")
-@patch("loanpy.eval.get_invs")
+@patch("loanpy.eval.get_inventory")
 @patch("loanpy.eval.re.match")
-def test_eval_one_reconstruct(match_mock, get_invs_mock, get_correspondences_mock, adrc_mock):
+def test_eval_one_reconstruct(match_mock, get_inventory_mock, get_correspondences_mock, adrc_mock):
     match_mock.return_value = 111
-    get_invs_mock.return_value = 321
+    get_inventory_mock.return_value = 321
     get_correspondences_mock.return_value = 123
     adrc_mock.return_value = AdrcMonkey()
     edicted = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],

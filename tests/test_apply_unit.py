@@ -16,15 +16,15 @@ def test_init_with_files(tmp_path):
     # Create temporary files for sound correspondence dictionary and inventories
     sc_path = tmp_path / "sound_correspondences.json"
     sc_path.write_text('{"a": {"b": "c"}}')
-    invs_path = tmp_path / "inventories.json"
-    invs_path.write_text('["CVCV"]')
+    inventory_path = tmp_path / "inventories.json"
+    inventory_path.write_text('["CVCV"]')
 
     # Initialize Adrc object with temporary file paths
-    obj = Adrc(sc=str(sc_path), invs=str(invs_path))
+    obj = Adrc(sc=str(sc_path), inventory=str(inventory_path))
 
     # Assert that sound correspondence dictionary and inventories were loaded properly
     assert obj.sc == {"a": {"b": "c"}}
-    assert obj.invs == ["CVCV"]
+    assert obj.inventory == ["CVCV"]
 
 def test_init_without_files():
     # Initialize Adrc object without files
@@ -32,12 +32,12 @@ def test_init_without_files():
 
     # Assert that sound correspondence dictionary and inventories are None
     assert obj.sc is None
-    assert obj.invs is None
+    assert obj.inventory is None
 
 class AdrcMonkey:
     def __init__(self):
         self.sc = [{},{},{},{},{},{}]
-        self.invs = []
+        self.inventory = []
 
 def test_move_sc():
     """test if sound correspondences are moved correctly"""
@@ -257,7 +257,7 @@ class AdrcMonkeyReconstruct:
         read_sc_returns):
         self.read_sc_called_with = []
         self.read_sc_returns = read_sc_returns
-        self.invs = []
+        self.inventory = []
         self.sc = [{},{},{},{},{},{}]
 
     def read_sc(self, ipalist, howmany):
@@ -386,7 +386,7 @@ def test_repair_phonotactics2(apply_edit_mock, tuples2editops_mock,
     class AdrcMonkeyrepair_phonotactics:
         def __init__(self):
             self.sc = [{}, {}, {}, {}, {}, {}]
-            self.invs =[]
+            self.inventory =[]
 
     # teardown/setup: overwrite mock class, plug in sc[3],
     monkey_adrc = AdrcMonkeyrepair_phonotactics()
@@ -429,7 +429,7 @@ class AdrcMonkeyAdapt:
         self.repair_phonotactics_called_with = None
         self.read_sc_returns = iter(read_screturns)
         self.read_sc_called_with = []
-        self.invs = ["CVCCV"]
+        self.inventory = ["CVCCV"]
 
     def repair_phonotactics(self, *args):
         self.repair_phonotactics_called_with = [*args]
@@ -486,11 +486,11 @@ class TestRankClosestPhonotactics:
     @pytest.fixture
     def adrc_instance(self):
         with TemporaryDirectory() as temp_dir:
-            temp_path = Path(temp_dir) / "invs.json"
+            temp_path = Path(temp_dir) / "inventory.json"
             with open(temp_path, "w+", encoding='utf-8') as f:
                 f.write(json.dumps(["CVCV", "CVVC", "VCVC",
                 "CCVV", "CVC", "CVV", "VCV", "CV"]))
-            yield Adrc(invs=temp_path)
+            yield Adrc(inventory=temp_path)
 
     @patch('loanpy.apply.edit_distance_with2ops')
     @patch('loanpy.apply.min')
@@ -501,7 +501,7 @@ class TestRankClosestPhonotactics:
         result = adrc_instance.get_closest_phonotactics("CVCV")
         assert result == "CVCV"
 
-        calls = [call("CVCV", i) for i in adrc_instance.invs]
+        calls = [call("CVCV", i) for i in adrc_instance.inventory]
         mock_edit_distance.assert_has_calls(calls)
         mock_min.assert_called_once_with([(0, 'CVCV'),
         (1, 'CVVC'), (1, 'VCVC'), (2, 'CCVV'), (2, 'CVC'), (2, 'CVV'),

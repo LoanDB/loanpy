@@ -1,8 +1,6 @@
 Loanpy Documentation
 ====================
 
-loanpy
-------
 .. automodule:: loanpy.__init__
    :members:
 

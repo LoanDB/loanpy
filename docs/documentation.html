@@ -46,11 +46,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Loanpy Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-loanpy.__init__">loanpy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-loanpy.recover">recover</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#loanpy.recover.get_correspondences"><code class="docutils literal notranslate"><span class="pre">get_correspondences()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#loanpy.recover.get_heur"><code class="docutils literal notranslate"><span class="pre">get_heur()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#loanpy.recover.get_invs"><code class="docutils literal notranslate"><span class="pre">get_invs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loanpy.recover.get_inventory"><code class="docutils literal notranslate"><span class="pre">get_inventory()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#loanpy.recover.uralign"><code class="docutils literal notranslate"><span class="pre">uralign()</span></code></a></li>
 </ul>
 </li>
@@ -119,10 +118,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="loanpy-documentation">
-<h1>Loanpy Documentation<a class="headerlink" href="#loanpy-documentation" title="Permalink to this heading"></a></h1>
-<section id="module-loanpy.__init__">
-<span id="loanpy"></span><h2>loanpy<a class="headerlink" href="#module-loanpy.__init__" title="Permalink to this heading"></a></h2>
+  <section id="module-loanpy.__init__">
+<span id="loanpy-documentation"></span><h1>Loanpy Documentation<a class="headerlink" href="#module-loanpy.__init__" title="Permalink to this heading"></a></h1>
 <a class="reference internal image-reference" href="_images/white_logo_dark_background.jpg"><img alt="_images/white_logo_dark_background.jpg" src="_images/white_logo_dark_background.jpg" style="width: 680.0px; height: 260.2px;" /></a>
 <p>loanpy is a toolkit for solving various linguistic tasks such as:</p>
 <blockquote>
@@ -137,10 +134,9 @@
 <a class="reference external image-reference" href="https://github.com/martino-vic/loanpy"><img alt="_images/Octocat.png" src="_images/Octocat.png" style="width: 160.0px; height: 133.0px;" /></a>
 <a class="reference external image-reference" href="https://zenodo.org/record/4127115#.YHCQwej7SLQ"><img alt="_images/zenodo-gradient-200.png" src="_images/zenodo-gradient-200.png" style="width: 100.0px; height: 40.0px;" /></a>
 <p>loanpy is based on the standards offered by Cross-Linguistic Data Formats (CLDF), more information on which can be found at <a class="reference external" href="https://cldf.clld.org/">https://cldf.clld.org/</a></p>
-</section>
 <section id="module-loanpy.recover">
 <span id="recover"></span><h2>recover<a class="headerlink" href="#module-loanpy.recover" title="Permalink to this heading"></a></h2>
-<p>The recover module of the loanpy package contains several functions to extract and manipulate linguistic data stored in tab-separated tables. The main function is get_correspondences, which extracts sound and prosodic correspondences from the table and returns them as six dictionaries, each with corresponding frequencies and COGID values. The module also includes uralign, a function that aligns Uralic input strings based on custom rules, and get_heur, which computes a heuristic mapping between phonemes in a target language’s inventory and all phonemes in the IPA sound system based on Euclidean distance of their feature vectors. Finally, get_invs extracts all types of prosodic structures from a target language in a given table.</p>
+<p>The recover module of the loanpy package contains several functions to extract and manipulate linguistic data stored in tab-separated tables. The main function is get_correspondences, which extracts sound and prosodic correspondences from the table and returns them as six dictionaries, each with corresponding frequencies and COGID values. The module also includes uralign, a function that aligns Uralic input strings based on custom rules, and get_heur, which computes a heuristic mapping between phonemes in a target language’s inventory and all phonemes in the IPA sound system based on Euclidean distance of their feature vectors. Finally, get_inventory extracts all types of prosodic structures from a target language in a given table.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.recover.get_correspondences">
 <span class="sig-prename descclassname"><span class="pre">loanpy.recover.</span></span><span class="sig-name descname"><span class="pre">get_correspondences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heur</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.recover.get_correspondences" title="Permalink to this definition"></a></dt>
@@ -203,8 +199,8 @@ report file is not found.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="loanpy.recover.get_invs">
-<span class="sig-prename descclassname"><span class="pre">loanpy.recover.</span></span><span class="sig-name descname"><span class="pre">get_invs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.recover.get_invs" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="loanpy.recover.get_inventory">
+<span class="sig-prename descclassname"><span class="pre">loanpy.recover.</span></span><span class="sig-name descname"><span class="pre">get_inventory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.recover.get_inventory" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts all types of CVCV and phonemes from uneven rows of the
 given table.</p>
 <dl class="field-list simple">
@@ -260,7 +256,7 @@ between languages in contact, while vertical transfer refers to the inheritance
 of words and linguistic features from a parent language to its descendants.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="loanpy.apply.Adrc">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loanpy.apply.</span></span><span class="sig-name descname"><span class="pre">Adrc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.apply.Adrc" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">loanpy.apply.</span></span><span class="sig-name descname"><span class="pre">Adrc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.apply.Adrc" title="Permalink to this definition"></a></dt>
 <dd><p>Adapt or Reconstruct (ADRC) class.</p>
 <p>This class provides functionality for automatically
 adapting or reconstructing words of a language,
@@ -270,7 +266,7 @@ Inputs are generated by loanpy.recover.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sc</strong> (<em>str</em><em>, </em><em>optional</em>) – The tab separated correspondence dictionary file.</p></li>
-<li><p><strong>invs</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the prosodic and phoneme inventories file.</p></li>
+<li><p><strong>inventory</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the prosodic inventory file.</p></li>
 </ul>
 </dd>
 </dl>

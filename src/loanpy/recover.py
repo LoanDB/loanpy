@@ -10,7 +10,7 @@ includes uralign, a function that aligns Uralic input strings based on custom \
 rules, and get_heur, which computes a heuristic mapping between phonemes \
 in a target language's inventory and all phonemes in the IPA sound system \
 based on Euclidean distance of their feature vectors. Finally, \
-get_invs extracts all types of prosodic structures \
+get_inventory extracts all types of prosodic structures \
 from a target language in a given table.
 """
 
@@ -159,7 +159,7 @@ def get_heur(tgtlg):
     return heur
 
 
-def get_invs(table):
+def get_inventory(table):
     """
     Extracts all types of CVCV and phonemes from uneven rows of the
     given table.
