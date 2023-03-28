@@ -10,6 +10,7 @@ Welcome to loanpy's documentation!
    :maxdepth: 3
    :caption: Contents:
    
+   tutorial.rst
    documentation.rst
 
 Indices and tables
