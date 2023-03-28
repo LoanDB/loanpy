@@ -1,6 +1,9 @@
-My Package Documentation
+Loanpy Documentation
 ========================
 
+.. automodule:: loanpy.__init__
+   :members:
+   
 .. automodule:: loanpy.recover
    :members:
    
@@ -10,4 +13,9 @@ My Package Documentation
 .. automodule:: loanpy.eval
    :members:
    
+.. automodule:: loanpy.find
+   :members:
+   
+.. automodule:: loanpy.help
+   :members:
 
