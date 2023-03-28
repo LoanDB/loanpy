@@ -2,10 +2,10 @@
 """
 Module for analyzing and processing linguistic data.
 
-This module contains functions for analyzing linguistic data, particularly \
-focusing on finding optimal year cutoffs, manipulating IPA data, and \
-processing cognate sets. It provides helper functions for reading and \
-manipulating linguistic \
+This module contains functions for analyzing linguistic data, particularly
+focusing on finding optimal year cutoffs, manipulating IPA data, and
+processing cognate sets. It provides helper functions for reading and
+manipulating linguistic
 datasets and performing various operations such as filtering and validation.
 """
 from collections import Counter

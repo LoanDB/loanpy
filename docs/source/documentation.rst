@@ -4,28 +4,29 @@ Loanpy Documentation
 .. automodule:: loanpy.__init__
    :members:
 
-recover
--------
-.. automodule:: loanpy.recover
+Sound Correspondence Miner
+--------------------------
+.. automodule:: loanpy.scminer
    :members:
 
-apply
------
-.. automodule:: loanpy.apply
+Sound Correspondence Applier
+----------------------------
+.. automodule:: loanpy.scapplier
    :members:
 
-eval
-----
-.. automodule:: loanpy.eval
+Evaluate Sound Correspondence Applier
+-------------------------------------
+.. automodule:: loanpy.eval_sca
    :members:
 
-find
-----
-.. automodule:: loanpy.find
+Loan Finder
+-----------
+.. automodule:: loanpy.loanfinder
    :members:
 
-help
-----
-.. automodule:: loanpy.help
+Utility Functions
+------------------
+.. automodule:: loanpy.utils
    :members:
+
 
