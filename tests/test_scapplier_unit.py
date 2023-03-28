@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""unit tests for loanpy.apply.py 2.5 with pytest 7.1.2"""
+"""unit tests for loanpy.scapplier.py 2.5 with pytest 7.1.2"""
 
 import pytest
-from loanpy.apply import (Adrc, move_sc, edit_distance_with2ops, apply_edit,
+from loanpy.scapplier import (Adrc, move_sc, edit_distance_with2ops, apply_edit,
                           list2regex, tuples2editops, get_mtx,
                           mtx2graph, dijkstra, add_edge, substitute_operations)
 from unittest.mock import patch, call
@@ -146,7 +146,7 @@ def test_read_sc():
     # set up mock class, plug in mock sc[0], mock tokenise, mock math.prod
     monkey_adrc = AdrcMonkeyread_sc()
     monkey_adrc.sc[0] = {"k": ["k", "h"], "i": ["e", "o"]}
-    with patch("loanpy.apply.prod") as prod_mock:
+    with patch("loanpy.scapplier.prod") as prod_mock:
         prod_mock.return_value = 16
 
         # assert
@@ -163,7 +163,7 @@ def test_read_sc():
     # set up mock class, plug in mock sc[0], mock math.prod
     monkey_adrc = AdrcMonkeyread_sc()
     monkey_adrc.sc[0] = {"k": ["k", "h"], "i": ["e", "o"]}
-    with patch("loanpy.apply.prod", side_effect=[16, 1]) as prod_mock:
+    with patch("loanpy.scapplier.prod", side_effect=[16, 1]) as prod_mock:
 
         # assert read_sc works with tokenised list as input
         assert Adrc.read_sc(
@@ -181,9 +181,9 @@ def test_read_sc():
     # set up mock class, plug in mock sc[0], mock move_sc, mock math.prod
     monkey_adrc = AdrcMonkeyread_sc(get_diff=[[4, 5]])
     monkey_adrc.sc[0] = {"k": ["k", "h"], "i": ["e", "o"]}
-    with patch("loanpy.apply.move_sc") as move_sc_mock:
+    with patch("loanpy.scapplier.move_sc") as move_sc_mock:
         move_sc_mock.return_value = ([["$"], ["o", "$"]], [["k", "h"], ["e"]])
-        with patch("loanpy.apply.prod", side_effect=[4, 1, 2]) as prod_mock:
+        with patch("loanpy.scapplier.prod", side_effect=[4, 1, 2]) as prod_mock:
 
             # assert sound correspondences are read in correctly
             assert Adrc.read_sc(self=monkey_adrc, ipa=["k", "i"],
@@ -209,8 +209,8 @@ def test_read_sc():
         ([["s", "$"], ["o", "$"], ["v", "$"]], [["k", "h"], ["e"], ["b"]]),
         ([["s", "$"], ["$"], ["v", "$"]], [["k", "h"], ["e", "o"], ["b"]])
     ]
-    with patch("loanpy.apply.move_sc", side_effect=se_move_sc) as move_sc_mock:
-        with patch("loanpy.apply.prod", side_effect=[
+    with patch("loanpy.scapplier.move_sc", side_effect=se_move_sc) as move_sc_mock:
+        with patch("loanpy.scapplier.prod", side_effect=[
                 12, 1, 1, 2, 4]) as prod_mock:
             # prod "3" gets only called once, bc difflist1!=difflist2, so 2nd
             # while loop doesnt call prod
@@ -236,7 +236,7 @@ def test_read_sc():
     # tear down
     del AdrcMonkeyread_sc, monkey_adrc, se_move_sc
 
-@patch("loanpy.apply.list2regex", side_effect=["(k)", "(i)", "(h)", "(e)"])
+@patch("loanpy.scapplier.list2regex", side_effect=["(k)", "(i)", "(h)", "(e)"])
 def test_reconstruct1(list2regex_mock):
     """test first break: some sounds are not in sc[0]"""
 
@@ -264,7 +264,7 @@ class AdrcMonkeyReconstruct:
         self.read_sc_called_with.append((ipalist, howmany))
         return self.read_sc_returns
 
-@patch("loanpy.apply.list2regex", side_effect=["(k)", "(i)", "(h)", "(e)"])
+@patch("loanpy.scapplier.list2regex", side_effect=["(k)", "(i)", "(h)", "(e)"])
 def test_reconstruct2(list2regex_mock):
     """Test if reconstructions with howmany=1 work fine"""
 
@@ -290,7 +290,7 @@ def test_reconstruct2(list2regex_mock):
         call(["k"]), call(["i"]),
         call(["h"]), call(["e"])]
 
-@patch("loanpy.apply.list2regex", side_effect=["(k|h)", "(i)", "(h)", "(e)"])
+@patch("loanpy.scapplier.list2regex", side_effect=["(k|h)", "(i)", "(h)", "(e)"])
 def test_reconstruct3(list2regex_mock):
     """Test if reconstructions with howmany=2 work fine"""
 
@@ -315,11 +315,11 @@ def test_reconstruct3(list2regex_mock):
         call(["k", "h"]), call(["i"]),
         call(["h"]), call(["e"])]
 
-@patch("loanpy.apply.get_mtx")
-@patch("loanpy.apply.mtx2graph")
-@patch("loanpy.apply.dijkstra")
-@patch("loanpy.apply.tuples2editops")
-@patch("loanpy.apply.apply_edit")
+@patch("loanpy.scapplier.get_mtx")
+@patch("loanpy.scapplier.mtx2graph")
+@patch("loanpy.scapplier.dijkstra")
+@patch("loanpy.scapplier.tuples2editops")
+@patch("loanpy.scapplier.apply_edit")
 def test_repair_phonotactics1(apply_edit_mock, tuples2editops_mock,
     dijkstra_mock, mtx2graph_mock, get_mtx_mock):
     """
@@ -369,11 +369,11 @@ def test_repair_phonotactics1(apply_edit_mock, tuples2editops_mock,
                                            "C", "V")
     apply_edit_mock.assert_called_with("k", tuples2editops_mock.return_value)
 
-@patch("loanpy.apply.get_mtx")
-@patch("loanpy.apply.mtx2graph")
-@patch("loanpy.apply.dijkstra")
-@patch("loanpy.apply.tuples2editops")
-@patch("loanpy.apply.apply_edit")
+@patch("loanpy.scapplier.get_mtx")
+@patch("loanpy.scapplier.mtx2graph")
+@patch("loanpy.scapplier.dijkstra")
+@patch("loanpy.scapplier.tuples2editops")
+@patch("loanpy.scapplier.apply_edit")
 def test_repair_phonotactics2(apply_edit_mock, tuples2editops_mock,
     dijkstra_mock, mtx2graph_mock, get_mtx_mock):
     """
@@ -441,7 +441,7 @@ class AdrcMonkeyAdapt:
 
     # create instance of mock class
 
-@patch("loanpy.apply.product")
+@patch("loanpy.scapplier.product")
 def test_adapt1(product_mock):
     """test if words are adapted correctly without prosody, howmany=4"""
 
@@ -463,7 +463,7 @@ def test_adapt1(product_mock):
             ["k", "h"], ["e", "o"], ["k"], ["e"]
                                    )
 
-@patch("loanpy.apply.product")
+@patch("loanpy.scapplier.product")
 def test_adapt2(product_mock):
     """test if words are adapted correctly with prosody, howmany=8"""
 
@@ -492,8 +492,8 @@ class TestRankClosestPhonotactics:
                 "CCVV", "CVC", "CVV", "VCV", "CV"]))
             yield Adrc(inventory=temp_path)
 
-    @patch('loanpy.apply.edit_distance_with2ops')
-    @patch('loanpy.apply.min')
+    @patch('loanpy.scapplier.edit_distance_with2ops')
+    @patch('loanpy.scapplier.min')
     def test_get_closest_phonotactics_all(self,
             mock_min, mock_edit_distance, adrc_instance):
         mock_edit_distance.side_effect = [0, 1, 1, 2, 2, 2, 2, 2]

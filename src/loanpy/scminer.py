@@ -19,7 +19,7 @@ import json
 import math
 from pathlib import Path
 
-from loanpy.help import read_ipa_all
+from loanpy.utils import read_ipa_all
 
 def get_correspondences(table, heur=""):
     """

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from loanpy.help import prefilter
+from loanpy.utils import prefilter
 
 def test_prefilter1():
     data = [

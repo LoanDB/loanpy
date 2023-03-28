@@ -18,8 +18,8 @@ by quantifying the success rate of predictive models.
 """
 import re
 
-from loanpy.apply import Adrc
-from loanpy.recover import get_correspondences, get_inventory
+from loanpy.scapplier import Adrc
+from loanpy.scminer import get_correspondences, get_inventory
 
 def eval_all(edicted, heur, adapt, guess_list, pros=False):
     """

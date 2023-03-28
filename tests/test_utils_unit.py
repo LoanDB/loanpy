@@ -3,7 +3,7 @@ import pytest
 #from pytest_mock import MockerFixture
 from unittest.mock import patch
 
-from loanpy.help import (find_optimal_year_cutoff, cvgaps, prefilter,
+from loanpy.utils import (find_optimal_year_cutoff, cvgaps, prefilter,
 is_valid_language_sequence, is_same_length_alignments, read_ipa_all, get_prosody,
 modify_ipa_all, prod)
 
@@ -46,7 +46,7 @@ def test_cvgaps():
     assert cvgaps("b - a", "b l a") == ["b C a", "b l a"]
     assert cvgaps("b l a", "b - a") == ["b l a", "b - a"]
 
-@patch("loanpy.help.is_valid_language_sequence")
+@patch("loanpy.utils.is_valid_language_sequence")
 def test_prefilter1(is_valid_language_sequence_mock):
     is_valid_language_sequence_mock.return_value = True
     data = [
@@ -87,7 +87,7 @@ def test_prefilter1(is_valid_language_sequence_mock):
     assert prefilter(data, "de", "en") == expected1
     assert prefilter(data, "en", "de") == expected2
 
-@patch("loanpy.help.is_valid_language_sequence")
+@patch("loanpy.utils.is_valid_language_sequence")
 def test_prefilter2(is_valid_language_sequence_mock):
     is_valid_language_sequence_mock.return_value = False
     data = data = [
@@ -169,7 +169,7 @@ def test_read_ipa_all():
     assert isinstance(result, list)
     assert len(result) == 6492
 
-@patch("loanpy.help.read_ipa_all")
+@patch("loanpy.utils.read_ipa_all")
 def test_get_prosody(read_ipa_all_mock):
     read_ipa_all_mock.return_value = [
     ["ipa", "bla", "cons"],

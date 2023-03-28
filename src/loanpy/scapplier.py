@@ -17,7 +17,7 @@ from collections import OrderedDict
 import heapq
 from itertools import cycle, product
 from json import load
-from loanpy.help import prod
+from loanpy.utils import prod
 import re
 
 class Adrc():

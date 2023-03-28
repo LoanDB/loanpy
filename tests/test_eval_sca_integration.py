@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-from loanpy.eval import eval_one, eval_all
+from loanpy.eval_sca import eval_one, eval_all
 
 TESTFILESDIR = Path(__file__).parent.parent / "test_files"
 

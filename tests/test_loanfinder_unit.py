@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import pytest
-from loanpy.find import phonetic_matches, semantic_matches
+from loanpy.loanfinder import phonetic_matches, semantic_matches
 from unittest.mock import patch, call
 
-@patch("loanpy.find.re.match", side_effect = [0, 0, 1, 0, 0, 0, 0, 0])
+@patch("loanpy.loanfinder.re.match", side_effect = [0, 0, 1, 0, 0, 0, 0, 0])
 def test_phonetic_matches(re_match_mock):
     donor = [
         ['0', 'Donorese-0_hot1-1', 'e g e g', 'VCVC', 'hot', ['igig', 'agag']],
@@ -29,7 +29,7 @@ def test_phonetic_matches(re_match_mock):
         call('^(i|u)(i|u)(g)(g)$', 'agga'),
     ]
 
-@patch("loanpy.find.heapq.nlargest")
+@patch("loanpy.loanfinder.heapq.nlargest")
 def test_semantic_matches(nlargest_mock):
     nlargest_mock.return_value = [['1', '0', '1', 'donor', 'e g g e',
         'iggi', 'dog', '3', 'y'], ['0', '0', '0', 'recipient', 'i k k i',

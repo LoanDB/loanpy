@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import pytest
-from loanpy.eval import eval_all, eval_one
+from loanpy.eval_sca import eval_all, eval_one
 from unittest.mock import call, patch, MagicMock
 
-@patch('loanpy.eval.eval_one', side_effect=[0.4, 0.5, 0.6])
+@patch('loanpy.eval_sca.eval_one', side_effect=[0.4, 0.5, 0.6])
 def test_evaluate_all_returns_expected_output(mock_eval_one):
 
     fp_vs_tp = eval_all(
@@ -31,9 +31,9 @@ class AdrcMonkey:
         return next(self.reconstruct_returns)
 
 adrc_monkey = AdrcMonkey()
-@patch("loanpy.eval.Adrc", side_effect=[adrc_monkey, adrc_monkey])
-@patch("loanpy.eval.get_correspondences")
-@patch("loanpy.eval.get_inventory")
+@patch("loanpy.eval_sca.Adrc", side_effect=[adrc_monkey, adrc_monkey])
+@patch("loanpy.eval_sca.get_correspondences")
+@patch("loanpy.eval_sca.get_inventory")
 def test_eval_one_adapt(get_inventory_mock, get_correspondences_mock, adrc_mock):
     # define patched functions' return value
     get_inventory_mock.return_value = 321
@@ -63,10 +63,10 @@ def test_eval_one_adapt(get_inventory_mock, get_correspondences_mock, adrc_mock)
     assert not adrc_monkey.init_called_with
 
 adrc_monkey2 = AdrcMonkey()
-@patch("loanpy.eval.Adrc", side_effect=[adrc_monkey2, adrc_monkey2])
-@patch("loanpy.eval.get_correspondences")
-@patch("loanpy.eval.get_inventory")
-@patch("loanpy.eval.re.match")
+@patch("loanpy.eval_sca.Adrc", side_effect=[adrc_monkey2, adrc_monkey2])
+@patch("loanpy.eval_sca.get_correspondences")
+@patch("loanpy.eval_sca.get_inventory")
+@patch("loanpy.eval_sca.re.match")
 def test_eval_one_reconstruct(match_mock, get_inventory_mock, get_correspondences_mock, adrc_mock):
     match_mock.return_value = 111
     get_inventory_mock.return_value = 321

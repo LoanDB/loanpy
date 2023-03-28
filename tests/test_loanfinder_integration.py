@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from loanpy.find import phonetic_matches, semantic_matches
+from loanpy.loanfinder import phonetic_matches, semantic_matches
 
 def test_phonetic_matches():
     donor = [

@@ -2,7 +2,7 @@
 """unit tests for loanpy.apply.py 2.5 with pytest 7.1.2"""
 
 import pytest
-from loanpy.apply import Adrc
+from loanpy.scapplier import Adrc
 from pathlib import Path
 
 testfilesdir = Path(__file__).parent.parent / "test_files"
