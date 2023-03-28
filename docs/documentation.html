@@ -143,7 +143,17 @@
 <p>loanpy is based on the standards offered by Cross-Linguistic Data Formats (CLDF), more information on which can be found at <a class="reference external" href="https://cldf.clld.org/">https://cldf.clld.org/</a></p>
 <section id="module-loanpy.scminer">
 <span id="sound-correspondence-miner"></span><h2>Sound Correspondence Miner<a class="headerlink" href="#module-loanpy.scminer" title="Permalink to this heading"></a></h2>
-<p>The recover module of the loanpy package contains several functions to extract and manipulate linguistic data stored in tab-separated tables. The main function is get_correspondences, which extracts sound and prosodic correspondences from the table and returns them as six dictionaries, each with corresponding frequencies and COGID values. The module also includes uralign, a function that aligns Uralic input strings based on custom rules, and get_heur, which computes a heuristic mapping between phonemes in a target language’s inventory and all phonemes in the IPA sound system based on Euclidean distance of their feature vectors. Finally, get_inventory extracts all types of prosodic structures from a target language in a given table.</p>
+<p>The sound correspondence miner module contains several functions to
+extract and manipulate linguistic data stored in tab-separated tables.
+The main function is get_correspondences, which extracts sound and prosodic
+correspondences from the table and returns them as six dictionaries,
+each with corresponding frequencies and COGID values. The module also
+includes uralign, a function that aligns Uralic input strings based on custom
+rules, and get_heur, which computes a heuristic mapping between phonemes
+in a target language’s inventory and all phonemes in the IPA sound system
+based on Euclidean distance of their feature vectors. Finally,
+get_inventory extracts all types of prosodic structures
+from a target language in a given table.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.scminer.get_correspondences">
 <span class="sig-prename descclassname"><span class="pre">loanpy.scminer.</span></span><span class="sig-name descname"><span class="pre">get_correspondences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heur</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.scminer.get_correspondences" title="Permalink to this definition"></a></dt>
@@ -151,12 +161,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>table</strong> (<em>list</em><em> of </em><em>lists</em>) – A list of lists representing the table that was edited with Edictor. It must contain columns named “ALIGNMENT”, “PROSODY”, and “COGID”.</p></li>
-<li><p><strong>heur</strong> (<em>str</em>) – Optional string containing heuristic correspondences to be merged with the output. Defaults to an empty string.</p></li>
+<li><p><strong>table</strong> (<em>list</em><em> of </em><em>lists</em>) – A list of lists representing the table that was edited
+with Edictor. It must contain columns
+named “ALIGNMENT”, “PROSODY”, and “COGID”.</p></li>
+<li><p><strong>heur</strong> (<em>str</em>) – Optional string containing heuristic correspondences
+to be merged with the output. Defaults to an empty string.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of six dictionaries containing correspondences and their frequencies:
+<dd class="field-even"><p>A list of six dictionaries containing correspondences
+and their frequencies:
 1) Sound correspondences.
 2) Frequency of sound correspondences.
 3) COGID values for sound correspondences.
@@ -168,6 +182,10 @@
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://digling.org/edictor/">Edictor</a></p>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -843,18 +861,18 @@ by loanID.</p>
 <section id="module-loanpy.utils">
 <span id="utility-functions"></span><h2>Utility Functions<a class="headerlink" href="#module-loanpy.utils" title="Permalink to this heading"></a></h2>
 <p>Module for analyzing and processing linguistic data.</p>
-<p>This module contains functions for analyzing linguistic data, particularly
+<p>This module contains functions for analysing linguistic data, particularly
 focusing on finding optimal year cutoffs, manipulating IPA data, and
 processing cognate sets. It provides helper functions for reading and
-manipulating linguistic
-datasets and performing various operations such as filtering and validation.</p>
+processing linguistic datasets and performing various operations such as
+filtering and validation.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.utils.cvgaps">
 <span class="sig-prename descclassname"><span class="pre">loanpy.utils.</span></span><span class="sig-name descname"><span class="pre">cvgaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.utils.cvgaps" title="Permalink to this definition"></a></dt>
 <dd><p>Replace gaps in the first input string based on the second input string.</p>
-<p>This function takes two aligned strings, replaces “-” in the first string with
-either “C” (consonant) or “V” (vowel) depending on the corresponding character
-in the second string, and returns the new strings as a list.</p>
+<p>This function takes two aligned strings, replaces “-” in the first string
+with either “C” (consonant) or “V” (vowel) depending on the corresponding
+character in the second string, and returns the new strings as a list.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -863,10 +881,11 @@ in the second string, and returns the new strings as a list.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list containing the modified first string and the unchanged second string.</p>
+<dd class="field-even"><p>A list containing the modified first string and the unchanged
+second string.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[str]</p>
+<dd class="field-odd"><p>list of strings</p>
 </dd>
 </dl>
 </dd></dl>
@@ -875,16 +894,15 @@ in the second string, and returns the new strings as a list.</p>
 <dt class="sig sig-object py" id="loanpy.utils.find_optimal_year_cutoff">
 <span class="sig-prename descclassname"><span class="pre">loanpy.utils.</span></span><span class="sig-name descname"><span class="pre">find_optimal_year_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origins</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.utils.find_optimal_year_cutoff" title="Permalink to this definition"></a></dt>
 <dd><p>Determine the optimal year cutoff for a given dataset and origins.</p>
-<p>This function reads TSV content from a given dataset and origins, calculates
-the accumulated count of words with the specified origin until each given
-year, and finds the optimal year cutoff using the distance to the upper left
-corner of the accumulated count.</p>
+<p>This function reads TSV content from a given dataset and origins,
+calculates the accumulated count of words with the specified origin until
+each given year, and finds the optimal year cutoff using the distance to
+the upper left corner of the accumulated count.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tsv</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A list of lists, where the first list is the header and the following
-lists contain data rows.</p></li>
-<li><p><strong>origins</strong> (<em>Set</em><em>[</em><em>str</em><em>]</em>) – A set of origins to be considered for counting words.</p></li>
+<li><p><strong>tsv</strong> (<em>list</em><em> of </em><em>list</em><em> of </em><em>strings</em>) – A table where the first row is the header and the</p></li>
+<li><p><strong>origins</strong> (<em>a set</em><em> of </em><em>strings</em>) – A set of origins to be considered for counting words.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -920,8 +938,9 @@ by space or dot.</p>
 <dt class="sig sig-object py" id="loanpy.utils.is_same_length_alignments">
 <span class="sig-prename descclassname"><span class="pre">loanpy.utils.</span></span><span class="sig-name descname"><span class="pre">is_same_length_alignments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.utils.is_same_length_alignments" title="Permalink to this definition"></a></dt>
 <dd><p>Check if alignments within a cogset have the same length.</p>
-<p>This function iterates over the input data and asserts that the alignments within
-each cogset have the same length. Alignments are expected to be in column 3 (index 2).</p>
+<p>This function iterates over the input data and asserts that the alignments
+within each cogset have the same length. Alignments are expected to be in
+column 3 (index 2).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data</strong> (<em>list</em><em> of </em><em>list</em><em> of </em><em>strings</em>) – A list of lists containing language data.</p>
@@ -943,9 +962,11 @@ does not match.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.utils.is_valid_language_sequence">
 <span class="sig-prename descclassname"><span class="pre">loanpy.utils.</span></span><span class="sig-name descname"><span class="pre">is_valid_language_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_lang</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_lang</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.utils.is_valid_language_sequence" title="Permalink to this definition"></a></dt>
-<dd><p>Validate if the data has a valid alternating sequence of source and target languages.</p>
+<dd><p>Validate if the data has a valid alternating sequence of source and target
+languages.</p>
 <p>The data is expected to have language IDs in the second column (index 1).
-The sequence should be: source_lang, target_lang, source_lang, target_lang, …</p>
+The sequence should be: source_lang, target_lang, source_lang,
+target_lang, …</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -979,24 +1000,25 @@ namely “C”, and “V”: “any consonant”, and “any vowel”.
 <dl class="py function">
 <dt class="sig sig-object py" id="loanpy.utils.prefilter">
 <span class="sig-prename descclassname"><span class="pre">loanpy.utils.</span></span><span class="sig-name descname"><span class="pre">prefilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srclg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgtlg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loanpy.utils.prefilter" title="Permalink to this definition"></a></dt>
-<dd><p>Filter dataset to keep only cogsets where both source and target languages occur.</p>
-<p>This function filters the input dataset to retain only the cogsets where both
-source and target languages are present. The filtered dataset is then sorted based
-on cogset ID and language order.</p>
+<dd><p>Filter dataset to keep only cogsets where both source and target languages
+occur.</p>
+<p>This function filters the input dataset to retain only the cogsets where
+both source and target languages are present. The filtered dataset is then
+sorted based on cogset ID and language order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A list of lists containing language data.</p></li>
+<li><p><strong>data</strong> (<em>list</em><em> of </em><em>list</em><em> of </em><em>strings</em>) – A list of lists containing language data.</p></li>
 <li><p><strong>srclg</strong> (<em>str</em>) – The source language ID to be considered.</p></li>
 <li><p><strong>tgtlg</strong> (<em>str</em>) – The target language ID to be considered.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A filtered and sorted list of lists containing cogsets with both source
-and target languages present.</p>
+<dd class="field-even"><p>A filtered and sorted list of lists containing cogsets with both
+source and target languages present.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[List[str]]</p>
+<dd class="field-odd"><p>list of list of strings</p>
 </dd>
 </dl>
 </dd></dl>

@@ -2,11 +2,11 @@
 """
 Module for analyzing and processing linguistic data.
 
-This module contains functions for analyzing linguistic data, particularly
+This module contains functions for analysing linguistic data, particularly
 focusing on finding optimal year cutoffs, manipulating IPA data, and
 processing cognate sets. It provides helper functions for reading and
-manipulating linguistic
-datasets and performing various operations such as filtering and validation.
+processing linguistic datasets and performing various operations such as
+filtering and validation.
 """
 from collections import Counter
 from pathlib import Path
@@ -16,16 +16,17 @@ def find_optimal_year_cutoff(tsv, origins):
     """
     Determine the optimal year cutoff for a given dataset and origins.
 
-    This function reads TSV content from a given dataset and origins, calculates
-    the accumulated count of words with the specified origin until each given
-    year, and finds the optimal year cutoff using the distance to the upper left
-    corner of the accumulated count.
+    This function reads TSV content from a given dataset and origins,
+    calculates the accumulated count of words with the specified origin until
+    each given year, and finds the optimal year cutoff using the distance to
+    the upper left corner of the accumulated count.
 
-    :param tsv: A list of lists, where the first list is the header and the following
-                lists contain data rows.
-    :type tsv: List[List[str]]
+    :param tsv: A table where the first row is the header and the
+    :type tsv: list of list of strings
+
     :param origins: A set of origins to be considered for counting words.
-    :type origins: Set[str]
+    :type origins: a set of strings
+
     :return: The optimal year cutoff for the dataset and origins.
     :rtype: int
     """
@@ -66,16 +67,19 @@ def cvgaps(str1, str2):
     """
     Replace gaps in the first input string based on the second input string.
 
-    This function takes two aligned strings, replaces "-" in the first string with
-    either "C" (consonant) or "V" (vowel) depending on the corresponding character
-    in the second string, and returns the new strings as a list.
+    This function takes two aligned strings, replaces "-" in the first string
+    with either "C" (consonant) or "V" (vowel) depending on the corresponding
+    character in the second string, and returns the new strings as a list.
 
     :param str1: The first aligned input string.
     :type str1: str
+
     :param str2: The second aligned input string.
     :type str2: str
-    :return: A list containing the modified first string and the unchanged second string.
-    :rtype: List[str]
+
+    :return: A list containing the modified first string and the unchanged
+             second string.
+    :rtype: list of strings
     """
     ipa_all = read_ipa_all()
     vow = [rw[0] for rw in ipa_all if rw[ipa_all[0].index("cons")]=="-1"]
@@ -94,21 +98,25 @@ def cvgaps(str1, str2):
 
 def prefilter(data, srclg, tgtlg):
     """
-    Filter dataset to keep only cogsets where both source and target languages occur.
+    Filter dataset to keep only cogsets where both source and target languages
+    occur.
 
-    This function filters the input dataset to retain only the cogsets where both
-    source and target languages are present. The filtered dataset is then sorted based
-    on cogset ID and language order.
+    This function filters the input dataset to retain only the cogsets where
+    both source and target languages are present. The filtered dataset is then
+    sorted based on cogset ID and language order.
 
     :param data: A list of lists containing language data.
-    :type data: List[List[str]]
+    :type data: list of list of strings
+
     :param srclg: The source language ID to be considered.
     :type srclg: str
+
     :param tgtlg: The target language ID to be considered.
     :type tgtlg: str
-    :return: A filtered and sorted list of lists containing cogsets with both source
-             and target languages present.
-    :rtype: List[List[str]]
+
+    :return: A filtered and sorted list of lists containing cogsets with both
+             source and target languages present.
+    :rtype: list of list of strings
     """
 
     cogids = []
@@ -135,10 +143,12 @@ def prefilter(data, srclg, tgtlg):
 
 def is_valid_language_sequence(data, source_lang, target_lang):
     """
-    Validate if the data has a valid alternating sequence of source and target languages.
+    Validate if the data has a valid alternating sequence of source and target
+    languages.
 
     The data is expected to have language IDs in the second column (index 1).
-    The sequence should be: source_lang, target_lang, source_lang, target_lang, ...
+    The sequence should be: source_lang, target_lang, source_lang,
+    target_lang, ...
 
     :param data: A list of lists containing language data.
     :type data: list
@@ -167,8 +177,9 @@ def is_same_length_alignments(data):
     """
     Check if alignments within a cogset have the same length.
 
-    This function iterates over the input data and asserts that the alignments within
-    each cogset have the same length. Alignments are expected to be in column 3 (index 2).
+    This function iterates over the input data and asserts that the alignments
+    within each cogset have the same length. Alignments are expected to be in
+    column 3 (index 2).
 
     :param data: A list of lists containing language data.
     :type data: list of list of strings
