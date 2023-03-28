@@ -8,7 +8,7 @@ from pathlib import Path
 setup(
   name='loanpy',
   description='a linguistic toolkit for predicting loanword adaptation \
-and historical reconstructions',
+and sound change',
   long_description=open("README.rst").read(),
   author='Viktor Martinović',
   author_email='viktor.martinovic@hotmail.com',
@@ -23,7 +23,7 @@ and historical reconstructions',
   keywords=['borrowing detection',
             'computational linguistics',
             'loanword adaptation',
-            'historical reconstruction',
+            'sound change',
             'etymology',
             'contact linguistics'],
   classifiers=[

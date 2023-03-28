@@ -6,11 +6,11 @@ and manipulate linguistic data stored in tab-separated tables. The main \
 function is get_correspondences, which extracts sound and prosodic \
 correspondences from the table and returns them as six dictionaries, \
 each with corresponding frequencies and COGID values. The module also \
-includes uralign, a function that aligns input strings based on custom \
+includes uralign, a function that aligns Uralic input strings based on custom \
 rules, and get_heur, which computes a heuristic mapping between phonemes \
 in a target language's inventory and all phonemes in the IPA sound system \
 based on Euclidean distance of their feature vectors. Finally, \
-get_invs extracts all types of prosodic structures and phonemes \
+get_invs extracts all types of prosodic structures \
 from a target language in a given table.
 """
 
@@ -25,15 +25,15 @@ def get_correspondences(table, heur=""):
     """
     Get sound and prosodic correspondences from a given table string.
 
-    :param table: A list of lists representing the table that was edited
-                  with Edictor. It must contain columns
-                  named "ALIGNMENT", "PROSODY", and "COGID".
+    :param table: A list of lists representing the table that was edited \
+with Edictor. It must contain columns \
+named "ALIGNMENT", "PROSODY", and "COGID".
     :type table: list of lists
-    :param heur: Optional string containing heuristic correspondences
-                 to be merged with the output. Defaults to an empty string.
+    :param heur: Optional string containing heuristic correspondences \
+to be merged with the output. Defaults to an empty string.
     :type heur: str
-    :return: A list of six dictionaries containing correspondences
-             and their frequencies:
+    :return: A list of six dictionaries containing correspondences \
+and their frequencies:
                  1) Sound correspondences.
                  2) Frequency of sound correspondences.
                  3) COGID values for sound correspondences.
