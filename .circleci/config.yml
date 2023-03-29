@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Run tests and generate coverage report
           command: |
-            coverage run --source=loanpy -m pytest
+            coverage run --source=loanpy,tests -m pytest
             coverage report
             coverage lcov
 
@@ -80,8 +80,8 @@ jobs:
       - run:
           name: Run tests and generate coverage report
           command: |
-            echo -e "[run]\nsource =\n    src\n    tests" > .coveragerc
-            coverage run -m pytest
+            coverage run --source=loanpy,tests -m pytest
+            coverage report
             coverage lcov
 
       - coveralls/upload:
@@ -113,8 +113,7 @@ jobs:
       - run:
           name: Run tests and generate coverage report
           command: |
-            echo -e "[run]\nsource =\n    src\n    tests" > .coveragerc
-            coverage run -m pytest
+            coverage run --source=loanpy,tests -m pytest
             coverage report
             coverage lcov
 
@@ -129,12 +128,12 @@ workflows:
        - build-linux:
            matrix:
              parameters:
-               python_version: ["3.8"] #["3.7", "3.8", "3.9", "3.10", "3.11"]
-#       - build-windows:
-#           matrix:
-#             parameters:
-#               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-#       - build-macos:
-#          matrix:
-#            parameters:
-#              python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+       - build-windows:
+           matrix:
+             parameters:
+               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+       - build-macos:
+          matrix:
+            parameters:
+              python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
