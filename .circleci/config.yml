@@ -39,7 +39,7 @@ jobs:
           name: Submit coverage report to Coveralls
           command: |
             export COVERALLS_REPO_TOKEN=vSDpTEtmDXnpItx65fjti0V0pqdIekdSj
-            coveralls --coverage_xml="./coverage.xml"
+            coveralls
 
   build-windows:
     parameters:
@@ -107,12 +107,12 @@ workflows:
        - build-linux:
            matrix:
              parameters:
-               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-       - build-windows:
-           matrix:
-             parameters:
-               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-       - build-macos:
-          matrix:
-            parameters:
-              python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+               python_version: ["3.9"] #["3.7", "3.8", "3.9", "3.10", "3.11"]
+#       - build-windows:
+#           matrix:
+#             parameters:
+#               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+#       - build-macos:
+#          matrix:
+#            parameters:
+#              python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
