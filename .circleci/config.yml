@@ -33,12 +33,13 @@ jobs:
           name: Run tests and generate coverage report
           command: |
             coverage run --source=src -m pytest
-            coverage report
+            coverage xml
 
       - run:
           name: Submit coverage report to Coveralls
           command: |
-            COVERALLS_REPO_TOKEN=vSDpTEtmDXnpItx65fjti0V0pqdIekdSj coveralls
+            export COVERALLS_REPO_TOKEN=vSDpTEtmDXnpItx65fjti0V0pqdIekdSj
+            coveralls --coverage_xml="./coverage.xml"
 
   build-windows:
     parameters:
