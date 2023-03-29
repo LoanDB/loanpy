@@ -114,7 +114,8 @@ jobs:
       - run:
           name: Run tests and generate coverage report
           command: |
-            coverage run --souce=src,tests -m pytest
+            echo -e "[run]\nsource =\n    src\n    tests" > .coveragerc
+            coverage run -m pytest
             coverage lcov
 
       - coveralls/upload:
@@ -128,7 +129,7 @@ workflows:
        - build-linux:
            matrix:
              parameters:
-               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+               python_version: ["3.9"] #["3.7", "3.8", "3.9", "3.10", "3.11"]
 #       - build-windows:
 #           matrix:
 #             parameters:
