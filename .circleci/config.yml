@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   win: circleci/windows@2.2.0
+  coveralls: coveralls/coveralls@2.1.0
 
 jobs:
   build-linux:
@@ -17,7 +18,7 @@ jobs:
           command: python -m venv venv && . venv/bin/activate
 
       - run:
-          name: "Install latest commit of loanpy from git"
+          name: "Install latest commit of loanpy from GitHub"
           command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
 
       - run:
@@ -25,8 +26,19 @@ jobs:
           command: pip install pytest
 
       - run:
-          name: "Run unit and integration tests"
-          command: python -m pytest
+          name: "Install coveralls"
+          command: pip install coveralls
+
+      - run:
+          name: Run tests and generate coverage report
+          command: |
+            coverage run --source=src -m pytest
+            coverage report
+
+      - run:
+          name: Submit coverage report to Coveralls
+          command: |
+            COVERALLS_REPO_TOKEN=vSDpTEtmDXnpItx65fjti0V0pqdIekdSj coveralls
 
   build-windows:
     parameters:
@@ -69,8 +81,8 @@ jobs:
     parameters:
       python_version:
         type: string
-    docker:
-      - image: cimg/python:<< parameters.python_version >>  # Use the official CircleCI Python Docker image
+    docker: # Use the official CircleCI Python Docker image
+      - image: cimg/python:<< parameters.python_version >>
     steps:
       - checkout
       - run:
