@@ -128,7 +128,7 @@ workflows:
        - build-linux:
            matrix:
              parameters:
-               python_version: ["3.9"] # ["3.7", "3.8", "3.9", "3.10", "3.11"]
+               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
 #       - build-windows:
 #           matrix:
 #             parameters:
