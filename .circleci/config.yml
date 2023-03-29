@@ -114,7 +114,7 @@ jobs:
       - run:
           name: Run tests and generate coverage report
           command: |
-            coverage run -m pytest
+            coverage run --souce=src,tests -m pytest
             coverage lcov
 
       - coveralls/upload:
