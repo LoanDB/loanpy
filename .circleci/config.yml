@@ -116,6 +116,7 @@ jobs:
           command: |
             echo -e "[run]\nsource =\n    src\n    tests" > .coveragerc
             coverage run -m pytest
+            coverage report
             coverage lcov
 
       - coveralls/upload:
