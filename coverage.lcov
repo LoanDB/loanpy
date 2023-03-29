@@ -1,0 +1,10 @@
+Name                       Stmts   Miss  Cover
+----------------------------------------------
+src/loanpy/__init__.py         1      0   100%
+src/loanpy/eval_sca.py        29      0   100%
+src/loanpy/loanfinder.py      31      0   100%
+src/loanpy/scapplier.py      198      0   100%
+src/loanpy/scminer.py         57      0   100%
+src/loanpy/utils.py          108      0   100%
+----------------------------------------------
+TOTAL                        424      0   100%
