@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Run tests and generate coverage report
           command: |
-            coverage run --source=src,tests -m pytest
+            coverage run --source=loanpy -m pytest
             coverage report
             coverage lcov
 
