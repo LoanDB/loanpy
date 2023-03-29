@@ -33,7 +33,7 @@ jobs:
           name: Run tests and generate coverage report
           command: |
             coverage run --source=src -m pytest
-            coverage report --show-missing > coverage.lcov
+            coverage lcov
 
       - run:
           name: Submit coverage report to Coveralls
