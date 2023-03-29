@@ -50,16 +50,16 @@ jobs:
       - run:
           name: "Install Python"
           command: |
-            if ( "<< parameters.python_version >>" -eq "3.7" -or \
+            if ( "<< parameters.python_version >>" -eq "3.7" -or `
               "<< parameters.python_version >>" -eq "3.9" ) {
               $specific_version = "3.7.0"
-              if ( "<< parameters.python_version >>" -eq "3.9" ) \
+              if ( "<< parameters.python_version >>" -eq "3.9" ) `
               { $specific_version = "3.9.0" }
               choco install pyenv-win --force
               refreshenv
               pyenv install $specific_version
               pyenv global $specific_version
-              $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;\
+              $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;`
               C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
               python --version
             } else {
