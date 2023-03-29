@@ -35,13 +35,9 @@ jobs:
             coverage lcov
 
       - coveralls/upload:
-                parameters:
-                  coverage_file: coverage.lcov
-                  
-      - run:
-          name: Submit coverage report to Coveralls
-          command: |
-            COVERALLS_REPO_TOKEN=vSDpTEtmDXnpItx65fjti0V0pqdIekdSj coveralls
+          parameters:
+            token: vSDpTEtmDXnpItx65fjti0V0pqdIekdSj
+            coverage_file: coverage.lcov
 
   build-windows:
     parameters:
