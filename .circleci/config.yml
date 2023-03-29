@@ -84,9 +84,6 @@ jobs:
             coverage report
             coverage lcov
 
-      - coveralls/upload:
-          coverage_file: ./coverage.lcov
-
   build-macos:
     parameters:
       python_version:
