@@ -35,7 +35,7 @@ jobs:
             coverage lcov
 
       - coveralls/upload:
-          coverage_file: ../coverage.lcov
+          coverage_file: ./coverage.lcov
 
   build-windows:
     parameters:
