@@ -39,6 +39,6 @@ and sound change',
 
   url='https://github.com/martino-vic/loanpy',
   download_url='https://github.com/martino-vic/loanpy/archive/v.2.0-beta.tar.gz',
-  license='afl-3.0',  # https://help.github.com/articles/licensing-a-repository
+  license='MIT',  # https://help.github.com/articles/licensing-a-repository
   platforms=["unix", "linux", "windows"],
 )

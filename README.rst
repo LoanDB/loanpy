@@ -2,16 +2,33 @@
    :target: https://zenodo.org/record/6628976
 
 .. image:: https://dl.circleci.com/status-badge/img/gh/martino-vic/loanpy/tree/2%2E0%2E1.svg?style=svg
-       :target: https://dl.circleci.com/status-badge/redirect/gh/martino-vic/loanpy/tree/2%2E0%2E1
+   :target: https://dl.circleci.com/status-badge/redirect/gh/martino-vic/loanpy/tree/2%2E0%2E1
+
+LoanPy: A Comprehensive Linguistic Toolkit
+==========================================
+
+LoanPy is a powerful linguistic toolkit developed during the course of my PhD thesis, providing solutions for various linguistic tasks, such as:
+
+- Predicting loanword adaptation (lateral transfers)
+- Historical reconstruction of words (vertical transfers)
+- Searching for potential (old) loanwords between two languages
+
+This versatile toolkit has been designed with ease of use and compatibility in mind, offering a standalone, easy-to-setup, and cross-platform solution that works with Python 3.7 or higher.
+
+Upcoming Release: Version 3
+---------------------------
+
+Stay tuned for the upcoming release of LoanPy Version 3, which is scheduled for next week!
 
 Installation
-============
+------------
 
 Latest stable version:
+
 ::
 
     $ python -m pip install loanpy
-    
+
 Development version:
 
 ::
@@ -19,15 +36,14 @@ Development version:
     $ python -m pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
 
 Documentation
-==============
-| Single functions:
-| https://martino-vic.github.io/loanpy/documentation.html
-|
-| Big picture workflow:
-| https://github.com/martino-vic/loanpy/blob/2.0.1/workflow.pdf
+-------------
+
+- Single functions: https://martino-vic.github.io/loanpy/documentation.html
 
 Citation
-==========
+--------
+
+If you use LoanPy in your research or project, please cite the following:
 
 https://zenodo.org/record/6628976
 
@@ -35,93 +51,33 @@ BibTex:
 
 ::
 
-   @Article{Martinovic2022,
+   @Misc{Martinovic2022,
      author    = {Viktor Martinovi{\'c}},
-     title     = {martino-vic/loanpy: Second stable release},
+     title     = {Loanpy},
      year      = {2022},
      doi       = {10.5281/zenodo.6628976},
      publisher = {Zenodo},
    }
 
 License
-==========
+-------
 
-GNU GENERAL PUBLIC LICENSE
+LoanPy is released under the MIT License.
 
-Description
-============
+Compatible Input Data
+---------------------
 
-loanpy is a toolkit for solving various linguistic tasks such as:
-
-* predicting loanword adaptation (lateral transfers)
-
-* historical reconstruction of words (vertical transfers)
-
-* searching for potential (old) loanwords between two languages.
-
-
-Compatible input data
-======================
+LoanPy supports the following datasets:
 
 - `Gothic <https://github.com/martino-vic/streitberggothic>`_
 - `Hungarian <https://github.com/martino-vic/gerstnerhungarian>`_
 - `West Old Turkic <https://github.com/martino-vic/ronatasbertawot>`_
 
-Main changes compared to version 1
-======================================================
+Main Changes Compared to Version 2
+----------------------------------
 
-* Mange data flow through classes instead of gloabal variables
-* reconstructor.py and adapter.py reorganised into adrc.py and qfysc.py
-* new module sanity.py to evaluate results and optimise parameters
-* Sound and phonotactic substitutions based on etymological data combined with feature vectors from the PanPhon library
-* Implementation of CLDF standard
-* new, linpy-based alignment method
-* multiple paths when repairing phonotactics, with help of the networkx library
-* tested with real-world data: current model seems to accurately predict English loanword adaptation in Maori
+- Standalone: No external dependencies needed.
+- Easy setup: Just download or clone the repository and start using it.
+- Cross-platform: Works on any platform that supports Python.
+- Python Compatibility: Works with Python 3.7 or higher.
 
-
-
-Dependencies
-==============
-
-::
-
-    appdirs==1.4.4
-    attrs==21.4.0
-    clldutils==3.12.0
-    colorlog==6.6.0
-    csvw==2.0.0
-    cycler==0.11.0
-    editdistance==0.6.0
-    fonttools==4.33.3
-    gensim==4.2.0
-    ipatok==0.4.1
-    isodate==0.6.1
-    kiwisolver==1.4.2
-    latexcodec==2.0.1
-    lingpy==2.6.9
-    matplotlib==3.5.2
-    munkres==1.1.4
-    networkx==2.8.3
-    numpy==1.22.4
-    packaging==21.3
-    pandas==1.4.2
-    panphon==0.20.0
-    Pillow==9.1.1
-    pybtex==0.24.0
-    pycldf==1.26.1
-    pyparsing==3.0.9
-    python-dateutil==2.8.2
-    pytz==2022.1
-    PyYAML==6.0
-    regex==2022.6.2
-    rfc3986==1.5.0
-    scipy==1.8.1
-    six==1.16.0
-    smart-open==6.0.0
-    tabulate==0.8.9
-    tqdm==4.64.0
-    unicodecsv==0.14.1
-    uritemplate==4.1.1
-    pytest==7.1.2
-    loanpy==2.0.2
