@@ -35,6 +35,7 @@ jobs:
             coverage lcov
 
       - coveralls/upload:
+          base_path: ./
           coverage_file: coverage.lcov
           #token: vSDpTEtmDXnpItx65fjti0V0pqdIekdSj
 
