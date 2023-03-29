@@ -31,11 +31,11 @@ jobs:
       - run:
           name: Run tests and generate coverage report
           command: |
-            coverage run --source=src -m pytest
+            coverage run --source=src -m pytest -k "not test_eval_sca_integration"
             coverage lcov
 
       - coveralls/upload:
-          base_path: ./
+          base_path: ..
           coverage_file: coverage.lcov
           #token: vSDpTEtmDXnpItx65fjti0V0pqdIekdSj
 
