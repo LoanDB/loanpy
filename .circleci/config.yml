@@ -19,7 +19,8 @@ jobs:
 
       - run:
           name: "Install latest commit of loanpy from GitHub"
-          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
+          command: pip install \
+                   git+https://github.com/martino-vic/loanpy.git@2.0.1
 
       - run:
           name: "Install pytest, coveralls, coverage"
@@ -31,12 +32,11 @@ jobs:
       - run:
           name: Run tests and generate coverage report
           command: |
-            coverage run -m pytest -k "not test_eval_sca_integration"
+            coverage run -m pytest
             coverage lcov
 
       - coveralls/upload:
           coverage_file: ./coverage.lcov
-          verbose: true
 
   build-windows:
     parameters:
@@ -50,14 +50,17 @@ jobs:
       - run:
           name: "Install Python"
           command: |
-            if ( "<< parameters.python_version >>" -eq "3.7" -or "<< parameters.python_version >>" -eq "3.9" ) {
+            if ( "<< parameters.python_version >>" -eq "3.7" -or \
+              "<< parameters.python_version >>" -eq "3.9" ) {
               $specific_version = "3.7.0"
-              if ( "<< parameters.python_version >>" -eq "3.9" ) { $specific_version = "3.9.0" }
+              if ( "<< parameters.python_version >>" -eq "3.9" ) \
+              { $specific_version = "3.9.0" }
               choco install pyenv-win --force
               refreshenv
               pyenv install $specific_version
               pyenv global $specific_version
-              $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
+              $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;\
+              C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
               python --version
             } else {
               choco install python --version=<< parameters.python_version >>
@@ -65,15 +68,24 @@ jobs:
 
       - run:
           name: "Install latest commit of loanpy from git"
-          command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
+          command: pip install \
+                   git+https://github.com/martino-vic/loanpy.git@2.0.1
 
       - run:
-          name: "Install pytest"
-          command: pip install pytest
+          name: "Install pytest, coveralls, coverage"
+          command: |
+            pip install pytest
+            pip install coveralls
+            pip install coverage
 
       - run:
-          name: "Run unit and integration tests"
-          command: python -m pytest
+          name: Run tests and generate coverage report
+          command: |
+            coverage run -m pytest
+            coverage lcov
+
+      - coveralls/upload:
+          coverage_file: ./coverage.lcov
 
   build-macos:
     parameters:
@@ -84,17 +96,29 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Set up virtual environment and install pytest
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install pytest
-            pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
+          name: "Set up Python environment"
+          command: python -m venv venv && . venv/bin/activate
+
       - run:
-          name: Run tests
+          name: "Install latest commit of loanpy from GitHub"
+          command: pip install \
+                   git+https://github.com/martino-vic/loanpy.git@2.0.1
+
+      - run:
+          name: "Install pytest, coveralls, coverage"
           command: |
-            . venv/bin/activate
-            pytest
+            pip install pytest
+            pip install coveralls
+            pip install coverage
+
+      - run:
+          name: Run tests and generate coverage report
+          command: |
+            coverage run -m pytest
+            coverage lcov
+
+      - coveralls/upload:
+          coverage_file: ./coverage.lcov
 
 
 workflows:
@@ -104,7 +128,7 @@ workflows:
        - build-linux:
            matrix:
              parameters:
-               python_version: ["3.9"] #["3.7", "3.8", "3.9", "3.10", "3.11"]
+               python_version: ["3.9"] # ["3.7", "3.8", "3.9", "3.10", "3.11"]
 #       - build-windows:
 #           matrix:
 #             parameters:
