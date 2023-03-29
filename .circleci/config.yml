@@ -22,12 +22,11 @@ jobs:
           command: pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
 
       - run:
-          name: "Install pytest"
-          command: pip install pytest
-
-      - run:
-          name: "Install coveralls"
-          command: pip install coveralls
+          name: "Install pytest, coveralls, coverage"
+          command: |
+            pip install pytest
+            pip install coveralls
+            pip install coverage
 
       - run:
           name: Run tests and generate coverage report
@@ -35,6 +34,10 @@ jobs:
             coverage run --source=src -m pytest
             coverage lcov
 
+      - coveralls/upload:
+                parameters:
+                  coverage_file: coverage.lcov
+                  
       - run:
           name: Submit coverage report to Coveralls
           command: |
