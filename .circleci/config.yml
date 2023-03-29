@@ -68,7 +68,7 @@ jobs:
 
       - run:
           name: "Install latest commit of loanpy from git"
-          command: pip install \
+          command: pip install `
                    git+https://github.com/martino-vic/loanpy.git@2.0.1
 
       - run:
