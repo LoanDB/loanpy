@@ -77,7 +77,6 @@ jobs:
           command: |
             pip install pytest
             pip install coveralls
-            pip install coverage
 
       - run:
           name: Run tests and generate coverage report
