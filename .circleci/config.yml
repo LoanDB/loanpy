@@ -35,9 +35,8 @@ jobs:
             coverage lcov
 
       - coveralls/upload:
-          parameters:
-            token: vSDpTEtmDXnpItx65fjti0V0pqdIekdSj
-            coverage_file: coverage.lcov
+          token: vSDpTEtmDXnpItx65fjti0V0pqdIekdSj
+          coverage_file: coverage.lcov
 
   build-windows:
     parameters:
