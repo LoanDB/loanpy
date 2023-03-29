@@ -37,7 +37,6 @@ jobs:
       - coveralls/upload:
           base_path: ..
           coverage_file: coverage.lcov
-          #token: vSDpTEtmDXnpItx65fjti0V0pqdIekdSj
 
   build-windows:
     parameters:
