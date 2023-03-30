@@ -3,22 +3,27 @@
 
 .. image:: https://dl.circleci.com/status-badge/img/gh/martino-vic/loanpy/tree/2%2E0%2E1.svg?style=svg
    :target: https://dl.circleci.com/status-badge/redirect/gh/martino-vic/loanpy/tree/2%2E0%2E1
-   
+
 .. image:: https://coveralls.io/repos/github/martino-vic/loanpy/badge.svg?branch=2.0.1
    :target: https://coveralls.io/github/martino-vic/loanpy?branch=2.0.1
-   
+
 .. image:: https://readthedocs.org/projects/loanpy/badge/?version=latest
    :target: https://loanpy.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
+.. image:: https://img.shields.io/pypi/v/your_package_name.svg
+  :target: https://pypi.org/project/loanpy/
+  :alt: PyPI Latest Version
 
-LoanPy: A Comprehensive Linguistic Toolkit
+
+
+loanpy: A Comprehensive Linguistic Toolkit
 ==========================================
 
-LoanPy is a powerful linguistic toolkit developed during the course of my PhD thesis, providing solutions for various linguistic tasks, such as:
+loanpy is a powerful linguistic toolkit developed during the course of my PhD thesis, providing solutions for various linguistic tasks, such as:
 
 - extracting correspondence patterns from etymological data on the level of phonology and phonotactics
-- Predicting loanword adaptation (lateral/horizontal transfers) based on heuristics and etymological data 
+- Predicting loanword adaptation (lateral/horizontal transfers) based on heuristics and etymological data
 - Historical reconstruction of words (vertical transfers) based on etymological data
 - Searching for potential (old) loanwords between two languages
 
@@ -53,9 +58,9 @@ Documentation
 Citation
 --------
 
-If you use LoanPy in your research or project, please cite the following:
+If you use loanpy in your research or project, please cite the following:
 
-Viktor Martinović. (2022). LoanPy. Zenodo. https://doi.org/10.5281/zenodo.6628976
+Viktor Martinović. (2022). loanpy. Zenodo. https://doi.org/10.5281/zenodo.6628976
 
 BibTex:
 
@@ -63,7 +68,7 @@ BibTex:
 
    @Misc{Martinovic2022,
      author    = {Viktor Martinovi{\'c}},
-     title     = {Loanpy},
+     title     = {loanpy},
      year      = {2022},
      doi       = {10.5281/zenodo.6628976},
      publisher = {Zenodo},
@@ -72,12 +77,12 @@ BibTex:
 License
 -------
 
-LoanPy is released under the MIT License.
+loanpy is released under the MIT License.
 
 Compatible Input Data
 ---------------------
 
-LoanPy supports the following datasets:
+loanpy supports the following datasets:
 
 - `Gothic <https://github.com/martino-vic/streitberggothic>`_
 - `Hungarian <https://github.com/martino-vic/gerstnerhungarian>`_
@@ -91,5 +96,3 @@ Main Changes Compared to Version 2
 - Cross-platform: Works on any platform that supports Python.
 - Python Compatibility: Works with Python 3.7 or higher.
 - CLDF Integration: Fully integrated in the [CLDF ecosystem](https://cldf.clld.org/).
-
-
