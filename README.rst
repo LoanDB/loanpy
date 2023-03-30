@@ -6,6 +6,10 @@
    
 .. image:: https://coveralls.io/repos/github/martino-vic/loanpy/badge.svg?branch=2.0.1
    :target: https://coveralls.io/github/martino-vic/loanpy?branch=2.0.1
+   
+.. image:: https://readthedocs.org/projects/loanpy/badge/?version=latest
+   :target: https://loanpy.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
 
 LoanPy: A Comprehensive Linguistic Toolkit
@@ -13,8 +17,9 @@ LoanPy: A Comprehensive Linguistic Toolkit
 
 LoanPy is a powerful linguistic toolkit developed during the course of my PhD thesis, providing solutions for various linguistic tasks, such as:
 
-- Predicting loanword adaptation (lateral transfers)
-- Historical reconstruction of words (vertical transfers)
+- extracting correspondence patterns from etymological data on the level of phonology and phonotactics
+- Predicting loanword adaptation (lateral/horizontal transfers) based on heuristics and etymological data 
+- Historical reconstruction of words (vertical transfers) based on etymological data
 - Searching for potential (old) loanwords between two languages
 
 This versatile toolkit has been designed with ease of use and compatibility in mind, offering a standalone, easy-to-setup, and cross-platform solution that works with Python 3.7 or higher.
@@ -22,7 +27,7 @@ This versatile toolkit has been designed with ease of use and compatibility in m
 Upcoming Release: Version 3
 ---------------------------
 
-Stay tuned for the upcoming release of LoanPy Version 3, which is scheduled for next week!
+Stay tuned for the upcoming release of loanpy version 3, which is scheduled for May 2023.
 
 Installation
 ------------
@@ -42,14 +47,15 @@ Development version:
 Documentation
 -------------
 
-- Single functions: https://martino-vic.github.io/loanpy/documentation.html
+- [Read the docs](https://loanpy.readthedocs.io/en/latest/documentation.html)
+- [Tutorial](https://loanpy.readthedocs.io/en/latest/tutorial.html)
 
 Citation
 --------
 
 If you use LoanPy in your research or project, please cite the following:
 
-https://zenodo.org/record/6628976
+Viktor Martinović. (2022). LoanPy. Zenodo. https://doi.org/10.5281/zenodo.6628976
 
 BibTex:
 
@@ -75,7 +81,7 @@ LoanPy supports the following datasets:
 
 - `Gothic <https://github.com/martino-vic/streitberggothic>`_
 - `Hungarian <https://github.com/martino-vic/gerstnerhungarian>`_
-- `West Old Turkic <https://github.com/martino-vic/ronatasbertawot>`_
+- `Proto-Bolgar <https://github.com/martino-vic/ronataswestoldturkic>`_
 
 Main Changes Compared to Version 2
 ----------------------------------
@@ -84,4 +90,6 @@ Main Changes Compared to Version 2
 - Easy setup: Just download or clone the repository and start using it.
 - Cross-platform: Works on any platform that supports Python.
 - Python Compatibility: Works with Python 3.7 or higher.
+- CLDF Integration: Fully integrated in the [CLDF ecosystem](https://cldf.clld.org/).
+
 
