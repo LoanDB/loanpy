@@ -4,7 +4,7 @@ from pathlib import Path
 
 from loanpy.eval_sca import eval_one, eval_all
 
-TESTFILESDIR = Path(__file__).parent.parent / "test_files"
+TESTFILESDIR = Path(__file__).parent / "test_files"
 
 def test_evaluate_all_returns_expected_output():
 

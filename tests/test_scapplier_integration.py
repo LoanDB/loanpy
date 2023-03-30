@@ -5,10 +5,10 @@ import pytest
 from loanpy.scapplier import Adrc
 from pathlib import Path
 
-testfilesdir = Path(__file__).parent.parent / "test_files"
-PATH2SC_AD = testfilesdir / "sc_ad.json"
-PATH2SC_RC = testfilesdir / "sc_rc.json"
-PATH2inventory = testfilesdir / "inventory.json"
+TESTFILESDIR = Path(__file__).parent / "test_files"
+PATH2SC_AD = TESTFILESDIR / "sc_ad.json"
+PATH2SC_RC = TESTFILESDIR / "sc_rc.json"
+PATH2inventory = TESTFILESDIR / "inventory.json"
 
 def test_adapt(tmp_path):
     sc_path = tmp_path / "sound_correspondences.json"
