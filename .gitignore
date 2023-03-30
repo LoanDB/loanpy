@@ -1,5 +1,12 @@
+# Ignore Python compiled files and cache
 **/__pycache__/
+
+# Ignore virtual environment and package management
 venv/
 *.egg-info/
+
+# Ignore testing cache
 .pytest_cache/
+
+# Ignore distribution folder
 dist/
