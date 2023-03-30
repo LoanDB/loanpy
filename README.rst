@@ -84,7 +84,7 @@ Compatible Input Data
 
 loanpy supports the following datasets:
 
-- `Gothic <https://github.com/martino-vic/streitberggothic>`_
+- Gothic: `Streitberg <https://github.com/martino-vic/streitberggothic>`_, `Köbler <https://github.com/martino-vic/koeblergothic>`_
 - `Hungarian <https://github.com/martino-vic/gerstnerhungarian>`_
 - `Proto-Bolgar <https://github.com/martino-vic/ronataswestoldturkic>`_
 
