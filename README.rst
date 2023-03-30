@@ -52,8 +52,8 @@ Development version:
 Documentation
 -------------
 
-- [Read the docs](https://loanpy.readthedocs.io/en/latest/documentation.html)
-- [Tutorial](https://loanpy.readthedocs.io/en/latest/tutorial.html)
+- `Read the docs <https://loanpy.readthedocs.io/en/latest/documentation.html>`_
+- `Tutorial <https://loanpy.readthedocs.io/en/latest/tutorial.html>`_
 
 Citation
 --------
@@ -95,4 +95,4 @@ Main Changes Compared to Version 2
 - Easy setup: Just download or clone the repository and start using it.
 - Cross-platform: Works on any platform that supports Python.
 - Python Compatibility: Works with Python 3.7 or higher.
-- CLDF Integration: Fully integrated in the [CLDF ecosystem](https://cldf.clld.org/).
+- CLDF Integration: Fully integrated in the `CLDF ecosystem <https://cldf.clld.org/>`_.
