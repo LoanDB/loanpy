@@ -11,7 +11,7 @@
    :target: https://loanpy.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-.. image:: https://img.shields.io/pypi/v/your_package_name.svg
+.. image:: https://img.shields.io/pypi/v/loanpy.svg
   :target: https://pypi.org/project/loanpy/
   :alt: PyPI Latest Version
 
