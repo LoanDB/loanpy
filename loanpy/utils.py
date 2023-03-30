@@ -85,7 +85,7 @@ def cvgaps(str1, str2):
     vow = [rw[0] for rw in ipa_all if rw[ipa_all[0].index("cons")]=="-1"]
     new = []
     cnt = 0
-    for i, j in zip(str1.split(), str2.split()):
+    for i, j in zip(str1.split(" "), str2.split(" ")):
         if i == "-":
             if j in vow:
                 new.append("V")

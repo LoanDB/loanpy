@@ -55,7 +55,7 @@ def get_correspondences(table, heur=""):
     for i in range(0, len(table_data), 2):
         row1, row2 = table_data[i], table_data[i+1]
         for i, j in zip(
-            row1[cols["ALIGNMENT"]].split(), row2[cols["ALIGNMENT"]].split()
+            row1[cols["ALIGNMENT"]].split(" "), row2[cols["ALIGNMENT"]].split(" ")
         ):
             out[0][i].append(j)
             out[1][f"{i} {j}"].append(1)
@@ -99,7 +99,7 @@ def uralign(left, right):
     :rtype: str
     """
 
-    left, right = left.split(), right.split()
+    left, right = left.split(" "), right.split(" ")
     # tag word initial & final cluster, only in left
     left[0], left[-1] = "#" + left[0], left[-1] + "#"
 
