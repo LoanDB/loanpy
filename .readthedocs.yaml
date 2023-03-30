@@ -2,10 +2,17 @@ version: 2
 
 sphinx:
   configuration: docs/source/conf.py
+  builder: html
+  source_suffix: .rst
+  build_dir: docs
 
 python:
   version: 3.8
+  install:
+    - method: pip
+      path: .
+      extra_requirements:
+        - docs
 
 build:
   image: latest
-
