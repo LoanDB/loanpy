@@ -50,6 +50,7 @@ def test_cvgaps():
 def test_prefilter1(is_valid_language_sequence_mock):
     is_valid_language_sequence_mock.return_value = True
     data = [
+    ['x', 'x', 'Language_ID', 'x', 'x', 'x', 'x', 'x', 'x', 'Cognacy', 'x'],
     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
@@ -67,6 +68,7 @@ def test_prefilter1(is_valid_language_sequence_mock):
 
 
     expected1 = [
+    ['x', 'x', 'Language_ID', 'x', 'x', 'x', 'x', 'x', 'x', 'Cognacy', 'x'],
     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
@@ -76,6 +78,7 @@ def test_prefilter1(is_valid_language_sequence_mock):
     ]
 
     expected2 = [
+    ['x', 'x', 'Language_ID', 'x', 'x', 'x', 'x', 'x', 'x', 'Cognacy', 'x'],
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
@@ -85,12 +88,16 @@ def test_prefilter1(is_valid_language_sequence_mock):
     ]
 
     assert prefilter(data, "de", "en") == expected1
+    data.insert(0,
+    ['x', 'x', 'Language_ID', 'x', 'x', 'x', 'x', 'x', 'x', 'Cognacy', 'x']
+    )  # reinsert header bc pop in prefilter modifies in-place
     assert prefilter(data, "en", "de") == expected2
 
 @patch("loanpy.utils.is_valid_language_sequence")
 def test_prefilter2(is_valid_language_sequence_mock):
     is_valid_language_sequence_mock.return_value = False
-    data = data = [
+    data = [
+    ['x', 'x', 'Language_ID', 'x', 'x', 'x', 'x', 'x', 'x', 'Cognacy', 'x'],
     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x']
     ]

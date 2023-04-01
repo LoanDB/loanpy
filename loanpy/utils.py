@@ -21,7 +21,7 @@ def find_optimal_year_cutoff(tsv, origins):
     each given year, and finds the optimal year cutoff using the distance to
     the upper left corner of the accumulated count.
 
-    :param tsv: A table where the first row is the header and the
+    :param tsv: A table where the first row is the header
     :type tsv: list of list of strings
 
     :param origins: A set of origins to be considered for counting words.
@@ -120,25 +120,24 @@ def prefilter(data, srclg, tgtlg):
     """
 
     cogids = []
-    #print(data)
-
+    headers = data.pop(0)
+    lgidx, cogidx = headers.index("Language_ID"), headers.index("Cognacy")
     # take only rows with src/tgtlg
-    data = [row for row in data if row[2] in {srclg, tgtlg}]
-    #print("here1:", data)
+    data = [row for row in data if row[lgidx] in {srclg, tgtlg}]
     # get list of cogids and count how often each one occurs
-    cogids = Counter([row[9] for row in data])
-    #print("here2:", cogids)
+    cogids = Counter([row[cogidx] for row in data])
     # take only cogsets that have 2 entries
     cogids = [i for i in cogids if cogids[i] == 2]  # allowedlist
-    data = [row for row in data if row[9] in cogids]
+    data = [row for row in data if row[cogidx] in cogids]
 
     def sorting_key(row):
         col2_order = {srclg: 0, tgtlg: 1}
-        return int(row[9]), col2_order.get(row[2], 2)
+        return int(row[cogidx]), col2_order.get(row[lgidx], 2)
 
     data = sorted(data, key=sorting_key)
     #print(data)
     assert is_valid_language_sequence(data, srclg, tgtlg)
+    data.insert(0, headers)
     return data
 
 def is_valid_language_sequence(data, source_lang, target_lang):
