@@ -7,19 +7,58 @@ import shutil
 
 from unittest.mock import patch
 
-def test_get_correspondences_basic():
+def test_get_correspondences_basic1():
     input_table = [    ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
-    ['0', '1', 'H', '#aː t͡ʃ#', 'VC'],
-    ['1', '1', 'EAH', 'a.ɣ.a t͡ʃ i', 'VCVCV']
+    ['0', '1', 'LG1', 'a b', 'VC'],
+    ['1', '1', 'LG2', 'c d', 'CC']
 ]
 
     expected_output = [
-    {'#aː': ['a.ɣ.a'], 't͡ʃ#': ['t͡ʃ']},
-    {'#aː a.ɣ.a': 1, 't͡ʃ# t͡ʃ': 1},
-    {'#aː a.ɣ.a': ['1'], 't͡ʃ# t͡ʃ': ['1']},
-    {'VC': ['VCVCV']},
-    {'VC VCVCV': 1},
-    {'VC VCVCV': ['1']}]
+    {'a': ['c'], 'b': ['d']},
+    {'a c': 1, 'b d': 1},
+    {'a c': [1], 'b d': [1]},
+    {'VC': ['CC']},
+    {'VC CC': 1},
+    {'VC CC': [1]}
+    ]
+    assert get_correspondences(input_table) == expected_output
+
+def test_get_correspondences_basic2():
+    input_table = [    ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    ['0', '1', 'LG1', 'a b', 'VC'],
+    ['1', '1', 'LG2', 'c d', 'CC'],
+    ['2', '2', 'LG1', 'a b', 'VC'],
+    ['3', '2', 'LG2', 'c d', 'CC']
+]
+
+    expected_output = [
+    {'a': ['c'], 'b': ['d']},
+    {'a c': 2, 'b d': 2},
+    {'a c': [1, 2], 'b d': [1, 2]},
+    {'VC': ['CC']},
+    {'VC CC': 2},
+    {'VC CC': [1, 2]}
+    ]
+    assert get_correspondences(input_table) == expected_output
+
+def test_get_correspondences_basic3():
+    input_table = [    ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    ['0', '1', 'LG1', 'a b', 'VC'],
+    ['1', '1', 'LG2', 'c d', 'CC'],
+    ['2', '2', 'LG1', 'a b', 'VC'],
+    ['3', '2', 'LG2', 'c d', 'CC'],
+    ['4', '3', 'LG1', 'a b', 'VC'],
+    ['5', '3', 'LG2', 'e f', 'VC']
+]
+
+    expected_output = [
+    {'a': ['c', 'e'], 'b': ['d', 'f']},
+    {'a c': 2, 'b d': 2, 'a e': 1, 'b f': 1},
+    {'a c': [1, 2], 'b d': [1, 2], 'a e': [3], 'b f': [3]},
+    {'VC': ['CC', 'VC']},
+    {'VC CC': 2, 'VC VC': 1},
+    {'VC CC': [1, 2], 'VC VC': [3]}
+    ]
     assert get_correspondences(input_table) == expected_output
 
 def test_get_correspondences_with_heur():
@@ -32,9 +71,9 @@ def test_get_correspondences_with_heur():
     expected_output = [
     {'a': ['a', 'e'], 'j': ['j', 'w'], 'n': ['n', 'm']},
     {'a a': 2, 'j j': 1, 'n n': 1},
-    {'a a': ['1'], 'j j': ['1'], 'n n': ['1']},
+    {'a a': [1], 'j j': [1], 'n n': [1]},
     {'VCVC': ['VCVC']},
-    {'VCVC VCVC': 1}, {'VCVC VCVC': ['1']}
+    {'VCVC VCVC': 1}, {'VCVC VCVC': [1]}
     ]
     assert get_correspondences(input_table, heur) == expected_output
 
@@ -50,10 +89,10 @@ def test_get_correspondences_with_heur():
             {"a": ["e"], "j": ["w"], "n": ["m"]},
             [                {'a': ['a', 'e'], 'j': ['j', 'w'], 'n': ['n', 'm']},
                 {'a a': 2, 'j j': 1, 'n n': 1},
-                {'a a': ['1'], 'j j': ['1'], 'n n': ['1']},
+                {'a a': [1], 'j j': [1], 'n n': [1]},
                 {'VCVC': ['VCVC']},
                 {'VCVC VCVC': 1},
-                {'VCVC VCVC': ['1']}
+                {'VCVC VCVC': [1]}
             ]
         ),
         (
@@ -64,10 +103,10 @@ def test_get_correspondences_with_heur():
             {},
             [                {'#aː': ['a.ɣ.a'], 't͡ʃ#': ['t͡ʃ']},
                 {'#aː a.ɣ.a': 1, 't͡ʃ# t͡ʃ': 1},
-                {'#aː a.ɣ.a': ['1'], 't͡ʃ# t͡ʃ': ['1']},
+                {'#aː a.ɣ.a': [1], 't͡ʃ# t͡ʃ': [1]},
                 {'VC': ['VCVCV']},
                 {'VC VCVCV': 1},
-                {'VC VCVCV': ['1']}
+                {'VC VCVCV': [1]}
             ]
         )
     ]

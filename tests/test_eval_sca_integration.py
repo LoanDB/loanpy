@@ -57,23 +57,23 @@ def test_eval_one_adapt():
 
 
     #adapt. repair phonotactics = false, different sizes and places of slices
-    assert eval_one([eded[0]] + eded[-20:], heur, True, 1, False) == 0.7
+    assert eval_one([eded[0]] + eded[-20:], heur, True, 1, False) == 0.6
     assert eval_one([eded[0]] + eded[-20:], heur, True, 2, False) == 0.7
     assert eval_one([eded[0]] + eded[-20:], heur, True, 10, False) == 0.7
     assert eval_one([eded[0]] + eded[-20:], heur, True, 100, False) == 0.7
     assert eval_one([eded[0]] + eded[-20:], heur, True, 1000, False) == 0.9
 
-    assert eval_one(eded[:51], heur, True, 1, False) == 0.44
-    assert eval_one(eded[:51], heur, True, 2, False) == 0.52
+    assert eval_one(eded[:51], heur, True, 1, False) == 0.68
+    assert eval_one(eded[:51], heur, True, 2, False) == 0.68
     assert eval_one(eded[:51], heur, True, 10, False) == 0.8
     assert eval_one(eded[:51], heur, True, 100, False) == 0.84
     assert eval_one(eded[:51], heur, True, 1000, False) == 0.84
 
-    assert eval_one(eded, heur, True, 1, False) == 0.02
-    assert eval_one(eded, heur, True, 2, False) == 0.08
-    assert eval_one(eded, heur, True, 10, False) == 0.31
-    assert eval_one(eded, heur, True, 100, False) == 0.78
-    assert eval_one(eded, heur, True, 1000, False) == 0.94
+    assert eval_one(eded, heur, True, 1, False) == 0.65
+    assert eval_one(eded, heur, True, 2, False) == 0.76
+    assert eval_one(eded, heur, True, 10, False) == 0.86
+    assert eval_one(eded, heur, True, 100, False) == 0.92
+    assert eval_one(eded, heur, True, 1000, False) == 0.95
 
     #adapt. repair phonotactics = false, different sizes and places of slices
     assert eval_one(eded[:21], heur, True, 1, True) == 0.2
@@ -88,17 +88,17 @@ def test_eval_one_adapt():
     assert eval_one([eded[0]] + eded[-20:], heur, True, 100, True) == 0.4
     assert eval_one([eded[0]] + eded[-20:], heur, True, 1000, True) == 0.6
 
-    assert eval_one(eded[:51], heur, True, 1, True) == 0.4
-    assert eval_one(eded[:51], heur, True, 2, True) == 0.48
+    assert eval_one(eded[:51], heur, True, 1, True) == 0.6
+    assert eval_one(eded[:51], heur, True, 2, True) == 0.6
     assert eval_one(eded[:51], heur, True, 10, True) == 0.72
     assert eval_one(eded[:51], heur, True, 100, True) == 0.76
     assert eval_one(eded[:51], heur, True, 1000, True) == 0.76
 
-    assert eval_one(eded, heur, True, 1, True) == 0.02
-    assert eval_one(eded, heur, True, 2, True) == 0.08
-    assert eval_one(eded, heur, True, 10, True) == 0.21
-    assert eval_one(eded, heur, True, 100, True) == 0.34
-    assert eval_one(eded, heur, True, 1000, True) == 0.4
+    assert eval_one(eded, heur, True, 1, True) == 0.64
+    assert eval_one(eded, heur, True, 2, True) == 0.75
+    assert eval_one(eded, heur, True, 10, True) == 0.84
+    assert eval_one(eded, heur, True, 100, True) == 0.9
+    assert eval_one(eded, heur, True, 1000, True) == 0.92
 
 with open(TESTFILESDIR / "H2EAHedicted.tsv", "r", encoding='utf-8') as f:
     eded = [row.split("\t") for row in f.read().strip().split("\n")]
@@ -111,8 +111,8 @@ with open(TESTFILESDIR / "H2EAHedicted.tsv", "r", encoding='utf-8') as f:
     assert eval_one(eded[:21], heur, False, 100) == 0.2
     assert eval_one(eded[:21], heur, False, 1000) == 0.2
 
-    assert eval_one(eded, heur, False, 1) == 0.03
-    assert eval_one(eded, heur, False, 2) == 0.07
-    assert eval_one(eded, heur, False, 10) == 0.26
-    assert eval_one(eded, heur, False, 100) == 0.51
-    assert eval_one(eded, heur, False, 1000) == 0.58
+    assert eval_one(eded, heur, False, 1) == 0.19
+    assert eval_one(eded, heur, False, 2) == 0.28
+    assert eval_one(eded, heur, False, 10) == 0.42
+    assert eval_one(eded, heur, False, 100) == 0.56
+    assert eval_one(eded, heur, False, 1000) == 0.59
