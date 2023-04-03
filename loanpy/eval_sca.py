@@ -63,7 +63,7 @@ def eval_one(edicted, heur, adapt, howmany, pros=False):
 
     :param edicted: The input tsv-table, edited with the Edictor.
                     Tokenised IPA source and target strings must be
-                    in column 3. Prosodic strings in column 4.
+                    in column "ALIGNMENT". Prosodic strings in col "PROSODY".
     :type edicted: list of lists
     :param heur: The heuristic sound and prosodic correspondences.
                  Created with loanpy.recover.get_correspondences
@@ -78,12 +78,14 @@ def eval_one(edicted, heur, adapt, howmany, pros=False):
              (rounded to 2 decimal places).
     :rtype: tuple
     """
-    
+
     out = []
+    h = {i: edicted[0].index(i) for i in edicted[0]}
     for i in range(1, len(edicted), 2):  # 1 bc skip header
         srcrow, tgtrow = edicted.pop(i), edicted.pop(i)
-        src, tgt = srcrow[3], "".join(re.sub("[-. ]", "", tgtrow[3]))
-        src_pros = srcrow[4] if pros else ""
+        src = srcrow[h["ALIGNMENT"]]
+        tgt = "".join(re.sub("[-. ]", "", tgtrow[h["ALIGNMENT"]]))
+        src_pros = srcrow[h["PROSODY"]] if pros else ""
         adrc = Adrc()
         adrc.sc = get_correspondences(edicted, heur)
         adrc.inventory = get_inventory(edicted)
