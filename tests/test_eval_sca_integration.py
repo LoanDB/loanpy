@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import csv
 import json
 from pathlib import Path
 
@@ -100,11 +101,10 @@ def test_eval_one_adapt():
     assert eval_one(eded, heur, True, 100, True) == 0.9
     assert eval_one(eded, heur, True, 1000, True) == 0.92
 
-with open(TESTFILESDIR / "H2EAHedicted.tsv", "r", encoding='utf-8') as f:
-    eded = [row.split("\t") for row in f.read().strip().split("\n")]
-    heur=None
+    with open(TESTFILESDIR / "H2EAHedicted.tsv", "r", encoding='utf-8') as f:
+        eded = list(csv.reader(f, delimiter="\t"))
+        heur=None
     #recstr. repair phonotactics = false, different sizes and places of slices
-
     assert eval_one(eded[:21], heur, False, 1) == 0.1
     assert eval_one(eded[:21], heur, False, 2) == 0.1
     assert eval_one(eded[:21], heur, False, 10) == 0.2

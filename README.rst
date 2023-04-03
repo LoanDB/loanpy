@@ -96,3 +96,4 @@ Main Changes Compared to Version 2
 - Cross-platform: Works on any platform that supports Python.
 - Python Compatibility: Works with Python 3.7 or higher.
 - CLDF Integration: Fully integrated in the `CLDF ecosystem <https://cldf.clld.org/>`_.
+- Improved alignments: Fine-tuned with the `Edictor <digling.org/edictor>`

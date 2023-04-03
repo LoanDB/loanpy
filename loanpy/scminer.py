@@ -59,25 +59,27 @@ def get_correspondences(table, heur=""):
         ):
             out[0][i].append(j)
             out[1][f"{i} {j}"].append(1)
-            out[2][f"{i} {j}"].append(row2[cols["COGID"]])
+            out[2][f"{i} {j}"].append(int(row2[cols["COGID"]]))
+
         cv1, cv2 = row1[cols["PROSODY"]], row2[cols["PROSODY"]]
         out[3][cv1].append(cv2)
         out[4][f"{cv1} {cv2}"].append(1)
-        out[5][f"{cv1} {cv2}"].append(row2[cols["COGID"]])
+        out[5][f"{cv1} {cv2}"].append(int(row2[cols["COGID"]]))
 
     for i in [0, 3]: # sort by freq
-        out[i] = {k: sorted(Counter(out[i][k])) for k in out[i]}
+        out[i] = {k: [j[0] for j in Counter(out[i][k]).most_common()] for k in out[i]}
     for i in [1, 4]: # sort by freq
         out[i] = {k: len(out[i][k]) for k in out[i]}
     for i in [2, 5]: # sort by freq
         out[i] = {k: list(dict.fromkeys(out[i][k])) for k in out[i]}
 
     if heur:
-        out[0] = {
-            k: (list(dict.fromkeys(out[0][k] + heur[k]))
-                if k in out[0] else heur[k])
-            for k in heur
-        }
+        for k in heur:
+            if k in out[0]:
+                out[0][k].extend(heur[k])
+                out[0][k] = list(dict.fromkeys(out[0][k]))
+            else:
+                out[0][k] = heur[k]
 
     return out
 
@@ -176,4 +178,8 @@ def get_inventory(table):
              and one for prosody.
     :rtype: dict
     """
-    return list(set([row[4] for row in table[2::2]]))
+    headers = table.pop(0)
+    h = {i: headers.index(i) for i in headers}
+    out = list(set([row[h["PROSODY"]] for row in table[1::2]]))
+    table.insert(0, headers)
+    return out

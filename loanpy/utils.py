@@ -134,6 +134,7 @@ def prefilter(data, srclg, tgtlg):
         col2_order = {srclg: 0, tgtlg: 1}
         return int(row[cogidx]), col2_order.get(row[lgidx], 2)
 
+    #print(data)
     data = sorted(data, key=sorting_key)
     #print(data)
     assert is_valid_language_sequence(data, srclg, tgtlg)
@@ -190,20 +191,16 @@ def is_same_length_alignments(data):
     :raises AssertionError: If the length of the alignments within a cogset
                             does not match.
     """
-    itertable = iter(data)
+
     rownr = 0
-    while True:
+    for i in range(0, len(data)-1, 2):
+        first = data[i][3].split(" ")
+        second = data[i+1][3].split(" ")
         try:
-            first = next(itertable)[3].split(" ")
-            second = next(itertable)[3].split(" ")
-            rownr += 2
-            try:
-                assert len(first) == len(second)
-            except AssertionError:
-                print(rownr, "\n", first, "\n", second)
-                return False
-        except StopIteration:
-            break
+            assert len(first) == len(second)
+        except AssertionError:
+            print(rownr, "\n", first, "\n", second)
+            return False
     return True
 
 def read_ipa_all():
