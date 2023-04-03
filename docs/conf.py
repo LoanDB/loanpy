@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Loanpy'
+project = 'loanpy'
 copyright = '2023, Viktor Martinović'
 author = 'Viktor Martinović'
 version = '3.0'
@@ -21,13 +21,7 @@ release = '3.0'
 
 extensions = ['sphinx.ext.autodoc']
 
-templates_path = ['_templates']
-exclude_patterns = []
-
-
-
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme' # 'alabaster'
-html_static_path = ['_static']
