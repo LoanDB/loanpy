@@ -218,25 +218,6 @@ def read_ipa_all():
     with data_path.open("r", encoding="utf-8") as f:
         return [row.split(",") for row in f.read().strip().split("\n")]
 
-def get_prosody(ipastr):
-    """
-    Generate a prosodic string from an IPA string.
-
-    This function takes an IPA string as input and generates a prosody string
-    by classifying each phoneme as a vowel (V) or consonant (C).
-
-    :param ipastr: The tokenised input IPA string. Phonemes must be separated
-                   by space or dot.
-    :type ipastr: str
-
-    :return: The generated prosodic string.
-    :rtype: str
-    """
-    ipa_all = read_ipa_all()
-    vowels = [rw[0] for rw in ipa_all if rw[ipa_all[0].index("cons")]=="-1"]
-    ipastr = re.split("[ |.]", ipastr)
-    return "".join(["V" if phoneme in vowels else "C" for phoneme in ipastr])
-
 def modify_ipa_all(input_file, output_file):
     """
     Original file is from folder "data" in panphon 0.20.0
@@ -294,3 +275,54 @@ def prod(iterable):
     for item in iterable:
         result *= item
     return result
+
+class IPA():
+    def __init__(self):
+        ipa = read_ipa_all()
+        considx = ipa[0].index("cons")
+        self.vowels = [row[0] for row in ipa if row[considx] == "-1"]
+
+    def get_cv(self, ipastr):
+        return "V" if ipastr in self.vowels else "C"
+
+    def get_prosody(self, ipastr):
+        """
+        Generate a prosodic string from an IPA string.
+
+        This function takes an IPA string as input and generates a prosody
+        string by classifying each phoneme as a vowel (V) or consonant (C).
+
+        :param ipastr: The tokenised input IPA string. Phonemes must be
+                       separated by space or dot.
+        :type ipastr: str
+
+        :return: The generated prosodic string.
+        :rtype: str
+        """
+        return "".join([self.get_cv(ph) for ph in re.split("[ |.]", ipastr)])
+
+    def get_clusters(self, segments):
+        """
+        Takes a list of phonemes and segments them into consonant and vowel
+        clusters, like so: "abcdeaofgh" -> ["a", "b.c.d", "e.a.o", "f.g.h"]
+
+        :param segments: A word, ideally as a list of IPA symbols
+        :type segments: iterable
+
+        :return: Same word but with consonants and vowels clustered together
+        :rtype: str
+        """
+        out = [segments[0]]
+        prev_cv = self.get_cv(segments[0])
+
+        for i in range(1, len(segments)):
+            this_cv = self.get_cv(segments[i])
+
+            if prev_cv == this_cv:
+                out[-1] += "." + segments[i]
+            else:
+                out.append(segments[i])
+
+            prev_cv = this_cv
+
+        return " ".join(out)

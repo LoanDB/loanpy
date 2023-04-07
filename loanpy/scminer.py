@@ -169,14 +169,15 @@ def get_heur(tgtlg):
 def get_inventory(table):
     """
     Extracts all types of prosodic structures (e.g. CVCV)
-    from uneven rows of the given table.
+    from uneven rows (i.e. where data of target language is) of the given table
+    (uneven rows after removing the header).
 
-    :param data: A tab-separated table in string format.
-    :type data: str
+    :param data: A table where every row is a list.
+    :type data: list of lists
 
-    :return: A dictionary containing two sets, one for segments
-             and one for prosody.
-    :rtype: dict
+    :return: A list of prosodic structures (e.g. "CVCV") that occur in the
+             target languages (i.e. in the uneven rows)
+    :rtype: list
     """
     headers = table.pop(0)
     h = {i: headers.index(i) for i in headers}

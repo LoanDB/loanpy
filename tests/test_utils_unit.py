@@ -3,8 +3,8 @@ import pytest
 #from pytest_mock import MockerFixture
 from unittest.mock import patch
 
-from loanpy.utils import (find_optimal_year_cutoff, cvgaps, prefilter,
-is_valid_language_sequence, is_same_length_alignments, read_ipa_all, get_prosody,
+from loanpy.utils import (IPA, find_optimal_year_cutoff, cvgaps, prefilter,
+is_valid_language_sequence, is_same_length_alignments, read_ipa_all,
 modify_ipa_all, prod)
 
 # Sample input data
@@ -177,30 +177,63 @@ def test_read_ipa_all():
     assert len(result) == 6492
 
 @patch("loanpy.utils.read_ipa_all")
-def test_get_prosody(read_ipa_all_mock):
+def test_init_ipa(read_ipa_all_mock):
     read_ipa_all_mock.return_value = [
-    ["ipa", "bla", "cons"],
-    ["a", "vowel", "-1"],
-    ["b", "consonant", "1"],
-    ["c", "consonant", "1"],
-    ["d", "consonant", "1"],
-    ["e", "vowel", "-1"]
-    ]
-    assert get_prosody("a") == "V"
-    assert get_prosody("b") == "C"
-    assert get_prosody("c") == "C"
-    assert get_prosody("d") == "C"
-    assert get_prosody("e") == "V"
-    assert get_prosody("") == "C"
-    assert get_prosody("9") == "C"
-    assert get_prosody("&") == "C"
-
-    assert get_prosody("a b") == "VC"
-    assert get_prosody("d e") == "CV"
-    assert get_prosody("e.a b.d") == "VVCC"
-
+        ["ipa", "bla", "cons"],
+        ["a", "vowel", "-1"],
+        ["b", "consonant", "1"],
+        ["c", "consonant", "1"],
+        ["d", "consonant", "1"],
+        ["e", "vowel", "-1"]
+        ]
+    ipa = IPA()
+    assert ipa.vowels == ["a", "e"]
     read_ipa_all_mock.assert_called_with()
 
+
+class IPAmonkey():
+    def __init__(self):
+        self.vowels = ["a", "e"]
+        self.get_cv_returns = iter("VCCCVCCCVCCVVVCC")
+    def get_cv(self, arg):
+        return next(self.get_cv_returns)
+
+def test_get_cv():
+    ipamonkey = IPAmonkey()
+    assert IPA.get_cv(ipamonkey, "a") == "V"
+    assert IPA.get_cv(ipamonkey, "a") == "V"
+    assert IPA.get_cv(ipamonkey, "b") == "C"
+    assert IPA.get_cv(ipamonkey, "c") == "C"
+    assert IPA.get_cv(ipamonkey, "d") == "C"
+    assert IPA.get_cv(ipamonkey, "e") == "V"
+    assert IPA.get_cv(ipamonkey, "") == "C"
+    assert IPA.get_cv(ipamonkey, "9") == "C"
+    assert IPA.get_cv(ipamonkey, "&") == "C"
+
+def test_get_prosody():
+
+    ipamonkey = IPAmonkey()
+
+    assert IPA.get_prosody(ipamonkey, "a") == "V"
+    assert IPA.get_prosody(ipamonkey, "b") == "C"
+    assert IPA.get_prosody(ipamonkey, "c") == "C"
+    assert IPA.get_prosody(ipamonkey, "d") == "C"
+    assert IPA.get_prosody(ipamonkey, "e") == "V"
+    assert IPA.get_prosody(ipamonkey, "") == "C"
+    assert IPA.get_prosody(ipamonkey, "9") == "C"
+    assert IPA.get_prosody(ipamonkey, "&") == "C"
+
+    assert IPA.get_prosody(ipamonkey, "a b") == "VC"
+    assert IPA.get_prosody(ipamonkey, "d e") == "CV"
+    assert IPA.get_prosody(ipamonkey, "e.a b.d") == "VVCC"
+
+def test_get_clusters():
+    ipamonkey = IPAmonkey()
+    assert IPA.get_clusters(ipamonkey, "abcd") == "a b.c.d"
+    assert IPA.get_clusters(ipamonkey, "efgh") == "e f.g.h"
+    assert IPA.get_clusters(ipamonkey, "ijji") == "i j.j i"
+    assert IPA.get_clusters(ipamonkey, "aejd") == "a.e j.d"
+    
 def test_modify_ipa_all(tmp_path):
     # Create temporary files for sound correspondence dictionary and inventories
     sc_path = tmp_path / "ipa_all.csv"
