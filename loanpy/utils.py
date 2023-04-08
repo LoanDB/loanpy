@@ -32,20 +32,21 @@ def find_optimal_year_cutoff(tsv, origins):
     """
     # Step 1: Read the TSV content from a string
     data = []
+    h = {i: tsv[0].index(i) for i in tsv[0]}
     for row in tsv[1:]:
-        if len(row) > 1 and row[2]:  # Check if the year value is not empty
+        if len(row) > 1 and row[h["Year"]]:  # Check if the year value is not empty
             row_dict = dict(zip(tsv[0], row))
             data.append(row_dict)
 
     # Step 2: Extract years and create a set of possible integers
-    possible_years = sorted({int(row["year"]) for row in data})
+    possible_years = sorted({int(row["Year"]) for row in data})
 
     # Step 3: Count words with the specified origin until each given year
     year_count_list = []
     accumulated_count = 0
     for year in possible_years:
-        count = sum(1 for row in data if int(row["year"]) <= \
-                    year and row["origin"] in origins)
+        count = sum(1 for row in data if int(row["Year"]) <= \
+                    year and row["Etymology"] in origins)
         year_count_list.append((year, count))
 
     # Step 4: Convert the dictionary to a list of tuples

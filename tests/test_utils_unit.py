@@ -8,7 +8,7 @@ is_valid_language_sequence, is_same_length_alignments, read_ipa_all,
 modify_ipa_all, prod)
 
 # Sample input data
-tsv_string = """form\tsense\tyear\torigin\tLoan
+tsv_string = """form\tsense\tYear\tEtymology\tLoan
 a¹\teine Interjektion\t1833\t\t
 á\t〈eine Interjektion〉\t1372\tLang\t
 aba ×\tFlausch, Fries, Flanell, Besatz am Rock\t1556\tLang\tTrue
@@ -22,7 +22,7 @@ def test_find_optimal_year_cutoff_sample():
     assert find_optimal_year_cutoff(tsv, origins) == 1320
 
 def test_find_optimal_year_cutoff_empty_input():
-    with pytest.raises(ValueError):
+    with pytest.raises(IndexError):
         assert find_optimal_year_cutoff([], origins) is None
 
 def test_find_optimal_year_cutoff_no_origins():
@@ -33,7 +33,7 @@ def test_find_optimal_year_cutoff_no_matching_origins():
     assert find_optimal_year_cutoff(tsv, non_matching_origins) == 1320
 
 def test_find_optimal_year_cutoff_single_entry():
-    single_entry_tsv = "form\tsense\tyear\torigin\tLoan\na\texample\t1900\
+    single_entry_tsv = "form\tsense\tYear\tEtymology\tLoan\na\texample\t1900\
 \tProto-Finno-Ugric\tTrue"
     tsv = [row.split("\t") for row in single_entry_tsv.split("\n")]
     origins = ["Proto-Finno-Ugric"]
@@ -233,7 +233,7 @@ def test_get_clusters():
     assert IPA.get_clusters(ipamonkey, "efgh") == "e f.g.h"
     assert IPA.get_clusters(ipamonkey, "ijji") == "i j.j i"
     assert IPA.get_clusters(ipamonkey, "aejd") == "a.e j.d"
-    
+
 def test_modify_ipa_all(tmp_path):
     # Create temporary files for sound correspondence dictionary and inventories
     sc_path = tmp_path / "ipa_all.csv"
