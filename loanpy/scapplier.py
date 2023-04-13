@@ -80,7 +80,7 @@ class Adrc():
         :rtype: str
         """
 
-        ipalist = ipastr.split(" ")
+        ipalist = ipastr.split(" ") if isinstance(ipastr, str) else ipastr
         if prosody:
             ipalist = self.repair_phonotactics(ipalist, prosody)
         out = self.read_sc(ipalist, howmany)
@@ -112,7 +112,7 @@ class Adrc():
                             missing from the sound correspondence dictionary.
         """
 
-        ipalist = ipastr.split(" ")
+        ipalist = ipastr.split(" ") if isinstance(ipastr, str) else ipastr
 
         # if phonemes missing from sound correspondence dict, return which ones
         if not all(phon in self.sc[0] for phon in ipalist):
@@ -621,7 +621,7 @@ def dijkstra(graph, start, end):
         `Dijkstra's algorithm on Wikipedia
         <https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm>`_
     """
-    
+
     dist = {node: float('inf') for node in graph}
     dist[start] = 0
     queue = [(0, start)]
