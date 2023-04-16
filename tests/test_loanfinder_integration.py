@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from loanpy.loanfinder import phonetic_matches, semantic_matches
 
-def test_phonetic_matches():
+def test_phonetic_matches(tmpdir):
     donor = [
         ['0', 'Donorese-0_hot1-1', 'e g e g', 'VCVC', 'hot', ['igig', 'agag']],
         ['1', 'Donorese-1_dog1-1', 'e g g e', 'VCCV', 'dog', ['iggi', 'agga']]
@@ -11,9 +11,13 @@ def test_phonetic_matches():
         ['1', 'Recipientese-1', 'i i k k', 'cat', '^(i|u)(i|u)(g)(g)$']
                 ]
 
-    assert phonetic_matches(donor, recipient) == 'ID\tloanID\tadrcID\tdf\tform\
+    outpath = tmpdir.join("test_phon_match.tsv")
+    phonetic_matches(donor, recipient, outpath)
+    with open(outpath, "r") as f:
+        result = f.read()
+    assert result == 'ID\tloanID\tadrcID\tdf\tform\
 \tpredicted\tmeaning\n0\t0\t0\trecipient\ti k k i\t^(i|u)(g)(g)(i|u)$\tcold\n1\
-\t0\t1\tdonor\te g g e\tiggi\tdog'
+\t0\t1\tdonor\te g g e\tiggi\tdog\n'
 
 def test_semantic_matches():
     # Test case 3: Multiple row input

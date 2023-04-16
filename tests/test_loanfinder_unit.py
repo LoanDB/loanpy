@@ -4,7 +4,7 @@ from loanpy.loanfinder import phonetic_matches, semantic_matches
 from unittest.mock import patch, call
 
 @patch("loanpy.loanfinder.re.match", side_effect = [0, 0, 1, 0, 0, 0, 0, 0])
-def test_phonetic_matches(re_match_mock):
+def test_phonetic_matches(re_match_mock, tmpdir):
     donor = [
         ['0', 'Donorese-0_hot1-1', 'e g e g', 'VCVC', 'hot', ['igig', 'agag']],
         ['1', 'Donorese-1_dog1-1', 'e g g e', 'VCCV', 'dog', ['iggi', 'agga']]
@@ -13,10 +13,13 @@ def test_phonetic_matches(re_match_mock):
         ['0', 'Recipientese-0', 'i k k i', 'cold', '^(i|u)(g)(g)(i|u)$'],
         ['1', 'Recipientese-1', 'i i k k', 'cat', '^(i|u)(i|u)(g)(g)$']
                 ]
-
-    assert phonetic_matches(donor, recipient) == 'ID\tloanID\tadrcID\tdf\tform\
+    outpath = tmpdir.join("test_phon_match.tsv")
+    phonetic_matches(donor, recipient, outpath)
+    with open(outpath, "r") as f:
+        result = f.read()
+    assert result == 'ID\tloanID\tadrcID\tdf\tform\
 \tpredicted\tmeaning\n0\t0\t0\trecipient\ti k k i\t^(i|u)(g)(g)(i|u)$\tcold\n1\
-\t0\t1\tdonor\te g g e\tiggi\tdog'
+\t0\t1\tdonor\te g g e\tiggi\tdog\n'
 
     # 7  calls bc after matching with iggi it doesn't continue to agga
     assert re_match_mock.call_args_list == [
