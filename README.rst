@@ -1,8 +1,8 @@
 .. image:: https://zenodo.org/badge/428920599.svg
    :target: https://zenodo.org/record/6628976
 
-.. image:: https://dl.circleci.com/status-badge/img/gh/martino-vic/loanpy/tree/2%2E0%2E1.svg?style=svg
-   :target: https://dl.circleci.com/status-badge/redirect/gh/martino-vic/loanpy/tree/2%2E0%2E1
+.. image:: https://dl.circleci.com/status-badge/img/gh/LoanpyDataHub/loanpy/tree/2.0.1.svg?style=svg
+       :target: https://dl.circleci.com/status-badge/redirect/gh/LoanpyDataHub/loanpy/tree/2.0.1
 
 .. image:: https://coveralls.io/repos/github/martino-vic/loanpy/badge.svg?branch=2.0.1
    :target: https://coveralls.io/github/martino-vic/loanpy?branch=2.0.1
