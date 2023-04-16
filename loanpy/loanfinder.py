@@ -17,10 +17,11 @@ loanwords ranked by their phonetic and semantic similarities. The output can
 then be used to study linguistic borrowing, adaptation, and reconstruction
 processes between the donor and recipient languages.
 """
+import csv
 import heapq
 import re
 
-def phonetic_matches(df_ad, df_rc):
+def phonetic_matches(df_ad, df_rc, output):
     """
     Finds phonetic matches between the given donor and recipient TSV files.
 
@@ -44,26 +45,27 @@ def phonetic_matches(df_ad, df_rc):
              ID, loanID, adrcID, df, form, predicted, meaning.
     :rtype: str
     """
-
-    phonmatch = "ID\tloanID\tadrcID\tdf\tform\tpredicted\tmeaning"
     match_id, loan_id = 0, 0
 
-    for i, rcrow in enumerate(df_rc):
-        print(f"{i+1}/{len(df_rc)} iterations completed", end="\r")
-        for adrow in df_ad:
-            for ad in adrow[5]:
-                if re.match(rcrow[4], ad):
-                    line1 = [str(match_id), str(loan_id), str(rcrow[0]),
-                             "recipient", rcrow[2], rcrow[4], rcrow[3]]
-                    match_id += 1
-                    line2 = [str(match_id), str(loan_id), str(adrow[0]),
-                             "donor", adrow[2], ad, adrow[4]]
-                    match_id += 1
-                    phonmatch += "\n" + "\t".join(line1) + "\n" + "\t".join(line2)
-                    loan_id += 1
-                    break
+    with open(output, "w+") as f:
+        writer = csv.writer(f, delimiter="\t")
+        writer.writerow(['ID', 'loanID', 'adrcID', 'df', 'form', 'predicted', 'meaning'])
+        for i, rcrow in enumerate(df_rc):
+            print(f"{i+1}/{len(df_rc)} iterations completed", end="\r")
+            for adrow in df_ad:
+                for ad in adrow[5]:
+                    if re.match(rcrow[4], ad):
+                        line1 = [str(match_id), str(loan_id), str(rcrow[0]),
+                                 "recipient", rcrow[2], rcrow[4], rcrow[3]]
+                        match_id += 1
+                        line2 = [str(match_id), str(loan_id), str(adrow[0]),
+                                 "donor", adrow[2], ad, adrow[4]]
+                        match_id += 1
+                        loan_id += 1
 
-    return phonmatch
+                        writer.writerow(line1)
+                        writer.writerow(line2)
+                        break
 
 def semantic_matches(phmtsv, get_semsim):
     """
