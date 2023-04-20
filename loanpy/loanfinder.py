@@ -87,7 +87,7 @@ def semantic_matches(df_phonmatch, get_semsim, output, thresh=0):
     with open(output, "w+") as f:
         writer = csv.writer(f, delimiter="\t")
         writer.writerow(df_phonmatch[0][:3] + ["semsim"])  # header
-        for i, row in enumerate(df_phonmatch[1:]):  # calculate semantic similarity
+        for i, row in enumerate(df_phonmatch[1:]):  # calculate semantic sim.
             semsim = get_semsim(row[3], row[4])
             if semsim >= thresh:
                 writer.writerow(row[:3] + [round(semsim, 2)])
