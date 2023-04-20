@@ -8,6 +8,8 @@ processing cognate sets. It provides helper functions for reading and
 processing linguistic datasets and performing various operations such as
 filtering and validation.
 """
+import csv
+import json
 from collections import Counter
 from pathlib import Path
 import re
@@ -327,3 +329,23 @@ class IPA():
             prev_cv = this_cv
 
         return " ".join(out)
+
+def scjson2tsv(jsonin, outtsv):
+    """
+    Turn a computer-readable sound correspondence json-file into a
+    human readbale tab separated value file (tsv).
+
+    #. read json
+    #. put information into columns
+    #. write file
+
+    """
+    # read json
+    with open(jsonin, "r") as f:
+        scdict = json.load(f)
+
+    with open(outtsv, "w+") as f:
+        writer = csv.writer(f)
+        writer.writerow(["src", "tgt", "freq", "where"])
+        for sc in scdict[1]:
+            writer.writerow(sc.split(" ") + [scdict[1][sc], scdict[2][sc]])
