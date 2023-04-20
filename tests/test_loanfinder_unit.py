@@ -3,53 +3,47 @@ import pytest
 from loanpy.loanfinder import phonetic_matches, semantic_matches
 from unittest.mock import patch, call
 
-@patch("loanpy.loanfinder.re.match", side_effect = [0, 0, 1, 0, 0, 0, 0, 0])
+@patch("loanpy.loanfinder.re.match", side_effect = [0, 1, 0, 0])
 def test_phonetic_matches(re_match_mock, tmpdir):
     donor = [
-        ['0', 'Donorese-0_hot1-1', 'e g e g', 'VCVC', 'hot', ['igig', 'agag']],
-        ['1', 'Donorese-1_dog1-1', 'e g g e', 'VCCV', 'dog', ['iggi', 'agga']]
+        ['a0', 'f0', 'igig'],
+        ['a1', 'f1', 'iggi']
             ]
     recipient = [
-        ['0', 'Recipientese-0', 'i k k i', 'cold', '^(i|u)(g)(g)(i|u)$'],
-        ['1', 'Recipientese-1', 'i i k k', 'cat', '^(i|u)(i|u)(g)(g)$']
+        ['0', 'Recipientese-0', '^(i|u)(g)(g)(i|u)$'],
+        ['1', 'Recipientese-1', '^(i|u)(i|u)(g)(g)$']
                 ]
     outpath = tmpdir.join("test_phon_match.tsv")
-    phonetic_matches(donor, recipient, outpath)
+    phonetic_matches(recipient, donor, outpath)
     with open(outpath, "r") as f:
         result = f.read()
-    assert result == 'ID\tloanID\tadrcID\tdf\tform\
-\tpredicted\tmeaning\n0\t0\t0\trecipient\ti k k i\t^(i|u)(g)(g)(i|u)$\tcold\n1\
-\t0\t1\tdonor\te g g e\tiggi\tdog\n'
+    assert result == 'ID\tID_rc\tID_ad\n0\tRecipientese-0\tf1\n'
 
     # 7  calls bc after matching with iggi it doesn't continue to agga
     assert re_match_mock.call_args_list == [
         call('^(i|u)(g)(g)(i|u)$', 'igig'),
-        call('^(i|u)(g)(g)(i|u)$', 'agag'),
         call('^(i|u)(g)(g)(i|u)$', 'iggi'),
         call('^(i|u)(i|u)(g)(g)$', 'igig'),
-        call('^(i|u)(i|u)(g)(g)$', 'agag'),
-        call('^(i|u)(i|u)(g)(g)$', 'iggi'),
-        call('^(i|u)(i|u)(g)(g)$', 'agga'),
+        call('^(i|u)(i|u)(g)(g)$', 'iggi')
     ]
 
-@patch("loanpy.loanfinder.heapq.nlargest")
-def test_semantic_matches(nlargest_mock):
-    nlargest_mock.return_value = [['1', '0', '1', 'donor', 'e g g e',
-        'iggi', 'dog', '3', 'y'], ['0', '0', '0', 'recipient', 'i k k i',
-        '^(i|u)(g)(g)(i|u)$', 'cold', '3', 'x']]
-    # Test case 3: Multiple row input
+def test_semantic_matches(tmpdir):
+    # basic test
     phmtsv = [
-        ["ID", "loanID", "adrcID", "df", "form", "predicted", "meaning"],
-        ["0", "0", "0", "recipient", "i k k i", "^(i|u)(g)(g)(i|u)$", "cold"],
-        ["1", "0", "1", "donor", "e g g e", "iggi", "dog"],
+        ["ID", "ID_rc", "ID_ad", "lg1", "lg2"],
+        ["0", "20-bla", "f53", "lg1", "lg2"],
+        ["1", "87-bli", "f7", "l1", "lg2"],
     ]
-    assert semantic_matches(phmtsv, lambda x, y: [3, "x", "y"]) == \
-'ID\tloanID\tadrcID\tdf\tform\tpredicted\tmeaning\tsemsim\tclosest_sem\
-\n1\t0\t1\tdonor\te g g e\tiggi\tdog\t3\ty\
-\n0\t0\t0\trecipient\ti k k i\t^(i|u)(g)(g)(i|u)$\tcold\t3\tx'
+    outpath = tmpdir.join("test_sem_match.tsv")
+    semantic_matches(phmtsv, lambda x, y: 3, outpath)
 
-    assert nlargest_mock.call_args_list[0][0] == (1000, [
-        ["0", "0", "0", "recipient", "i k k i",
-         "^(i|u)(g)(g)(i|u)$", "cold", "3", "x"],
-        ["1", "0", "1", "donor", "e g g e", "iggi", "dog", "3", "y"],
-    ])
+    with open(outpath, "r") as f:
+        result = f.read()
+    assert result == 'ID\tID_rc\tID_ad\tsemsim\n0\t20-bla\tf53\t3\n1\t87-bli\tf7\t3\n'
+
+    # test with higher threshold
+    semantic_matches(phmtsv, lambda x, y: 3, outpath, thresh=5)
+
+    with open(outpath, "r") as f:
+        result = f.read()
+    assert result == 'ID\tID_rc\tID_ad\tsemsim\n'
