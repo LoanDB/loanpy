@@ -8,7 +8,8 @@ contains functions for repairing phonotactics, and
 working with IPA strings.
 
 Horizontal transfer refers to the borrowing of words and linguistic features
-between languages in contact, while vertical transfer refers to the inheritance
+between languages in contact, while vertical transfer refers to the
+inheritance
 of words and linguistic features from a parent language to its descendants.
 """
 
@@ -95,8 +96,8 @@ class Adrc():
         Reconstructs a phonological form from a given IPA string using
         a sound correspondence dictionary.
 
-        :param ipastr: A string of space-separated IPA symbols representing the
-                       phonetic form to be reconstructed.
+        :param ipastr: A string of space-separated IPA symbols representing
+                       the phonetic form to be reconstructed.
         :type ipastr: str
 
         :param howmany: The maximum number of phonological forms to
