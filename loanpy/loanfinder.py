@@ -91,4 +91,6 @@ def semantic_matches(df_phonmatch, get_semsim, output, thresh=0):
             semsim = get_semsim(row[3], row[4])
             if semsim >= thresh:
                 writer.writerow(row[:3] + [round(semsim, 2)])
-            print(f"{i+1}/{len(df_phonmatch[1:])-1} iterations completed", end="\r")
+            print(f"{i+1}/{len(df_phonmatch[1:])-1} iterations completed",
+                  end="\r"
+                  )
