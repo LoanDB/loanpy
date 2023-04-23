@@ -95,6 +95,8 @@ def eval_one(edicted, heur, adapt, howmany, pros=False):
             out.append(tgt in ad)
         else:
             rc = adrc.reconstruct(src, howmany)
+            #if not bool(re.match(rc, tgt)):
+            #    print(howmany, src, rc, tgt)
             out.append(bool(re.match(rc, tgt)))
         edicted.insert(i, tgtrow)
         edicted.insert(i, srcrow)

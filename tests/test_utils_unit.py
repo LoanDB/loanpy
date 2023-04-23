@@ -2,10 +2,11 @@
 import pytest
 #from pytest_mock import MockerFixture
 from unittest.mock import patch
+import json
 
 from loanpy.utils import (IPA, find_optimal_year_cutoff, cvgaps, prefilter,
 is_valid_language_sequence, is_same_length_alignments, read_ipa_all,
-modify_ipa_all, prod)
+modify_ipa_all, prod, scjson2tsv)
 
 # Sample input data
 tsv_string = """form\tsense\tYear\tEtymology\tLoan
@@ -276,3 +277,33 @@ def test_prod_negative_numbers():
 
 def test_prod_zero():
     assert prod([0, 1, 2, 3]) == 0
+
+def test_scjson2tsv(tmp_path):
+    """
+    #. Write a mock scdict json file
+    #. Transform it
+    #. Write it to a temporary directory
+    #. Open it
+    #. Check if the results are as expected
+    """
+    # define path of input and output files
+    mockscdictpath = tmp_path / "mocksc.json"
+    outpath = tmp_path / "output.tsv"
+    # create thte mock scdict json file
+    scdict = [{"a": ["o", "e"]}, {"a o": 1, "a e": 2}, {"a o": [512], "a e": [3, 4]}]
+    # write the file to the specified path
+    with open(mockscdictpath, "w+") as f:
+        json.dump(scdict, f)
+    # run scjson2tsv
+    scjson2tsv(mockscdictpath, outpath)
+    # define expected file
+    expected = [["sc", "src", "tgt", "freq", "CogID"],
+                ["a o", "a", "o", "1", "512"],
+                ["a e", "a", "e", "2", "3, 4"]
+                ]
+    expected = "\n".join(["\t".join(row) for row in expected]) + "\n"
+    # open result
+    with open(outpath, "r") as f:
+        out = f.read()
+    # make sure result is as expected
+    assert out == expected

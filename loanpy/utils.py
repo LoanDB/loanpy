@@ -343,9 +343,9 @@ def scjson2tsv(jsonin, outtsv):
     # read json
     with open(jsonin, "r") as f:
         scdict = json.load(f)
-
     with open(outtsv, "w+") as f:
-        writer = csv.writer(f)
-        writer.writerow(["src", "tgt", "freq", "where"])
+        writer = csv.writer(f, delimiter="\t")
+        writer.writerow(["sc", "src", "tgt", "freq", "CogID"])
         for sc in scdict[1]:
-            writer.writerow(sc.split(" ") + [scdict[1][sc], scdict[2][sc]])
+            writer.writerow([sc] + sc.split(" ") +
+                            [scdict[1][sc], ", ".join([str(i) for i in scdict[2][sc]])])
