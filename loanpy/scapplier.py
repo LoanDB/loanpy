@@ -86,7 +86,7 @@ class Adrc():
             ipalist = self.repair_phonotactics(ipalist, prosody)
         out = self.read_sc(ipalist, howmany)
         out = ["".join(word).replace("-", "") for word in product(*out)]
-        return ", ".join(out[:howmany])  # cut off leftover, turn to string
+        return out[:howmany]  # cut off leftover, turn to string
 
     def reconstruct(self,
                     ipastr,

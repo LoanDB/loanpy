@@ -90,7 +90,7 @@ def eval_one(edicted, heur, adapt, howmany, pros=False):
         adrc.sc = get_correspondences(edicted, heur)
         adrc.inventory = get_inventory(edicted)
         if adapt:
-            ad = adrc.adapt(src, howmany, src_pros).split(", ")
+            ad = adrc.adapt(src, howmany, src_pros)
             #print("tgt: ", tgt, "src: ", src, ", ad: ", ad)
             out.append(tgt in ad)
         else:

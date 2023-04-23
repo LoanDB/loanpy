@@ -39,7 +39,7 @@ def phonetic_matches(df_rc, df_ad, output, max_ad=100):
                  reconstructions as a regular expression. Col 0: The ID in
                  df_rc, Col 2: The form of the word. Col 3: its meanings.
 
-    :return: A string containing the matched data in TSV format,
+    :return: A string containing the matchedlo data in TSV format,
              with the following columns:
              ID, loanID, adrcID, df, form, predicted, meaning.
     :rtype: str
@@ -49,19 +49,13 @@ def phonetic_matches(df_rc, df_ad, output, max_ad=100):
         writer = csv.writer(f, delimiter="\t")
         writer.writerow(['ID', 'ID_rc', 'ID_ad'])
         for i, rcrow in enumerate(df_rc):
-            last_match, f_id_count = None, {}
+            last_match = None
             for adrow in df_ad:
-
-                if adrow[1] not in f_id_count:
-                    f_id_count[adrow[1]] = 0
-
-                if f_id_count[adrow[1]] < max_ad and last_match != adrow[1]:
+                if last_match != adrow[1]:
                     if re.match(rcrow[2], adrow[2]):
                         writer.writerow([phmid, rcrow[1], adrow[1]])
                         phmid += 1
                         last_match = adrow[1]
-
-                    f_id_count[adrow[1]] += 1
 
             print(f"{i+1}/{len(df_rc)} iterations completed", end="\r")
 

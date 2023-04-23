@@ -17,20 +17,22 @@ def test_adapt(tmp_path):
 
     # no phonotactic repair
     adrc = Adrc(sc=sc_path)
-    assert adrc.adapt("d a d a") == "dada"
-    assert adrc.adapt("d a d a", 2) == "dada, xada"
-    assert adrc.adapt("d a d a", 3) == "dada, daxa, xada"
-    assert adrc.adapt("d a d a", 5) == "dada, daxa, dxda, dxxa, xada"
-    assert adrc.adapt("d a d a", 100000) == "dada, dadx, daxa, daxx, dxda, \
-dxdx, dxxa, dxxx, xada, xadx, xaxa, xaxx, xxda, xxdx, xxxa, xxxx"
+    assert adrc.adapt("d a d a") == ["dada"]
+    assert adrc.adapt("d a d a", 2) == ["dada", "xada"]
+    assert adrc.adapt("d a d a", 3) == ["dada", "daxa", "xada"]
+    assert adrc.adapt("d a d a", 5) == ["dada", "daxa", "dxda", "dxxa", "xada"]
+    assert adrc.adapt("d a d a", 100000) == ["dada", "dadx", "daxa", "daxx",
+        "dxda", "dxdx", "dxxa", "dxxx", "xada", "xadx", "xaxa", "xaxx",
+        "xxda", "xxdx", "xxxa", "xxxx"]
 
     # phonotactic repair from data, 1 deletion
-    assert adrc.adapt("d a d a", 1, "CVCV") == "dad"
-    assert adrc.adapt("d a d a", 2, "CVCV") == "dad, xad"
-    assert adrc.adapt("d a d a", 3, "CVCV") == "dad, dax, xad"
-    assert adrc.adapt("d a d a", 5, "CVCV") == "dad, dax, dxd, dxx, xad"
-    assert adrc.adapt("d a d a", 100000, "CVCV") == "\
-dad, dax, dxd, dxx, xad, xax, xxd, xxx"
+    assert adrc.adapt("d a d a", 1, "CVCV") == ["dad"]
+    assert adrc.adapt("d a d a", 2, "CVCV") == ["dad", "xad"]
+    assert adrc.adapt("d a d a", 3, "CVCV") == ["dad", "dax", "xad"]
+    assert adrc.adapt("d a d a", 5, "CVCV") == ["dad", "dax", "dxd", "dxx", "xad"]
+    assert adrc.adapt("d a d a", 100000, "CVCV") == ["dad", "dax", "dxd",
+        "dxx", "xad", "xax", "xxd", "xxx"]
+
 
     # phonotactic repair from heuristics
     sc_path.write_text('[{"d": ["d", "x"], "a": ["a", "x"], "C": ["k"]}, \
@@ -39,19 +41,20 @@ dad, dax, dxd, dxx, xad, xax, xxd, xxx"
     # two insertions cheaper than two deletions, so it should pick the 2nd
     inventory_path.write_text('["CV", "CVCVCC"]')
     adrc = Adrc(sc=sc_path, inventory=inventory_path)
-    assert adrc.adapt("d a d a", 1, "CVCV") == "dadakk"
-    assert adrc.adapt("d a d a", 2, "CVCV") == "dadakk, xadakk"
-    assert adrc.adapt("d a d a", 3, "CVCV") == "dadakk, daxakk, xadakk"
-    assert adrc.adapt("d a d a", 5, "CVCV") == "\
-dadakk, daxakk, dxdakk, dxxakk, xadakk"
-    assert adrc.adapt("d a d a", 100000, "CVCV") == "\
-dadakk, dadxkk, daxakk, daxxkk, dxdakk, dxdxkk, dxxakk, dxxxkk, xadakk, \
-xadxkk, xaxakk, xaxxkk, xxdakk, xxdxkk, xxxakk, xxxxkk"
+    assert adrc.adapt("d a d a", 1, "CVCV") == ["dadakk"]
+    assert adrc.adapt("d a d a", 2, "CVCV") == ["dadakk", "xadakk"]
+    assert adrc.adapt("d a d a", 3, "CVCV") == ["dadakk", "daxakk", "xadakk"]
+    assert adrc.adapt("d a d a", 5, "CVCV") == ["dadakk", "daxakk", "dxdakk",
+                                                "dxxakk", "xadakk"]
+    assert adrc.adapt("d a d a", 100000, "CVCV") == ["dadakk", "dadxkk",
+        "daxakk", "daxxkk", "dxdakk", "dxdxkk", "dxxakk", "dxxxkk", "xadakk",
+        "xadxkk", "xaxakk", "xaxxkk", "xxdakk", "xxdxkk", "xxxakk", "xxxxkk"]
+
 
     # try substitutions
     inventory_path.write_text('["CCCV"]')
     adrc = Adrc(sc=sc_path, inventory=inventory_path)
-    assert adrc.adapt("d a d a", 1, "CVCV") == "ddka"
+    assert adrc.adapt("d a d a", 1, "CVCV") == ["ddka"]
 
 def test_reconstruct():
     """test if reconstructions based on sound correspondences work"""

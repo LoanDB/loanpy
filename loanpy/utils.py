@@ -330,7 +330,7 @@ class IPA():
 
         return " ".join(out)
 
-def scjson2tsv(jsonin, outtsv):
+def scjson2tsv(jsonin, outtsv, outtsv_phonotactics):
     """
     Turn a computer-readable sound correspondence json-file into a
     human readbale tab separated value file (tsv).
@@ -349,3 +349,10 @@ def scjson2tsv(jsonin, outtsv):
         for sc in scdict[1]:
             writer.writerow([sc] + sc.split(" ") +
                             [scdict[1][sc], ", ".join([str(i) for i in scdict[2][sc]])])
+
+    with open(outtsv_phonotactics, "w+") as f:
+        writer = csv.writer(f, delimiter="\t")
+        writer.writerow(["sc", "src", "tgt", "freq", "CogID"])
+        for sc in scdict[4]:
+            writer.writerow([sc] + sc.split(" ") +
+                            [scdict[4][sc], ", ".join([str(i) for i in scdict[5][sc]])])

@@ -289,21 +289,30 @@ def test_scjson2tsv(tmp_path):
     # define path of input and output files
     mockscdictpath = tmp_path / "mocksc.json"
     outpath = tmp_path / "output.tsv"
+    outpath_phonotactics = tmp_path / "output_phonotactics.tsv"
     # create thte mock scdict json file
-    scdict = [{"a": ["o", "e"]}, {"a o": 1, "a e": 2}, {"a o": [512], "a e": [3, 4]}]
+    scdict = [{"a": ["o", "e"]}, {"a o": 1, "a e": 2}, {"a o": [512],
+               "a e": [3, 4]}, {"CV": ["CV"]}, {"CV CV": 1}, {"CV CV": [7]}]
     # write the file to the specified path
     with open(mockscdictpath, "w+") as f:
         json.dump(scdict, f)
     # run scjson2tsv
-    scjson2tsv(mockscdictpath, outpath)
+    scjson2tsv(mockscdictpath, outpath, outpath_phonotactics)
     # define expected file
     expected = [["sc", "src", "tgt", "freq", "CogID"],
                 ["a o", "a", "o", "1", "512"],
                 ["a e", "a", "e", "2", "3, 4"]
                 ]
+    expected_p = [["sc", "src", "tgt", "freq", "CogID"],
+                ["CV CV", "CV", "CV", "1", "7"],
+                ]
     expected = "\n".join(["\t".join(row) for row in expected]) + "\n"
+    expected_p = "\n".join(["\t".join(row) for row in expected_p]) + "\n"
     # open result
     with open(outpath, "r") as f:
         out = f.read()
+    with open(outpath_phonotactics, "r") as f:
+        out_p = f.read()
     # make sure result is as expected
     assert out == expected
+    assert out_p == expected_p

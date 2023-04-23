@@ -455,7 +455,7 @@ def test_adapt1(product_mock):
         self=adrc_monkey,
         ipastr="k i k i",
         howmany=4
-        ) == "kete, kote, hete, hote"
+        ) == ["kete", "kote", "hete", "hote"]
 
     assert not adrc_monkey.repair_phonotactics_called_with
     assert adrc_monkey.read_sc_called_with == [[["k", "i", "k", "i"], 4]]
@@ -479,8 +479,7 @@ def test_adapt2(product_mock):
         ipastr="k i k i",
         prosody="CVCV",
         howmany=8
-        ) == "kek, kok, hek, hok, ketke, \
-kotke, hetke, hotke"
+        ) == ["kek", "kok", "hek", "hok", "ketke", "kotke", "hetke", "hotke"]
 
 class TestRankClosestPhonotactics:
     @pytest.fixture
