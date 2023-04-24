@@ -17,7 +17,7 @@
 
 
 
-loanpy: A Comprehensive Linguistic Toolkit
+LoanPy: A Comprehensive Linguistic Toolkit
 ==========================================
 
 loanpy is a powerful linguistic toolkit developed during the course of my PhD thesis, providing solutions for various linguistic tasks, such as:
@@ -25,6 +25,7 @@ loanpy is a powerful linguistic toolkit developed during the course of my PhD th
 - extracting correspondence patterns from etymological data on the level of phonology and phonotactics
 - Predicting loanword adaptation (lateral/horizontal transfers) based on heuristics and etymological data
 - Historical reconstruction of words (vertical transfers) based on etymological data
+- Evaluating and visualising the quality of the predictive models
 - Searching for potential (old) loanwords between two languages
 
 This versatile toolkit has been designed with ease of use and compatibility in mind, offering a standalone, easy-to-setup, and cross-platform solution that works with Python 3.7 or higher.
@@ -52,17 +53,12 @@ Development version:
 Documentation
 -------------
 
-- `Read the docs <https://loanpy.readthedocs.io/en/latest/documentation.html>`_
-- `Tutorial <https://loanpy.readthedocs.io/en/latest/tutorial.html>`_
+- `Read the docs <https://loanpy.readthedocs.io/en/latest/home.html>`_
 
 Citation
 --------
 
 If you use loanpy in your research or project, please cite the following:
-
-Viktor Martinović. (2022). loanpy. Zenodo. https://doi.org/10.5281/zenodo.6628976
-
-BibTex:
 
 ::
 
@@ -77,16 +73,17 @@ BibTex:
 License
 -------
 
-loanpy is released under the MIT License.
+LoanPy is released under the MIT License.
 
 Compatible Input Data
 ---------------------
 
-loanpy supports the following datasets:
+LoanPy supports the following datasets:
 
-- Gothic: `Streitberg <https://github.com/martino-vic/streitberggothic>`_, `Köbler <https://github.com/martino-vic/koeblergothic>`_
-- `Hungarian <https://github.com/martino-vic/gerstnerhungarian>`_
-- `Proto-Bolgar <https://github.com/martino-vic/ronataswestoldturkic>`_
+- `streitberggothic <https://github.com/LoanpyDataHub/streitberggothic>`_,
+- `koeblergothic <https://github.com/LoanpyDataHub/koeblergothic>`_
+- `gerstnerhungarian <https://github.com/LoanpyDataHub/gerstnerhungarian>`_
+- `ronataswestoldturkic <https://github.com/LoanpyDataHub/ronataswestoldturkic>`_
 
 Main Changes Compared to Version 2
 ----------------------------------
@@ -95,5 +92,4 @@ Main Changes Compared to Version 2
 - Easy setup: Just download or clone the repository and start using it.
 - Cross-platform: Works on any platform that supports Python.
 - Python Compatibility: Works with Python 3.7 or higher.
-- CLDF Integration: Fully integrated in the `CLDF ecosystem <https://cldf.clld.org/>`_.
-- Improved alignments: Fine-tuned with the `Edictor <digling.org/edictor>`
+- CLDF Integration: Fully compatible with `CLDF data standards <https://cldf.clld.org/>`_.

@@ -135,9 +135,6 @@ to me, e.g. via `e-mail <mailto:viktor_martinovic@$removethis$eva.mpg.de>`_ or
 Further Reading
 ---------------
 
-LoanPy was part of my dissertation-project at the `Finno-Ugric department
-of the University of Vienna <https://finno-ugristik.univie.ac.at/>`_,
-with support from the `University of Helsinki <https://www.helsinki.fi/en>`_
-and the `Max Planck Institute for Evolutionary Anthropology in Leipzig
-<https://www.eva.mpg.de/index/>`_.
-A link to the monograph will be made public as soon as available.
+LoanPy was part of my dissertation-project.
+A link to the monograph will be made public as soon as available,
+probably around September 2023.
