@@ -4,6 +4,10 @@ Tutorial
 This tutorial will walk you through the process of using loanpy to
 discover old loanwords.
 
+Here is an illustration of the full workflow with a minimal example:
+
+.. image:: images/workflow.png
+
 Step 1: Mine sound correspondences
 ----------------------------------
 

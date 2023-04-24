@@ -153,7 +153,7 @@ def is_valid_language_sequence(data, source_lang, target_lang):
     The sequence should be: source_lang, target_lang, source_lang,
     target_lang, ...
 
-    :param data: A list of lists containing language data.
+    :param data: A list of lists containing language data. No header.
     :type data: list
 
     :param source_lang: The expected source language ID.
@@ -184,7 +184,7 @@ def is_same_length_alignments(data):
     within each cogset have the same length. Alignments are expected to be in
     column 3 (index 2).
 
-    :param data: A list of lists containing language data.
+    :param data: A list of lists containing language data. No header.
     :type data: list of list of strings
 
     :return: True if all alignments within each cogset have the same length,
@@ -208,12 +208,10 @@ def is_same_length_alignments(data):
 
 def read_ipa_all():
     """
-    Read IPA data from the 'ipa_all.csv' file.
-
-    This function reads the 'ipa_all.csv' file located in the same
+    This function reads the ``ipa_all.csv`` file located in the same
     directory as the module and returns the IPA data as a list of lists.
 
-    :return: A list of lists containing IPA data read from 'ipa_all.csv'.
+    :return: A list of lists containing IPA data read from ``ipa_all.csv``.
     :rtype: list of list of strings
     """
     module_path = Path(__file__).parent.absolute()
@@ -223,14 +221,14 @@ def read_ipa_all():
 
 def modify_ipa_all(input_file, output_file):
     """
-    Original file is from folder "data" in panphon 0.20.0
+    Original file is from folder ``data`` in panphon 0.20.0
     and was copied with the permission of its author.
-    The ipa_all.csv table of loanpy was created with this function.
+    The ``ipa_all.csv`` table of loanpy was created with this function.
     Following modifications are undertaken:
-    1) All "+" signs are replaced by 1, all "-" signs by -1
-    2) Two phonemes are appended to the column "ipa",
-    namely "C", and "V": "any consonant", and "any vowel".
-    3) Any phoneme containing "j" or "w" is redefined as a consonant
+    #. All ``+`` signs are replaced by ``1``, all ``-`` signs by ``-1``
+    #. Two phonemes are appended to the column ``ipa``,
+       namely "C", and "V", meaning "any consonant", and "any vowel".
+    #. Any phoneme containing "j" or "w" is redefined as a consonant
     """
     with open(input_file, 'r', encoding='utf-8') as infile:
         header = infile.readline().strip().split(',')
@@ -280,12 +278,30 @@ def prod(iterable):
     return result
 
 class IPA():
+    """
+    Class built on loanpy's modified version of panphon's ``ipa_all.csv``
+    table to handle certain tasks that require IPA-data.
+    """
     def __init__(self):
+        """
+        Read the ipa-file and define a list of vowels
+        """
         ipa = read_ipa_all()
         considx = ipa[0].index("cons")
         self.vowels = [row[0] for row in ipa if row[considx] == "-1"]
 
     def get_cv(self, ipastr):
+        """
+        This function takes an IPA string (phonetic notation) as input and
+        returns either "V" if the string is a vowel or "C" if it is a
+        consonant, based on the set of vowels defined within the class.
+
+        :param ipastr: An IPA string representing a phonetic character.
+        :type ipastr: str
+        :return: A string "V" if the input IPA string is a vowel, or "C" if it
+                 is a consonant.
+        :rtype: str
+        """
         return "V" if ipastr in self.vowels else "C"
 
     def get_prosody(self, ipastr):
@@ -339,6 +355,21 @@ def scjson2tsv(jsonin, outtsv, outtsv_phonotactics):
     #. put information into columns
     #. write file
 
+    :param jsonin: The name of the json-file containing the sound
+                   correspondences to be converted
+    :type jsonin: str or path-like object
+
+    :param outtsv: The name of the output file containing the sound
+                   correspondences. Should end in ".tsv".
+    :type outtsv: str or path-like object
+
+    :param outtsv_phonotactics: The name of the output file containing the
+                   phonotactic (=prosodic) correspondences. Should end in
+                   ".tsv".
+    :type outtsv: str or path-like object
+
+    :return: Write two tsv-files to the specified two output paths
+    :rtype: None
     """
     # read json
     with open(jsonin, "r") as f:

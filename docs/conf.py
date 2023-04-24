@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'loanpy'
+project = 'LoanPy'
 copyright = '2023, Viktor Martinović'
 author = 'Viktor Martinović'
 version = '3.0'
