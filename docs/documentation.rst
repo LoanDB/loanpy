@@ -1,8 +1,5 @@
-Loanpy Documentation
-====================
-
-.. automodule:: loanpy.__init__
-   :members:
+Documentation
+=============
 
 Sound Correspondence Miner
 --------------------------
@@ -28,5 +25,3 @@ Utility Functions
 ------------------
 .. automodule:: loanpy.utils
    :members:
-
-
