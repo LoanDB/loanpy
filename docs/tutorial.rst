@@ -113,7 +113,7 @@ If our criterion for a match is phonetic identity, we get:
 #. iggi - iggi: MATCH
 #. iigg - iggi: no match
 
-Now we can register that iggi is our only match, the meanings associated
+Now we can register that iggi is our only match. The meanings associated
 with it are "cat" and "dog". If we assess these two meanings as sufficiently
 similar, then we can propose a new etymology: <ikki> "cat" goes back to
 a proto-form <iggi>, which was borrowed from <egge> "dog".
@@ -136,5 +136,8 @@ Further Reading
 ---------------
 
 LoanPy was part of my dissertation-project at the `Finno-Ugric department
-of the University of Vienna <https://finno-ugristik.univie.ac.at/>`_.
+of the University of Vienna <https://finno-ugristik.univie.ac.at/>`_,
+with support from the `University of Helsinki <https://www.helsinki.fi/en>`_
+and the `Max Planck Institute for Evolutionary Anthropology in Leipzig
+<https://www.eva.mpg.de/index/>`_.
 A link to the monograph will be made public as soon as available.
