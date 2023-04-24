@@ -40,7 +40,7 @@ Find a detailed guide in `Part 3 (steps 1-4) of ronataswestoldturkic's
 documentation
 <https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_.
 In the minimal example, our dictionary contains only one etymology, namely
-a horizontal transfer "*gigi ← gege" and a vertical transfer "kiki < *gigi".
+a horizontal transfer "gigi ← gege" and a vertical transfer "kiki < gigi".
 If we mine the sound correspondences we'd get the rule "g from g, i from e"
 in horizontal transfers and "k from g, i from i" in vertical transfers.
 In terms of phonotactics, we can mine "CVCV from CVCV" both horizontally
