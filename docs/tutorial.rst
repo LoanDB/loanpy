@@ -29,35 +29,41 @@ Here is an illustration of the full workflow with a minimal example:
          3x3 table, to the middle column of the right 3x3 table. Above its
          arch it says "Find new etymology: ikki “cat” < iggi ← egge “dog”"
 
-   The overall workflow with a minimal example
+   The overall workflow with a minimal example: Mine sound correspondences
+   from an etymological dictionary, evaluate their predictive power,
+   input them to a sound change applier to generate pseudo-adapted and
+   pseudo-proto-forms, search for phono-semantic matches between them.
 
 Step 1: Mine sound correspondences
 ----------------------------------
 
-Grab an etymological dictionary and extract information of how sounds
+Grab an etymological dictionary and mine information of how sounds
 and phonotactic patterns changed during horizontal and vertical transfers.
 Find a detailed guide in `Part 3 (steps 1-4) of ronataswestoldturkic's
 documentation
 <https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_.
 In the minimal example, our dictionary contains only one etymology, namely
-a horizontal transfer "gigi ← gege" and a vertical transfer "kiki < gigi".
-If we mine the sound correspondences we'd get the rule "g from g, i from e"
-in horizontal transfers and "k from g, i from i" in vertical transfers.
+a horizontal transfer "gigi ← gege" and a vertical one "kiki < gigi".
+If we mine the sound correspondences we get the rule "g from g, i from e"
+in horizontal transfers and "k from g, i from i" in vertical ones.
 In terms of phonotactics, we can mine "CVCV from CVCV" both horizontally
 and vertically.
 
 Step 2: Apply sound correspondences
 -----------------------------------
 
-Use the information extracted from the etymological data
-in combination with heuristics to hypothesise on how Hungarian
-words may have sounded in the past and how Gothic words may have been
-adapted.
+Take the information mined from the etymological dictionary,
+combine it with heuristics, and apply it to unseen words.
+Create hypothetical proto-Hungarian forms by simulating their historical
+changes based on modern Hungarian words as input. Simulate loandword
+adaptation of Gothic words into proto-Hungarian.
 
-For detailed guides see the documentation of the `gerstnerhungarian
-<https://gerstnerhungarian.readthedocs.io/en/latest/?badge=latest>`_ and
-`koeblergothic <https://koeblergothic.readthedocs.io/en/latest/?badge=latest>`_
-repositories
+For a detailed guide on predicting vertical (historical) transfers see
+`gerstnerhungarian's documentation
+<https://gerstnerhungarian.readthedocs.io/en/latest/?badge=latest>`_ and for
+horizontal transfers (loanwords) see
+`koeblergothic's documentation
+<https://koeblergothic.readthedocs.io/en/latest/?badge=latest>`_.
 
 Step 3: Find old loanwords
 --------------------------
