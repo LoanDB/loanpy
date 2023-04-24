@@ -7,11 +7,11 @@ Home
 LoanPy is a linguistic toolkit to detect ancient borrowings computationally.
 It was part of my dissertation-project at the `Finno-Ugric department
 of the University of Vienna <https://finno-ugristik.univie.ac.at/>`_,
-which aimed to answer the question whether there may be Gothic loanwords
+which aimed to answer the question whether there are any Gothic loanwords
 in Hungarian. The project was partly funded by the
 `University of Helsinki <https://www.helsinki.fi/en>`_
-and the `Max Planck Institute for Evolutionary Anthropology in Leipzig
-<https://www.eva.mpg.de/index/>`_.
+and the `Max Planck Institute for Evolutionary Anthropology
+<https://www.eva.mpg.de/index/>`_ in Leipzig.
 
 The software offers following features:
 
@@ -33,5 +33,5 @@ Access LoanPy through the following platforms:
    :scale: 50%
    :target: https://zenodo.org/record/4127115#.YHCQwej7SLQ
 
-LoanPy is built on top of the standards offered by `Cross-Linguistic
-Data Formats (CLDF) <https://cldf.clld.org>`_.
+LoanPy adheres to the standards set forth by the `Cross-Linguistic
+Data Formats (CLDF) initiative <https://cldf.clld.org>`_.

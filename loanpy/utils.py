@@ -221,11 +221,11 @@ def read_ipa_all():
 
 def modify_ipa_all(input_file, output_file):
     """
-    Original file is from folder ``data`` in panphon 0.20.0
-    and was copied with the permission of its author.
+    Original file is ``ipa_all.csv`` from folder ``data`` in panphon 0.20.0
+    and was copied with the permission of the author.
     The ``ipa_all.csv`` table of loanpy was created with this function.
     Following modifications are undertaken:
-    
+
     #. All ``+`` signs are replaced by ``1``, all ``-`` signs by ``-1``
     #. Two phonemes are appended to the column ``ipa``,
        namely "C", and "V", meaning "any consonant", and "any vowel".

@@ -33,8 +33,8 @@ example:
    The loanword detection framework with a minimal example: Mine sound
    correspondences from an etymological dictionary, evaluate their predictive
    power, input them to a sound change applier to generate pseudo-adapted and
-   pseudo-proto-forms, and search for phono-semantic matches between those
-   predictions.
+   pseudo-proto-forms, and search for phonetic and semantic matches between
+   those predictions.
 
 Step 1: Mine sound correspondences
 ----------------------------------
@@ -80,9 +80,8 @@ Step 3: Evaluate sound correspondences
 
 How good are the predictions made from the mined sound correspondences?
 
-Our minimal example is a perfect model: It would accurately predict with
-100 percent certainty that <kiki> goes back from <gigi> and that the
-donor form of <gigi> must have been <gege>.
+Our minimal example is a perfect model that predicts with 100% certainty that
+<kiki> goes back to <gigi> and that the donor form of <gigi> is <gege>.
 
 For an implementation with a detailed guide
 employing concepts from statistics such as `leave-one out cross-validation
@@ -113,7 +112,7 @@ If our criterion for a match is phonetic identity, we get:
 #. iggi - iggi: MATCH
 #. iigg - iggi: no match
 
-Now we can register that iggi is our only match. The meanings associated
+Now we can register that <iggi> is our only match. The meanings associated
 with it are "cat" and "dog". If we assess these two meanings as sufficiently
 similar, then we can propose a new etymology: <ikki> "cat" goes back to
 a proto-form <iggi>, which was borrowed from <egge> "dog".
