@@ -4,7 +4,8 @@ Tutorial
 This tutorial will walk you through the process of using loanpy to
 discover old loanwords.
 
-Here is an illustration of the full workflow with a minimal example:
+Here is an illustration of the loanword detection framework with a minimal
+example:
 
 .. figure:: images/workflow.png
    :alt: The image shows a workflow chart with a turquoise bubble on top
@@ -29,9 +30,9 @@ Here is an illustration of the full workflow with a minimal example:
          3x3 table, to the middle column of the right 3x3 table. Above its
          arch it says "Find new etymology: ikki “cat” < iggi ← egge “dog”"
 
-   The overall workflow with a minimal example: Mine sound correspondences
-   from an etymological dictionary, evaluate their predictive power,
-   input them to a sound change applier to generate pseudo-adapted and
+   The loanword detection framework with a minimal example: Mine sound
+   correspondences from an etymological dictionary, evaluate their predictive
+   power, input them to a sound change applier to generate pseudo-adapted and
    pseudo-proto-forms, and search for phono-semantic matches between those
    predictions.
 
@@ -40,9 +41,7 @@ Step 1: Mine sound correspondences
 
 Grab an etymological dictionary and mine information of how sounds
 and phonotactic patterns changed during horizontal and vertical transfers.
-Find a detailed guide in `Part 3 (steps 1-4) of ronataswestoldturkic's
-documentation
-<https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_.
+
 In the minimal example, our dictionary contains only one etymology, namely
 a horizontal transfer "gigi ← gege" and a vertical one "kiki < gigi".
 If we mine the sound correspondences we get the rule "g from g, i from e"
@@ -50,19 +49,29 @@ in horizontal transfers and "k from g, i from i" in vertical ones.
 In terms of phonotactics, we can mine "CVCV from CVCV" both horizontally
 and vertically.
 
+For an implementation with a detailed guide visit `Part 3 (steps 1-4) of
+ronataswestoldturkic's documentation
+<https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_.
+
+
 Step 2: Apply sound correspondences
 -----------------------------------
 
-Take the information mined from the etymological dictionary,
-combine it with heuristics, and apply it to unseen words.
-Create hypothetical proto-Hungarian forms by simulating their historical
-changes based on modern Hungarian words as input. Simulate loandword
-adaptation of Gothic words into proto-Hungarian.
+Take the information mined from the etymological dictionary
+and apply it to unseen words.
+Create hypothetical proto- and adapted forms by simulating their horizontal
+and vertical changes.
 
-For a detailed guide on predicting vertical (historical) transfers see
+In the minimal example this means predicting that <ikki> must go back to
+<iggi> and <iikk> to <iigg>, based on the mined sound correspondences for
+vertical transfers. Likewise, <egeg> must turn into <igig> and <egge> into
+<iggi> during horizontal transfers, based on the extracted sound
+correspondences.
+
+For an implementation with a detailed guide to predict vertical transfers visit
 `gerstnerhungarian's documentation
 <https://gerstnerhungarian.readthedocs.io/en/latest/?badge=latest>`_ and for
-predicting horizontal transfers (loanwords) see
+predicting horizontal transfers (loanwords) visit
 `koeblergothic's documentation
 <https://koeblergothic.readthedocs.io/en/latest/?badge=latest>`_.
 
@@ -70,25 +79,47 @@ Step 3: Evaluate sound correspondences
 --------------------------------------
 
 How good are the predictions made from the mined sound correspondences?
-Employing concepts from statistics such as `leave-one out cross-validation
+
+Our minimal example is a perfect model: It would accurately predict with
+100 percent certainty that <kiki> goes back from <gigi> and that the
+donor form of <gigi> must have been <gege>.
+
+For an implementation with a detailed guide
+employing concepts from statistics such as `leave-one out cross-validation
 (LOOCV)
 <https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Leave-one-out_cross-validation>`_,
 the `receiver operating characteristics (ROC) -curve
 <https://en.wikipedia.org/wiki/Receiver_operating_characteristic>`_,
 and the `area under the curve (AUC)
 <https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve>`_,
-we can gauge and visualise the quality of our predictive model.
-
-For a detailed guide on how to generate and interpret these evaluations,
-follow `steps 5-6 in part 3 of ronataswestoldturkic's
+visit `steps 5-6 in part 3 of ronataswestoldturkic's
 documentation
 <https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_
 
 Step 4: Find old loanwords
 --------------------------
 
-To find old loanwords by searching for phonetic and semantic overlaps
-within the predicted forms, follow the `GothicHungarian's documentation
+Search for phonetic matches between predicted loanword adaptations
+and predicted proto-forms. Calculate the semantic similarity of
+the meanings associated with each form in a match. List the phonetic matches
+with the highest semantic similarity.
+
+In our minimal example this means to first go through the `cartesian product
+<https://en.wikipedia.org/wiki/Cartesian_product>`_ of phonetic matches.
+If our criterion for a match is phonetic identity, we get:
+
+#. iggi - igig: no match
+#. iigg - igig: no match
+#. iggi - iggi: MATCH
+#. iigg - iggi: no match
+
+Now we can register that iggi is our only match, the meanings associated
+with it are "cat" and "dog". If we assess these two meanings as sufficiently
+similar, then we can propose a new etymology: <ikki> "cat" goes back to
+a proto-form <iggi>, which was borrowed from <egge> "dog".
+
+For an implementation with a detailed guide visit
+`GothicHungarian's documentation
 <https://gothichungarian.readthedocs.io/en/latest/?badge=latest>`_.
 
 Conclusion
@@ -104,6 +135,6 @@ to me, e.g. via `e-mail <mailto:viktor_martinovic@$removethis$eva.mpg.de>`_ or
 Further Reading
 ---------------
 
-LoanPy was part of my dissertation-project at the Finno-Ugric department
-of the University of Vienna. A link to the monograph will be made public
-as soon as available.
+LoanPy was part of my dissertation-project at the `Finno-Ugric department
+of the University of Vienna <https://finno-ugristik.univie.ac.at/>`_.
+A link to the monograph will be made public as soon as available.
