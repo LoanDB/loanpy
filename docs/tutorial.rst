@@ -69,9 +69,8 @@ Step 3: Find old loanwords
 --------------------------
 
 To find old loanwords by searching for phonetic and semantic overlaps
-within the hypothesised data follow the `documentation of the
-GothicHungarian repository
-<https://gothichungarian.readthedocs.io/en/latest/?badge=latest>`_
+within the predicted forms, follow the `GothicHungarian's documentation
+<https://gothichungarian.readthedocs.io/en/latest/?badge=latest>`_.
 
 Conclusion
 ----------
@@ -80,11 +79,12 @@ Congratulations, you've completed this tutorial on loanpy! You should now
 have a good understanding of how to use loanpy to find old loanwords.
 
 If you have any questions or feedback, please don't hesitate to reach out
-to me, e.g. via [e-mail](mailto:viktor_martinovic@$removethis$eva.mpg.de) or
-[Twitter](https://twitter.com/martino_vik)
+to me, e.g. via `e-mail <mailto:viktor_martinovic@$removethis$eva.mpg.de>`_ or
+`Twitter <https://twitter.com/martino_vik>`_.
 
 Further Reading
 ---------------
 
-For more information on loanpy and its functions, please refer to the API
-documentation and user guide on the loanpy website: https://loanpy.org/
+LoanPy was part of my dissertation-project at the Finno-Ugric department
+of the University of Vienna. A link to the monograph will be made public
+as soon as available.
