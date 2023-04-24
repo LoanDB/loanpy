@@ -32,7 +32,8 @@ Here is an illustration of the full workflow with a minimal example:
    The overall workflow with a minimal example: Mine sound correspondences
    from an etymological dictionary, evaluate their predictive power,
    input them to a sound change applier to generate pseudo-adapted and
-   pseudo-proto-forms, search for phono-semantic matches between them.
+   pseudo-proto-forms, and search for phono-semantic matches between those
+   predictions.
 
 Step 1: Mine sound correspondences
 ----------------------------------
@@ -61,11 +62,29 @@ adaptation of Gothic words into proto-Hungarian.
 For a detailed guide on predicting vertical (historical) transfers see
 `gerstnerhungarian's documentation
 <https://gerstnerhungarian.readthedocs.io/en/latest/?badge=latest>`_ and for
-horizontal transfers (loanwords) see
+predicting horizontal transfers (loanwords) see
 `koeblergothic's documentation
 <https://koeblergothic.readthedocs.io/en/latest/?badge=latest>`_.
 
-Step 3: Find old loanwords
+Step 3: Evaluate sound correspondences
+--------------------------------------
+
+How good are the predictions made from the mined sound correspondences?
+Employing concepts from statistics such as `leave-one out cross-validation
+(LOOCV)
+<https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Leave-one-out_cross-validation>`_,
+the `receiver operating characteristics (ROC) -curve
+<https://en.wikipedia.org/wiki/Receiver_operating_characteristic>`_,
+and the `area under the curve (AUC)
+<https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve>`_,
+we can gauge and visualise the quality of our predictive model.
+
+For a detailed guide on how to generate and interpret these evaluations,
+follow `steps 5-6 in part 3 of ronataswestoldturkic's
+documentation
+<https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_
+
+Step 4: Find old loanwords
 --------------------------
 
 To find old loanwords by searching for phonetic and semantic overlaps
