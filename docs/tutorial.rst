@@ -8,11 +8,11 @@ Here is an illustration of the full workflow with a minimal example:
 
 .. image:: images/workflow.png
    :alt: The image shows a workflow chart with a turquoise bubble on top
-         saying "kiki < *gigi ← gege". Two arrows point away and towards it
+         saying "kiki < gigi ← gege". Two arrows point away and towards it
          both on its left and on its right. The ones pointing away say "mine",
          and the ones pointing towards it "evaluate". The ones pointing
          away point towards a green box each. The box on the left reads
-         "k<*g, i<*i" and the box on the right "g<g, i<e". There are two
+         "k<g, i<i" and the box on the right "g<g, i<e". There are two
          bigger turquoise 3x3-tables underneath the green boxes. The one on the
          left looks like this: The left column
          reads "Candidate Recipient Form, ikki, iikk", the middle column
@@ -27,7 +27,7 @@ Here is an illustration of the full workflow with a minimal example:
          from the right column to the middle one. There is a big yellow curved
          arrow on the bottom too, pointing from the middle column of the left
          3x3 table, to the middle column of the right 3x3 table. Above its
-         arch it says "Find new etymology: ikki “cat” <* iggi ← egge “dog”"
+         arch it says "Find new etymology: ikki “cat” < iggi ← egge “dog”"
 
    The overall workflow with a minimal example
 

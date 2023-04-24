@@ -225,10 +225,12 @@ def modify_ipa_all(input_file, output_file):
     and was copied with the permission of its author.
     The ``ipa_all.csv`` table of loanpy was created with this function.
     Following modifications are undertaken:
+    
     #. All ``+`` signs are replaced by ``1``, all ``-`` signs by ``-1``
     #. Two phonemes are appended to the column ``ipa``,
        namely "C", and "V", meaning "any consonant", and "any vowel".
     #. Any phoneme containing "j" or "w" is redefined as a consonant
+
     """
     with open(input_file, 'r', encoding='utf-8') as infile:
         header = infile.readline().strip().split(',')
