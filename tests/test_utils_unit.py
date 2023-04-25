@@ -176,7 +176,7 @@ def test_is_same_length_alignments():
 def test_read_ipa_all():
     result = read_ipa_all()
     assert isinstance(result, list)
-    assert len(result) == 6492
+    assert len(result) == 6490
 
 @patch("loanpy.utils.read_ipa_all")
 def test_init_ipa(read_ipa_all_mock):
@@ -245,7 +245,7 @@ def test_modify_ipa_all(tmp_path):
 a,-,0,-,+\n\
 b,-,+,+,-\n\
 j,0,+,0,-\n\
-wᵏ,0,+,0,-')
+wᵏ,0,+,0,-\n')
     #sc_path.write_text()
 
     expected = 'ipa,bla,back,cons,bla\n\
@@ -254,7 +254,7 @@ b,-1,1,1,-1\n\
 j,0,1,1,-1\n\
 wᵏ,0,1,1,-1\n\
 C,0,0,1,0\n\
-V,0,0,-1,0'
+V,0,0,-1,0\n'
 
     modify_ipa_all(sc_path, out_path)
     with open(out_path, 'r', encoding='utf-8') as file:

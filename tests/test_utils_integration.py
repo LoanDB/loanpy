@@ -50,7 +50,7 @@ def test_ipa_init():
     ipa = IPA()
     assert len(ipa.__dict__) == 1
     assert isinstance(ipa.__dict__["vowels"], list)
-    assert len(ipa.__dict__["vowels"]) == 1484
+    assert len(ipa.__dict__["vowels"]) == 1464
     assert all(i in ipa.vowels for i in "aeiou")
     assert not any(i in ipa.vowels for i in "jklmw")
 

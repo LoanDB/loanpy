@@ -320,7 +320,7 @@ def read_ipa_all() -> List[List[str]]:
     :return: A list of lists containing IPA data read from ``ipa_all.csv``.
     :rtype: list of list of strings
 
-    .. code-block::
+    .. code-block:: python
 
         >>> from loanpy.utils import read_ipa_all
         >>> ipa_all = read_ipa_all()
@@ -363,46 +363,47 @@ def modify_ipa_all(
     :type output_file: A string or a path-like object
     """
     with open(input_file, 'r', encoding='utf-8') as infile:
-        header = infile.readline().strip().split(',')
+        data = list(csv.reader(infile))
+        header = data[0]
 
         rows = []
-        for line in infile:
-            row = line.strip().split(',')
-            # Replace "+" with 1 and "-" with -1
-            row = [1 if x == '+' else -1 if x == '-' else x for x in row]
+        with open(output_file, 'w', encoding='utf-8') as outfile:
+            writer = csv.writer(outfile, lineterminator='\n')
+            writer.writerow(header)
+            for row in data[1:]:
+                # Replace "+" with 1 and "-" with -1
+                row = [1 if x == '+' else -1 if x == '-' else x for x in row]
 
-            # Check for "j" or "w" and set "cons" value to 1
-            if 'j' in row[0] or 'w' in row[0]:
-                row[header.index('cons')] = 1
+                # Check for "j" or "w" and set "cons" value to 1
+                if any(i in row[0] for i in ['j', 'w', 'ʔ']):
+                    row[header.index('cons')] = 1
 
-            rows.append(row)
+                # Ensure all rows have the same length
+                assert len(row) == len(header), "Rows must have same length"
+                writer.writerow(row)
 
-        # Ensure all rows have the same length
-        row_length = len(header)
-        assert all(len(row) == row_length for row in rows), \
-        "All rows must have the same length"
-
-        # Add C and V for any consonant or any vowel
-        rows.append(['C', 0, 0, 1] + [0] * (len(header) - 4))
-        rows.append(['V', 0, 0, -1] + [0] * (len(header) - 4))
-
-    # Write the modified data to a new CSV file
-    with open(output_file, 'w', encoding='utf-8') as outfile:
-        outfile.write(','.join(header))
-        for row in rows:
-            outfile.write('\n' + ','.join(str(x) for x in row))
+            # Add C and V for any consonant or any vowel
+            writer.writerow(['C', 0, 0, 1] + [0] * (len(header) - 4))
+            writer.writerow(['V', 0, 0, -1] + [0] * (len(header) - 4))
 
 def prod(iterable: Iterable[Union[int, float]]) -> Union[int, float]:
     """
     Calculate the product of all elements in an iterable.
 
     This function takes an iterable (e.g., list, tuple) as input and computes
-    the product of all its elements.
+    the product of all its elements. This function had to be hard-coded
+    because importing it from math causes incompatibility issues with some
+    python versions on certain platforms.
 
     :param iterable: The input iterable containing numbers.
     :type iterable: Iterable[int] or Iterable[float]
     :return: The product of all elements in the input iterable.
     :rtype: int or float
+
+    .. code-block:: python
+       >>> from loanpy.utils import prod
+       >>> prod([1, 2, 3])  # one times two times three
+       6
     """
     result = 1
     for item in iterable:
