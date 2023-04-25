@@ -10,10 +10,11 @@ filtering and validation.
 """
 import csv
 import json
+import re
 from collections import Counter
 from pathlib import Path
-import re
 from typing import Iterable, List, Set, Union
+
 
 def find_optimal_year_cutoff(tsv: List[List[str]], origins: Set[str]) -> int:
     """

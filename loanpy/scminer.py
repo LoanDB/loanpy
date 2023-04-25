@@ -13,14 +13,17 @@ get_inventory extracts all types of prosodic structures
 from a target language in a given table.
 """
 
-from collections import defaultdict, Counter
 import json
 import math
+from collections import defaultdict, Counter
 from pathlib import Path
+from typing import List, Dict, Union
 
 from loanpy.utils import read_ipa_all
 
-def get_correspondences(table, heur=""):
+def get_correspondences(
+        table: List[List[str]], heur: Dict[str, List[str]] = ""
+        ) -> List[Dict]:
     """
     Get sound and prosodic correspondences from a given table string.
 
@@ -29,9 +32,11 @@ def get_correspondences(table, heur=""):
                   named "ALIGNMENT", "PROSODY", and "COGID".
     :type table: list of lists
 
-    :param heur: Optional string containing heuristic correspondences
+    :param heur: Optional dictionary containing heuristic correspondences
                  to be merged with the output. Defaults to an empty string.
-    :type heur: str
+    :type heur: dictionary with IPA characters as keys and a list of
+                phonemes of a language's phoneme inventory ranked according
+                to feature vector similarity.
 
     :return: A list of six dictionaries containing correspondences
              and their frequencies:
@@ -41,7 +46,7 @@ def get_correspondences(table, heur=""):
              4) Prosodic correspondences.
              5) Frequency of prosodic correspondences.
              6) COGID values for prosodic correspondences.
-    :rtype: dict
+    :rtype: list
 
     .. seealso::
         `Edictor
@@ -83,7 +88,7 @@ def get_correspondences(table, heur=""):
 
     return out
 
-def uralign(left, right):
+def uralign(left: str, right: str) -> str:
     """
     Aligns the left and right input strings based on a custom alignment
     for Hungarian-preHungarian.
@@ -118,7 +123,7 @@ def uralign(left, right):
 
     return f'{" ".join(left)}\n{" ".join(right)}'
 
-def get_heur(tgtlg):
+def get_heur(tgtlg: str) -> Dict[str, List[str]]:
     """
     Compute the heuristic mapping between phonemes in the inventory of a
     target language and all phonemes in the IPA sound system based on
@@ -135,13 +140,6 @@ def get_heur(tgtlg):
     :raises FileNotFoundError: If the data file or the transcription
                                report file is not found.
 
-    :example:
-
-    >>> get_heur('eng')
-    {'p': ['p', 'b', 'm', 't', 'd', 'n'],
-     'b': ['b', 'p', 'm', 'd', 'n', 't'],
-     'm': ['m', 'p', 'b', 'n', 'd', 't'],
-     ...}
     """
     ipa_all = read_ipa_all()
     vectors = {row[0]: [int(i) for i in row[1:]] for row in ipa_all[1:]}
@@ -166,14 +164,14 @@ def get_heur(tgtlg):
     return heur
 
 
-def get_inventory(table):
+def get_inventory(table: List[List[str]]) -> List[str]:
     """
     Extracts all types of prosodic structures (e.g. CVCV)
     from uneven rows (i.e. where data of target language is) of the given table
     (uneven rows after removing the header).
 
-    :param data: A table where every row is a list.
-    :type data: list of lists
+    :param table: A table where every row is a list.
+    :type table: list of lists
 
     :return: A list of prosodic structures (e.g. "CVCV") that occur in the
              target languages (i.e. in the uneven rows)
