@@ -1,14 +1,9 @@
 # Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+sys.path.insert(0, os.path.abspath('..'))
 
 project = 'LoanPy'
 copyright = '2023, Viktor Martinović'
@@ -16,12 +11,12 @@ author = 'Viktor Martinović'
 version = '3.0'
 release = '3.0'
 
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
+html_theme = 'sphinx_rtd_theme'
 extensions = ['sphinx.ext.autodoc','sphinxcontrib.examples']
+autodoc_mock_imports = ['sphinxcontrib.examples']
 
-# -- Options for HTML output -------------------------------------------------
+# Links
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
-html_theme = 'sphinx_rtd_theme' # 'alabaster'
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
