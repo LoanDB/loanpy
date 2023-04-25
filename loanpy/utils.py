@@ -13,8 +13,9 @@ import json
 from collections import Counter
 from pathlib import Path
 import re
+from typing import Iterable, List, Set, Union
 
-def find_optimal_year_cutoff(tsv, origins):
+def find_optimal_year_cutoff(tsv: List[List[str]], origins: Set[str]) -> int:
     """
     Determine the optimal year cutoff for a given dataset and origins.
 
@@ -66,7 +67,7 @@ def find_optimal_year_cutoff(tsv, origins):
 
     return optimal_year
 
-def cvgaps(str1, str2):
+def cvgaps(str1: str, str2: str) -> List[str]:
     """
     Replace gaps in the first input string based on the second input string.
 
@@ -99,7 +100,7 @@ def cvgaps(str1, str2):
 
     return [" ".join(new), str2]
 
-def prefilter(data, srclg, tgtlg):
+def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
     """
     Filter dataset to keep only cogsets where both source and target languages
     occur.
@@ -144,7 +145,10 @@ def prefilter(data, srclg, tgtlg):
     data.insert(0, headers)
     return data
 
-def is_valid_language_sequence(data, source_lang, target_lang):
+def is_valid_language_sequence(
+        data: List[List[str]], source_lang: str, target_lang: str
+        ) -> bool:
+
     """
     Validate if the data has a valid alternating sequence of source and target
     languages.
@@ -176,7 +180,7 @@ def is_valid_language_sequence(data, source_lang, target_lang):
     return True
 
 
-def is_same_length_alignments(data):
+def is_same_length_alignments(data: List[List[str]]) -> bool:
     """
     Check if alignments within a cogset have the same length.
 
@@ -206,7 +210,7 @@ def is_same_length_alignments(data):
             return False
     return True
 
-def read_ipa_all():
+def read_ipa_all() -> List[List[str]]:
     """
     This function reads the ``ipa_all.csv`` file located in the same
     directory as the module and returns the IPA data as a list of lists.
@@ -219,7 +223,9 @@ def read_ipa_all():
     with data_path.open("r", encoding="utf-8") as f:
         return [row.split(",") for row in f.read().strip().split("\n")]
 
-def modify_ipa_all(input_file, output_file):
+def modify_ipa_all(
+        input_file: Union[str, Path], output_file: Union[str, Path]
+        ) -> None:
     """
     Original file is ``ipa_all.csv`` from folder ``data`` in panphon 0.20.0
     and was copied with the permission of the author.
@@ -231,6 +237,12 @@ def modify_ipa_all(input_file, output_file):
        namely "C", and "V", meaning "any consonant", and "any vowel".
     #. Any phoneme containing "j" or "w" is redefined as a consonant
 
+    :param input_file: The path to the file ``ipa_all.csv``.
+    :type input_file: A string or a path-like object
+
+    :param output_file: The name and path of the new csv-file that is to be
+                        written.
+    :type output_file: A string or a path-like object
     """
     with open(input_file, 'r', encoding='utf-8') as infile:
         header = infile.readline().strip().split(',')
@@ -262,7 +274,7 @@ def modify_ipa_all(input_file, output_file):
         for row in rows:
             outfile.write('\n' + ','.join(str(x) for x in row))
 
-def prod(iterable):
+def prod(iterable: Iterable[Union[int, float]]) -> Union[int, float]:
     """
     Calculate the product of all elements in an iterable.
 
@@ -284,7 +296,7 @@ class IPA():
     Class built on loanpy's modified version of panphon's ``ipa_all.csv``
     table to handle certain tasks that require IPA-data.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Read the ipa-file and define a list of vowels
         """
@@ -292,9 +304,9 @@ class IPA():
         considx = ipa[0].index("cons")
         self.vowels = [row[0] for row in ipa if row[considx] == "-1"]
 
-    def get_cv(self, ipastr):
+    def get_cv(self, ipastr: str) -> str:
         """
-        This function takes an IPA string (phonetic notation) as input and
+        This method takes an IPA string (phonetic notation) as input and
         returns either "V" if the string is a vowel or "C" if it is a
         consonant, based on the set of vowels defined within the class.
 
@@ -306,7 +318,7 @@ class IPA():
         """
         return "V" if ipastr in self.vowels else "C"
 
-    def get_prosody(self, ipastr):
+    def get_prosody(self, ipastr: str) -> str:
         """
         Generate a prosodic string from an IPA string.
 
@@ -322,7 +334,7 @@ class IPA():
         """
         return "".join([self.get_cv(ph) for ph in re.split("[ |.]", ipastr)])
 
-    def get_clusters(self, segments):
+    def get_clusters(self, segments: Iterable[str]) -> str:
         """
         Takes a list of phonemes and segments them into consonant and vowel
         clusters, like so: "abcdeaofgh" -> ["a", "b.c.d", "e.a.o", "f.g.h"]
@@ -348,7 +360,9 @@ class IPA():
 
         return " ".join(out)
 
-def scjson2tsv(jsonin, outtsv, outtsv_phonotactics):
+def scjson2tsv(jsonin: Union[str, Path], outtsv: Union[str, Path],
+               outtsv_phonotactics: Union[str, Path]
+               ) -> None:
     """
     Turn a computer-readable sound correspondence json-file into a
     human readbale tab separated value file (tsv).
