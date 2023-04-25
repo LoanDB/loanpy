@@ -17,7 +17,7 @@ import json
 import math
 from collections import defaultdict, Counter
 from pathlib import Path
-from typing import List, Dict, Union
+from typing import List, Dict
 
 from loanpy.utils import read_ipa_all
 

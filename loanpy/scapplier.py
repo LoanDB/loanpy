@@ -13,13 +13,15 @@ inheritance
 of words and linguistic features from a parent language to its descendants.
 """
 
-
-from collections import OrderedDict
 import heapq
+import re
+from collections import OrderedDict
 from itertools import cycle, product
 from json import load
+from pathlib import Path
+from typing import Iterable, List, Tuple, Union
+
 from loanpy.utils import prod
-import re
 
 class Adrc():
     """
@@ -37,7 +39,9 @@ class Adrc():
     :type inventory: str, optional
     """
 
-    def __init__(self, sc="", inventory=""):
+    def __init__(
+            self, sc: Union[str, Path] = "", inventory: Union[str, Path] = ""
+            ) -> None:
         """
         Constructor for the ADRC class.
 
@@ -60,9 +64,10 @@ class Adrc():
 
 
     def adapt(self,
-              ipastr,
-              howmany=1,
-              prosody=""):
+              ipastr: str,
+              howmany: int = 1,
+              prosody: str = ""
+              ) -> str:
         """
         Predict the adaptation of a loanword in a target recipient language.
 
@@ -89,9 +94,9 @@ class Adrc():
         return out[:howmany]  # cut off leftover, turn to string
 
     def reconstruct(self,
-                    ipastr,
-                    howmany=1,
-                    ):
+                    ipastr: str,
+                    howmany: int = 1,
+                    ) -> str:
         """
         Reconstructs a phonological form from a given IPA string using
         a sound correspondence dictionary.
@@ -127,9 +132,9 @@ class Adrc():
         return "^" + out + "$"  # regex
 
     def repair_phonotactics(self,
-                            ipalist,
-                            prosody
-                            ):
+                            ipalist: List[str],
+                            prosody: str
+                            ) -> List[str]:
         """
         Repairs the phonotactics (prosody) of an IPA string.
 
@@ -158,7 +163,9 @@ class Adrc():
         editops = tuples2editops(path, prosody, predicted_phonotactics)
         return apply_edit(ipalist, editops)
 
-    def get_diff(self, sclistlist, ipa):
+    def get_diff(
+            self, sclistlist: List[List[str]], ipa: List[str]
+            ) -> List[int]:
         """
         Computes the difference in the number of examples between the current
         and the next sound correspondences for each phoneme or cluster in a
@@ -167,9 +174,8 @@ class Adrc():
         :param sclistlist: A list of sound correspondence lists.
         :type sclistlist: list
 
-        :param ipa: A space-separated string of IPA symbols
-                    representing the word.
-        :type ipa: str
+        :param ipa: A list of IPA symbols representing the word.
+        :type ipa: list
 
         :return: A list of differences between the number of examples for each
                  sound correspondence in the input word.
@@ -202,7 +208,7 @@ class Adrc():
 
         return difflist
 
-    def read_sc(self, ipa, howmany=1):
+    def read_sc(self, ipa: List[str], howmany: int = 1) -> List[List[str]]:
         """
         Replaces every phoneme of a word with a list of phonemes
         that it can correspond to, based on specified conditions.
@@ -253,7 +259,7 @@ class Adrc():
 
         return out
 
-    def get_closest_phonotactics(self, struc):
+    def get_closest_phonotactics(self, struc: str) -> str:
         """
         Get the closest prosodic structure (e.g. CVCV) from the inventory
         of a given language based on edit distance.
@@ -272,7 +278,9 @@ class Adrc():
         return min(dist_and_strucs)[1]
 
 
-def move_sc(sclistlist, whichsound, out):
+def move_sc(
+        sclistlist: List[List[str]], whichsound: int, out: List[List[str]]
+        ) -> Tuple[List[List[str]], List[List[str]]]:
     """
     Moves a sound correspondence from the input list to the output
     list and updates both lists.
@@ -295,7 +303,12 @@ def move_sc(sclistlist, whichsound, out):
     sclistlist[whichsound].pop(0)  # move input by 1 (remove sound #0)
     return sclistlist, out  # tuple
 
-def edit_distance_with2ops(string1, string2, w_del=100, w_ins=49):
+def edit_distance_with2ops(
+        string1: str,
+        string2: str,
+        w_del: Union[int, float] = 100,
+        w_ins: Union[int, float] = 49
+        ) -> Union[int, float]:
     """
     Called by loanpy.scapplier.Adrc.get_closest_phonotactics.
     Takes two strings and calculates their similarity by
@@ -342,7 +355,7 @@ def edit_distance_with2ops(string1, string2, w_del=100, w_ins=49):
     # costs (=distance) are lower for insertions
     return (m - lcs) * w_del + (n - lcs) * w_ins
 
-def apply_edit(word, editops):
+def apply_edit(word: Iterable[str], editops: List[str]) -> List[str]:
     """
     Called by loanpy.scapplier.Adrc.repair_phonotactics.
     Applies a list of human readable edit operations to a string.
@@ -372,7 +385,7 @@ def apply_edit(word, editops):
             out.append(op[len("insert "):])
     return out
 
-def list2regex(sclist):
+def list2regex(sclist: List[str]) -> str:
     """
     Called by loanpy.scapplier.Adrc.reconstruct.
     Turns a list of phonemes into a regular expression.
