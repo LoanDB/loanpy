@@ -570,7 +570,6 @@ def scjson2tsv(jsonin: Union[str, Path], outtsv: Union[str, Path],
     ...     print(f.read())
     sc	src	tgt	freq	CogID
     CV CV	CV	CV	1	7
-
     """
     # read json
     with open(jsonin, "r") as f:
