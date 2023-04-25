@@ -418,6 +418,17 @@ class IPA():
     def __init__(self) -> None:
         """
         Read the ipa-file and define a list of vowels
+
+        .. code-block:: python
+
+        >>> from loanpy.utils import IPA
+        >>> ipa = IPA()
+        >>> type(ipa.vowels)
+        list
+        >>> len(ipa.vowels)
+        1464
+        >>> ipa.vowels[0]
+        'ʋ̥'
         """
         ipa = read_ipa_all()
         considx = ipa[0].index("cons")
@@ -434,6 +445,15 @@ class IPA():
         :return: A string "V" if the input IPA string is a vowel, or "C" if it
                  is a consonant.
         :rtype: str
+
+        .. code-block:: python
+
+            >>> from loanpy.utils import IPA
+            >>> ipa = IPA()
+            >>> ipa.get_cv("p")
+            'C'
+            >>> ipa.get_cv("u")
+            'V'
         """
         return "V" if ipastr in self.vowels else "C"
 
@@ -450,6 +470,15 @@ class IPA():
 
         :return: The generated prosodic string.
         :rtype: str
+
+        .. code-block:: python
+
+            >>> from loanpy.utils import IPA
+            >>> ipa = IPA()
+            >>> ipa.get_prosody("l o l")
+            'CVC'
+            >>> ipa.get_prosody("r o f.l")
+            'CVCC'
         """
         return "".join([self.get_cv(ph) for ph in re.split("[ |.]", ipastr)])
 
@@ -463,6 +492,13 @@ class IPA():
 
         :return: Same word but with consonants and vowels clustered together
         :rtype: str
+
+        .. code-block:: python
+
+            >>> from loanpy.utils import IPA
+            >>> ipa = IPA()
+            >>> ipa.get_clusters(["r", "a", "u", "f", "l"])
+            'r a.u f.l'
         """
         out = [segments[0]]
         prev_cv = self.get_cv(segments[0])
