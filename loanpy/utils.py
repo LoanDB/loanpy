@@ -27,8 +27,10 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
 
     This function reads TSV content from a given dataset and origins,
     calculates the accumulated count of words with the specified origin until
-    each given year, and finds the optimal year cutoff using the distance to
-    the upper left corner of the accumulated count.
+    each given year, and finds the optimal year cutoff using the euclidean
+    distance to the upper left corner in a coordinate system where the
+    relative increase of years is on the x-axis and the relative increase
+    in the number of words is on the y-axis.
 
     :param tsv: A table where the first row is the header
     :type tsv: list of list of strings
@@ -245,6 +247,18 @@ def is_valid_language_sequence(
     ... ]
     >>> is_valid_language_sequence(data, "de", "en")
     True
+    >>> from loanpy.utils import is_valid_language_sequence
+    >>> data = [
+    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
+    ...     ['x', 'x', 'nl', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
+    ... ]
+    >>> is_valid_language_sequence(data, "de", "en")
+    2023-04-25 23:04:07,532 - INFO - Problem in row 5
+    False
     """
     if len(data) % 2 != 0:
         logging.info("Odd number of rows, source/target language is missing.")
@@ -278,9 +292,13 @@ def is_same_length_alignments(data: List[List[str]]) -> bool:
     .. code-block:: python
 
         >>> from loanpy.utils import is_same_length_alignments
-        >>> is_same_length_alignments([[0, 1, 2, "a b c", 4, 5], [0, 1, 2, "d e f", 4, 5]])
+        >>> is_same_length_alignments([[0, 1, 2, "a - c", 4, 5], [0, 1, 2, "d e f", 4, 5]])
         True
-
+        >>> is_same_length_alignments([[0, 1, 2, "a b c", 4, 5], [0, 1, 2, "d e", 4, 5]])
+        2023-04-25 23:08:05,042 - INFO - 0
+        ['a', '-', 'c']
+        ['d', 'e']
+        False
     """
 
     rownr = 0
@@ -290,22 +308,38 @@ def is_same_length_alignments(data: List[List[str]]) -> bool:
         try:
             assert len(first) == len(second)
         except AssertionError:
-            logging.info(rownr, "\n", first, "\n", second)
+            logging.info(f"{rownr}\n{first}\n{second}")
             return False
     return True
 
 def read_ipa_all() -> List[List[str]]:
     """
-    This function reads the ``ipa_all.csv`` file located in the same
-    directory as the module and returns the IPA data as a list of lists.
+    This function reads the ``ipa_all.csv`` table located in the same
+    directory as the module and returns it as a list of lists.
 
     :return: A list of lists containing IPA data read from ``ipa_all.csv``.
     :rtype: list of list of strings
+
+    .. code-block::
+
+        >>> from loanpy.utils import read_ipa_all
+        >>> ipa_all = read_ipa_all()
+        >>> type(ipa_all)
+        list
+        >>> len(ipa_all)
+        6492
+        >>> ipa_all[:2]
+        [['ipa', 'syl', 'son', 'cons', 'cont', 'delrel', 'lat', 'nas',
+        'strid', 'voi', 'sg', 'cg', 'ant', 'cor', 'distr', 'lab', 'hi', 'lo',
+        'back', 'round', 'velaric', 'tense', 'long', 'hitone', 'hireg'],
+        ['˩', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
+        '0', '0', '0', '0', '0', '0', '0', '0', '0', '-1', '-1']]
+
     """
     module_path = Path(__file__).parent.absolute()
     data_path = module_path / 'ipa_all.csv'
     with data_path.open("r", encoding="utf-8") as f:
-        return [row.split(",") for row in f.read().strip().split("\n")]
+        return list(csv.reader(f))
 
 def modify_ipa_all(
         input_file: Union[str, Path], output_file: Union[str, Path]
