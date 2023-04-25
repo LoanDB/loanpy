@@ -43,11 +43,11 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
 
         >>> from loanpy.utils import find_optimal_year_cutoff
         >>> tsv = [
-        >>>         ['form', 'sense', 'Year', 'Etymology', 'Loan'],
-        >>>         ['gulyás', 'goulash, Hungarian stew', '1800', 'unknown', ''],
-        >>>         ['Tisza', 'a major river in Hungary', '1230', 'uncertain', ''],
-        >>>         ['Pest', 'part of Budapest, the capital', '1241', 'Slavic', 'True'],
-        >>>         ['paprika', 'ground red pepper, spice', '1598', 'Slavic', 'True']
+        >>> ['form', 'sense', 'Year', 'Etymology', 'Loan'],
+        >>> ['gulyás', 'goulash, Hungarian stew', '1800', 'unknown', ''],
+        >>> ['Tisza', 'a major river in Hungary', '1230', 'uncertain', ''],
+        >>> ['Pest', 'part of Budapest, the capital', '1241', 'Slavic', 'True'],
+        >>> ['paprika', 'ground red pepper, spice', '1598', 'Slavic', 'True']
         >>>       ]
         >>> find_optimal_year_cutoff(tsv, "Slavic")
         1241
@@ -112,9 +112,14 @@ def cvgaps(str1: str, str2: str) -> List[str]:
              second string.
     :rtype: list of strings
 
-    .. highlight:: python
+    .. code-block:: python
 
-
+        >>> from loanpy.utils import cvgaps
+        >>> cvgaps("b l -", "b l a")
+        ['b l V', 'b l a']
+        >>> cvgaps("b - a", "b l a")
+        ['b C a', 'b l a']
+        
     """
     ipa_all = read_ipa_all()
     vow = [rw[0] for rw in ipa_all if rw[ipa_all[0].index("cons")]=="-1"]
