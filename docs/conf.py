@@ -12,8 +12,7 @@ version = '3.0'
 release = '3.0'
 
 html_theme = 'sphinx_rtd_theme'
-extensions = ['sphinx.ext.autodoc','sphinxcontrib.examples']
-autodoc_mock_imports = ['sphinxcontrib.examples']
+extensions = ['sphinx.ext.autodoc']
 
 # Links
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information

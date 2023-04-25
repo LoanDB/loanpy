@@ -39,7 +39,7 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
     :return: The optimal year cutoff for the dataset and origins.
     :rtype: int
 
-    .. example::
+    .. highlight:: python
 
         >>> from loanpy.utils import find_optimal_year_cutoff
         >>> tsv = [
