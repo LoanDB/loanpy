@@ -43,11 +43,11 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
 
         >>> from loanpy.utils import find_optimal_year_cutoff
         >>> tsv = [
-        ... ['form', 'sense', 'Year', 'Etymology', 'Loan'],
-        ... ['gulyás', 'goulash, Hungarian stew', '1800', 'unknown', ''],
-        ... ['Tisza', 'a major river in Hungary', '1230', 'uncertain', ''],
-        ... ['Pest', 'part of Budapest, the capital', '1241', 'Slavic', 'True'],
-        ... ['paprika', 'ground red pepper, spice', '1598', 'Slavic', 'True']
+        ...     ['form', 'sense', 'Year', 'Etymology', 'Loan'],
+        ...     ['gulyás', 'goulash, Hungarian stew', '1800', 'unknown', ''],
+        ...     ['Tisza', 'a major river in Hungary', '1230', 'uncertain', ''],
+        ...     ['Pest', 'part of Budapest, the capital', '1241', 'Slavic', 'True'],
+        ...     ['paprika', 'ground red pepper, spice', '1598', 'Slavic', 'True']
         ... ]
         >>> find_optimal_year_cutoff(tsv, "Slavic")
         1241
@@ -231,6 +231,20 @@ def is_valid_language_sequence(
 
     :return: True if the sequence is valid, False otherwise.
     :rtype: bool
+
+.. code-block:: python
+
+    >>> from loanpy.utils import is_valid_language_sequence
+    >>> data = [
+    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
+    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
+    ... ]
+    >>> is_valid_language_sequence(data, "de", "en")
+    True
     """
     if len(data) % 2 != 0:
         logging.info("Odd number of rows, source/target language is missing.")
@@ -260,6 +274,13 @@ def is_same_length_alignments(data: List[List[str]]) -> bool:
 
     :raises AssertionError: If the length of the alignments within a cogset
                             does not match.
+
+    .. code-block:: python
+
+        >>> from loanpy.utils import is_same_length_alignments
+        >>> is_same_length_alignments([[0, 1, 2, "a b c", 4, 5], [0, 1, 2, "d e f", 4, 5]])
+        True
+
     """
 
     rownr = 0
