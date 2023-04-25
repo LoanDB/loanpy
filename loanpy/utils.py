@@ -30,7 +30,7 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
     each given year, and finds the optimal year cutoff using the euclidean
     distance to the upper left corner in a coordinate system where the
     relative increase of years is on the x-axis and the relative increase
-    in the number of words is on the y-axis.
+    in the cumulative number of words is on the y-axis.
 
     :param tsv: A table where the first row is the header
     :type tsv: list of list of strings
@@ -354,7 +354,7 @@ def modify_ipa_all(
     #. All ``+`` signs are replaced by ``1``, all ``-`` signs by ``-1``
     #. Two phonemes are appended to the column ``ipa``,
        namely "C", and "V", meaning "any consonant", and "any vowel".
-    #. Any phoneme containing "j, w, ʔ" is redefined as a consonant.
+    #. Any phoneme containing "j", "w", or "ʔ" is redefined as a consonant.
 
     :param input_file: The path to the file ``ipa_all.csv``.
     :type input_file: A string or a path-like object
@@ -419,12 +419,8 @@ class IPA():
     """
     Class built on loanpy's modified version of panphon's ``ipa_all.csv``
     table to handle certain tasks that require IPA-data.
-    """
-    def __init__(self) -> None:
-        """
-        Read the ipa-file and define a list of vowels
 
-        .. code-block:: python
+    .. code-block:: python
 
         >>> from loanpy.utils import IPA
         >>> ipa = IPA()
@@ -434,6 +430,10 @@ class IPA():
         1464
         >>> ipa.vowels[0]
         'ʋ̥'
+    """
+    def __init__(self) -> None:
+        """
+        Read the ipa-file and define a list of vowels
         """
         ipa = read_ipa_all()
         considx = ipa[0].index("cons")
@@ -549,27 +549,22 @@ def scjson2tsv(jsonin: Union[str, Path], outtsv: Union[str, Path],
 
     .. code-block:: python
 
-    >>> import json
-    >>> from loanpy.utils import scjson2tsv
-
-    >>> sc = [{"a": ["o", "e"]}, {"a o": 1, "a e": 2}, {"a o": [512],
-    ...        "a e": [3, 4]}, {"CV": ["CV"]}, {"CV CV": 1}, {"CV CV": [7]}]
-
-    >>> with open("sc.json", "w+") as f:
-    ...     json.dump(sc, f)
-
-    >>> scjson2tsv("sc.json", "sc.tsv", "sc_p.tsv")
-
-    >>> with open("sc.tsv", "r") as f:
-    ...     print(f.read())
-    sc	src	tgt	freq	CogID
-    a o a	o	1	512
-    a e	a	e	2	3, 4
-
-    >>> with open("sc_p.tsv", "r") as f:
-    ...     print(f.read())
-    sc	src	tgt	freq	CogID
-    CV CV	CV	CV	1	7
+        >>> import json
+        >>> from loanpy.utils import scjson2tsv
+        >>> sc = [{"a": ["o", "e"]}, {"a o": 1, "a e": 2}, {"a o": [512],
+        ...        "a e": [3, 4]}, {"CV": ["CV"]}, {"CV CV": 1}, {"CV CV": [7]}]
+        >>> with open("sc.json", "w+") as f:
+        ...     json.dump(sc, f)
+        >>> scjson2tsv("sc.json", "sc.tsv", "sc_p.tsv")
+        >>> with open("sc.tsv", "r") as f:
+        ...     print(f.read())
+        sc	src	tgt	freq	CogID
+        a o a	o	1	512
+        a e	a	e	2	3, 4
+        >>> with open("sc_p.tsv", "r") as f:
+        ...     print(f.read())
+        sc	src	tgt	freq	CogID
+        CV CV	CV	CV	1	7
     """
     # read json
     with open(jsonin, "r") as f:
