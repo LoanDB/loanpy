@@ -43,12 +43,12 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
 
         >>> from loanpy.utils import find_optimal_year_cutoff
         >>> tsv = [
-        >>> ['form', 'sense', 'Year', 'Etymology', 'Loan'],
-        >>> ['gulyás', 'goulash, Hungarian stew', '1800', 'unknown', ''],
-        >>> ['Tisza', 'a major river in Hungary', '1230', 'uncertain', ''],
-        >>> ['Pest', 'part of Budapest, the capital', '1241', 'Slavic', 'True'],
-        >>> ['paprika', 'ground red pepper, spice', '1598', 'Slavic', 'True']
-        >>>       ]
+        ... ['form', 'sense', 'Year', 'Etymology', 'Loan'],
+        ... ['gulyás', 'goulash, Hungarian stew', '1800', 'unknown', ''],
+        ... ['Tisza', 'a major river in Hungary', '1230', 'uncertain', ''],
+        ... ['Pest', 'part of Budapest, the capital', '1241', 'Slavic', 'True'],
+        ... ['paprika', 'ground red pepper, spice', '1598', 'Slavic', 'True']
+        ... ]
         >>> find_optimal_year_cutoff(tsv, "Slavic")
         1241
     """
@@ -119,7 +119,7 @@ def cvgaps(str1: str, str2: str) -> List[str]:
         ['b l V', 'b l a']
         >>> cvgaps("b - a", "b l a")
         ['b C a', 'b l a']
-        
+
     """
     ipa_all = read_ipa_all()
     vow = [rw[0] for rw in ipa_all if rw[ipa_all[0].index("cons")]=="-1"]
@@ -157,6 +157,34 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
     :return: A filtered and sorted list of lists containing cogsets with both
              source and target languages present.
     :rtype: list of list of strings
+
+    .. code-block:: python
+
+        >>> from loanpy.utils import prefilter
+        >>> data = [
+        ...     ['x', 'x', 'Language_ID', 'x', 'x', 'x', 'x', 'x', 'x', 'Cognacy', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '2', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '3', 'x'],
+        ...     ['x', 'x', 'nl', 'x', 'x', 'x', 'x', 'x', 'x', '4', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '4', 'x'],
+        ...     ['x', 'x', 'nl', 'x', 'x', 'x', 'x', 'x', 'x', '5', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '5', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
+        ...     ['x', 'x', 'nl', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
+        ... ]
+        >>> prefilter(data, "de", "en")
+        [['x', 'x', 'Language_ID', 'x', 'x', 'x', 'x', 'x', 'x', 'Cognacy', 'x'],
+        ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+        ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+        ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+        ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+        ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
+        ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']]
     """
 
     cogids = []

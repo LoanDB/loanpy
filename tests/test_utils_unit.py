@@ -69,7 +69,6 @@ def test_prefilter1(is_valid_language_sequence_mock):
     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
     ]
 
-
     expected1 = [
     ['x', 'x', 'Language_ID', 'x', 'x', 'x', 'x', 'x', 'x', 'Cognacy', 'x'],
     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
