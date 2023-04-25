@@ -51,6 +51,19 @@ def eval_all(
     :return: A list of tuples of integer-pairs
              representing false positives vs true positives
     :rtype: tuple
+
+    .. code-block:: python
+
+    >>> from loanpy.eval_sca import eval_all
+    >>> intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    ...   ['0', '1', 'H', 'k i k i', 'VC'],
+    ...   ['1', '1', 'EAH', 'k i g i', 'VCVCV'],
+    ...   ['2', '2', 'H', 'i k k i', 'VCV'],
+    ...   ['3', '2', 'EAH', 'i g k i', 'VCCVC']
+    ... ]
+    >>>
+    >>> eval_all(intable, "", False, [1, 2, 3])
+    [(0.33, 0.0), (0.67, 1.0), (1.0, 1.0)]
     """
 
     true_positives = []
@@ -100,6 +113,46 @@ def eval_one(
     :return: A tuple with the ratio of successful adaptations/reconstructions
              (rounded to 2 decimal places).
     :rtype: tuple
+
+    >>> from loanpy.eval_sca import eval_one
+    >>> intable = [
+    ...     ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    ...     ['0', '1', 'H', 'k i k i', 'VC'],
+    ...     ['1', '1', 'EAH', 'g i g i', 'VCVCV'],
+    ...     ['2', '2', 'H', 'i k k i', 'VCV'],
+    ...     ['3', '2', 'EAH', 'i g g i', 'VCCVC']
+    ... ]
+    >>> eval_one(intable, "", False, 1)
+    1.0
+
+    >>> intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    ...   ['0', '1', 'H', 'k i k i', 'VC'],
+    ...   ['1', '1', 'EAH', 'g i g i', 'VCVCV'],
+    ...   ['2', '2', 'H', 'b u b a', 'VCV'],
+    ...   ['3', '2', 'EAH', 'p u p a', 'VCCVC']
+    ... ]
+    >>> eval_one(intable, "", False, 1)
+    0.0
+
+    >>> intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    ...   ['0', '1', 'H', 'k i k i', 'VC'],
+    ...   ['1', '1', 'EAH', 'k i g i', 'VCVCV'],
+    ...   ['2', '2', 'H', 'i k k i', 'VCV'],
+    ...   ['3', '2', 'EAH', 'i g k i', 'VCCVC']
+    ... ]
+    >>> eval_one(intable, "", False, 1)
+    0.0
+
+    >>> intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    ...   ['0', '1', 'H', 'k i k i', 'VC'],
+    ...   ['1', '1', 'EAH', 'k i g i', 'VCVCV'],
+    ...   ['2', '2', 'H', 'i k k i', 'VCV'],
+    ...   ['3', '2', 'EAH', 'i g k i', 'VCCVC']
+    ... ]
+    >>>
+    >>> eval_one(intable, "", False, 2)
+    1.0
+
     """
 
     out = []

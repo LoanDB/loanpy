@@ -59,21 +59,21 @@ def phonetic_matches(
 
     .. code-block:: python
 
-    >>> from loanpy.loanfinder import phonetic_matches
-    >>> donor = [
-    ...     ['a0', 'Donorese-0', 'igig'],
-    ...     ['a1', 'Donorese-1', 'iggi']
-    ... ]
-    >>> recipient = [
-    ...     ['0', 'Recipientese-0', '^(i|u)(g)(g)(i|u)$'],
-    ...     ['1', 'Recipientese-1', '^(i|u)(i|u)(g)(g)$']
-    ... ]
-    >>> outpath = "examples/phonetic_matches.tsv"
-    >>> phonetic_matches(recipient, donor, outpath)
-    >>> with open(outpath, "r") as f:
-    ...     print(f.read())
-    ID	ID_rc	ID_ad
-    0	Recipientese-0	Donorese-1
+        >>> from loanpy.loanfinder import phonetic_matches
+        >>> donor = [
+        ...     ['a0', 'Donorese-0', 'igig'],
+        ...     ['a1', 'Donorese-1', 'iggi']
+        ... ]
+        >>> recipient = [
+        ...     ['0', 'Recipientese-0', '^(i|u)(g)(g)(i|u)$'],
+        ...     ['1', 'Recipientese-1', '^(i|u)(i|u)(g)(g)$']
+        ... ]
+        >>> outpath = "examples/phonetic_matches.tsv"
+        >>> phonetic_matches(recipient, donor, outpath)
+        >>> with open(outpath, "r") as f:
+        ...     print(f.read())
+        ID	ID_rc	ID_ad
+        0	Recipientese-0	Donorese-1
     """
     phmid = 0
     with open(output, "w+") as f:
