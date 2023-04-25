@@ -61,17 +61,17 @@ def phonetic_matches(
 
     >>> from loanpy.loanfinder import phonetic_matches
     >>> donor = [
-    >>>     ['a0', 'f0', 'igig'],
-    >>>     ['a1', 'f1', 'iggi']
-    >>> ]
+    ...     ['a0', 'f0', 'igig'],
+    ...     ['a1', 'f1', 'iggi']
+    ... ]
     >>> recipient = [
-    >>>     ['0', 'Recipientese-0', '^(i|u)(g)(g)(i|u)$'],
-    >>>     ['1', 'Recipientese-1', '^(i|u)(i|u)(g)(g)$']
-    >>> ]
+    ...     ['0', 'Recipientese-0', '^(i|u)(g)(g)(i|u)$'],
+    ...     ['1', 'Recipientese-1', '^(i|u)(i|u)(g)(g)$']
+    ... ]
     >>> outpath = "examples/phonetic_matches.tsv"
     >>> phonetic_matches(recipient, donor, outpath)
     >>> with open(outpath, "r") as f:
-    >>>     print(f.read())
+    ...     print(f.read())
     ID	ID_rc	ID_ad
     0	Recipientese-0	f1
     """
@@ -119,6 +119,24 @@ def semantic_matches(
              descending order by semantic similarity and ascending order
              by loanID.
     :rtype: str
+
+    .. code-block:: python
+
+        >>> from loanpy.loanfinder import semantic_matches
+        >>> def getsemsim(x, y):
+        >>>     return 3
+        >>> phmtsv = [
+        ...     ["ID", "ID_rc", "ID_ad", "lg1", "lg2"],
+        ...     ["0", "20-bla", "f53", "lg1", "lg2"],
+        ...     ["1", "87-bli", "f7", "l1", "lg2"],
+        ... ]
+        >>> outpath = "examples/phonetic_matches.tsv"
+        >>> semantic_matches(phmtsv, getsemsim, outpath)
+        >>> with open(outpath, "r") as f:
+        ...     print(f.read())
+        ID	ID_rc	ID_ad	semsim
+        0	20-bla	f53	3
+        1	87-bli	f7	3
     """
 
     # Calculate semantic similarity and add columns to output rows
