@@ -9,22 +9,22 @@ is_valid_language_sequence, is_same_length_alignments, read_ipa_all,
 modify_ipa_all, prod, scjson2tsv)
 
 # Sample input data
-tsv_string = """form\tsense\tYear\tEtymology\tLoan
-a¹\teine Interjektion\t1833\t\t
-á\t〈eine Interjektion〉\t1372\tLang\t
-aba ×\tFlausch, Fries, Flanell, Besatz am Rock\t1556\tLang\tTrue
-abajdoc\tgemischt, , Mischkorn, schmutziges Getreide, Fraß, Gekoch\
-\t1320\tLang\tTrue
-"""
-tsv = [row.split("\t") for row in tsv_string.split("\n")]
-origins = ["Lang"]
+tsv = [
+  ['form', 'sense', 'Year', 'Etymology', 'Loan'],
+  ['a¹', 'eine Interjektion', '1833', '', ''],
+  ['á', '〈eine Interjektion〉', '1372', 'Lang', ''],
+  ['aba ×', 'Flausch, Fries, Flanell, Besatz am Rock', '1556', 'Lang',
+   'True'],
+  ['abajdoc', 'gemischt, , Mischkorn, schmutziges Getreide, Fraß, Gekoch',
+   '1320', 'Lang', 'True']
+]
 
 def test_find_optimal_year_cutoff_sample():
-    assert find_optimal_year_cutoff(tsv, origins) == 1320
+    assert find_optimal_year_cutoff(tsv, ["Lang"]) == 1320
 
 def test_find_optimal_year_cutoff_empty_input():
     with pytest.raises(IndexError):
-        assert find_optimal_year_cutoff([], origins) is None
+        assert find_optimal_year_cutoff([], ["Lang"]) is None
 
 def test_find_optimal_year_cutoff_no_origins():
     assert find_optimal_year_cutoff(tsv, []) == 1320

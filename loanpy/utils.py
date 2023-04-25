@@ -10,13 +10,18 @@ filtering and validation.
 """
 import csv
 import json
+import logging
 import re
 from collections import Counter
 from pathlib import Path
 from typing import Iterable, List, Set, Union
 
+logging.basicConfig(  # set up logger (instead of print)
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+    )
 
-def find_optimal_year_cutoff(tsv: List[List[str]], origins: Set[str]) -> int:
+def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
     """
     Determine the optimal year cutoff for a given dataset and origins.
 
@@ -33,6 +38,19 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Set[str]) -> int:
 
     :return: The optimal year cutoff for the dataset and origins.
     :rtype: int
+
+    .. example::
+
+       >>> tsv = [
+         ['form', 'sense', 'Year', 'Etymology', 'Loan'],
+         ['a¹', 'eine Interjektion', '1833', '', ''],
+         ['á', '〈eine Interjektion〉', '1372', 'Lang', ''],
+         ['aba ×', 'Flausch, Fries, Flanell, Besatz am Rock', '1556', 'Lang',
+          'True'],
+         ['abajdoc', 'gemischt, , Mischkorn, schmutziges Getreide, Fraß, Gekoch',
+          '1320', 'Lang', 'True']
+       ]
+       >>> find_optimal_year_cutoff(tsv, "Lang")
     """
     # Step 1: Read the TSV content from a string
     data = []
@@ -139,9 +157,8 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
         col2_order = {srclg: 0, tgtlg: 1}
         return int(row[cogidx]), col2_order.get(row[lgidx], 2)
 
-    #print(data)
     data = sorted(data, key=sorting_key)
-    #print(data)
+
     assert is_valid_language_sequence(data, srclg, tgtlg)
     data.insert(0, headers)
     return data
@@ -171,12 +188,12 @@ def is_valid_language_sequence(
     :rtype: bool
     """
     if len(data) % 2 != 0:
-        print("Odd number of rows, source/target language is missing.")
+        logging.info("Odd number of rows, source/target language is missing.")
         return False
     for idx, row in enumerate(data):
         expected_lang = source_lang if idx % 2 == 0 else target_lang
         if row[2] != expected_lang:
-            print(f"Problem in row {idx}")
+            logging.info(f"Problem in row {idx}")
             return False
     return True
 
@@ -207,7 +224,7 @@ def is_same_length_alignments(data: List[List[str]]) -> bool:
         try:
             assert len(first) == len(second)
         except AssertionError:
-            print(rownr, "\n", first, "\n", second)
+            logging.info(rownr, "\n", first, "\n", second)
             return False
     return True
 

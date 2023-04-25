@@ -17,16 +17,29 @@ by quantifying the success rate of predictive models.
 """
 
 import re
+from typing import Dict, List, Tuple
 
 from loanpy.scapplier import Adrc
 from loanpy.scminer import get_correspondences, get_inventory
 
-def eval_all(edicted, heur, adapt, guess_list, pros=False):
+def eval_all(
+        intable: List[List[str]],
+        heur: Dict[str, List[str]],
+        adapt: bool,
+        guess_list: List[int],
+        pros: bool = False
+        ) -> List[Tuple[int, int]]:
     """
-    Get a table of False Positives (how many guesses) vs True Positives.
+    #. Input a loanpy-compatible table containing etymological data.
+    #. Start a neseted for-loop
+    #. The first loop goes through the number of guesses (~ false positives)
+    #. The second loops through the input-table and calculates the relative
+       number of true positives.
+    #. The output is a list of tuples containing the relative number of
+       true positives vs. false positives
 
-    :param edicted: The input tsv-table, edited with the Edictor.
-    :type edicted: list of lists
+    :param intable: The input tsv-table, edited with the Edictor.
+    :type intable: list of lists
     :param heur: The heuristic prosodic correspondences.
     :type heur: list
     :param adapt: Whether words are adapted or reconstructed.
@@ -44,7 +57,7 @@ def eval_all(edicted, heur, adapt, guess_list, pros=False):
 
     # Iterate through the guess list and calculate evaluation results
     for num_guesses in guess_list:
-        eval_result = eval_one(edicted, heur, adapt, num_guesses, pros)
+        eval_result = eval_one(intable, heur, adapt, num_guesses, pros)
         true_positives.append(eval_result)  # already normalised
 
     # Normalize guess list values
@@ -56,15 +69,25 @@ def eval_all(edicted, heur, adapt, guess_list, pros=False):
     return fp_vs_tp
 
 
-def eval_one(edicted, heur, adapt, howmany, pros=False):
+def eval_one(
+        intable: List[List[str]],
+        heur: Dict[str, List[str]],
+        adapt: bool,
+        howmany: int,
+        pros: bool = False
+        ) -> Tuple[float]:
     """
-    Evaluate the quality of the adapted and reconstructed words.
     Called by loanpy.eval.eval_all.
+    loops through the loanpy-compatible etymological input-table and
+    performs `leave-one-out cross validation
+    <https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Leave-one-out_cross-validation>`_.
+    The result is how many words were correctly predicted, relative to the
+    length of the table
 
-    :param edicted: The input tsv-table, edited with the Edictor.
+    :param intable: The input tsv-table, edited with the Edictor.
                     Tokenised IPA source and target strings must be
                     in column "ALIGNMENT". Prosodic strings in col "PROSODY".
-    :type edicted: list of lists
+    :type intable: list of lists
     :param heur: The heuristic sound and prosodic correspondences.
                  Created with loanpy.recover.get_correspondences
     :type heur: dict
@@ -80,24 +103,22 @@ def eval_one(edicted, heur, adapt, howmany, pros=False):
     """
 
     out = []
-    h = {i: edicted[0].index(i) for i in edicted[0]}
-    for i in range(1, len(edicted), 2):  # 1 bc skip header
-        srcrow, tgtrow = edicted.pop(i), edicted.pop(i)
-        src = srcrow[h["ALIGNMENT"]]
+    h = {i: intable[0].index(i) for i in intable[0]}
+    for i in range(1, len(intable), 2):  # 1 bc skip header
+        srcrow, tgtrow = intable.pop(i), intable.pop(i)  # leave one out
+        src = srcrow[h["ALIGNMENT"]]   # define left-outs as test input
         tgt = "".join(re.sub("[-. ]", "", tgtrow[h["ALIGNMENT"]]))
         src_pros = srcrow[h["PROSODY"]] if pros else ""
-        adrc = Adrc()
-        adrc.sc = get_correspondences(edicted, heur)
-        adrc.inventory = get_inventory(edicted)
+        adrc = Adrc()   # initiate adapt-reconstruct class
+        adrc.set_sc(get_correspondences(intable, heur))  # extract info from traing data
+        adrc.set_inventory(get_inventory(intable))  # extract inventory
         if adapt:
             ad = adrc.adapt(src, howmany, src_pros)
-            #print("tgt: ", tgt, "src: ", src, ", ad: ", ad)
             out.append(tgt in ad)
         else:
             rc = adrc.reconstruct(src, howmany)
-            #if not bool(re.match(rc, tgt)):
-            #    print(howmany, src, rc, tgt)
             out.append(bool(re.match(rc, tgt)))
-        edicted.insert(i, tgtrow)
-        edicted.insert(i, srcrow)
-    return round(len([i for i in out if i])/len(out), 2)
+        intable.insert(i, tgtrow)
+        intable.insert(i, srcrow)
+
+    return round(len([i for i in out if i]) / len(out), 2)

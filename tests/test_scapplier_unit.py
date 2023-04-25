@@ -34,6 +34,22 @@ def test_init_without_files():
     assert obj.sc is None
     assert obj.inventory is None
 
+def test_set_sc():
+    """
+    Test if sound correspondences are plugged in correctly into  attribute
+    """
+    obj = Adrc()
+    obj.set_sc("lol")
+    assert obj.sc == "lol"
+
+def test_set_inventory():
+    """
+    Test if inventories are plugged in correctly into attribute
+    """
+    obj = Adrc()
+    obj.set_inventory("rofl")
+    assert obj.inventory == "rofl"
+
 class AdrcMonkey:
     def __init__(self):
         self.sc = [{},{},{},{},{},{}]

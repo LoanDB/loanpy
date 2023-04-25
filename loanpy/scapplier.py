@@ -19,7 +19,7 @@ from collections import OrderedDict
 from itertools import cycle, product
 from json import load
 from pathlib import Path
-from typing import Iterable, List, Tuple, Union
+from typing import Dict, Iterable, List, Tuple, Union
 
 from loanpy.utils import prod
 
@@ -62,9 +62,34 @@ class Adrc():
             with open(inventory, "r", encoding='utf-8') as f:
                 self.inventory = load(f) # CVCV and phoneme inventories
 
+    def set_sc(self, sc: List[dict]) -> None:
+        """
+        Method to set sound correspondences manually.
+        Called by loanpy.eval_sca.eval_one
+
+        :param sc: The sound correspondence dictionary file.
+        :type sc: list
+
+        :return: Set the attribute sc
+        :rtype: None
+        """
+        self.sc = sc
+
+    def set_inventory(self, inventory: List[str]) -> None:
+        """
+        Method to set the phonotactic inventory manually.
+        Called by loanpy.eval_sca.eval_one
+
+        :param inventory: The phonotactic inventory file.
+        :type sc: list of strings
+
+        :return: Set the attribute inventory
+        :rtype: None
+        """
+        self.inventory = inventory
 
     def adapt(self,
-              ipastr: str,
+              ipastr: Union[str, List[str]],
               howmany: int = 1,
               prosody: str = ""
               ) -> str:
@@ -399,15 +424,19 @@ def list2regex(sclist: List[str]) -> str:
     """
 
     s = ")?" if "-" in sclist else ")"
-    return "(" + "|".join([i.replace(".", "") for i in sclist if i != "-"]) + s
+    out = "|".join([i.replace(".", "") for i in sclist if i != "-"])
+    return "(" + out + s
 
-def tuples2editops(op_list, s1, s2):
+def tuples2editops(
+        op_list: List[Tuple[int, int]], s1: str, s2: str
+        ) -> List[str]:
     """
     Called by loanpy.scapplier.editops.
     The path how string1 is converted to string2 is given in form of tuples
     that contain the x and y coordinates of every step through the matrix
     shaped graph.
-    This function converts those numerical instructions to human readable ones.
+    This function converts those numerical instructions to human readable
+    ones.
     The x values stand for horizontal movement, y values for vertical ones.
     Vertical movement means deletion, horizontal means insertion.
     Diagonal means the value is kept.
@@ -431,7 +460,8 @@ def tuples2editops(op_list, s1, s2):
     out = []
     for i in range(1, len(op_list)):
         # where does the arrow point?
-        direction = [op_list[i][0] - op_list[i - 1][0], op_list[i][1] - op_list[i - 1][1]]
+        direction = [op_list[i][0] - op_list[i - 1][0],
+                     op_list[i][1] - op_list[i - 1][1]]
         if direction == [1, 1]:  # if diagonal
             out.append(f"keep {s1[op_list[i][1]]}")
         elif direction == [0, 1]:  # if horizontal
@@ -441,7 +471,7 @@ def tuples2editops(op_list, s1, s2):
 
     return substitute_operations(out)
 
-def substitute_operations(operations):
+def substitute_operations(operations: List[str]) -> List[str]:
     """
     Replaces subsequent "delete, insert" / "insert, delete" operations with
     "substitute". Called by loanpy.apply.tuples2editops.
@@ -455,11 +485,13 @@ def substitute_operations(operations):
 
     i = 0
     while i < len(operations) - 1:
-        if operations[i].startswith('delete ') and operations[i+1].startswith('insert '):
+        if (operations[i].startswith('delete ') and
+                operations[i+1].startswith('insert ')):
             x = operations[i][7:]
             y = operations[i+1][7:]
             operations[i:i+2] = [f'substitute {x} by {y}']
-        elif operations[i].startswith('insert ') and operations[i+1].startswith('delete '):
+        elif (operations[i].startswith('insert ') and
+                operations[i+1].startswith('delete ')):
             x = operations[i][7:]
             y = operations[i+1][7:]
             operations[i:i+2] = [f'substitute {y} by {x}']
@@ -467,7 +499,7 @@ def substitute_operations(operations):
             i += 1
     return operations
 
-def get_mtx(target, source):
+def get_mtx(target: Iterable, source: Iterable) -> List[List[int]]:
     """
     Called by loanpy.scapplier.Adrc.repair_phonotactics. Similar to
     loanpy.scapplier.edit_distance_with2ops but without
@@ -517,7 +549,7 @@ def get_mtx(target, source):
         sol[j][0] = j
 
     # Add anchor value
-    if target[1] != source[1]:  # if first letters of the 2 words are different
+    if target[1] != source[1]:  # if first letters of the 2 words r different
         sol[1][1] = 2  # set the first value (upper left corner) to 2
     # else it just stays zero
 
@@ -534,7 +566,12 @@ def get_mtx(target, source):
     # returns the entire matrix. min edit distance in bottom right corner jff.
     return sol
 
-def add_edge(graph, u, v, weight):
+def add_edge(
+        graph: Dict[Tuple[int, int], List[Tuple[int, int, int]]],
+        u: Tuple[int, int],
+        v: Tuple[int, int],
+        weight: int
+        ) -> None:
     """
     Add an edge to a graph. Called by loanpy.scapplier.mtx2graph.
 
@@ -558,7 +595,11 @@ def add_edge(graph, u, v, weight):
         graph[u] = {}
     graph[u][v] = weight
 
-def mtx2graph(matrix, w_del=100, w_ins=49):
+def mtx2graph(
+        matrix: List[List[int]],
+        w_del: int = 100,
+        w_ins: int = 49
+        ) -> Dict[Tuple[int, int], Dict[Tuple[int, int], int]]:
     """
     Converts a distance-matrix to a weighted directed graph
 
@@ -569,7 +610,8 @@ def mtx2graph(matrix, w_del=100, w_ins=49):
             Repair Strategies (TCRS), two insertions are cheaper than one
             deletion. Therefore, the weight of deletions, i.e. moving
             horizontally through the matrix, is set to 49 by default.
-    :w_ins: Weight of insertions. Set to 100 by default, so that two insertions
+    :w_ins: Weight of insertions. Set to 100 by default, so that two
+            insertions
             (2*49=98) are still cheaper than a deletion.
 
     :returns: A directed graph with weighted edges
@@ -603,7 +645,11 @@ def mtx2graph(matrix, w_del=100, w_ins=49):
 
     return graph
 
-def dijkstra(graph, start, end):
+def dijkstra(
+        graph: Dict[Tuple[int, int], Dict[Tuple[int, int], int]],
+        start: Tuple[int, int],
+        end: Tuple[int, int]
+        ) -> Union[List[Tuple[int, int]], None]:
     """
     Find the shortest path between two nodes in a weighted graph
     using Dijkstra's algorithm.
@@ -620,11 +666,12 @@ def dijkstra(graph, start, end):
                   key is a node and each value is a
                   dictionary representing its neighbors and edge weights.
     :type graph: dict
-
     :param start: The starting node.
-    :type start: any
+    :type start: A tuple of two integers representing the node's position on
+                 the x and y axis.
     :param end: The ending node.
-    :type end: any
+    :type end: A tuple of two integers representing the node's position on
+                 the x and y axis.
     :return: The shortest path between the start and end nodes,
              represented as a list of nodes in the order they are
              visited, or None if no path exists.

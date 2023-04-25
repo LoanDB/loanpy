@@ -18,9 +18,22 @@ then be used to study linguistic borrowing, adaptation, and reconstruction
 processes between the donor and recipient languages.
 """
 import csv
+import logging
 import re
+from pathlib import Path
+from typing import Any, Callable, List, Union
 
-def phonetic_matches(df_rc, df_ad, output, max_ad=100):
+logging.basicConfig(  # set up logger (instead of print)
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+    )
+
+def phonetic_matches(
+        df_rc: List[List[str]],
+        df_ad: List[List[str]],
+        output: Union[str, Path],
+        ) -> str:
+
     """
     Finds phonetic matches between the given donor and recipient TSV files.
 
@@ -57,9 +70,15 @@ def phonetic_matches(df_rc, df_ad, output, max_ad=100):
                         phmid += 1
                         last_match = adrow[1]
 
-            print(f"{i+1}/{len(df_rc)} iterations completed", end="\r")
+            if (i + 1) % 50 == 0:
+                logging.info(f"{i+1}/{len(df_rc)} iterations completed")
 
-def semantic_matches(df_phonmatch, get_semsim, output, thresh=0):
+def semantic_matches(
+        df_phonmatch: List[List[str]],
+        get_semsim: Callable[[Any, Any], float],
+        output: Union[str, Path],
+        thresh: Union[int, float] = 0
+        ) -> str:
     """
     Calculate the semantic similarity between pairs of rows in df_senses
     using the function get_semsim, and add columns with the calculated
@@ -92,6 +111,8 @@ def semantic_matches(df_phonmatch, get_semsim, output, thresh=0):
             semsim = get_semsim(row[3], row[4])
             if semsim >= thresh:
                 writer.writerow(row[:3] + [round(semsim, 2)])
-            print(f"{i+1}/{len(df_phonmatch[1:])-1} iterations completed",
-                  end="\r"
-                  )
+
+            if (i + 1) % 50 == 0:
+                logging.info(
+                    f"{i+1}/{len(df_phonmatch[1:])-1} iterations completed"
+                    )

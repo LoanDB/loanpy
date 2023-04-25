@@ -22,7 +22,7 @@ def test_evaluate_all_returns_expected_output():
             }
 
     fp_vs_tp = eval_all(
-        edicted=eded, heur=heur, adapt=True, guess_list=[1, 2, 5, 1000]
+        intable=eded, heur=heur, adapt=True, guess_list=[1, 2, 5, 1000]
         )
     assert fp_vs_tp == [(0.0, 0.0), (0.0, 0.0), (0.01, 0.0), (1.0, 0.0)]
 
@@ -31,7 +31,7 @@ def test_eval_one_adapt():
     With repaired phonotactics and without
     """
 
-    edicted = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
                   [0, 1, 'WOT', 'a ɣ a t͡ʃː ɯ', 'VCVCV'],
                   [1, 1, 'EAH', 'a ɣ a t͡ʃ i', 'VCVCV'],
                   [2, 2, 'WOT', 'a l d a ɣ', 'VCCVC'],
@@ -44,10 +44,10 @@ def test_eval_one_adapt():
             }
 
     # assert results
-    assert eval_one(edicted, heur, True, 1, ()) == 0.0
-    assert eval_one(edicted, heur, True, 2, ()) == 0.0
-    assert eval_one(edicted, heur, True, 5, ()) == 0.0
-    assert eval_one(edicted, heur, True, 1000, ()) == 0.0
+    assert eval_one(intable, heur, True, 1, ()) == 0.0
+    assert eval_one(intable, heur, True, 2, ()) == 0.0
+    assert eval_one(intable, heur, True, 5, ()) == 0.0
+    assert eval_one(intable, heur, True, 1000, ()) == 0.0
 
 
     with open(TESTFILESDIR / "WOT2EAHedicted.tsv", "r", encoding='utf-8') as f:
