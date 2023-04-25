@@ -39,7 +39,7 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
     :return: The optimal year cutoff for the dataset and origins.
     :rtype: int
 
-    .. highlight:: python
+    .. code-block:: python
 
         >>> from loanpy.utils import find_optimal_year_cutoff
         >>> tsv = [
@@ -111,6 +111,10 @@ def cvgaps(str1: str, str2: str) -> List[str]:
     :return: A list containing the modified first string and the unchanged
              second string.
     :rtype: list of strings
+
+    .. highlight:: python
+
+
     """
     ipa_all = read_ipa_all()
     vow = [rw[0] for rw in ipa_all if rw[ipa_all[0].index("cons")]=="-1"]
