@@ -41,16 +41,16 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
 
     .. example::
 
-       >>> tsv = [
-         ['form', 'sense', 'Year', 'Etymology', 'Loan'],
-         ['a¹', 'eine Interjektion', '1833', '', ''],
-         ['á', '〈eine Interjektion〉', '1372', 'Lang', ''],
-         ['aba ×', 'Flausch, Fries, Flanell, Besatz am Rock', '1556', 'Lang',
-          'True'],
-         ['abajdoc', 'gemischt, , Mischkorn, schmutziges Getreide, Fraß, Gekoch',
-          '1320', 'Lang', 'True']
-       ]
-       >>> find_optimal_year_cutoff(tsv, "Lang")
+        >>> from loanpy.utils import find_optimal_year_cutoff
+        >>> tsv = [
+        >>>         ['form', 'sense', 'Year', 'Etymology', 'Loan'],
+        >>>         ['gulyás', 'goulash, Hungarian stew', '1800', 'unknown', ''],
+        >>>         ['Tisza', 'a major river in Hungary', '1230', 'uncertain', ''],
+        >>>         ['Pest', 'part of Budapest, the capital', '1241', 'Slavic', 'True'],
+        >>>         ['paprika', 'ground red pepper, spice', '1598', 'Slavic', 'True']
+        >>>       ]
+        >>> find_optimal_year_cutoff(tsv, "Slavic")
+        1241
     """
     # Step 1: Read the TSV content from a string
     data = []
@@ -74,17 +74,25 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
     # Step 4: Convert the dictionary to a list of tuples
     year_count_list.sort()
 
+    # Step 4.1: Turn x and y axis into relative values
+    start_year = year_count_list[0][0]
+    end_count= year_count_list[-1]
+    #print(year_count_list)
+    relative_year_count_list = [(i[0]-start_year, i[1]) for i in year_count_list]
+    relative_year_count_list = [
+        (i[0] / end_count[0], i[1] / end_count[1]) for i in year_count_list
+        ]
+    #print(relative_year_count_list, year_count_list)
     # Step 5: Find optimal cut-off point using distance to upper left corner
-    max_count = max(count for _, count in year_count_list)
+    max_count = max(count for _, count in relative_year_count_list)
     optimal_year = None
     min_distance = float("inf")
-    for year, count in year_count_list:
+    for year, count in relative_year_count_list:
         distance = (year ** 2 + (max_count - count) ** 2) ** 0.5
         if distance < min_distance:
             min_distance = distance
-            optimal_year = year
-
-    return optimal_year
+            optimal_year_count = (year, count)
+    return year_count_list[relative_year_count_list.index(optimal_year_count)][0]
 
 def cvgaps(str1: str, str2: str) -> List[str]:
     """

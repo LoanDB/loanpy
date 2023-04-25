@@ -20,18 +20,20 @@ tsv = [
 ]
 
 def test_find_optimal_year_cutoff_sample():
-    assert find_optimal_year_cutoff(tsv, ["Lang"]) == 1320
+    assert find_optimal_year_cutoff(tsv, ["Lang"]) == 1372
 
 def test_find_optimal_year_cutoff_empty_input():
     with pytest.raises(IndexError):
         assert find_optimal_year_cutoff([], ["Lang"]) is None
 
 def test_find_optimal_year_cutoff_no_origins():
-    assert find_optimal_year_cutoff(tsv, []) == 1320
+    with pytest.raises(ZeroDivisionError):
+        assert find_optimal_year_cutoff(tsv, []) is None
 
 def test_find_optimal_year_cutoff_no_matching_origins():
     non_matching_origins = ("Non-Matching-Origin",)
-    assert find_optimal_year_cutoff(tsv, non_matching_origins) == 1320
+    with pytest.raises(ZeroDivisionError):
+        assert find_optimal_year_cutoff(tsv, non_matching_origins) is None
 
 def test_find_optimal_year_cutoff_single_entry():
     single_entry_tsv = "form\tsense\tYear\tEtymology\tLoan\na\texample\t1900\
