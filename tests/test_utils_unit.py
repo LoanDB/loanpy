@@ -281,11 +281,13 @@ def test_prod_zero():
 
 def test_scjson2tsv(tmp_path):
     """
+    
     #. Write a mock scdict json file
     #. Transform it
     #. Write it to a temporary directory
     #. Open it
     #. Check if the results are as expected
+
     """
     # define path of input and output files
     mockscdictpath = tmp_path / "mocksc.json"

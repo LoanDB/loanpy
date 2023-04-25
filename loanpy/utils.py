@@ -345,15 +345,16 @@ def modify_ipa_all(
         input_file: Union[str, Path], output_file: Union[str, Path]
         ) -> None:
     """
-    Original file is ``ipa_all.csv`` from folder ``data`` in panphon 0.20.0
-    and was copied with the permission of the author.
+    Original file is ``ipa_all.csv`` from folder ``data`` in `panphon 0.20.0
+    <https://pypi.org/project/panphon/0.20.0/>`_
+    and was copied with the permission of its author.
     The ``ipa_all.csv`` table of loanpy was created with this function.
     Following modifications are undertaken:
 
     #. All ``+`` signs are replaced by ``1``, all ``-`` signs by ``-1``
     #. Two phonemes are appended to the column ``ipa``,
        namely "C", and "V", meaning "any consonant", and "any vowel".
-    #. Any phoneme containing "j" or "w" is redefined as a consonant
+    #. Any phoneme containing "j, w, ʔ" is redefined as a consonant.
 
     :param input_file: The path to the file ``ipa_all.csv``.
     :type input_file: A string or a path-like object
@@ -361,6 +362,9 @@ def modify_ipa_all(
     :param output_file: The name and path of the new csv-file that is to be
                         written.
     :type output_file: A string or a path-like object
+
+    :return: Write new file
+    :rtype: None
     """
     with open(input_file, 'r', encoding='utf-8') as infile:
         data = list(csv.reader(infile))
@@ -401,6 +405,7 @@ def prod(iterable: Iterable[Union[int, float]]) -> Union[int, float]:
     :rtype: int or float
 
     .. code-block:: python
+
        >>> from loanpy.utils import prod
        >>> prod([1, 2, 3])  # one times two times three
        6
@@ -541,6 +546,31 @@ def scjson2tsv(jsonin: Union[str, Path], outtsv: Union[str, Path],
 
     :return: Write two tsv-files to the specified two output paths
     :rtype: None
+
+    .. code-block:: python
+
+    >>> import json
+    >>> from loanpy.utils import scjson2tsv
+
+    >>> sc = [{"a": ["o", "e"]}, {"a o": 1, "a e": 2}, {"a o": [512],
+    ...        "a e": [3, 4]}, {"CV": ["CV"]}, {"CV CV": 1}, {"CV CV": [7]}]
+
+    >>> with open("sc.json", "w+") as f:
+    ...     json.dump(sc, f)
+
+    >>> scjson2tsv("sc.json", "sc.tsv", "sc_p.tsv")
+
+    >>> with open("sc.tsv", "r") as f:
+    ...     print(f.read())
+    sc	src	tgt	freq	CogID
+    a o a	o	1	512
+    a e	a	e	2	3, 4
+
+    >>> with open("sc_p.tsv", "r") as f:
+    ...     print(f.read())
+    sc	src	tgt	freq	CogID
+    CV CV	CV	CV	1	7
+
     """
     # read json
     with open(jsonin, "r") as f:
