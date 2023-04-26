@@ -30,7 +30,7 @@ example:
          3x3 table, to the middle column of the right 3x3 table. Above its
          arch it says "Find new etymology: ikki “cat” < iggi ← egge “dog”"
 
-   The loanword detection framework with a minimal example: Mine sound
+   Mine sound
    correspondences from an etymological dictionary, evaluate their predictive
    power, input them to a sound change applier to generate pseudo-adapted and
    pseudo-proto-forms, and search for phonetic and semantic matches between
@@ -49,12 +49,37 @@ in horizontal transfers and "k from g, i from i" in vertical ones.
 In terms of phonotactics, we can mine "CVCV from CVCV" both horizontally
 and vertically.
 
+This is achieved with `loanpy.scminer.get_correspondences
+<https://loanpy.readthedocs.io/en/latest/documentation.html#loanpy.scminer.get_correspondences>`_
+
 For an implementation with a detailed guide visit `Part 3 (steps 1-4) of
 ronataswestoldturkic's documentation
 <https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_.
 
+Step 2: Evaluate the predictive model
+-------------------------------------
 
-Step 2: Apply sound correspondences
+How good are the predictions made from the mined sound correspondences?
+
+Our minimal example is a perfect model that predicts with 100% certainty that
+<kiki> goes back to <gigi> and that the donor form of <gigi> is <gege>.
+
+This is achieved with `loanpy.eval_sca.eval_all
+<https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=9TJGhnf5Ysmk&line=2&uniqifier=1>`_
+
+For an implementation with a detailed guide
+employing concepts from statistics such as `leave-one out cross-validation
+(LOOCV)
+<https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Leave-one-out_cross-validation>`_,
+the `receiver operating characteristics (ROC) -curve
+<https://en.wikipedia.org/wiki/Receiver_operating_characteristic>`_,
+and the `area under the curve (AUC)
+<https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve>`_,
+visit `steps 5-6 in part 3 of ronataswestoldturkic's
+documentation
+<https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_
+
+Step 3: Apply sound correspondences
 -----------------------------------
 
 Take the information mined from the etymological dictionary
@@ -68,32 +93,16 @@ vertical transfers. Likewise, <egeg> must turn into <igig> and <egge> into
 <iggi> during horizontal transfers, based on the extracted sound
 correspondences.
 
+This is achieved with the `loanpy.scapplier
+<https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=Zf-zKt4HHH8M&line=18&uniqifier=1>
+`_ module
+
 For an implementation with a detailed guide to predict vertical transfers visit
 `gerstnerhungarian's documentation
 <https://gerstnerhungarian.readthedocs.io/en/latest/?badge=latest>`_ and for
 predicting horizontal transfers (loanwords) visit
 `koeblergothic's documentation
 <https://koeblergothic.readthedocs.io/en/latest/?badge=latest>`_.
-
-Step 3: Evaluate sound correspondences
---------------------------------------
-
-How good are the predictions made from the mined sound correspondences?
-
-Our minimal example is a perfect model that predicts with 100% certainty that
-<kiki> goes back to <gigi> and that the donor form of <gigi> is <gege>.
-
-For an implementation with a detailed guide
-employing concepts from statistics such as `leave-one out cross-validation
-(LOOCV)
-<https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Leave-one-out_cross-validation>`_,
-the `receiver operating characteristics (ROC) -curve
-<https://en.wikipedia.org/wiki/Receiver_operating_characteristic>`_,
-and the `area under the curve (AUC)
-<https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve>`_,
-visit `steps 5-6 in part 3 of ronataswestoldturkic's
-documentation
-<https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html>`_
 
 Step 4: Find old loanwords
 --------------------------
@@ -117,6 +126,10 @@ with it are "cat" and "dog". If we assess these two meanings as sufficiently
 similar, then we can propose a new etymology: <ikki> "cat" goes back to
 a proto-form <iggi>, which was borrowed from <egge> "dog".
 
+This is achieved with the `loanpy.loanfinder
+<https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=2Q9Y3yR7ZaOG&line=4&uniqifier=1>
+`_ module
+
 For an implementation with a detailed guide visit
 `GothicHungarian's documentation
 <https://gothichungarian.readthedocs.io/en/latest/?badge=latest>`_.
@@ -136,4 +149,4 @@ Further Reading
 
 LoanPy was part of my dissertation-project.
 A link to the monograph will be made public as soon as available,
-probably around September 2023.
+probably around September 2023. Stay tuned.
