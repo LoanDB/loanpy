@@ -822,11 +822,11 @@ def mtx2graph(
             graph[current_node] = {}
 
             if j < cols - 1:  # Right neighbor
-                weight = 100 if matrix[i][j + 1] != matrix[i][j] else 0
+                weight = w_del if matrix[i][j + 1] != matrix[i][j] else 0
                 graph[current_node][(i, j + 1)] = weight
 
             if i < rows - 1:  # Down neighbor
-                weight = 49 if matrix[i + 1][j] != matrix[i][j] else 0
+                weight = w_ins if matrix[i + 1][j] != matrix[i][j] else 0
                 graph[current_node][(i + 1, j)] = weight
 
             if i < rows - 1 and j < cols - 1:  # Diagonal down-right neighbor
