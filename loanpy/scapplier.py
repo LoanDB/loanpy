@@ -509,6 +509,26 @@ def apply_edit(word: Iterable[str], editops: List[str]) -> List[str]:
 
     :returns: transformed input word
     :rtype: list of str
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import apply_edit
+        >>> apply_edit(
+        ...       ['f', 'ɛ', 'r', 'i', 'h', 'ɛ', 'ɟ'],
+        ...       ('insert d',
+        ...        'insert u',
+        ...        'insert n',
+        ...        'insert ɒ',
+        ...        'insert p',
+        ...        'substitute f by ɒ',
+        ...        'delete ɛ',
+        ...        'keep r',
+        ...        'delete i',
+        ...        'delete h',
+        ...        'delete ɛ',
+        ...        'substitute ɟ by t')
+        ... )
+        ['d', 'u', 'n', 'ɒ', 'p', 'ɒ', 'r', 't']
     """
 
     out, letter = [], iter(word)
@@ -537,6 +557,12 @@ def list2regex(sclist: List[str]) -> str:
     :returns: The phonemes from the input list separated by a pipe. "-" is
               removed and replaced with a question mark at the end.
     :rtype: str
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import list2regex
+        >>> list2regex(["b", "k", "-", "v"])
+        '(b|k|v)?'
     """
 
     s = ")?" if "-" in sclist else ")"
@@ -570,6 +596,15 @@ def tuples2editops(
 
     :returns: list of human readable edit operations
     :rtype: list of strings
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import tuples2editops
+        >>> tuples2editops([(0, 0), (0, 1), (1, 1), (2, 2)], "ló", "hó")
+        ['substitute l by h', 'insert ó']
+        >>> tuples2editops([(0, 0), (1, 1), (2, 2), (2, 3)], "lóh", "ló")
+        ['keep l', 'keep ó', 'delete h']
+
     """
 
     s1, s2 = "#" + s1, "#" + s2
@@ -597,6 +632,15 @@ def substitute_operations(operations: List[str]) -> List[str]:
 
     :returns: Updated operations
     :rtype: List of strings, e.g. ['substitute l by h', 'keep ó']
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import substitute_operations
+        >>> substitute_operations(['insert A', 'delete B', 'insert C'])
+        ['substitute B by A', 'insert C']
+        >>> substitute_operations(['delete A', 'insert B', 'delete C', 'insert D'])
+        ['substitute A by B', 'substitute C by D']
+
     """
 
     i = 0
@@ -635,8 +679,15 @@ def get_mtx(target: Iterable, source: Iterable) -> List[List[int]]:
               both)
     :rtype: list of lists
 
-    :Example:
+    .. code-block:: python
 
+        >>> from loanpy.scapplier import get_mtx
+        >>> get_mtx("Bécs", "Pécs")
+        [[0, 1, 2, 3, 4],
+         [1, 2, 3, 4, 5],
+         [2, 3, 2, 3, 4],
+         [3, 4, 3, 2, 3],
+         [4, 5, 4, 3, 2]]
         # What happens under the hood:
         # deletion costs 1, insertion costs 1, so the distances are:
         # B C D E  # hashtag stands for empty string
@@ -705,6 +756,15 @@ def add_edge(
 
     :return: Updates the graph in-place
     :rtype: None
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import add_edge
+        >>> graph = {'A': {'B': 3}}
+        >>> add_edge(graph, 'A', 'C', 7)
+        >>> graph
+        {'A': {'B': 3, 'C': 7}}
+
     """
 
     if u not in graph:
@@ -736,6 +796,21 @@ def mtx2graph(
             (integers) as values.
             All tuples contain two integers that represent the position
             of a node in the matrix/graph, e.g. (0, 0).
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import mtx2graph
+        >>> mtx2graph([[0, 1, 2], [1, 2, 3], [2, 3, 2]])
+        {(0, 0): {(0, 1): 100, (1, 0): 49},
+         (0, 1): {(0, 2): 100, (1, 1): 49},
+         (0, 2): {(1, 2): 49},
+         (1, 0): {(1, 1): 100, (2, 0): 49},
+         (1, 1): {(1, 2): 100, (2, 1): 49, (2, 2): 0},
+         (1, 2): {(2, 2): 49},
+         (2, 0): {(2, 1): 100},
+         (2, 1): {(2, 2): 100},
+         (2, 2): {}}
+
     """
 
     graph = {}
@@ -793,6 +868,18 @@ def dijkstra(
              visited, or None if no path exists.
     :rtype: list or None
     :raises KeyError: If the start or end node is not in the graph.
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import dijkstra
+        >>> graph1 = {
+        ...         'A': {'B': 1, 'C': 4},
+        ...         'B': {'C': 2, 'D': 6},
+        ...         'C': {'D': 3},
+        ...         'D': {}
+        ...     }
+        >>> dijkstra(graph1, 'A', 'D')
+        ['A', 'B', 'C', 'D']
 
     .. seealso::
         `Dijkstra's algorithm on Wikipedia
