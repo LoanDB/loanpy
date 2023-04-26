@@ -265,6 +265,15 @@ class Adrc():
         :return: A list of differences between the number of examples for each
                  sound correspondence in the input word.
         :rtype: list
+
+        .. code-block:: python
+
+            >>> from loanpy.scapplier import Adrc
+            >>> adrc = Adrc()
+            >>> adrc.set_sc([{}, {"k k": 2, "k c": 1, "i e": 2, "i o": 1}, {}, {}, {}, {}, {}])
+            >>> sclistlist = [["k", "c", "$"], ["e", "o", "$"], ["k", "c", "$"], ["e", "o", "$"]]
+            >>> adrc.get_diff(sclistlist, ["k", "i", "k", "i"])
+            [1, 1, 1, 1]
         """
 
         # difference in nr of examples between current and next sound corresp
@@ -296,7 +305,9 @@ class Adrc():
     def read_sc(self, ipa: List[str], howmany: int = 1) -> List[List[str]]:
         """
         Replaces every phoneme of a word with a list of phonemes
-        that it can correspond to, based on specified conditions.
+        that it can correspond to. The next phoneme it picks is
+        always the one that makes the least difference in terms
+        of absolute frequency.
 
         :param ipa: a tokenized/clusterized word
         :type ipa: list
@@ -310,6 +321,20 @@ class Adrc():
         :return: The information about which sounds each input sound can
                  correspond to.
         :rtype: list of lists
+
+        .. code-block:: python
+
+            >>> from loanpy.scapplier import Adrc
+            >>> adrc = Adrc()
+            >>> adrc.set_sc([{"k": ["k", "h"], "i": ["e", "o"]},
+            ...              {"k k": 5, "k c": 3, "i e": 2, "i o": 1},
+            ...              {}, {}, {}, {}, {}])
+            >>> sclistlist = [["k", "c", "$"], ["e", "o", "$"], ["k", "c", "$"], ["e", "o", "$"]]
+            >>> adrc.read_sc(["k", "i"], 2)
+            [['k'], ['e', 'o']]
+            # difference between i e and i o = 2 - 1 = 1
+            # and between k k and k c = 5 - 3 = 2
+            # so picking the "o" makes less of a difference than the "c"
         """
 
         # pick all sound correspondences from dictionary
@@ -354,6 +379,15 @@ class Adrc():
 
         :return: The closest prosodic structure (e.g. CVCV) in the prosodic_inventory
         :rtype: str
+
+        .. code-block:: python
+
+            >>> from loanpy.scapplier import Adrc
+            >>> adrc = Adrc()
+            >>> adrc.get_closest_phonotactics("CVC")
+            'CV'
+            >>> adrc.get_closest_phonotactics("CVCV")
+            'CVV'
         """
 
         dist_and_strucs = [
