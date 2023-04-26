@@ -122,9 +122,9 @@ def uralign(left: str, right: str) -> str:
     .. code-block:: python
 
         >>> from loanpy.scminer import uralign
-        >>> print(uralign("a b c", "f g h i j k"))
-        #a b c# -#
-        f g h ijk
+        >>> print(uralign("a b c", "f g h i j k").replace(" ", "\t"))
+        #a	b	c#	-#
+        f	g	h	ijk
 
     """
 

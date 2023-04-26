@@ -111,7 +111,7 @@ class Adrc():
             >>> from loanpy.scapplier import Adrc
             >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
             >>> adrc.set_prosodic_inventory("rofl")
-            >>> adrc.sc
+            >>> adrc.prosodic_inventory
             'rofl'
         """
         self.prosodic_inventory = prosodic_inventory
@@ -384,7 +384,7 @@ class Adrc():
         .. code-block:: python
 
             >>> from loanpy.scapplier import Adrc
-            >>> adrc = Adrc()
+            >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
             >>> adrc.get_closest_phonotactics("CVC")
             'CV'
             >>> adrc.get_closest_phonotactics("CVCV")
