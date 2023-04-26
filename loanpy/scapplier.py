@@ -140,16 +140,17 @@ class Adrc():
 
         .. code-block:: python
 
-        >>> from loanpy.scapplier import Adrc
-        >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
-        >>> adrc.adapt("d a d a")
-        ['dada']
-        >>> adrc.adapt("d a d a", 5)
-        ['dada', 'data', 'doda', 'dota', 'tada']
-        >>> adrc.adapt("d a d a", 5, "CVCV")  # data says CVCV to CVC
-        ['dad', 'dat', 'dod', 'dot', 'tad']
-        >>> adrc.adapt("d a d", 5, "CVC")   # no data for CVC
-        ['da', 'do', 'ta', 'to']   # closest in inventory is "CV"
+            >>> from loanpy.scapplier import Adrc
+            >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
+            >>> adrc.adapt("d a d a")
+            ['dada']
+            >>> adrc.adapt("d a d a", 5)
+            ['dada', 'data', 'doda', 'dota', 'tada']
+            >>> adrc.adapt("d a d a", 5, "CVCV")  # sc2.json says CVCV to CVC
+            ['dad', 'dat', 'dod', 'dot', 'tad']
+            >>> adrc.adapt("d a d", 5, "CVC")   # no info on CVC in sc2.json
+            ['da', 'do', 'ta', 'to']
+            # closest in inventory is "CV"
         """
 
         ipalist = ipastr.split(" ") if isinstance(ipastr, str) else ipastr
@@ -416,6 +417,14 @@ def move_sc(
 
     :return: An updated tuple containing the modified sclistlist and out.
     :rtype: tuple of (list of lists, list of lists)
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import move_sc
+        >>> move_sc([["x", "x"]], 0, [[]])
+        ([['x']], [['x']])
+        >>> move_sc([["x", "x"], ["y", "y"], ["z"]], 1, [["a"], ["b"], ["c"]])
+        ([['x', 'x'], ['y'], ['z']], [['a'], ['b', 'y'], ['c']])
     """
 
     out[whichsound].append(sclistlist[whichsound][1])  # move sound #1 to out
@@ -453,6 +462,19 @@ def edit_distance_with2ops(
 
     :returns: The distance between two input strings
     :rtype: int or float
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import edit_distance_with2ops
+        >>> edit_distance_with2ops("rajka", "ajka", w_del=100, w_ins=49)
+        100
+        >>> edit_distance_with2ops("ajka", "rajka", w_del=100, w_ins=49)
+        49
+        >>> edit_distance_with2ops("Bécs", "Pécs", w_del=100, w_ins=49)
+        149
+        >>> edit_distance_with2ops("Hegyeshalom", "Mosonmagyaróvár", w_del=100, w_ins=49)
+        1388
+
     """
 
     m = len(string1)     # Find longest common subsequence (LCS)
