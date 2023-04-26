@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""unit tests for loanpy.scapplier.py 2.5 with pytest 7.1.2"""
+"""unit tests for loanpy.scapplier with pytest 7.1.2"""
 
 import pytest
 from loanpy.scapplier import (Adrc, move_sc, edit_distance_with2ops, apply_edit,
@@ -16,15 +16,15 @@ def test_init_with_files(tmp_path):
     # Create temporary files for sound correspondence dictionary and inventories
     sc_path = tmp_path / "sound_correspondences.json"
     sc_path.write_text('{"a": {"b": "c"}}')
-    inventory_path = tmp_path / "inventories.json"
-    inventory_path.write_text('["CVCV"]')
+    prosodic_inventory_path = tmp_path / "inventories.json"
+    prosodic_inventory_path.write_text('["CVCV"]')
 
     # Initialize Adrc object with temporary file paths
-    obj = Adrc(sc=str(sc_path), inventory=str(inventory_path))
+    obj = Adrc(sc=str(sc_path), prosodic_inventory=str(prosodic_inventory_path))
 
     # Assert that sound correspondence dictionary and inventories were loaded properly
     assert obj.sc == {"a": {"b": "c"}}
-    assert obj.inventory == ["CVCV"]
+    assert obj.prosodic_inventory == ["CVCV"]
 
 def test_init_without_files():
     # Initialize Adrc object without files
@@ -32,7 +32,7 @@ def test_init_without_files():
 
     # Assert that sound correspondence dictionary and inventories are None
     assert obj.sc is None
-    assert obj.inventory is None
+    assert obj.prosodic_inventory is None
 
 def test_set_sc():
     """
@@ -42,18 +42,18 @@ def test_set_sc():
     obj.set_sc("lol")
     assert obj.sc == "lol"
 
-def test_set_inventory():
+def test_set_prosodic_inventory():
     """
     Test if inventories are plugged in correctly into attribute
     """
     obj = Adrc()
-    obj.set_inventory("rofl")
-    assert obj.inventory == "rofl"
+    obj.set_prosodic_inventory("rofl")
+    assert obj.prosodic_inventory == "rofl"
 
 class AdrcMonkey:
     def __init__(self):
         self.sc = [{},{},{},{},{},{}]
-        self.inventory = []
+        self.prosodic_inventory = []
 
 def test_move_sc():
     """test if sound correspondences are moved correctly"""
@@ -273,7 +273,7 @@ class AdrcMonkeyReconstruct:
         read_sc_returns):
         self.read_sc_called_with = []
         self.read_sc_returns = read_sc_returns
-        self.inventory = []
+        self.prosodic_inventory = []
         self.sc = [{},{},{},{},{},{}]
 
     def read_sc(self, ipalist, howmany):
@@ -402,7 +402,7 @@ def test_repair_phonotactics2(apply_edit_mock, tuples2editops_mock,
     class AdrcMonkeyrepair_phonotactics:
         def __init__(self):
             self.sc = [{}, {}, {}, {}, {}, {}]
-            self.inventory =[]
+            self.prosodic_inventory =[]
 
     # teardown/setup: overwrite mock class, plug in sc[3],
     monkey_adrc = AdrcMonkeyrepair_phonotactics()
@@ -445,7 +445,7 @@ class AdrcMonkeyAdapt:
         self.repair_phonotactics_called_with = None
         self.read_sc_returns = iter(read_screturns)
         self.read_sc_called_with = []
-        self.inventory = ["CVCCV"]
+        self.prosodic_inventory = ["CVCCV"]
 
     def repair_phonotactics(self, *args):
         self.repair_phonotactics_called_with = [*args]
@@ -501,11 +501,11 @@ class TestRankClosestPhonotactics:
     @pytest.fixture
     def adrc_instance(self):
         with TemporaryDirectory() as temp_dir:
-            temp_path = Path(temp_dir) / "inventory.json"
+            temp_path = Path(temp_dir) / "prosodic_inventory.json"
             with open(temp_path, "w+", encoding='utf-8') as f:
                 f.write(json.dumps(["CVCV", "CVVC", "VCVC",
                 "CCVV", "CVC", "CVV", "VCV", "CV"]))
-            yield Adrc(inventory=temp_path)
+            yield Adrc(prosodic_inventory=temp_path)
 
     @patch('loanpy.scapplier.edit_distance_with2ops')
     @patch('loanpy.scapplier.min')
@@ -516,7 +516,7 @@ class TestRankClosestPhonotactics:
         result = adrc_instance.get_closest_phonotactics("CVCV")
         assert result == "CVCV"
 
-        calls = [call("CVCV", i) for i in adrc_instance.inventory]
+        calls = [call("CVCV", i) for i in adrc_instance.prosodic_inventory]
         mock_edit_distance.assert_has_calls(calls)
         mock_min.assert_called_once_with([(0, 'CVCV'),
         (1, 'CVVC'), (1, 'VCVC'), (2, 'CCVV'), (2, 'CVC'), (2, 'CVV'),

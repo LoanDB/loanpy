@@ -35,12 +35,24 @@ class Adrc():
     :param sc: The tab separated correspondence dictionary file.
     :type sc: str, optional
 
-    :param inventory: Path to the prosodic inventory file.
-    :type inventory: str, optional
+    :param prosodic_inventory: Path to the prosodic prosodic_inventory file.
+    :type prosodic_inventory: str, optional
+
+    .. code-block:: python
+
+        >>> from loanpy.scapplier import Adrc
+        >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
+        >>> adrc.sc
+        [{'d': ['d', 't'], 'a': ['a', 'o']},
+         {'d d': 5, 'd t': 4, 'a a': 7, 'a o': 1},
+         {},
+         {'CVCV': ['CVC']}]
+        >>> adrc.prosodic_inventory
+        ['CV', 'CVV']
     """
 
     def __init__(
-            self, sc: Union[str, Path] = "", inventory: Union[str, Path] = ""
+            self, sc: Union[str, Path] = "", prosodic_inventory: Union[str, Path] = ""
             ) -> None:
         """
         Constructor for the ADRC class.
@@ -48,19 +60,19 @@ class Adrc():
         :param sc: Path to the sound correspondence dictionary file.
         :type sc: str, optional
 
-        :param inventory: Path to the CVCV and phoneme inventories file.
-        :type inventory: str, optional
+        :param prosodic_inventory: Path to the CVCV and phoneme inventories file.
+        :type prosodic_inventory: str, optional
         """
 
         self.sc = None
-        self.inventory = None
+        self.prosodic_inventory = None
         self.workflow = None  # will be filled by self.adapt()
         if sc:
             with open(sc, "r", encoding='utf-8') as f:
                 self.sc = load(f) #  sound correspondence dictionaries
-        if inventory:
-            with open(inventory, "r", encoding='utf-8') as f:
-                self.inventory = load(f) # CVCV and phoneme inventories
+        if prosodic_inventory:
+            with open(prosodic_inventory, "r", encoding='utf-8') as f:
+                self.prosodic_inventory = load(f) # CVCV and phoneme inventories
 
     def set_sc(self, sc: List[dict]) -> None:
         """
@@ -72,21 +84,37 @@ class Adrc():
 
         :return: Set the attribute sc
         :rtype: None
+
+        .. code-block:: python
+
+            >>> from loanpy.scapplier import Adrc
+            >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
+            >>> adrc.set_sc("lol")
+            >>> adrc.sc
+            'lol'
         """
         self.sc = sc
 
-    def set_inventory(self, inventory: List[str]) -> None:
+    def set_prosodic_inventory(self, prosodic_inventory: List[str]) -> None:
         """
-        Method to set the phonotactic inventory manually.
+        Method to set the phonotactic prosodic_inventory manually.
         Called by loanpy.eval_sca.eval_one
 
-        :param inventory: The phonotactic inventory file.
+        :param prosodic_inventory: The phonotactic prosodic_inventory file.
         :type sc: list of strings
 
-        :return: Set the attribute inventory
+        :return: Set the attribute prosodic_inventory
         :rtype: None
+
+        .. code-block:: python
+
+            >>> from loanpy.scapplier import Adrc
+            >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
+            >>> adrc.set_prosodic_inventory("rofl")
+            >>> adrc.sc
+            'rofl'
         """
-        self.inventory = inventory
+        self.prosodic_inventory = prosodic_inventory
 
     def adapt(self,
               ipastr: Union[str, List[str]],
@@ -109,6 +137,19 @@ class Adrc():
 
         :return: A string containing the adapted loanwords, separated by ", ".
         :rtype: str
+
+        .. code-block:: python
+
+        >>> from loanpy.scapplier import Adrc
+        >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
+        >>> adrc.adapt("d a d a")
+        ['dada']
+        >>> adrc.adapt("d a d a", 5)
+        ['dada', 'data', 'doda', 'dota', 'tada']
+        >>> adrc.adapt("d a d a", 5, "CVCV")  # data says CVCV to CVC
+        ['dad', 'dat', 'dod', 'dot', 'tad']
+        >>> adrc.adapt("d a d", 5, "CVC")   # no data for CVC
+        ['da', 'do', 'ta', 'to']   # closest in inventory is "CV"
         """
 
         ipalist = ipastr.split(" ") if isinstance(ipastr, str) else ipastr
@@ -141,6 +182,18 @@ class Adrc():
 
         :raises ValueError: If any of the IPA symbols in the input string are
                             missing from the sound correspondence dictionary.
+
+        .. code-block:: python
+
+            >>> from loanpy.scapplier import Adrc
+            >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
+            >>> adrc.reconstruct("d a d a")
+            '^(d)(a)(d)(a)$'
+            >>> adrc.reconstruct("d a d a", 1000)
+            '^(d|t)(a|o)(d|t)(a|o)$'
+            >>> adrc.reconstruct("l a l a")
+            'l not old'
+
         """
 
         ipalist = ipastr.split(" ") if isinstance(ipastr, str) else ipastr
@@ -172,6 +225,13 @@ class Adrc():
 
         :return: A list of repaired IPA strings.
         :rtype: list of str
+
+        .. code-block:: python
+
+            >>> from loanpy.scapplier import Adrc
+            >>> adrc = Adrc("examples/sc2.json", "examples/inv.json")
+            >>> adrc.repair_phonotactics(["d", "a", "d", "a"], "CVCV")
+            ['d', 'a', 'd']
         """
 
         # check if there is data available data for this structure
@@ -286,18 +346,18 @@ class Adrc():
 
     def get_closest_phonotactics(self, struc: str) -> str:
         """
-        Get the closest prosodic structure (e.g. CVCV) from the inventory
+        Get the closest prosodic structure (e.g. CVCV) from the prosodic_inventory
         of a given language based on edit distance.
 
         :param struc: The phonotactic structure to compare against.
         :type struc: str
 
-        :return: The closest prosodic structure (e.g. CVCV) in the inventory
+        :return: The closest prosodic structure (e.g. CVCV) in the prosodic_inventory
         :rtype: str
         """
 
         dist_and_strucs = [
-            (edit_distance_with2ops(struc, i), i) for i in self.inventory
+            (edit_distance_with2ops(struc, i), i) for i in self.prosodic_inventory
             ]
 
         return min(dist_and_strucs)[1]

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""unit tests for loanpy.apply.py 2.5 with pytest 7.1.2"""
+"""integration tests for loanpy.apply.py with pytest 7.1.2"""
 
 import pytest
 from loanpy.scapplier import Adrc
@@ -8,7 +8,7 @@ from pathlib import Path
 TESTFILESDIR = Path(__file__).parent / "test_files"
 PATH2SC_AD = TESTFILESDIR / "sc_ad.json"
 PATH2SC_RC = TESTFILESDIR / "sc_rc.json"
-PATH2inventory = TESTFILESDIR / "inventory.json"
+PATH2prosodic_inventory = TESTFILESDIR / "prosodic_inventory.json"
 
 def test_adapt(tmp_path):
     sc_path = tmp_path / "sound_correspondences.json"
@@ -37,10 +37,10 @@ def test_adapt(tmp_path):
     # phonotactic repair from heuristics
     sc_path.write_text('[{"d": ["d", "x"], "a": ["a", "x"], "C": ["k"]}, \
 {"d d": 5, "d x": 4, "a a": 7, "a x": 1, "C k": 8}, {}, {}]')
-    inventory_path = tmp_path / "inventories.json"
+    prosodic_inventory_path = tmp_path / "inventories.json"
     # two insertions cheaper than two deletions, so it should pick the 2nd
-    inventory_path.write_text('["CV", "CVCVCC"]')
-    adrc = Adrc(sc=sc_path, inventory=inventory_path)
+    prosodic_inventory_path.write_text('["CV", "CVCVCC"]')
+    adrc = Adrc(sc=sc_path, prosodic_inventory=prosodic_inventory_path)
     assert adrc.adapt("d a d a", 1, "CVCV") == ["dadakk"]
     assert adrc.adapt("d a d a", 2, "CVCV") == ["dadakk", "xadakk"]
     assert adrc.adapt("d a d a", 3, "CVCV") == ["dadakk", "daxakk", "xadakk"]
@@ -52,8 +52,8 @@ def test_adapt(tmp_path):
 
 
     # try substitutions
-    inventory_path.write_text('["CCCV"]')
-    adrc = Adrc(sc=sc_path, inventory=inventory_path)
+    prosodic_inventory_path.write_text('["CCCV"]')
+    adrc = Adrc(sc=sc_path, prosodic_inventory=prosodic_inventory_path)
     assert adrc.adapt("d a d a", 1, "CVCV") == ["ddka"]
 
 def test_reconstruct():
@@ -91,7 +91,7 @@ def test_reconstruct():
         ipastr="#aː r uː# -#", howmany=100) == "^(a|o)(n)(a)(at͡ʃi|γ)$"
 
 def test_repair_phontactics():
-    adrc = Adrc(sc=PATH2SC_AD, inventory=PATH2inventory)
+    adrc = Adrc(sc=PATH2SC_AD, prosodic_inventory=PATH2prosodic_inventory)
     # test heuristics: keep, delete, insert
     assert adrc.repair_phonotactics(["l", "o", "l"], "CVC") == ["l", "o", "l"]
     assert adrc.repair_phonotactics(["r", "o", "f", "l"],
@@ -236,12 +236,12 @@ def test_read_sc():
     del adrc_inst
 
 def test_get_closest_phonotactics():
-    """test if most similar phonotactic profiles from inventory
+    """test if most similar phonotactic profiles from prosodic_inventory
     is picked correctly"""
 
     # assert structures are ranked correctly
-    adrc = Adrc(inventory=PATH2inventory)
-    # identical one in inventory is the closest
+    adrc = Adrc(prosodic_inventory=PATH2prosodic_inventory)
+    # identical one in prosodic_inventory is the closest
     assert adrc.get_closest_phonotactics("CVC") == "CVC"
     assert adrc.get_closest_phonotactics("CVCCV") == "CVCCV"
     assert adrc.get_closest_phonotactics("CVCVCV") == "CVCVCV"

@@ -20,7 +20,7 @@ import re
 from typing import Dict, List, Tuple
 
 from loanpy.scapplier import Adrc
-from loanpy.scminer import get_correspondences, get_inventory
+from loanpy.scminer import get_correspondences, get_prosodic_inventory
 
 def eval_all(
         intable: List[List[str]],
@@ -115,7 +115,7 @@ def eval_one(
     :rtype: tuple
 
     >>> from loanpy.eval_sca import eval_one
-    >>> intable = [
+    >>> intable = [  # regular sound correspondences
     ...     ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
     ...     ['0', '1', 'H', 'k i k i', 'VC'],
     ...     ['1', '1', 'EAH', 'g i g i', 'VCVCV'],
@@ -125,7 +125,8 @@ def eval_one(
     >>> eval_one(intable, "", False, 1)
     1.0
 
-    >>> intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    >>> intable = [  # not enough regular sound correspondences
+    ...   ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
     ...   ['0', '1', 'H', 'k i k i', 'VC'],
     ...   ['1', '1', 'EAH', 'g i g i', 'VCVCV'],
     ...   ['2', '2', 'H', 'b u b a', 'VCV'],
@@ -134,7 +135,8 @@ def eval_one(
     >>> eval_one(intable, "", False, 1)
     0.0
 
-    >>> intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    >>> intable = [  # irregular sound correspondences
+    ...   ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
     ...   ['0', '1', 'H', 'k i k i', 'VC'],
     ...   ['1', '1', 'EAH', 'k i g i', 'VCVCV'],
     ...   ['2', '2', 'H', 'i k k i', 'VCV'],
@@ -143,14 +145,14 @@ def eval_one(
     >>> eval_one(intable, "", False, 1)
     0.0
 
-    >>> intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    >>> intable = [  # irregular sound correspondences
+    ...   ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
     ...   ['0', '1', 'H', 'k i k i', 'VC'],
     ...   ['1', '1', 'EAH', 'k i g i', 'VCVCV'],
     ...   ['2', '2', 'H', 'i k k i', 'VCV'],
     ...   ['3', '2', 'EAH', 'i g k i', 'VCCVC']
     ... ]
-    >>>
-    >>> eval_one(intable, "", False, 2)
+    >>> eval_one(intable, "", False, 2)  # increase rate of false positives
     1.0
 
     """
@@ -164,7 +166,7 @@ def eval_one(
         src_pros = srcrow[h["PROSODY"]] if pros else ""
         adrc = Adrc()   # initiate adapt-reconstruct class
         adrc.set_sc(get_correspondences(intable, heur))  # extract info from traing data
-        adrc.set_inventory(get_inventory(intable))  # extract inventory
+        adrc.set_prosodic_inventory(get_prosodic_inventory(intable))  # extract prosodic_inventory
         if adapt:
             ad = adrc.adapt(src, howmany, src_pros)
             out.append(tgt in ad)

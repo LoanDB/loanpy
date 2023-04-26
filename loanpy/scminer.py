@@ -7,9 +7,9 @@ correspondences from the table and returns them as six dictionaries,
 each with corresponding frequencies and COGID values. The module also
 includes uralign, a function that aligns Uralic input strings based on custom
 rules, and get_heur, which computes a heuristic mapping between phonemes
-in a target language's inventory and all phonemes in the IPA sound system
+in a target language's prosodic_inventory and all phonemes in the IPA sound system
 based on Euclidean distance of their feature vectors. Finally,
-get_inventory extracts all types of prosodic structures
+get_prosodic_inventory extracts all types of prosodic structures
 from a target language in a given table.
 """
 
@@ -35,7 +35,7 @@ def get_correspondences(
     :param heur: Optional dictionary containing heuristic correspondences
                  to be merged with the output. Defaults to an empty string.
     :type heur: dictionary with IPA characters as keys and a list of
-                phonemes of a language's phoneme inventory ranked according
+                phonemes of a language's phoneme prosodic_inventory ranked according
                 to feature vector similarity.
 
     :return: A list of six dictionaries containing correspondences
@@ -125,10 +125,10 @@ def uralign(left: str, right: str) -> str:
 
 def get_heur(tgtlg: str) -> Dict[str, List[str]]:
     """
-    Compute the heuristic mapping between phonemes in the inventory of a
+    Compute the heuristic mapping between phonemes in the prosodic_inventory of a
     target language and all phonemes in the IPA sound system based on
     Euclidean distance of their feature vectors. Relies on
-    'cwd/cldf/.transcription-report.json' which contains the phoneme inventory.
+    'cwd/cldf/.transcription-report.json' which contains the phoneme prosodic_inventory.
 
     :param tgtlg: The ID of the target language, as defined in
                   etc/languages.tsv
@@ -146,25 +146,25 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
 
     report_path = Path.cwd() / 'cldf/.transcription-report.json'
     with report_path.open("r") as f:
-        inventory = json.load(f)["by_language"][tgtlg]["segments"]
+        prosodic_inventory = json.load(f)["by_language"][tgtlg]["segments"]
 
-    # sort inventory phonemes by euclidean distance to every ipa sound
+    # sort prosodic_inventory phonemes by euclidean distance to every ipa sound
     heur = {}
     for row in ipa_all[1:]:
         distances = []
-        for phoneme in inventory:
+        for phoneme in prosodic_inventory:
             v1, v2 = vectors[phoneme], vectors[row[0]]
             # measure euclidean distance between feature vectors
             distances.append(
             math.sqrt(sum((v1[i] - v2[i]) ** 2 for i in range(len(v1))))
             )
-        dist_and_phon = sorted(zip(distances, inventory))
+        dist_and_phon = sorted(zip(distances, prosodic_inventory))
         heur[row[0]] = [i[1] for i in dist_and_phon]
 
     return heur
 
 
-def get_inventory(table: List[List[str]]) -> List[str]:
+def get_prosodic_inventory(table: List[List[str]]) -> List[str]:
     """
     Extracts all types of prosodic structures (e.g. CVCV)
     from uneven rows (i.e. where data of target language is) of the given table

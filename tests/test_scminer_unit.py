@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 import json
-from loanpy.scminer import get_correspondences, uralign, get_heur, get_inventory
+from loanpy.scminer import get_correspondences, uralign, get_heur, get_prosodic_inventory
 from pathlib import Path
 import shutil
 
@@ -210,4 +210,4 @@ def data():
 
 
 def test_extract_cvcv_and_phonemes(data):
-    assert set(get_inventory(data)) == {"VCVCV", "VCCVC", "VCVC"}
+    assert set(get_prosodic_inventory(data)) == {"VCVCV", "VCCVC", "VCVC"}
