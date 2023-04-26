@@ -3,7 +3,7 @@ Documentation
 
 The examples listed here can be found in
 ``loanpy/docs/Loanpy_Documentation.ipynb`` (See
-`GitHub <https://github.com/LoanpyDataHub/loanpy/blob/2.0.1/docs/LoanPy%20Documentation.ipynb>`_) 
+`GitHub <https://github.com/LoanpyDataHub/loanpy/blob/2.0.1/docs/LoanPy_Documentation.ipynb>`_) 
 to run them offline on your computer and on
 `Google Colab
 <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM?usp=sharing>`_
