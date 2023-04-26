@@ -14,7 +14,7 @@ and sound change',
   author_email='viktor.martinovic@hotmail.com',
   version='3.0',
   packages=find_packages(),
-  package_data={"loanpy": ["ipa_all.csv"]}
+  data_files=[("loanpy", ["loanpy/ipa_all.csv"])],
   include_package_data=True,
   extras_require={
   "test": ["pytest==7.1.2", "coverage==7.2.2"],
