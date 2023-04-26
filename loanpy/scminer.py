@@ -35,8 +35,8 @@ def get_correspondences(
     :param heur: Optional dictionary containing heuristic correspondences
                  to be merged with the output. Defaults to an empty string.
     :type heur: dictionary with IPA characters as keys and a list of
-                phonemes of a language's phoneme prosodic_inventory ranked according
-                to feature vector similarity.
+                phonemes of a language's phoneme prosodic inventory ranked
+                according to feature vector similarity.
 
     :return: A list of six dictionaries containing correspondences
              and their frequencies:
@@ -46,7 +46,21 @@ def get_correspondences(
              4) Prosodic correspondences.
              5) Frequency of prosodic correspondences.
              6) COGID values for prosodic correspondences.
-    :rtype: list
+    :rtype: list of six dictionaries
+
+    >>> from loanpy.scminer import get_correspondences
+    >>> input_table = [
+    ...     ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+    ...     ['0', '1', 'LG1', 'a b', 'VC'],
+    ...     ['1', '1', 'LG2', 'c d', 'CC']
+    ... ]
+    >>> get_correspondences(input_table)
+    [{'a': ['c'], 'b': ['d']},
+     {'a c': 1, 'b d': 1},
+     {'a c': [1], 'b d': [1]},
+     {'VC': ['CC']},
+     {'VC CC': 1},
+     {'VC CC': [1]}]
 
     .. seealso::
         `Edictor
@@ -104,6 +118,14 @@ def uralign(left: str, right: str) -> str:
     :return: The aligned left and right strings, separated by
              a newline character.
     :rtype: str
+
+    .. code-block:: python
+
+        >>> from loanpy.scminer import uralign
+        >>> print(uralign("a b c", "f g h i j k"))
+        #a b c# -#
+        f g h ijk
+
     """
 
     left, right = left.split(" "), right.split(" ")
@@ -140,6 +162,16 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
     :raises FileNotFoundError: If the data file or the transcription
                                report file is not found.
 
+    .. code-block:: python
+
+        >>> from loanpy.scminer import get_heur
+        >>> get_heur("eng")
+        {'˩': ['a', 'b'],
+         '˨': ['a', 'b'],
+         '˧': ['a', 'b'],
+         '˦': ['a', 'b'],
+         '˥': ['a', 'b'],
+         ...
     """
     ipa_all = read_ipa_all()
     vectors = {row[0]: [int(i) for i in row[1:]] for row in ipa_all[1:]}
@@ -176,6 +208,22 @@ def get_prosodic_inventory(table: List[List[str]]) -> List[str]:
     :return: A list of prosodic structures (e.g. "CVCV") that occur in the
              target languages (i.e. in the uneven rows)
     :rtype: list
+
+    .. code-block:: python
+
+        >>> from loanpy.scminer import get_prosodic_inventory
+        >>>
+        >>> data = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+        ...   [0, 1, 'H', '#aː t͡ʃ# -#', 'VC'],
+        ...   [1, 1, 'EAH', 'a.ɣ.a t͡ʃ i', 'VCVCV'],
+        ...   [2, 2, 'H', '#aː ɟ uː#', 'VCV'],
+        ...   [3, 2, 'EAH', 'a l.d a.ɣ', 'VCCVC'],
+        ...   [4, 3, 'H', '#ɒ j n', 'VCC'],
+        ...   [5, 3, 'EAH', 'a j.a n', 'VCVC']
+        ... ]
+        >>> get_prosodic_inventory(data)
+        ['VCVCV', 'VCCVC', 'VCVC']
+
     """
     headers = table.pop(0)
     h = {i: headers.index(i) for i in headers}
