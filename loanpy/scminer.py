@@ -50,7 +50,7 @@ def get_correspondences(
 
     :rtype: list of six dictionaries
 
-    `Run in Google Colab <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=JMX_mrNhr92B&line=7&uniqifier=1>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=JMX_mrNhr92B&line=7&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -124,6 +124,8 @@ def uralign(left: str, right: str) -> str:
              a newline character.
     :rtype: str
 
+    `Run in Google Colab <>`_
+
     .. code-block:: python
 
         >>> from loanpy.scminer import uralign
@@ -168,6 +170,8 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
     :raises FileNotFoundError: If the data file or the transcription
                                report file is not found.
 
+    `Run in Google Colab <>`_
+
     .. code-block:: python
 
         >>> from loanpy.scminer import get_heur
@@ -179,7 +183,6 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
          '˥': ['a', 'b'],
          ...
 
-    `Run in Google Colab <>`_
     """
     ipa_all = read_ipa_all()
     vectors = {row[0]: [int(i) for i in row[1:]] for row in ipa_all[1:]}
@@ -217,6 +220,8 @@ def get_prosodic_inventory(table: List[List[str]]) -> List[str]:
              target languages (i.e. in the uneven rows)
     :rtype: list
 
+    `Run in Google Colab <>`_
+
     .. code-block:: python
 
         >>> from loanpy.scminer import get_prosodic_inventory
@@ -232,7 +237,6 @@ def get_prosodic_inventory(table: List[List[str]]) -> List[str]:
         >>> get_prosodic_inventory(data)
         ['VCVCV', 'VCCVC', 'VCVC']
 
-    `Run in Google Colab <>`_
     """
     headers = table.pop(0)
     h = {i: headers.index(i) for i in headers}
