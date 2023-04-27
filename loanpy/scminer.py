@@ -146,10 +146,11 @@ def uralign(left: str, right: str) -> str:
 
 def get_heur(tgtlg: str) -> Dict[str, List[str]]:
     """
-    Compute the heuristic mapping between phonemes in the prosodic_inventory of a
-    target language and all phonemes in the IPA sound system based on
-    Euclidean distance of their feature vectors. Relies on
-    'cwd/cldf/.transcription-report.json' which contains the phoneme prosodic_inventory.
+    Rank the phonemes of a target langauge's phoneme inventory according
+    to feature vector similarity to all IPA sounds.
+    Relies on ``./cldf/.transcription-report.json`` which contains the
+    phoneme inventory. The file ``ipa_all.csv`` contains all IPA sounds
+    and their feature vectors and is shipped together with loanpy.
 
     :param tgtlg: The ID of the target language, as defined in
                   etc/languages.tsv
@@ -177,19 +178,19 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
 
     report_path = Path.cwd() / 'cldf/.transcription-report.json'
     with report_path.open("r") as f:
-        prosodic_inventory = json.load(f)["by_language"][tgtlg]["segments"]
+        phoneme_inventory = json.load(f)["by_language"][tgtlg]["segments"]
 
-    # sort prosodic_inventory phonemes by euclidean distance to every ipa sound
+    # sort phoneme_inventory phonemes by euclidean distance to every ipa sound
     heur = {}
     for row in ipa_all[1:]:
         distances = []
-        for phoneme in prosodic_inventory:
+        for phoneme in phoneme_inventory:
             v1, v2 = vectors[phoneme], vectors[row[0]]
             # measure euclidean distance between feature vectors
             distances.append(
             math.sqrt(sum((v1[i] - v2[i]) ** 2 for i in range(len(v1))))
             )
-        dist_and_phon = sorted(zip(distances, prosodic_inventory))
+        dist_and_phon = sorted(zip(distances, phoneme_inventory))
         heur[row[0]] = [i[1] for i in dist_and_phon]
 
     return heur
