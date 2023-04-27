@@ -106,13 +106,15 @@ def uralign(left: str, right: str) -> str:
     Aligns the left and right input strings based on a custom alignment
     for Hungarian-preHungarian.
 
-    The function splits the input strings into segments and modifies them
-    according to certain rules.
+    The function splits the input strings by space, aligns them one by one
+    and squeezes the remainder of the longer string into one single block,
+    which can be seen as a suffix.
+
     It then returns the aligned strings, joined by a newline character.
 
-    :param left: The left input string.
+    :param left: The left input string with space-separated IPA-sounds.
     :type left: str
-    :param right: The right input string.
+    :param right: The right input string with space-separated IPA-sounds.
     :type right: str
     :return: The aligned left and right strings, separated by
              a newline character.
