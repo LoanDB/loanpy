@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-This module is designed to identify and analyze potential loanwords between a
-donor and a recipient language. It processes two input dataframes, one
-representing the donor language with adapted forms and the other representing
-the recipient language with reconstructed forms. The module first identifies
+This module is designed to identify potential loanwords between a hypothesised
+donor and recipient language. It processes two input dataframes, one
+representing the donor language with predicted adapted forms and the other
+the recipient language with predicted reconstructions. The module first finds
 phonetic matches between the two languages and then calculates their semantic
 similarity. The output is a list of candidate loanwords, which can be further
-analyzed for linguistic or historical purposes.
+analysed manually.
 
-The primary functions in this module are responsible for finding phonetic
+The two functions in this module are responsible for finding phonetic
 matches between the given donor and recipient language data and calculating
 their semantic similarity. These functions process the input dataframes and
 compare the phonetic patterns, as well as calculate the semantic similarity
 based on a user-provided function. The module returns a list of candidate
-loanwords ranked by their phonetic and semantic similarities. The output can
-then be used to study linguistic borrowing, adaptation, and reconstruction
-processes between the donor and recipient languages.
+loanwords that show phonetic and semantic similarities. The output can
+then be used to propose lexical borrowings, adaptation patterns,
+and historical reconstructions for words of donor and recipient languages.
 """
 import csv
 import logging

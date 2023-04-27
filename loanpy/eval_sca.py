@@ -27,10 +27,11 @@ def eval_all(
         ) -> List[Tuple[int, int]]:
     """
     #. Input a loanpy-compatible table containing etymological data.
-    #. Start a nested for-loop
+    #. Start a nested for-loop for
     #. The first loop goes through the number of guesses (~ false positives)
-    #. The second loops through the input-table and calculates the relative
-       number of true positives.
+    #. The second loop performs `leave-one-out cross validation
+       <https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Leave-one-out_cross-validation>`_
+       with ``loanpy.eval_sca.eval_one``.
     #. The output is a list of tuples containing the relative number of
        true positives vs. relative number of false positives
 
@@ -38,7 +39,7 @@ def eval_all(
                     and target strings must be in column “ALIGNMENT”, prosodic
                     strings in column “PROSODY”.
     :type intable: list of lists
-    :param heur: The path to the heuristic sound correspondences,
+    :param heur: The path to the heuristic sound correspondences file,
                  e.g. "heur.json", which was created with
                  ``loanpy.scminer.get_heur``.
     :type heur: str or pathlike object, optional
@@ -104,7 +105,7 @@ def eval_one(
                     and target strings must be in column “ALIGNMENT”, prosodic
                     strings in column “PROSODY”.
     :type intable: list of lists
-    :param heur: The path to the heuristic sound correspondences,
+    :param heur: The path to the heuristic sound correspondences file,
                  e.g. "heur.json", which was created with
                  ``loanpy.scminer.get_heur``.
     :type heur: str or pathlike object, optional
@@ -118,7 +119,7 @@ def eval_one(
     :param pros: Wheter phonotactic repairs should be applied
     :type pros: bool, default=False
 
-    :return: A tuple with the ratio of successful adaptations/reconstructions
+    :return: A tuple with the ratio of successful predictions
              (rounded to 2 decimal places).
     :rtype: float
 
