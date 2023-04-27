@@ -38,6 +38,8 @@ class Adrc():
     :param prosodic_inventory: Path to the prosodic inventory json-file.
     :type prosodic_inventory: str or pathlike object, optional
 
+    `Run in Google Colab >> <>`_
+    
     .. code-block:: python
 
         >>> from loanpy.scapplier import Adrc

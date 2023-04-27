@@ -124,7 +124,7 @@ def uralign(left: str, right: str) -> str:
              a newline character.
     :rtype: str
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=OIKmNGkssXDZ&line=2&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -170,7 +170,7 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
     :raises FileNotFoundError: If the data file or the transcription
                                report file is not found.
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=jfYaOtaAsfxz&line=3&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -220,7 +220,7 @@ def get_prosodic_inventory(table: List[List[str]]) -> List[str]:
              target languages (i.e. in the uneven rows)
     :rtype: list
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=MaLK4PJIG5VN&line=2&uniqifier=1>`_
 
     .. code-block:: python
 
