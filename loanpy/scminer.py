@@ -50,19 +50,23 @@ def get_correspondences(
 
     :rtype: list of six dictionaries
 
-    >>> from loanpy.scminer import get_correspondences
-    >>> input_table = [
-    ...     ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
-    ...     ['0', '1', 'LG1', 'a b', 'VC'],
-    ...     ['1', '1', 'LG2', 'c d', 'CC']
-    ... ]
-    >>> get_correspondences(input_table)
-    [{'a': ['c'], 'b': ['d']},
-     {'a c': 1, 'b d': 1},
-     {'a c': [1], 'b d': [1]},
-     {'VC': ['CC']},
-     {'VC CC': 1},
-     {'VC CC': [1]}]
+    .. code-block:: python
+
+        >>> from loanpy.scminer import get_correspondences
+        >>> input_table = [
+        ...     ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+        ...     ['0', '1', 'LG1', 'a b', 'VC'],
+        ...     ['1', '1', 'LG2', 'c d', 'CC']
+        ... ]
+        >>> get_correspondences(input_table)
+        [{'a': ['c'], 'b': ['d']},
+         {'a c': 1, 'b d': 1},
+         {'a c': [1], 'b d': [1]},
+         {'VC': ['CC']},
+         {'VC CC': 1},
+         {'VC CC': [1]}]
+
+    `Run in Colab <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=JMX_mrNhr92B&line=7&uniqifier=1>`_
 
     """
 
