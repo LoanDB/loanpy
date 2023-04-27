@@ -141,12 +141,12 @@ def cvgaps(str1: str, str2: str) -> List[str]:
 
 def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
     """
-    Filter dataset to keep only cogsets where both source and target languages
+    Filter dataset to keep only cognate sets where both source and target languages
     occur.
 
-    This function filters the input dataset to retain only the cogsets where
+    This function filters the input dataset to retain only the cognate sets where
     both source and target languages are present. The filtered dataset is then
-    sorted based on cogset ID and language order.
+    sorted based on cognate set ID and language order.
 
     :param data: A list of lists containing language data.
     :type data: list of list of strings
@@ -157,7 +157,7 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
     :param tgtlg: The target language ID to be considered.
     :type tgtlg: str
 
-    :return: A filtered and sorted list of lists containing cogsets with both
+    :return: A filtered and sorted list of lists containing cognate sets with both
              source and target languages present.
     :rtype: list of list of strings
 
@@ -197,7 +197,7 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
     data = [row for row in data if row[lgidx] in {srclg, tgtlg}]
     # get list of cogids and count how often each one occurs
     cogids = Counter([row[cogidx] for row in data])
-    # take only cogsets that have 2 entries
+    # take only cognate sets that have 2 entries
     cogids = [i for i in cogids if cogids[i] == 2]  # allowedlist
     data = [row for row in data if row[cogidx] in cogids]
 
@@ -217,9 +217,9 @@ def is_valid_language_sequence(
 
     """
     Validate if the data has a valid alternating sequence of source and target
-    languages.
+    language.
 
-    The data is expected to have language IDs in the second column (index 1).
+    The data is expected to have language IDs in the third column (index 2).
     The sequence should be: source_lang, target_lang, source_lang,
     target_lang, ...
 
@@ -274,21 +274,18 @@ def is_valid_language_sequence(
 
 def is_same_length_alignments(data: List[List[str]]) -> bool:
     """
-    Check if alignments within a cogset have the same length.
+    Check if alignments within a cognate set have the same length.
 
     This function iterates over the input data and asserts that the alignments
-    within each cogset have the same length. Alignments are expected to be in
-    column 3 (index 2).
+    within each cognate set have the same length. Alignments are expected to be in
+    column 4 (index 3).
 
     :param data: A list of lists containing language data. No header.
     :type data: list of list of strings
 
-    :return: True if all alignments within each cogset have the same length,
+    :return: True if all alignments within each cognate set have the same length,
              False otherwise.
     :rtype: bool
-
-    :raises AssertionError: If the length of the alignments within a cogset
-                            does not match.
 
     .. code-block:: python
 
@@ -442,9 +439,9 @@ class IPA():
 
     def get_cv(self, ipastr: str) -> str:
         """
-        This method takes an IPA string (phonetic notation) as input and
+        This method takes an IPA string as input and
         returns either "V" if the string is a vowel or "C" if it is a
-        consonant, based on the set of vowels defined within the class.
+        consonant.
 
         :param ipastr: An IPA string representing a phonetic character.
         :type ipastr: str
@@ -467,7 +464,7 @@ class IPA():
         """
         Generate a prosodic string from an IPA string.
 
-        This function takes an IPA string as input and generates a prosody
+        This function takes an IPA string as input and generates a prosodic
         string by classifying each phoneme as a vowel (V) or consonant (C).
 
         :param ipastr: The tokenised input IPA string. Phonemes must be
