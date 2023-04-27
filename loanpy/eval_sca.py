@@ -56,6 +56,8 @@ def eval_all(
              representing false positives vs true positives
     :rtype: list of tuples of integers
 
+    `Run in Google Colab <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=9TJGhnf5Ysmk&line=3&uniqifier=1>`_
+
     .. code-block:: python
 
         >>> from loanpy.eval_sca import eval_all
@@ -122,6 +124,8 @@ def eval_one(
     :return: A tuple with the ratio of successful predictions
              (rounded to 2 decimal places).
     :rtype: float
+
+    `Run in Google Colab <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=mxCV1_xiWZpu&line=11&uniqifier=1>`_
 
     .. code-block:: python
 

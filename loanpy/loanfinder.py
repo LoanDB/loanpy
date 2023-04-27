@@ -59,6 +59,8 @@ def phonetic_matches(
              ``ID_ad`` -- the foreign key of the adaptation.
     :rtype: None
 
+    `Run in Google Colab <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=2Q9Y3yR7ZaOG&line=17&uniqifier=1>`_
+
     .. code-block:: python
 
         >>> from loanpy.loanfinder import phonetic_matches
@@ -127,6 +129,8 @@ def semantic_matches(
              matches in the input table with the added column of
              semantic similarity.
     :rtype: None
+
+    `Run in Google Colab <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=1aSl5pabcbnI&line=16&uniqifier=1>`_
 
     .. code-block:: python
 
