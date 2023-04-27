@@ -34,13 +34,16 @@ def eval_all(
     #. The output is a list of tuples containing the relative number of
        true positives vs. relative number of false positives
 
-    :param intable: The input tsv-table.
+    :param intable: The input tsv-table. Space-separated tokenised IPA source
+                    and target strings must be in column “ALIGNMENT”, prosodic
+                    strings in column “PROSODY”.
     :type intable: list of lists
     :param heur: The path to the heuristic sound correspondences,
-                 e.g. "heur.json"
+                 e.g. "heur.json", which was created with
+                 ``loanpy.scminer.get_heur``.
     :type heur: str or pathlike object, optional
-    :param adapt: Set to True to make predictions with
-                  ``loanpy.scapplier.Adrc.adapt``, set to False to
+    :param adapt: Set to ``True`` to make predictions with
+                  ``loanpy.scapplier.Adrc.adapt``, set to ``False`` to
                   make predictions with
                   ``loanpy.scapplier.Adrc.reconstruct``.
     :type adapt: bool
@@ -88,31 +91,36 @@ def eval_one(
         adapt: bool,
         howmany: int,
         pros: bool = False
-        ) -> Tuple[float]:
+        ) -> float:
     """
-    Called by loanpy.eval.eval_all.
-    loops through the loanpy-compatible etymological input-table and
+    Called by ``loanpy.eval.eval_all``.
+    Loops through the loanpy-compatible etymological input-table and
     performs `leave-one-out cross validation
     <https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Leave-one-out_cross-validation>`_.
     The result is how many words were correctly predicted, relative to the
-    length of the table
+    total number of predictions made.
 
-    :param intable: The input tsv-table.
-                    Tokenised IPA source and target strings must be
-                    in column "ALIGNMENT". Prosodic strings in col "PROSODY".
+    :param intable: The input tsv-table. Space-separated tokenised IPA source
+                    and target strings must be in column “ALIGNMENT”, prosodic
+                    strings in column “PROSODY”.
     :type intable: list of lists
-    :param heur: The heuristic sound and prosodic correspondences.
-                 Created with loanpy.recover.get_correspondences
-    :type heur: dict
-    :param adapt: Whether words are adapted or reconstructed.
+    :param heur: The path to the heuristic sound correspondences,
+                 e.g. "heur.json", which was created with
+                 ``loanpy.scminer.get_heur``.
+    :type heur: str or pathlike object, optional
+    :param adapt: Set to ``True`` to make predictions with
+                  ``loanpy.scapplier.Adrc.adapt``, set to ``False`` to
+                  make predictions with
+                  ``loanpy.scapplier.Adrc.reconstruct``.
     :type adapt: bool
     :param howmany: Howmany guesses should be made. Treated as false positives.
     :type howmany: list
-    :param pros: Whether phonotactic/prosodic repairs should apply
+    :param pros: Wheter phonotactic repairs should be applied
     :type pros: bool, default=False
+
     :return: A tuple with the ratio of successful adaptations/reconstructions
              (rounded to 2 decimal places).
-    :rtype: tuple
+    :rtype: float
 
     .. code-block:: python
 
