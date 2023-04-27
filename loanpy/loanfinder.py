@@ -50,11 +50,13 @@ def phonetic_matches(
     :type df_rc: list of lists. Column 2 (index 1) must be a foreign key,
                  and Column 3 (index 2) a predicted reconstruction, ideally a
                  regular expression.
+    :param output: The path to the output-file
+    :type output: str or pathlike object
 
     :return: writes a tsv-file containing the matched data,
-             with the following columns: ``ID`` - the primary key of the
-             table, ``ID_rc`` the foreign key of the reconstruction,
-             ``ID_ad``, the foreign key of the adaptation.
+             with the following columns: ``ID`` -- the primary key of the
+             table, ``ID_rc`` -- the foreign key of the reconstruction,
+             ``ID_ad`` -- the foreign key of the adaptation.
     :rtype: None
 
     .. code-block:: python
