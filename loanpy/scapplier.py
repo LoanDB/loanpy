@@ -130,13 +130,13 @@ class Adrc():
         :param howmany: Number of adapted words to return. Default is 1.
         :type howmany: int
 
-        :param prosody: Prosodic structure of the adapted words (e.g. CVCV).
+        :param prosody: Prosodic structure of the adapted words (e.g. "CVCV").
                         Default is an empty string. Providing this triggers
                         phonotactic repair.
         :type prosody: str of 'C' and 'V'
 
-        :return: A string containing the adapted loanwords, separated by ", ".
-        :rtype: str
+        :return: A list containing possible loanword adaptations.
+        :rtype: list of str
 
         .. code-block:: python
 
