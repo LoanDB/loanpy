@@ -201,7 +201,7 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
 def get_prosodic_inventory(table: List[List[str]]) -> List[str]:
     """
     Extracts all types of prosodic structures (e.g. "CVCV")
-    from rows with an uneved ID (i.e. where data of target language is
+    from rows with an uneven ID (i.e. where data of target language is
     located) of the given table.
 
     :param table: A table where every row is a list.
