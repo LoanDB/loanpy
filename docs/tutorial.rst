@@ -64,8 +64,8 @@ How good are the predictions made from the mined sound correspondences?
 Our minimal example is a perfect model that predicts with 100% certainty that
 <kiki> goes back to <gigi> and that the donor form of <gigi> is <gege>.
 
-This is achieved with `loanpy.eval_sca.eval_all
-<https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=9TJGhnf5Ysmk&line=2&uniqifier=1>`_
+This is achieved with `loanpy.eval_sca.eval_one
+<https://loanpy.readthedocs.io/en/latest/documentation.html#loanpy.eval_sca.eval_one>`_
 
 For an implementation with a detailed guide
 employing concepts from statistics such as `leave-one out cross-validation
@@ -94,8 +94,8 @@ vertical transfers. Likewise, <egeg> must turn into <igig> and <egge> into
 correspondences.
 
 This is achieved with the `loanpy.scapplier
-<https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=Zf-zKt4HHH8M&line=18&uniqifier=1>
-`_ module
+<https://loanpy.readthedocs.io/en/latest/documentation.html#module-loanpy.scapplier>`_
+module
 
 For an implementation with a detailed guide to predict vertical transfers visit
 `gerstnerhungarian's documentation
@@ -127,7 +127,7 @@ similar, then we can propose a new etymology: <ikki> "cat" goes back to
 a proto-form <iggi>, which was borrowed from <egge> "dog".
 
 This is achieved with the `loanpy.loanfinder
-<https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=2Q9Y3yR7ZaOG&line=4&uniqifier=1>
+<https://loanpy.readthedocs.io/en/latest/documentation.html#module-loanpy.loanfinder>
 `_ module
 
 For an implementation with a detailed guide visit
