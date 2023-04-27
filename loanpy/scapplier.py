@@ -169,20 +169,19 @@ class Adrc():
         a sound correspondence dictionary.
 
         :param ipastr: A string of space-separated IPA symbols representing
-                       the phonetic form to be reconstructed.
+                       the phonetic form from which to predict a
+                       reconstruction.
         :type ipastr: str
 
-        :param howmany: The maximum number of phonological forms to
+        :param howmany: The maximum number of predicted reconstructions to
                         return. Default is 1.
         :type howmany: int
 
-        :return: A string of reconstructed phonological forms that match the
+        :return: A regular expression of predicted reconstructions from the
                  given IPA string, based on the sound correspondence
-                 dictionary.
+                 dictionary. Or the phoneme plus "no old" if a phoneme is
+                 missing from the correspondence-dictionaries.
         :rtype: str
-
-        :raises ValueError: If any of the IPA symbols in the input string are
-                            missing from the sound correspondence dictionary.
 
         .. code-block:: python
 
