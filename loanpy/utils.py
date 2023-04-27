@@ -146,9 +146,10 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
 
     This function filters the input dataset to retain only the cognate sets where
     both source and target languages are present. The filtered dataset is then
-    sorted based on cognate set ID and language order.
+    sorted based on cognate set ID and language ID.
 
-    :param data: A list of lists containing language data.
+    :param data: A list of lists containing language data. Columns
+                 "Language_ID" and "Cognacy" must be provided.
     :type data: list of list of strings
 
     :param srclg: The source language ID to be considered.
