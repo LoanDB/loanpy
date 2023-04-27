@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Module for analyzing and processing linguistic data.
+Module focusing on functions to support generating and preprocessing
+loanpy-compatible input data.
 
-This module contains functions for analysing linguistic data, particularly
-focusing on finding optimal year cutoffs, manipulating IPA data, and
+This module contains functions for
+optimal year cutoffs, manipulating IPA data, and
 processing cognate sets. It provides helper functions for reading and
 processing linguistic datasets and performing various operations such as
 filtering and validation.
