@@ -42,7 +42,7 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
     :return: The optimal year cutoff for the dataset and origins.
     :rtype: int
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=CBMOG3bJfNCb&line=3&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -117,7 +117,7 @@ def cvgaps(str1: str, str2: str) -> List[str]:
              second string.
     :rtype: list of strings
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=kp2qNEflhtn4&line=1&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -166,7 +166,7 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
              source and target languages present.
     :rtype: list of list of strings
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=UqfRHYY_hxvt&line=16&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -242,7 +242,7 @@ def is_valid_language_sequence(
     :return: True if the sequence is valid, False otherwise.
     :rtype: bool
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=SbRE_h2wfvjx&line=9&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -296,7 +296,7 @@ def is_same_length_alignments(data: List[List[str]]) -> bool:
              False otherwise.
     :rtype: bool
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=5DQ3fmb0jmcZ&line=1&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -329,7 +329,7 @@ def read_ipa_all() -> List[List[str]]:
     :return: A list of lists containing IPA data read from ``ipa_all.csv``.
     :rtype: list of list of strings
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=59YkE8Krj86V&line=3&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -415,7 +415,7 @@ def prod(iterable: Iterable[Union[int, float]]) -> Union[int, float]:
     :return: The product of all elements in the input iterable.
     :rtype: int or float
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=OeII4PN6lQzO&line=2&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -433,7 +433,7 @@ class IPA():
     Class built on loanpy's modified version of panphon's ``ipa_all.csv``
     table to handle certain tasks that require IPA-data.
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=v2LicUQFlqjh&line=3&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -466,7 +466,7 @@ class IPA():
                  is a consonant.
         :rtype: str
 
-        `Run in Google Colab <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=0byaFeL4luN3&line=1&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -493,7 +493,7 @@ class IPA():
         :return: The generated prosodic string.
         :rtype: str
 
-        `Run in Google Colab <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=jKHMmjYVmGk-&line=1&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -517,7 +517,7 @@ class IPA():
         :return: Same word but with consonants and vowels clustered together
         :rtype: str
 
-        `Run in Google Colab <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=cUwxzw9_mSvQ&line=1&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -568,7 +568,7 @@ def scjson2tsv(jsonin: Union[str, Path], outtsv: Union[str, Path],
     :return: Write two tsv-files to the specified two output paths
     :rtype: None
 
-    `Run in Google Colab <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=HZpkFtY_mewV&line=9&uniqifier=1>`_
 
     .. code-block:: python
 
