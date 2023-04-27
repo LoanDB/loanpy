@@ -574,17 +574,17 @@ def tuples2editops(
         op_list: List[Tuple[int, int]], s1: str, s2: str
         ) -> List[str]:
     """
-    Called by loanpy.scapplier.editops.
-    The path how string1 is converted to string2 is given in form of tuples
-    that contain the x and y coordinates of every step through the matrix
-    shaped graph.
+    Called by ``loanpy.scapplier.editops``.
+    The path through the graph by which ``string1`` is converted to
+    ``string2`` is given in form of tuples that contain the x and y
+    coordinates of every step through the matrix shaped graph.
     This function converts those numerical instructions to human readable
-    ones.
-    The x values stand for horizontal movement, y values for vertical ones.
-    Vertical movement means deletion, horizontal means insertion.
-    Diagonal means the value is kept.
-    Moving horizontally and vertically after each other means
-    substitution.
+    ones. The x values stand for movement from left to right, y values for
+    movement downwards.
+    Movement downwards means deletion, movement to the right means insertion.
+    Diagonal movement means the value is kept.
+    Moving to the right and downards or downwards and to the right after each
+    other means substitution.
 
     :param op_list: The numeric list of edit operations
     :type op_list: list of tuples of 2 int
@@ -626,7 +626,7 @@ def tuples2editops(
 def substitute_operations(operations: List[str]) -> List[str]:
     """
     Replaces subsequent "delete, insert" / "insert, delete" operations with
-    "substitute". Called by loanpy.apply.tuples2editops.
+    "substitute". Called by ``loanpy.apply.tuples2editops``.
 
     :param operations: A list of human readable edit operations
     :type operations: List of strings, e.g. ['insert l', 'delete h', 'keep ó']
@@ -784,7 +784,7 @@ def mtx2graph(
 
     :w_del: Weight of deletions. According to the Threshold Principle of the
             Theory of Constraints and Repair Strategies (TCRS,
-            `(Paradis and LaCharité 1997: 385)
+            `Paradis and LaCharité 1997: 385
             <http://www.jstor.com/stable/4176422>`_),
             two insertions are cheaper than one deletion. Therefore,
             the weight of deletions, i.e. moving to the right through the
