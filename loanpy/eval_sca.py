@@ -27,18 +27,22 @@ def eval_all(
         ) -> List[Tuple[int, int]]:
     """
     #. Input a loanpy-compatible table containing etymological data.
-    #. Start a neseted for-loop
+    #. Start a nested for-loop
     #. The first loop goes through the number of guesses (~ false positives)
     #. The second loops through the input-table and calculates the relative
        number of true positives.
     #. The output is a list of tuples containing the relative number of
-       true positives vs. false positives
+       true positives vs. relative number of false positives
 
-    :param intable: The input tsv-table, edited with the Edictor.
+    :param intable: The input tsv-table.
     :type intable: list of lists
-    :param heur: The heuristic prosodic correspondences.
-    :type heur: list
-    :param adapt: Whether words are adapted or reconstructed.
+    :param heur: The path to the heuristic sound correspondences,
+                 e.g. "heur.json"
+    :type heur: str or pathlike object, optional
+    :param adapt: Set to True to make predictions with
+                  ``loanpy.scapplier.Adrc.adapt``, set to False to
+                  make predictions with
+                  ``loanpy.scapplier.Adrc.reconstruct``.
     :type adapt: bool
     :param guess_list: The list of number of guesses to evaluate.
     :type guess_list: list of int
@@ -46,7 +50,7 @@ def eval_all(
     :type pros: bool, default=False
     :return: A list of tuples of integer-pairs
              representing false positives vs true positives
-    :rtype: tuple
+    :rtype: list of tuples of integers
 
     .. code-block:: python
 
@@ -93,7 +97,7 @@ def eval_one(
     The result is how many words were correctly predicted, relative to the
     length of the table
 
-    :param intable: The input tsv-table, edited with the Edictor.
+    :param intable: The input tsv-table.
                     Tokenised IPA source and target strings must be
                     in column "ALIGNMENT". Prosodic strings in col "PROSODY".
     :type intable: list of lists
