@@ -77,12 +77,12 @@ class Adrc():
     def set_sc(self, sc: List[dict]) -> None:
         """
         Method to set sound correspondences manually.
-        Called by loanpy.eval_sca.eval_one
+        Called by ``loanpy.eval_sca.eval_one``.
 
-        :param sc: The sound correspondence dictionary file.
-        :type sc: list
+        :param sc: The sound correspondence dictionary.
+        :type sc: list of 6 dicts
 
-        :return: Set the attribute sc
+        :return: Set the attribute ``.sc``
         :rtype: None
 
         .. code-block:: python
@@ -97,13 +97,13 @@ class Adrc():
 
     def set_prosodic_inventory(self, prosodic_inventory: List[str]) -> None:
         """
-        Method to set the phonotactic prosodic_inventory manually.
-        Called by loanpy.eval_sca.eval_one
+        Method to set the phonotactic inventory manually.
+        Called by ``loanpy.eval_sca.eval_one``.
 
-        :param prosodic_inventory: The phonotactic prosodic_inventory file.
-        :type sc: list of strings
+        :param prosodic_inventory: The phonotactic inventory.
+        :type prosodic_inventory: list of strings
 
-        :return: Set the attribute prosodic_inventory
+        :return: Set the attribute ``.prosodic_inventory``
         :rtype: None
 
         .. code-block:: python
@@ -179,7 +179,7 @@ class Adrc():
 
         :return: A regular expression of predicted reconstructions from the
                  given IPA string, based on the sound correspondence
-                 dictionary. Or the phoneme plus "no old" if a phoneme is
+                 dictionary. Or the phoneme plus "not old" if a phoneme is
                  missing from the correspondence-dictionaries.
         :rtype: str
 
