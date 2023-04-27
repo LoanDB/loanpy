@@ -15,7 +15,8 @@ compare the phonetic patterns, as well as calculate the semantic similarity
 based on a user-provided function. The module returns a list of candidate
 loanwords that show phonetic and semantic similarities. The output can
 then be used to propose lexical borrowings, adaptation patterns,
-and historical reconstructions for words of donor and recipient languages.
+and historical reconstructions for words of the proposed donor and recipient
+language.
 """
 import csv
 import logging
@@ -35,11 +36,11 @@ def phonetic_matches(
         ) -> str:
 
     """
-    Finds phonetic matches between the given donor and recipient TSV files.
+    Find phonetic matches between the given donor and recipient TSV files.
 
     The function processes the donor and recipient data frames,
     compares the phonetic patterns,
-    and returns the matched data as a string in TSV format.
+    and writes the result as a tsv-file to the specified output-path.
 
     :param df_ad: Table of the donor language data with adapted forms.
     :type df_ad: list of lists. Column 5 must be a list of predicted
@@ -52,10 +53,9 @@ def phonetic_matches(
                  reconstructions as a regular expression. Col 0: The ID in
                  df_rc, Col 2: The form of the word. Col 3: its meanings.
 
-    :return: A string containing the matchedlo data in TSV format,
-             with the following columns:
-             ID, loanID, adrcID, df, form, predicted, meaning.
-    :rtype: str
+    :return: writes a tsv-file containing the matched data,
+             with the following columns: ID, ID_rc, ID_ad
+    :rtype: None
 
     .. code-block:: python
 
