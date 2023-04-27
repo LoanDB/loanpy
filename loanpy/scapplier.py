@@ -38,7 +38,7 @@ class Adrc():
     :param prosodic_inventory: Path to the prosodic inventory json-file.
     :type prosodic_inventory: str or pathlike object, optional
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=Zf-zKt4HHH8M&line=10&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -87,7 +87,7 @@ class Adrc():
         :return: Set the attribute ``.sc``
         :rtype: None
 
-        `Run in Google Colab >> <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=5eUpM6vcLLtH&line=2&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -110,7 +110,7 @@ class Adrc():
         :return: Set the attribute ``.prosodic_inventory``
         :rtype: None
 
-        `Run in Google Colab >> <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=R1mPz_1lLhfb&line=2&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -144,7 +144,7 @@ class Adrc():
         :return: A list containing possible loanword adaptations.
         :rtype: list of str
 
-        `Run in Google Colab >> <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=rHoxeCkcMQhO&line=2&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -191,7 +191,7 @@ class Adrc():
                  missing from the correspondence-dictionaries.
         :rtype: str
 
-        `Run in Google Colab >> <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=LfwIkQCSR5_v&line=1&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -236,7 +236,7 @@ class Adrc():
         :return: A list of repaired IPA strings.
         :rtype: list of str
 
-        `Run in Google Colab >> <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=06_G8ywk8Vo3&line=1&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -278,7 +278,7 @@ class Adrc():
                  sound correspondence in the input word.
         :rtype: list
 
-        `Run in Google Colab >> <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=6D7dEK7iQIkg&line=4&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -336,7 +336,7 @@ class Adrc():
                  correspond to.
         :rtype: list of lists
 
-        `Run in Google Colab >> <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=HHP3PLv6OUhY&line=1&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -398,7 +398,7 @@ class Adrc():
                  the prosodic inventory.
         :rtype: str
 
-        `Run in Google Colab >> <>`_
+        `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=MQ2yQCILA-d-&line=1&uniqifier=1>`_
 
         .. code-block:: python
 
@@ -437,7 +437,7 @@ def move_sc(
     :return: An updated tuple containing the modified sclistlist and out.
     :rtype: tuple of (list of lists, list of lists)
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=uRPvWbJLSDTj&line=1&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -484,7 +484,7 @@ def edit_distance_with2ops(
     :returns: The distance between two input strings
     :rtype: int or float
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=vTJ6TnehBOGv&line=2&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -533,7 +533,7 @@ def apply_edit(word: Iterable[str], editops: List[str]) -> List[str]:
     :returns: transformed input word
     :rtype: list of str
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=-xzLp00EKoaw&line=10&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -583,7 +583,7 @@ def list2regex(sclist: List[str]) -> str:
               removed and replaced with a question mark at the end.
     :rtype: str
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=_wHBHRPq96_t&line=3&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -624,7 +624,7 @@ def tuples2editops(
     :returns: list of human readable edit operations
     :rtype: list of strings
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=LtpRErY0JAeR&line=5&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -662,7 +662,7 @@ def substitute_operations(operations: List[str]) -> List[str]:
     :returns: Updated operations
     :rtype: List of strings, e.g. ['substitute l by h', 'keep ó']
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=8wTRsBg9K4JQ&line=7&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -709,7 +709,7 @@ def get_mtx(target: Iterable, source: Iterable) -> List[List[int]]:
               each)
     :rtype: list of lists
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=rGHqIDXcDoab&line=3&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -789,7 +789,7 @@ def add_edge(
     :return: Updates the graph in-place
     :rtype: None
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=2MmHpBB9U2FM&line=3&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -834,7 +834,7 @@ def mtx2graph(
             All tuples contain two integers that represent the position
             of a node in the matrix/graph, e.g. (0, 0).
 
-    `Run in Google Colab >> <>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=HbEz8rWFEzGi&line=3&uniqifier=1>`_
 
     .. code-block:: python
 
@@ -908,8 +908,8 @@ def dijkstra(
     :rtype: list or None
     :raises KeyError: If the start or end node is not in the graph.
 
-    `Run in Google Colab >> <>`_
-        
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=WRYiNDPmHr5V&line=5&uniqifier=1>`_
+
     .. code-block:: python
 
         >>> from loanpy.scapplier import dijkstra
