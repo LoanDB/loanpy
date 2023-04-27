@@ -662,12 +662,11 @@ def substitute_operations(operations: List[str]) -> List[str]:
 
 def get_mtx(target: Iterable, source: Iterable) -> List[List[int]]:
     """
-    Called by loanpy.scapplier.Adrc.repair_phonotactics. Similar to
-    loanpy.scapplier.edit_distance_with2ops but without
-    weights (i.e. deletion and insertion
-    both always cost one) and the matrix is returned.
-    Draws a matrix of minimum edit distances between every substring of two
-    input strings.
+    Called by ``loanpy.scapplier.Adrc.repair_phonotactics``. Similar to
+    ``loanpy.scapplier.edit_distance_with2ops`` but without
+    weights (i.e. deletion and insertion both always cost one) and the matrix
+    is returned. Draws a matrix of minimum edit distances between every
+    substring of two input strings.
 
     :param target: The target word
     :type target: iterable, e.g. str or list
@@ -676,8 +675,8 @@ def get_mtx(target: Iterable, source: Iterable) -> List[List[int]]:
     :type source: iterable, e.g. str or list
 
     :returns: A matrix where every cell tells the cost of turning one
-              substring to the other (only delete and insert with cost 1 for
-              both)
+              substring into the other (only delete and insert with cost 1 for
+              each)
     :rtype: list of lists
 
     .. code-block:: python
