@@ -372,13 +372,15 @@ class Adrc():
 
     def get_closest_phonotactics(self, struc: str) -> str:
         """
-        Get the closest prosodic structure (e.g. CVCV) from the prosodic_inventory
-        of a given language based on edit distance.
+        Get the closest prosodic structure (e.g. "CVCV") from the
+        prosodic inventory of a given language based on edit distance
+        with two operations.
 
         :param struc: The phonotactic structure to compare against.
         :type struc: str
 
-        :return: The closest prosodic structure (e.g. CVCV) in the prosodic_inventory
+        :return: The closest prosodic structure (e.g. "CVCV") in
+        the prosodic inventory.
         :rtype: str
 
         .. code-block:: python
