@@ -127,8 +127,8 @@ similar, then we can propose a new etymology: <ikki> "cat" goes back to
 a proto-form <iggi>, which was borrowed from <egge> "dog".
 
 This is achieved with the `loanpy.loanfinder
-<https://loanpy.readthedocs.io/en/latest/documentation.html#module-loanpy.loanfinder>
-`_ module
+<https://loanpy.readthedocs.io/en/latest/documentation.html#module-loanpy.loanfinder>`_
+module
 
 For an implementation with a detailed guide visit
 `GothicHungarian's documentation
