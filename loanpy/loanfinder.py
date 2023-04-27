@@ -59,7 +59,7 @@ def phonetic_matches(
              ``ID_ad`` -- the foreign key of the adaptation.
     :rtype: None
 
-    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=2Q9Y3yR7ZaOG&line=17&uniqifier=1>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=2Q9Y3yR7ZaOG&line=17&uniqifier=1>`__
 
     .. code-block:: python
 
@@ -130,7 +130,7 @@ def semantic_matches(
              semantic similarity.
     :rtype: None
 
-    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=1aSl5pabcbnI&line=16&uniqifier=1>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=1aSl5pabcbnI&line=16&uniqifier=1>`__
 
     .. code-block:: python
 
