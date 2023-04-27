@@ -24,7 +24,7 @@ example:
          the middle of its arch. The other 3x3 table is a mirrored version of
          this. Its left column reads "Meaning, hot, dog", its middle one
          "Adapt hypothetical recipient form, igig, iggi" and its right
-         "Candidate Donor Form, egeg, egge". The yellow-apply arrow points
+         "Candidate Donor Form, egeg, egge". The yellow apply-arrow points
          from the right column to the middle one. There is a big yellow curved
          arrow on the bottom too, pointing from the middle column of the left
          3x3 table, to the middle column of the right 3x3 table. Above its

@@ -24,12 +24,28 @@ The software offers following features:
 Access LoanPy through the following platforms:
 
 .. image:: https://img.shields.io/pypi/v/loanpy.svg
+   :alt: The LoanPy logo: "loanpy" in simple white cursive italics on black
+         background. On the right side as part of the logo are two
+         translucent gray-ish shapes that look like laying 8s. One is
+         smaller and darker and appears to be in the back, the other is
+         larger, brighter, and appears to be in the front.
+         Their circles are overlapping, so that the smaller top circle of the
+         8 in the front is covering the larger part of the bottom circle of
+         the smaller 8 in the back. And vice versa the top circle of the
+         smaller 8 in the back is overlapping with a small part of the bottom
+         circle of the large 8 in the front. The image vaguely resembles
+         two venn-diagrams, or two very round bowling pins that fell: one
+         to the left, one to right.
    :target: https://pypi.org/project/loanpy/
    :alt: PyPI version
 .. image:: ../docs/images/GitHub_Logo.png
+   :alt: The GitHub logo: Simple black letters on white background that read
+         "GitHub".
    :target: https://github.com/martino-vic/loanpy
    :scale: 20%
 .. image:: ../docs/images/zenodo-gradient-200.png
+   :alt: The Zenodo logo: Simple white letters on blue background that read
+         "Zenodo".
    :scale: 50%
    :target: https://zenodo.org/record/4127115#.YHCQwej7SLQ
 
