@@ -42,6 +42,8 @@ def find_optimal_year_cutoff(tsv: List[List[str]], origins: Iterable) -> int:
     :return: The optimal year cutoff for the dataset and origins.
     :rtype: int
 
+    `Run in Google Colab <>`_
+
     .. code-block:: python
 
         >>> from loanpy.utils import find_optimal_year_cutoff
@@ -115,6 +117,8 @@ def cvgaps(str1: str, str2: str) -> List[str]:
              second string.
     :rtype: list of strings
 
+    `Run in Google Colab <>`_
+
     .. code-block:: python
 
         >>> from loanpy.utils import cvgaps
@@ -161,6 +165,8 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
     :return: A filtered and sorted list of lists containing cognate sets with both
              source and target languages present.
     :rtype: list of list of strings
+
+    `Run in Google Colab <>`_
 
     .. code-block:: python
 
@@ -236,31 +242,33 @@ def is_valid_language_sequence(
     :return: True if the sequence is valid, False otherwise.
     :rtype: bool
 
-.. code-block:: python
+    `Run in Google Colab <>`_
 
-    >>> from loanpy.utils import is_valid_language_sequence
-    >>> data = [
-    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
-    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
-    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
-    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
-    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
-    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
-    ... ]
-    >>> is_valid_language_sequence(data, "de", "en")
-    True
-    >>> from loanpy.utils import is_valid_language_sequence
-    >>> data = [
-    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
-    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
-    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
-    ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
-    ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
-    ...     ['x', 'x', 'nl', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
-    ... ]
-    >>> is_valid_language_sequence(data, "de", "en")
-    2023-04-25 23:04:07,532 - INFO - Problem in row 5
-    False
+    .. code-block:: python
+
+        >>> from loanpy.utils import is_valid_language_sequence
+        >>> data = [
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
+        ... ]
+        >>> is_valid_language_sequence(data, "de", "en")
+        True
+        >>> from loanpy.utils import is_valid_language_sequence
+        >>> data = [
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '0', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+        ...     ['x', 'x', 'en', 'x', 'x', 'x', 'x', 'x', 'x', '1', 'x'],
+        ...     ['x', 'x', 'de', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x'],
+        ...     ['x', 'x', 'nl', 'x', 'x', 'x', 'x', 'x', 'x', '6', 'x']
+        ... ]
+        >>> is_valid_language_sequence(data, "de", "en")
+        2023-04-25 23:04:07,532 - INFO - Problem in row 5
+        False
     """
     if len(data) % 2 != 0:
         logging.info("Odd number of rows, source/target language is missing.")
@@ -287,6 +295,8 @@ def is_same_length_alignments(data: List[List[str]]) -> bool:
     :return: True if all alignments within each cognate set have the same length,
              False otherwise.
     :rtype: bool
+
+    `Run in Google Colab <>`_
 
     .. code-block:: python
 
@@ -318,6 +328,8 @@ def read_ipa_all() -> List[List[str]]:
 
     :return: A list of lists containing IPA data read from ``ipa_all.csv``.
     :rtype: list of list of strings
+
+    `Run in Google Colab <>`_
 
     .. code-block:: python
 
@@ -403,6 +415,8 @@ def prod(iterable: Iterable[Union[int, float]]) -> Union[int, float]:
     :return: The product of all elements in the input iterable.
     :rtype: int or float
 
+    `Run in Google Colab <>`_
+
     .. code-block:: python
 
        >>> from loanpy.utils import prod
@@ -418,6 +432,8 @@ class IPA():
     """
     Class built on loanpy's modified version of panphon's ``ipa_all.csv``
     table to handle certain tasks that require IPA-data.
+
+    `Run in Google Colab <>`_
 
     .. code-block:: python
 
@@ -450,6 +466,8 @@ class IPA():
                  is a consonant.
         :rtype: str
 
+        `Run in Google Colab <>`_
+
         .. code-block:: python
 
             >>> from loanpy.utils import IPA
@@ -475,6 +493,8 @@ class IPA():
         :return: The generated prosodic string.
         :rtype: str
 
+        `Run in Google Colab <>`_
+
         .. code-block:: python
 
             >>> from loanpy.utils import IPA
@@ -496,6 +516,8 @@ class IPA():
 
         :return: Same word but with consonants and vowels clustered together
         :rtype: str
+
+        `Run in Google Colab <>`_
 
         .. code-block:: python
 
@@ -545,6 +567,8 @@ def scjson2tsv(jsonin: Union[str, Path], outtsv: Union[str, Path],
 
     :return: Write two tsv-files to the specified two output paths
     :rtype: None
+
+    `Run in Google Colab <>`_
 
     .. code-block:: python
 
