@@ -43,18 +43,17 @@ def phonetic_matches(
     and writes the result as a tsv-file to the specified output-path.
 
     :param df_ad: Table of the donor language data with adapted forms.
-    :type df_ad: list of lists. Column 5 must be a list of predicted
-                 loanword adaptations. Col 0: ID in df_ad,
-                 Col 2: The form of the word, Col 4: its meanings.
-
+    :type df_ad: list of lists. Column 1 (index 0) must be a primary key.
+                 Column 2 a foreign key, and Column 3 (index 2) a predicted
+                 loanword adaptation.
     :param df_rc: Table of the recipient language data with reconstructed
                   forms.
-    :type df_rc: list of lists. Column 4 must contain predicted
-                 reconstructions as a regular expression. Col 0: The ID in
-                 df_rc, Col 2: The form of the word. Col 3: its meanings.
+    :type df_rc: list of lists. Column 1 (index 0) must be a primary key.
+                 Column 2 a foreign key, and Column 3 (index 2) a predicted
+                 reconstruction, ideally a regular expression.
 
     :return: writes a tsv-file containing the matched data,
-             with the following columns: ID, ID_rc, ID_ad
+             with the following columns: ``ID``, ``ID_rc``, ``ID_ad``
     :rtype: None
 
     .. code-block:: python
