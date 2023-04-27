@@ -153,7 +153,7 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
     and their feature vectors and is shipped together with loanpy.
 
     :param tgtlg: The ID of the target language, as defined in
-                  etc/languages.tsv
+                  ``etc/languages.tsv`` in a CLDF repository.
     :type tgtlg: str
     :returns: A dictionary with IPA phonemes as keys and a list of
               closest target language phonemes as values.
@@ -198,9 +198,9 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
 
 def get_prosodic_inventory(table: List[List[str]]) -> List[str]:
     """
-    Extracts all types of prosodic structures (e.g. CVCV)
-    from uneven rows (i.e. where data of target language is) of the given table
-    (uneven rows after removing the header).
+    Extracts all types of prosodic structures (e.g. "CVCV")
+    from rows with an uneved ID (i.e. where data of target language is
+    located) of the given table.
 
     :param table: A table where every row is a list.
     :type table: list of lists
