@@ -442,8 +442,8 @@ def edit_distance_with2ops(
     Called by ``loanpy.scapplier.Adrc.get_closest_phonotactics``.
     Takes two strings and calculates their similarity by
     only allowing two operations: insertion and deletion.
-    In line with the "Threshold Principle" `(Paradis and LaCharité 1997:
-    385) <http://www.jstor.com/stable/4176422>`_
+    An algorithmic implementation of the "Threshold Principle"
+    `(Paradis and LaCharité 1997: 385) <http://www.jstor.com/stable/4176422>`_
 
     :param string1: The first of two strings to be compared to each other
     :type string1: str
