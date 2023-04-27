@@ -149,7 +149,7 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
     sorted based on cognate set ID and language ID.
 
     :param data: A list of lists containing language data. Columns
-                 "Language_ID" and "Cognacy" must be provided.
+                 ``Language_ID`` and ``Cognacy`` must be provided.
     :type data: list of list of strings
 
     :param srclg: The source language ID to be considered.
@@ -314,7 +314,7 @@ def is_same_length_alignments(data: List[List[str]]) -> bool:
 def read_ipa_all() -> List[List[str]]:
     """
     This function reads the ``ipa_all.csv`` table located in the same
-    directory as the module and returns it as a list of lists.
+    directory as the loanpy-modules and returns it as a list of lists.
 
     :return: A list of lists containing IPA data read from ``ipa_all.csv``.
     :rtype: list of list of strings
@@ -395,7 +395,7 @@ def prod(iterable: Iterable[Union[int, float]]) -> Union[int, float]:
 
     This function takes an iterable (e.g., list, tuple) as input and computes
     the product of all its elements. This function had to be hard-coded
-    because importing it from math causes incompatibility issues with some
+    because ``from math import prod`` caused incompatibility issues with some
     python versions on certain platforms.
 
     :param iterable: The input iterable containing numbers.
