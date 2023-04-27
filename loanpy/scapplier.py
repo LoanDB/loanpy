@@ -39,7 +39,7 @@ class Adrc():
     :type prosodic_inventory: str or pathlike object, optional
 
     `Run in Google Colab >> <>`_
-    
+
     .. code-block:: python
 
         >>> from loanpy.scapplier import Adrc
@@ -87,6 +87,8 @@ class Adrc():
         :return: Set the attribute ``.sc``
         :rtype: None
 
+        `Run in Google Colab >> <>`_
+
         .. code-block:: python
 
             >>> from loanpy.scapplier import Adrc
@@ -107,6 +109,8 @@ class Adrc():
 
         :return: Set the attribute ``.prosodic_inventory``
         :rtype: None
+
+        `Run in Google Colab >> <>`_
 
         .. code-block:: python
 
@@ -139,6 +143,8 @@ class Adrc():
 
         :return: A list containing possible loanword adaptations.
         :rtype: list of str
+
+        `Run in Google Colab >> <>`_
 
         .. code-block:: python
 
@@ -185,6 +191,8 @@ class Adrc():
                  missing from the correspondence-dictionaries.
         :rtype: str
 
+        `Run in Google Colab >> <>`_
+
         .. code-block:: python
 
             >>> from loanpy.scapplier import Adrc
@@ -228,6 +236,8 @@ class Adrc():
         :return: A list of repaired IPA strings.
         :rtype: list of str
 
+        `Run in Google Colab >> <>`_
+
         .. code-block:: python
 
             >>> from loanpy.scapplier import Adrc
@@ -267,6 +277,8 @@ class Adrc():
         :return: A list of differences between the number of examples for each
                  sound correspondence in the input word.
         :rtype: list
+
+        `Run in Google Colab >> <>`_
 
         .. code-block:: python
 
@@ -323,6 +335,8 @@ class Adrc():
         :return: The information about which sounds each input sound can
                  correspond to.
         :rtype: list of lists
+
+        `Run in Google Colab >> <>`_
 
         .. code-block:: python
 
@@ -384,6 +398,8 @@ class Adrc():
                  the prosodic inventory.
         :rtype: str
 
+        `Run in Google Colab >> <>`_
+
         .. code-block:: python
 
             >>> from loanpy.scapplier import Adrc
@@ -420,6 +436,8 @@ def move_sc(
 
     :return: An updated tuple containing the modified sclistlist and out.
     :rtype: tuple of (list of lists, list of lists)
+
+    `Run in Google Colab >> <>`_
 
     .. code-block:: python
 
@@ -465,6 +483,8 @@ def edit_distance_with2ops(
 
     :returns: The distance between two input strings
     :rtype: int or float
+
+    `Run in Google Colab >> <>`_
 
     .. code-block:: python
 
@@ -512,6 +532,8 @@ def apply_edit(word: Iterable[str], editops: List[str]) -> List[str]:
 
     :returns: transformed input word
     :rtype: list of str
+
+    `Run in Google Colab >> <>`_
 
     .. code-block:: python
 
@@ -561,6 +583,8 @@ def list2regex(sclist: List[str]) -> str:
               removed and replaced with a question mark at the end.
     :rtype: str
 
+    `Run in Google Colab >> <>`_
+
     .. code-block:: python
 
         >>> from loanpy.scapplier import list2regex
@@ -600,6 +624,8 @@ def tuples2editops(
     :returns: list of human readable edit operations
     :rtype: list of strings
 
+    `Run in Google Colab >> <>`_
+
     .. code-block:: python
 
         >>> from loanpy.scapplier import tuples2editops
@@ -635,6 +661,8 @@ def substitute_operations(operations: List[str]) -> List[str]:
 
     :returns: Updated operations
     :rtype: List of strings, e.g. ['substitute l by h', 'keep ó']
+
+    `Run in Google Colab >> <>`_
 
     .. code-block:: python
 
@@ -680,6 +708,8 @@ def get_mtx(target: Iterable, source: Iterable) -> List[List[int]]:
               substring into the other (only delete and insert with cost 1 for
               each)
     :rtype: list of lists
+
+    `Run in Google Colab >> <>`_
 
     .. code-block:: python
 
@@ -759,6 +789,8 @@ def add_edge(
     :return: Updates the graph in-place
     :rtype: None
 
+    `Run in Google Colab >> <>`_
+
     .. code-block:: python
 
         >>> from loanpy.scapplier import add_edge
@@ -801,6 +833,8 @@ def mtx2graph(
             (integers) as values.
             All tuples contain two integers that represent the position
             of a node in the matrix/graph, e.g. (0, 0).
+
+    `Run in Google Colab >> <>`_
 
     .. code-block:: python
 
@@ -874,6 +908,8 @@ def dijkstra(
     :rtype: list or None
     :raises KeyError: If the start or end node is not in the graph.
 
+    `Run in Google Colab >> <>`_
+        
     .. code-block:: python
 
         >>> from loanpy.scapplier import dijkstra
