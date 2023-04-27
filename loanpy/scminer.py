@@ -2,15 +2,15 @@
 """
 The sound correspondence miner module contains several functions to
 extract and manipulate linguistic data stored in tab-separated tables.
-The main function is get_correspondences, which extracts sound and prosodic
-correspondences from the table and returns them as six dictionaries,
-each with corresponding frequencies and COGID values. The module also
-includes uralign, a function that aligns Uralic input strings based on custom
-rules, and get_heur, which computes a heuristic mapping between phonemes
-in a target language's prosodic_inventory and all phonemes in the IPA sound system
-based on Euclidean distance of their feature vectors. Finally,
-get_prosodic_inventory extracts all types of prosodic structures
-from a target language in a given table.
+The main function is ``get_correspondences``, which extracts sound and prosodic
+correspondences from the table and returns them as six dictionaries, each
+with corresponding frequencies and COGID values. The module also includes
+``uralign``, a function that aligns Uralic input strings based on custom
+rules, and ``get_heur``, which computes a heuristic mapping between phonemes
+in a target language's phoneme inventory and all phonemes in the IPA sound
+system based on the Euclidean distance of their feature vectors. Finally,
+``get_prosodic_inventory`` extracts all types of prosodic structures
+from a target language in a given etymological table.
 """
 
 import json
@@ -27,25 +27,27 @@ def get_correspondences(
     """
     Get sound and prosodic correspondences from a given table string.
 
-    :param table: A list of lists representing the table that was edited
-                  with Edictor. It must contain columns
-                  named "ALIGNMENT", "PROSODY", and "COGID".
+    :param table: A list of lists representing an etymological table.
+                  It must contain columns
+                  named ``ALIGNMENT``, ``PROSODY``, and ``COGID``.
     :type table: list of lists
 
     :param heur: Optional dictionary containing heuristic correspondences
                  to be merged with the output. Defaults to an empty string.
     :type heur: dictionary with IPA characters as keys and a list of
-                phonemes of a language's phoneme prosodic inventory ranked
-                according to feature vector similarity.
+                phonemes of a language's phoneme inventory ranked
+                according to feature vector similarity as values.
 
     :return: A list of six dictionaries containing correspondences
              and their frequencies:
+
              1) Sound correspondences.
              2) Frequency of sound correspondences.
              3) COGID values for sound correspondences.
              4) Prosodic correspondences.
              5) Frequency of prosodic correspondences.
              6) COGID values for prosodic correspondences.
+
     :rtype: list of six dictionaries
 
     >>> from loanpy.scminer import get_correspondences
@@ -62,9 +64,6 @@ def get_correspondences(
      {'VC CC': 1},
      {'VC CC': [1]}]
 
-    .. seealso::
-        `Edictor
-        <https://digling.org/edictor/>`_
     """
 
     header, table_data = table[0], table[1:]

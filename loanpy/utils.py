@@ -549,12 +549,7 @@ def scjson2tsv(jsonin: Union[str, Path], outtsv: Union[str, Path],
 
     .. code-block:: python
 
-        >>> import json
         >>> from loanpy.utils import scjson2tsv
-        >>> sc = [{"a": ["o", "e"]}, {"a o": 1, "a e": 2}, {"a o": [512],
-        ...        "a e": [3, 4]}, {"CV": ["CV"]}, {"CV CV": 1}, {"CV CV": [7]}]
-        >>> with open("sc.json", "w+") as f:
-        ...     json.dump(sc, f)
         >>> scjson2tsv("sc.json", "sc.tsv", "sc_p.tsv")
         >>> with open("sc.tsv", "r") as f:
         ...     print(f.read())
