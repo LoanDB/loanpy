@@ -310,7 +310,7 @@ class Adrc():
         always the one that makes the least difference in terms
         of absolute frequency.
 
-        :param ipa: a tokenized/clusterized word
+        :param ipa: a tokenized/clusterised word
         :type ipa: list
 
         :param howmany: The desired number of possible combinations.
@@ -335,7 +335,7 @@ class Adrc():
             [['k'], ['e', 'o']]
             # difference between i e and i o = 2 - 1 = 1
             # and between k k and k c = 5 - 3 = 2
-            # so picking the "o" makes less of a difference than the "c"
+            # so picking the "o" makes less of a difference than picking the "c"
         """
 
         # pick all sound correspondences from dictionary
@@ -380,7 +380,7 @@ class Adrc():
         :type struc: str
 
         :return: The closest prosodic structure (e.g. "CVCV") in
-        the prosodic inventory.
+                 the prosodic inventory.
         :rtype: str
 
         .. code-block:: python
