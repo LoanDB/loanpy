@@ -499,7 +499,7 @@ def edit_distance_with2ops(
 
 def apply_edit(word: Iterable[str], editops: List[str]) -> List[str]:
     """
-    Called by loanpy.scapplier.Adrc.repair_phonotactics.
+    Called by ``loanpy.scapplier.Adrc.repair_phonotactics``.
     Applies a list of human readable edit operations to a string.
 
     :param word: The input word
@@ -741,7 +741,7 @@ def add_edge(
         weight: int
         ) -> None:
     """
-    Add an edge to a graph. Called by loanpy.scapplier.mtx2graph.
+    Add an edge to a graph. Called by ``loanpy.scapplier.mtx2graph``.
 
     :param graph: The graph to be populated
     :type graph: dict
