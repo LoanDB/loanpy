@@ -789,7 +789,7 @@ def add_edge(
     :return: Updates the graph in-place
     :rtype: None
 
-    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=2MmHpBB9U2FM&line=3&uniqifier=1>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=2MmHpBB9U2FM&line=3&uniqifier=1>`__
 
     .. code-block:: python
 
@@ -819,7 +819,7 @@ def mtx2graph(
     :w_del: Weight of deletions. According to the Threshold Principle of the
             Theory of Constraints and Repair Strategies (TCRS,
             `Paradis and LaCharité 1997: 385
-            <http://www.jstor.com/stable/4176422>`_),
+            <http://www.jstor.com/stable/4176422>`__),
             two insertions are cheaper than one deletion. Therefore,
             the weight of deletions, i.e. moving to the right through the
             matrix, is set to 49 by default.
@@ -834,7 +834,7 @@ def mtx2graph(
             All tuples contain two integers that represent the position
             of a node in the matrix/graph, e.g. (0, 0).
 
-    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=HbEz8rWFEzGi&line=3&uniqifier=1>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=HbEz8rWFEzGi&line=3&uniqifier=1>`__
 
     .. code-block:: python
 
@@ -908,7 +908,7 @@ def dijkstra(
     :rtype: list or None
     :raises KeyError: If the start or end node is not in the graph.
 
-    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=WRYiNDPmHr5V&line=5&uniqifier=1>`_
+    `Run in Google Colab >> <https://colab.research.google.com/drive/1JlHKfdff_yjCO8yvxiKV9xoRAiEPgarM#scrollTo=WRYiNDPmHr5V&line=5&uniqifier=1>`__
 
     .. code-block:: python
 
