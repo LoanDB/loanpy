@@ -50,11 +50,8 @@ jobs:
       - run:
           name: "Install Python"
           command: |
-            if ( "<< parameters.python_version >>" -eq "3.7" -or `
-              "<< parameters.python_version >>" -eq "3.9" ) {
-              $specific_version = "3.7.0"
-              if ( "<< parameters.python_version >>" -eq "3.9" ) `
-              { $specific_version = "3.9.0" }
+            if ( "<< parameters.python_version >>" -eq "3.9" ) {
+              $specific_version = "3.9.0"
               choco install pyenv-win --force
               refreshenv
               pyenv install $specific_version
@@ -125,12 +122,12 @@ workflows:
        - build-linux:
            matrix:
              parameters:
-               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+               python_version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
        - build-windows:
            matrix:
              parameters:
-               python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+               python_version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
        - build-macos:
           matrix:
             parameters:
-              python_version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+              python_version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
