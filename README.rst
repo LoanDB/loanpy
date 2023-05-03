@@ -20,15 +20,15 @@
 LoanPy: A Comprehensive Linguistic Toolkit
 ==========================================
 
-loanpy is a powerful linguistic toolkit developed during the course of my PhD thesis, providing solutions for various linguistic tasks, such as:
+loanpy is a linguistic toolkit developed during the course of my PhD thesis, providing solutions for various linguistic tasks, such as:
 
-- extracting correspondence patterns from etymological data on the level of phonology and phonotactics
+- Mining correspondence patterns from etymological data on the level of phonology and phonotactics
 - Predicting loanword adaptation (lateral/horizontal transfers) based on heuristics and etymological data
 - Historical reconstruction of words (vertical transfers) based on etymological data
-- Evaluating and visualising the quality of the predictive models
+- Evaluating the quality of the predictive models
 - Searching for potential (old) loanwords between two languages
 
-This versatile toolkit has been designed with ease of use and compatibility in mind, offering a standalone, easy-to-setup, and cross-platform solution that works with Python 3.7 or higher.
+This toolkit has been designed with ease of use and compatibility in mind, offering a standalone, easy-to-setup, and cross-platform solution that works with Python 3.7 or higher.
 
 Upcoming Release: Version 3
 ---------------------------
