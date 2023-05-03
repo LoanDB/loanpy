@@ -39,17 +39,14 @@ Access LoanPy through the following platforms:
    :target: https://pypi.org/project/loanpy/
    :alt: PyPI version
 
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7893906.svg
+   :target: https://doi.org/10.5281/zenodo.7893906
+
 .. image:: ../docs/images/GitHub_Logo.png
    :alt: The GitHub logo: Simple black letters on white background that read
          "GitHub".
    :target: https://github.com/martino-vic/loanpy
    :scale: 20%
-
-.. image:: ../docs/images/zenodo-gradient-200.png
-   :alt: The Zenodo logo: Simple white letters on blue background that read
-         "Zenodo".
-   :scale: 50%
-   :target: https://zenodo.org/record/4127115#.YHCQwej7SLQ
 
 LoanPy adheres to the standards set forth by the `Cross-Linguistic
 Data Formats (CLDF) initiative <https://cldf.clld.org>`_.

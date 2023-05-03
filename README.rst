@@ -1,5 +1,5 @@
-.. image:: https://zenodo.org/badge/428920599.svg
-   :target: https://zenodo.org/record/6628976
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7893906.svg
+   :target: https://doi.org/10.5281/zenodo.7893906
 
 .. image:: https://dl.circleci.com/status-badge/img/gh/LoanpyDataHub/loanpy/tree/2.0.1.svg?style=svg
        :target: https://dl.circleci.com/status-badge/redirect/gh/LoanpyDataHub/loanpy/tree/2.0.1
