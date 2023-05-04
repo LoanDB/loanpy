@@ -1,6 +1,3 @@
-Intro
------
-
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7893906.svg
    :target: https://doi.org/10.5281/zenodo.7893906
    :alt: the DOI
@@ -20,6 +17,9 @@ Intro
 .. image:: https://img.shields.io/pypi/v/loanpy.svg
   :target: https://pypi.org/project/loanpy/
   :alt: PyPI Latest Version
+
+Intro
+-----
 
 LoanPy is a linguistic toolkit developed during the course of my PhD thesis
 at the University of Vienna, providing solutions for various tasks in
@@ -45,13 +45,13 @@ Latest stable version:
 
 ::
 
-    $ python -m pip install loanpy
+    $ pip install loanpy
 
 Development version:
 
 ::
 
-    $ python -m pip install git+https://github.com/martino-vic/loanpy.git@main
+    $ pip install git+https://github.com/martino-vic/loanpy.git@main
 
 Documentation
 -------------
