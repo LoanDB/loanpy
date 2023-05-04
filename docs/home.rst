@@ -1,7 +1,7 @@
 Home
-----
+====
 
-.. image:: ../docs/images/white_logo_dark_background.jpg
+.. image:: https://user-images.githubusercontent.com/53435298/236251977-b6d650e9-1ba6-478a-853d-8ac45957882c.png
    :scale: 20%
    :alt: The LoanPy logo: "loanpy" in simple white cursive italics on black
          background. On the right side as part of the logo are two
@@ -18,7 +18,7 @@ Home
 
 LoanPy is a linguistic toolkit to detect ancient borrowings computationally.
 It was part of my dissertation-project at the `Finno-Ugric department
-of the University of Vienna <https://finno-ugristik.univie.ac.at/>`_,
+of the University of Vienna <https://finno-ugristik.univie.ac.at/en/>`_,
 which aimed to answer the question whether there are any Gothic loanwords
 in Hungarian. The project was partly funded by the
 `University of Helsinki <https://www.helsinki.fi/en>`_
@@ -27,26 +27,53 @@ and the `Max Planck Institute for Evolutionary Anthropology
 
 The software offers following features:
 
-    - Extraction of sound and phonotactic correspondences from etymological data
-    - Predictions on loanword adaptation and historical reconstruction
-    - Evaluation of the quality of the predictive models
-    - Searching for phonetic and semantic matches between two lists of
-      form-meaning pairs
+- Extraction of sound and phonotactic correspondences from etymological data
+- Predictions on loanword adaptation and historical reconstruction
+- Evaluation of the quality of the predictive models
+- Searching for phonetic and semantic matches between two lists of
+  form-meaning pairs
 
-Access LoanPy through the following platforms:
+LoanPy adheres to the standards set forth by the `Cross-Linguistic
+Data Formats (CLDF) <https://cldf.clld.org>`_ initiative.
+
+Find LoanPy on following platforms
+==================================
+
+GitHub
+------
+
+.. image:: ../docs/images/github-mark.png
+   :target: https://github.com/LoanpyDataHub/loanpy
+   :alt: silhouette of GitHub's Octocat
+
+PyPi
+----
 
 .. image:: https://img.shields.io/pypi/v/loanpy.svg
    :target: https://pypi.org/project/loanpy/
    :alt: PyPI version
 
+Zenodo
+------
+
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7893906.svg
    :target: https://doi.org/10.5281/zenodo.7893906
 
-.. image:: ../docs/images/GitHub_Logo.png
-   :alt: The GitHub logo: Simple black letters on white background that read
-         "GitHub".
-   :target: https://github.com/martino-vic/loanpy
-   :scale: 20%
+Readthedocs
+-----------
 
-LoanPy adheres to the standards set forth by the `Cross-Linguistic
-Data Formats (CLDF) initiative <https://cldf.clld.org>`_.
+.. image:: https://readthedocs.org/projects/loanpy/badge/?version=latest
+   :target: https://loanpy.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
+Coveralls
+---------
+
+.. image:: https://coveralls.io/repos/github/martino-vic/loanpy/badge.svg?branch=main
+   :target: https://coveralls.io/github/martino-vic/loanpy?branch=main
+
+CircleCi
+--------
+
+.. image:: https://dl.circleci.com/status-badge/img/gh/LoanpyDataHub/loanpy/tree/2.0.1.svg?style=svg
+       :target: https://dl.circleci.com/status-badge/redirect/gh/LoanpyDataHub/loanpy/tree/main
