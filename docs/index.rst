@@ -10,7 +10,7 @@ Welcome to LoanPy's documentation!
    :maxdepth: 3
    :caption: Contents:
 
-   ../README.rst
+   home.rst
    tutorial.rst
    documentation.rst
 
