@@ -7,38 +7,49 @@ from pathlib import Path
 
 setup(
   name='loanpy',
-  description='a linguistic toolkit for predicting loanword adaptation \
-and sound change',
+  description='a linguistic toolkit for detecting old loanwords by predicting,\
+evaluating and applying changes in horizontal and vertical lexical transfers',
   long_description=open("README.rst").read(),
   author='Viktor Martinović',
-  author_email='viktor.martinovic@hotmail.com',
-  version='3.0',
+  author_email='viktor_martinovic@eva.mpg.de',
+  version='3.0.0',
   packages=find_packages(),
   data_files=[("loanpy", ["loanpy/ipa_all.csv"])],
   include_package_data=True,
   extras_require={
-  "test": ["pytest==7.1.2", "coverage==7.2.2"],
+  "test": ["pytest>=7.1.2", "coverage>=7.2.2"],
   "dev": ["wheel", "twine", "sphinx"]
   },
-  keywords=['borrowing detection',
-            'computational linguistics',
-            'loanword adaptation',
-            'sound change',
-            'etymology',
-            'contact linguistics'],
+  keywords=['linguistics', 'loanwords', 'language-contact',
+            'sound-change-applier'],
   classifiers=[
-    'Development Status :: 4 - Beta',
+    'Development Status :: 3 - Alpha',
     'Intended Audience :: Science/Research',
     'Topic :: Scientific/Engineering',
     "Topic :: Text Processing :: Linguistic",
-    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    'License :: OSI Approved :: MIT',
     'Natural Language :: English',
-    'Operating System :: OS Independent',
-    'Programming Language :: Python :: 3.9'
-  ],
+    'Operating System :: MacOS',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: Linux',
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 
+  ],
   url='https://github.com/martino-vic/loanpy',
-  download_url='https://github.com/martino-vic/loanpy/archive/v.2.0-beta.tar.gz',
-  license='MIT',  # https://help.github.com/articles/licensing-a-repository
-  platforms=["unix", "linux", "windows"],
+  download_url='https://github.com/LoanpyDataHub/loanpy/archive/3.0.0.tar.gz',
+  license='MIT',
+  platforms=["Windows", "macOS", "Linux"],
+  python_requires=">=3.7",
+  project_urls={
+  "documentation": "https://loanpy.readthedocs.io/en/latest/home.html",
+  "citation": "https://zenodo.org/record/7893906",
+  "continuous integration": "https://app.circleci.com/pipelines/github/LoanpyDataHub/loanpy?branch=2.0.1",
+  "test coverage": "https://coveralls.io/github/martino-vic/loanpy?branch=2.0.1",
+  "database": "https://github.com/LoanpyDataHub"
+  }
 )

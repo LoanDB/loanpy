@@ -10,3 +10,6 @@ venv/
 
 # Ignore distribution folder
 dist/
+
+# Ignore python-notebook checkpoints
+.ipynb_checkpoints/
