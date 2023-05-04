@@ -19,3 +19,4 @@ build/
 source/
 Makefile
 make.bat
+latex/
