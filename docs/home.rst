@@ -1,5 +1,5 @@
 Home
-====
+~~~~
 
 .. image:: https://user-images.githubusercontent.com/53435298/236251977-b6d650e9-1ba6-478a-853d-8ac45957882c.png
    :scale: 20%
