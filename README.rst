@@ -15,25 +15,22 @@
   :target: https://pypi.org/project/loanpy/
   :alt: PyPI Latest Version
 
+LoanPy is a linguistic toolkit developed during the course of my PhD thesis
+at the University of Vienna, providing solutions for various tasks in
+historical and contact linguistics, such as:
 
-
-LoanPy: A Comprehensive Linguistic Toolkit
-==========================================
-
-loanpy is a linguistic toolkit developed during the course of my PhD thesis, providing solutions for various linguistic tasks, such as:
-
-- Mining correspondence patterns from etymological data on the level of phonology and phonotactics
-- Predicting loanword adaptation (lateral/horizontal transfers) based on heuristics and etymological data
-- Historical reconstruction of words (vertical transfers) based on etymological data
+- Mining correspondence patterns from etymological data on the level of
+  phonology and phonotactics
+- Predicting loanword adaptation (lateral/horizontal transfers) based on
+  heuristics and etymological data
+- Historical reconstruction of words (vertical transfers) based on
+  etymological data
 - Evaluating the quality of the predictive models
 - Searching for potential (old) loanwords between two languages
 
-This toolkit has been designed with ease of use and compatibility in mind, offering a standalone, easy-to-setup, and cross-platform solution that works with Python 3.7 or higher.
-
-Upcoming Release: Version 3
----------------------------
-
-Stay tuned for the upcoming release of loanpy version 3, which is scheduled for May 2023.
+This toolkit has been designed with ease of use and compatibility in mind,
+offering a standalone, easy-to-setup, and cross-platform solution that works
+with Python 3.7 or higher.
 
 Installation
 ------------
@@ -48,7 +45,7 @@ Development version:
 
 ::
 
-    $ python -m pip install git+https://github.com/martino-vic/loanpy.git@2.0.1
+    $ python -m pip install git+https://github.com/martino-vic/loanpy.git@main
 
 Documentation
 -------------
@@ -58,17 +55,20 @@ Documentation
 Citation
 --------
 
-If you use loanpy in your research or project, please cite the following:
+If you use loanpy 3 in your research or project, please cite the following:
 
 ::
 
-   @Misc{Martinovic2022,
-     author    = {Viktor Martinovi{\'c}},
-     title     = {loanpy},
-     year      = {2022},
-     doi       = {10.5281/zenodo.6628976},
-     publisher = {Zenodo},
-   }
+    @misc{martinovic2023,
+      author       = {Viktor Martinovi{\'c}},
+      title        = {LoanpyDataHub/loanpy: Third stable release},
+      month        = may,
+      year         = 2023,
+      publisher    = {Zenodo},
+      version      = {3.0.0},
+      doi          = {10.5281/zenodo.7893906},
+      url          = {https://doi.org/10.5281/zenodo.7893906}
+    }
 
 License
 -------

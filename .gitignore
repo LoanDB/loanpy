@@ -8,8 +8,9 @@ venv/
 # Ignore testing cache
 .pytest_cache/
 
-# Ignore distribution folder
+# Ignore distribution folders
 dist/
+build/
 
 # Ignore python-notebook checkpoints
 .ipynb_checkpoints/
