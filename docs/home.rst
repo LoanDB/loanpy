@@ -36,9 +36,6 @@ The software offers following features:
 LoanPy adheres to the standards set forth by the `Cross-Linguistic
 Data Formats (CLDF) <https://cldf.clld.org>`_ initiative.
 
-Find LoanPy on following platforms
-==================================
-
 GitHub
 ------
 
