@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial &mdash; LoanPy 3.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Documentation" href="documentation.html" />
+    <link rel="prev" title="Home" href="home.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LoanPy
+          </a>
+              <div class="version">
+                3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-mine-sound-correspondences">Step 1: Mine sound correspondences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-evaluate-the-predictive-model">Step 2: Evaluate the predictive model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-apply-sound-correspondences">Step 3: Apply sound correspondences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-4-find-old-loanwords">Step 4: Find old loanwords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LoanPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
+<p>This tutorial will walk you through the process of using loanpy to
+discover old loanwords.</p>
+<p>Here is an illustration of the loanword detection framework with a minimal
+example:</p>
+<figure class="align-default" id="id1">
+<img alt="The image shows a workflow chart with a turquoise bubble on top saying &quot;kiki &lt; gigi ← gege&quot;. Two arrows point away and towards it both on its left and on its right. The ones pointing away say &quot;mine&quot;, and the ones pointing towards it &quot;evaluate&quot;. The ones pointing away point towards a green box each. The box on the left reads &quot;k&lt;g, i&lt;i&quot; and the box on the right &quot;g&lt;g, i&lt;e&quot;. There are two bigger turquoise 3x3-tables underneath the green boxes. The one on the left looks like this: The left column reads &quot;Candidate Recipient Form, ikki, iikk&quot;, the middle column &quot;Reconstruct hypothetical past form, iggi, iigg&quot;, and the right &quot;Meaning, cat, cold&quot;. There's a yellow curved arrow above it, going from the left column up towards the green box and bending down and pointing to the second column. It says &quot;apply&quot; in the middle of its arch. The other 3x3 table is a mirrored version of this. Its left column reads &quot;Meaning, hot, dog&quot;, its middle one &quot;Adapt hypothetical recipient form, igig, iggi&quot; and its right &quot;Candidate Donor Form, egeg, egge&quot;. The yellow apply-arrow points from the right column to the middle one. There is a big yellow curved arrow on the bottom too, pointing from the middle column of the left 3x3 table, to the middle column of the right 3x3 table. Above its arch it says &quot;Find new etymology: ikki “cat” &lt; iggi ← egge “dog”&quot;" src="_images/workflow.png" />
+<figcaption>
+<p><span class="caption-text">Mine sound
+correspondences from an etymological dictionary, evaluate their predictive
+power, input them to a sound change applier to generate pseudo-adapted and
+pseudo-proto-forms, and search for phonetic and semantic matches between
+those predictions.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<section id="step-1-mine-sound-correspondences">
+<h2>Step 1: Mine sound correspondences<a class="headerlink" href="#step-1-mine-sound-correspondences" title="Permalink to this heading"></a></h2>
+<p>Grab an etymological dictionary and mine information of how sounds
+and phonotactic patterns changed during horizontal and vertical transfers.</p>
+<p>In the minimal example, our dictionary contains only one etymology, namely
+a horizontal transfer “gigi ← gege” and a vertical one “kiki &lt; gigi”.
+If we mine the sound correspondences we get the rule “g from g, i from e”
+in horizontal transfers and “k from g, i from i” in vertical ones.
+In terms of phonotactics, we can mine “CVCV from CVCV” both horizontally
+and vertically.</p>
+<p>This is achieved with <a class="reference external" href="https://loanpy.readthedocs.io/en/latest/documentation.html#loanpy.scminer.get_correspondences">loanpy.scminer.get_correspondences</a></p>
+<p>For an implementation with a detailed guide visit <a class="reference external" href="https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html">Part 3 (steps 1-4) of
+ronataswestoldturkic’s documentation</a>.</p>
+</section>
+<section id="step-2-evaluate-the-predictive-model">
+<h2>Step 2: Evaluate the predictive model<a class="headerlink" href="#step-2-evaluate-the-predictive-model" title="Permalink to this heading"></a></h2>
+<p>How good are the predictions made from the mined sound correspondences?</p>
+<p>Our minimal example is a perfect model that predicts with 100% certainty that
+&lt;kiki&gt; goes back to &lt;gigi&gt; and that the donor form of &lt;gigi&gt; is &lt;gege&gt;.</p>
+<p>This is achieved with <a class="reference external" href="https://loanpy.readthedocs.io/en/latest/documentation.html#loanpy.eval_sca.eval_one">loanpy.eval_sca.eval_one</a></p>
+<p>For an implementation with a detailed guide
+employing concepts from statistics such as <a class="reference external" href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)#Leave-one-out_cross-validation">leave-one out cross-validation
+(LOOCV)</a>,
+the <a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristics (ROC) -curve</a>,
+and the <a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve">area under the curve (AUC)</a>,
+visit <a class="reference external" href="https://ronataswestoldturkic.readthedocs.io/en/latest/mkloanpy.html">steps 5-6 in part 3 of ronataswestoldturkic’s
+documentation</a></p>
+</section>
+<section id="step-3-apply-sound-correspondences">
+<h2>Step 3: Apply sound correspondences<a class="headerlink" href="#step-3-apply-sound-correspondences" title="Permalink to this heading"></a></h2>
+<p>Take the information mined from the etymological dictionary
+and apply it to unseen words.
+Create hypothetical proto- and adapted forms by simulating their horizontal
+and vertical changes.</p>
+<p>In the minimal example this means predicting that &lt;ikki&gt; must go back to
+&lt;iggi&gt; and &lt;iikk&gt; to &lt;iigg&gt;, based on the mined sound correspondences for
+vertical transfers. Likewise, &lt;egeg&gt; must turn into &lt;igig&gt; and &lt;egge&gt; into
+&lt;iggi&gt; during horizontal transfers, based on the extracted sound
+correspondences.</p>
+<p>This is achieved with the <a class="reference external" href="https://loanpy.readthedocs.io/en/latest/documentation.html#module-loanpy.scapplier">loanpy.scapplier</a>
+module</p>
+<p>For an implementation with a detailed guide to predict vertical transfers visit
+<a class="reference external" href="https://gerstnerhungarian.readthedocs.io/en/latest/?badge=latest">gerstnerhungarian’s documentation</a> and for
+predicting horizontal transfers (loanwords) visit
+<a class="reference external" href="https://koeblergothic.readthedocs.io/en/latest/?badge=latest">koeblergothic’s documentation</a>.</p>
+</section>
+<section id="step-4-find-old-loanwords">
+<h2>Step 4: Find old loanwords<a class="headerlink" href="#step-4-find-old-loanwords" title="Permalink to this heading"></a></h2>
+<p>Search for phonetic matches between predicted loanword adaptations
+and predicted proto-forms. Calculate the semantic similarity of
+the meanings associated with each form in a match. List the phonetic matches
+with the highest semantic similarity.</p>
+<p>In our minimal example this means to first go through the <a class="reference external" href="https://en.wikipedia.org/wiki/Cartesian_product">cartesian product</a> of phonetic matches.
+If our criterion for a match is phonetic identity, we get:</p>
+<ol class="arabic simple">
+<li><p>iggi - igig: no match</p></li>
+<li><p>iigg - igig: no match</p></li>
+<li><p>iggi - iggi: MATCH</p></li>
+<li><p>iigg - iggi: no match</p></li>
+</ol>
+<p>Now we can register that &lt;iggi&gt; is our only match. The meanings associated
+with it are “cat” and “dog”. If we assess these two meanings as sufficiently
+similar, then we can propose a new etymology: &lt;ikki&gt; “cat” goes back to
+a proto-form &lt;iggi&gt;, which was borrowed from &lt;egge&gt; “dog”.</p>
+<p>This is achieved with the <a class="reference external" href="https://loanpy.readthedocs.io/en/latest/documentation.html#module-loanpy.loanfinder">loanpy.loanfinder</a>
+module</p>
+<p>For an implementation with a detailed guide visit
+<a class="reference external" href="https://gothichungarian.readthedocs.io/en/latest/?badge=latest">GothicHungarian’s documentation</a>.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<p>Congratulations, you’ve completed this tutorial on loanpy! You should now
+have a good understanding of how to use loanpy to find old loanwords.</p>
+<p>If you have any questions or feedback, please don’t hesitate to reach out
+to me, e.g. via <a class="reference external" href="mailto:viktor_martinovic&#37;&#52;&#48;$removethis$eva&#46;mpg&#46;de">e-mail</a> or
+<a class="reference external" href="https://twitter.com/martino_vik">Twitter</a>.</p>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this heading"></a></h2>
+<p>LoanPy was part of my dissertation-project.
+A link to the monograph will be made public as soon as available,
+probably around September 2023. Stay tuned.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="home.html" class="btn btn-neutral float-left" title="Home" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="documentation.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Viktor Martinović.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

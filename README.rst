@@ -1,11 +1,14 @@
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.7893906.svg
    :target: https://doi.org/10.5281/zenodo.7893906
+   :alt: the DOI
 
-.. image:: https://dl.circleci.com/status-badge/img/gh/LoanpyDataHub/loanpy/tree/2.0.1.svg?style=svg
-       :target: https://dl.circleci.com/status-badge/redirect/gh/LoanpyDataHub/loanpy/tree/2.0.1
+.. image:: https://dl.circleci.com/status-badge/img/gh/LoanpyDataHub/loanpy/tree/main.svg?style=svg
+   :target: https://dl.circleci.com/status-badge/redirect/gh/LoanpyDataHub/loanpy/tree/main
+   :alt: continuous integration status
 
-.. image:: https://coveralls.io/repos/github/martino-vic/loanpy/badge.svg?branch=2.0.1
-   :target: https://coveralls.io/github/martino-vic/loanpy?branch=2.0.1
+.. image:: https://coveralls.io/repos/github/LoanpyDataHub/loanpy/badge.svg
+   :target: https://coveralls.io/github/LoanpyDataHub/loanpy
+   :alt: code coverage status
 
 .. image:: https://readthedocs.org/projects/loanpy/badge/?version=latest
    :target: https://loanpy.readthedocs.io/en/latest/?badge=latest

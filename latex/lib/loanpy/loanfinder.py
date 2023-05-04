@@ -93,9 +93,7 @@ def phonetic_matches(
                         last_match = adrow[1]
 
             if (i + 1) % 50 == 0:
-                logging.info(
-                    f"{i+1}/{len(df_rc)} iterations completed"
-                    )  # pragma: no cover
+                logging.info(f"{i+1}/{len(df_rc)} iterations completed")
 
 def semantic_matches(
         df_phonmatch: List[List[str]],
@@ -163,4 +161,4 @@ def semantic_matches(
             if (i + 1) % 50 == 0:
                 logging.info(
                     f"{i+1}/{len(df_phonmatch[1:])-1} iterations completed"
-                    )  # pragma: no cover
+                    )
