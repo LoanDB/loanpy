@@ -16,6 +16,9 @@ Home
          two venn-diagrams, or two very round bowling pins that fell: one
          to the left, one to right.
 
+Intro
+-----
+
 LoanPy is a linguistic toolkit to detect ancient borrowings computationally.
 It was part of my dissertation-project at the `Finno-Ugric department
 of the University of Vienna <https://finno-ugristik.univie.ac.at/en/>`_,
