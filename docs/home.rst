@@ -2,7 +2,6 @@ Home
 ~~~~
 
 .. image:: https://user-images.githubusercontent.com/53435298/236251977-b6d650e9-1ba6-478a-853d-8ac45957882c.png
-   :scale: 20%
    :alt: The LoanPy logo: "loanpy" in simple white cursive italics on black
          background. On the right side as part of the logo are two
          translucent gray-ish shapes that look like laying 8s. One is
