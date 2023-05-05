@@ -3,7 +3,6 @@
 
 # Ignore virtual environment and package management
 venv/
-*.egg-info/
 
 # Ignore testing cache
 .pytest_cache/
@@ -11,6 +10,7 @@ venv/
 # Ignore distribution folders
 dist/
 build/
+*.egg-info/
 
 # Ignore python-notebook checkpoints
 .ipynb_checkpoints/
