@@ -15,8 +15,8 @@ build/
 # Ignore python-notebook checkpoints
 .ipynb_checkpoints/
 
-# Ignore local Sphinx folder for LaTeX
-source/
+# Ignore local Sphinx files for LaTeX
 Makefile
-make.bat
-latex/
+docs/doctrees
+docs/latex
+ipa2tipa.py
