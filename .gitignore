@@ -14,9 +14,3 @@ build/
 
 # Ignore python-notebook checkpoints
 .ipynb_checkpoints/
-
-# Ignore local Sphinx files for LaTeX
-Makefile
-docs/doctrees
-docs/latex
-ipa2tipa.py
