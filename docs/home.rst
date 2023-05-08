@@ -22,7 +22,7 @@ LoanPy is a linguistic toolkit to detect ancient borrowings computationally.
 It was part of my dissertation-project at the `Finno-Ugric department
 of the University of Vienna <https://finno-ugristik.univie.ac.at/en/>`_,
 which aimed to answer the question whether there are any Gothic loanwords
-in Hungarian. The project was partly funded by the
+in Hungarian. The project was partially funded by the
 `University of Helsinki <https://www.helsinki.fi/en>`_
 and the `Max Planck Institute for Evolutionary Anthropology
 <https://www.eva.mpg.de/index/>`_ in Leipzig.

@@ -19,3 +19,4 @@ extensions = ['sphinx.ext.autodoc', 'sphinx_copybutton']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
+# https://sphinx-copybutton.readthedocs.io/en/latest/index.html
