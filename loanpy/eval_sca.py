@@ -183,8 +183,11 @@ def eval_one(
         adrc.set_sc(get_correspondences(intable, heur))  # extract info from traing data
         adrc.set_prosodic_inventory(get_prosodic_inventory(intable))  # extract prosodic_inventory
         if adapt:
-            ad = adrc.adapt(src, howmany, src_pros)
-            out.append(tgt in ad)
+            try:
+                ad = adrc.adapt(src, howmany, src_pros)
+                out.append(tgt in ad)
+            except KeyError:  # bugfix issue #50
+                out.append(False)
         else:
             rc = adrc.reconstruct(src, howmany)
             out.append(bool(re.match(rc, tgt)))

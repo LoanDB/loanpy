@@ -66,6 +66,44 @@ def test_eval_one_adapt(get_prosodic_inventory_mock, get_correspondences_mock, a
     get_prosodic_inventory_mock.assert_called_with(intable)
     assert not adrc_monkey.init_called_with
 
+#same as before but make adapt raise a keyerror
+adrc_monkey2 = AdrcMonkey()
+def raise_keyerror(*args):
+    print("here")
+    adrc_monkey2.adapt_called_with.append([*args])
+    raise KeyError("Raising a KeyError from this mock function")
+adrc_monkey2.adapt = raise_keyerror
+@patch("loanpy.eval_sca.Adrc", side_effect=[adrc_monkey2, adrc_monkey2])
+@patch("loanpy.eval_sca.get_correspondences")
+@patch("loanpy.eval_sca.get_prosodic_inventory")
+def test_eval_one_adapt_keyerror(get_prosodic_inventory_mock, get_correspondences_mock, adrc_mock):
+    # define patched functions' return value
+    get_prosodic_inventory_mock.return_value = 321
+    get_correspondences_mock.return_value = 123
+    # define input variables
+    intable = [  ['ID', 'COGID', 'DOCULECT', 'ALIGNMENT', 'PROSODY'],
+  ['0', '1', 'H', '#aː t͡ʃ# -#', 'VC'],
+  ['1', '1', 'EAH', 'a.ɣ.a t͡ʃ i', 'VCVCV'],
+  ['2', '2', 'H', '#aː ɟ uː#', 'VCV'],
+  ['3', '2', 'EAH', 'a l.d a.ɣ', 'VCCVC']
+]
+    heuristic = "some_heuristic"
+    adapt = True
+    howmany = 2
+    pros = True
+
+    # assert results
+    result = eval_one(intable, heuristic, adapt, howmany, pros)
+    assert result == 0.0
+
+    # assert calls
+    assert adrc_monkey2.adapt_called_with == [['#aː t͡ʃ# -#', 2, "VC"],
+                                            ['#aː ɟ uː#', 2, "VCV"]
+                                            ]
+    get_correspondences_mock.assert_called_with(intable, heuristic)
+    get_prosodic_inventory_mock.assert_called_with(intable)
+    assert not adrc_monkey2.init_called_with
+
 adrc_monkey2 = AdrcMonkey()
 @patch("loanpy.eval_sca.Adrc", side_effect=[adrc_monkey2, adrc_monkey2])
 @patch("loanpy.eval_sca.get_correspondences")
