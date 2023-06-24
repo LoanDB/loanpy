@@ -246,7 +246,7 @@ class Adrc():
             ['d', 'a', 'd']
         """
 
-        # check if there is data available data for this structure
+        # check if there is available data for this structure
         try:
             predicted_phonotactics = self.sc[3][prosody][0]
         except KeyError:

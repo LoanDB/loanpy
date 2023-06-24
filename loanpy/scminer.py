@@ -196,7 +196,10 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
     for row in ipa_all[1:]:
         distances = []
         for phoneme in phoneme_inventory:
-            v1, v2 = vectors[phoneme], vectors[row[0]]
+            try:  # Bugfix for Bislama diphthong "ae": not in ipa_all!
+                v1, v2 = vectors[phoneme], vectors[row[0]]
+            except KeyError:
+                continue
             # measure euclidean distance between feature vectors
             distances.append(
             math.sqrt(sum((v1[i] - v2[i]) ** 2 for i in range(len(v1))))
