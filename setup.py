@@ -7,12 +7,12 @@ from pathlib import Path
 
 setup(
   name='loanpy',
-  description='a linguistic toolkit for detecting old loanwords by predicting,\
+  description='a linguistic toolkit for detecting old loanwords by predicting, \
 evaluating and applying changes in horizontal and vertical lexical transfers',
   long_description=open("README.rst").read(),
   author='Viktor Martinović',
   author_email='viktor_martinovic@eva.mpg.de',
-  version='3.0.1',
+  version='3.0.3',
   packages=find_packages(),
   data_files=[("loanpy", ["loanpy/ipa_all.csv"])],
   include_package_data=True,

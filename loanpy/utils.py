@@ -390,7 +390,7 @@ def modify_ipa_all(
                 row = [1 if x == '+' else -1 if x == '-' else x for x in row]
 
                 # Check for "j" or "w" and set "cons" value to 1
-                if any(i in row[0] for i in ['j', 'w', 'ʔ']):
+                if any(i in row[0] for i in ['j', 'w', 'ʔ', 'ɹ']):
                     row[header.index('cons')] = 1
 
                 # Ensure all rows have the same length

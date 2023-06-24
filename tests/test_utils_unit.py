@@ -176,7 +176,7 @@ def test_is_same_length_alignments():
 def test_read_ipa_all():
     result = read_ipa_all()
     assert isinstance(result, list)
-    assert len(result) == 6490
+    assert len(result) == 6498
 
 @patch("loanpy.utils.read_ipa_all")
 def test_init_ipa(read_ipa_all_mock):
@@ -281,7 +281,7 @@ def test_prod_zero():
 
 def test_scjson2tsv(tmp_path):
     """
-    
+
     #. Write a mock scdict json file
     #. Transform it
     #. Write it to a temporary directory
