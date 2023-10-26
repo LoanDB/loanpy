@@ -36,7 +36,7 @@ historical and contact linguistics, such as:
 
 This toolkit has been designed with ease of use and compatibility in mind,
 offering a standalone, easy-to-setup, and cross-platform solution that works
-with Python 3.7 or higher.
+with Python 3.7 or higher. 
 
 Installation
 ------------
