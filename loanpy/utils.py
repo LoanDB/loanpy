@@ -219,7 +219,8 @@ def prefilter(data: List[List[str]], srclg: str, tgtlg: str) -> List[List[str]]:
     return data
 
 def is_valid_language_sequence(
-        data: List[List[str]], source_lang: str, target_lang: str
+        data: List[List[str]], source_lang: str, target_lang: str,
+        idx_col_lg_id=2
         ) -> bool:
 
     """
@@ -275,7 +276,7 @@ def is_valid_language_sequence(
         return False
     for idx, row in enumerate(data):
         expected_lang = source_lang if idx % 2 == 0 else target_lang
-        if row[2] != expected_lang:
+        if row[idx_col_lg_id] != expected_lang:
             logging.info(f"Problem in row {idx}")
             return False
     return True
