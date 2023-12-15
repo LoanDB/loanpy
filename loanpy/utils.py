@@ -282,7 +282,7 @@ def is_valid_language_sequence(
     return True
 
 
-def is_same_length_alignments(data: List[List[str]]) -> bool:
+def is_same_length_alignments(data: List[List[str]], idx=3) -> bool:
     """
     Check if alignments within a cognate set have the same length.
 
@@ -313,8 +313,8 @@ def is_same_length_alignments(data: List[List[str]]) -> bool:
 
     rownr = 0
     for i in range(0, len(data)-1, 2):
-        first = data[i][3].split(" ")
-        second = data[i+1][3].split(" ")
+        first = data[i][idx].split(" ")
+        second = data[i+1][idx].split(" ")
         try:
             assert len(first) == len(second)
         except AssertionError:
