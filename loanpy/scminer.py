@@ -91,7 +91,7 @@ def get_correspondences(
     for i in [0, 3]: # sort by freq
         out[i] = {k: [j[0] for j in Counter(out[i][k]).most_common()] for k in out[i]}
     for i in [1, 4]: # sort by freq
-        out[i] = {k: len(out[i][k]) for k in out[i]}
+        out[i] = {k: sum(out[i][k]) for k in out[i]}
     for i in [2, 5]: # sort by freq
         out[i] = {k: list(dict.fromkeys(out[i][k])) for k in out[i]}
 
