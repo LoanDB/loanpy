@@ -135,7 +135,10 @@ def uralign(left: str, right: str) -> str:
 
     """
 
-    left, right = left.split(" "), right.split(" ")
+    try:
+        left, right = left.split(" "), right.split(" ")
+    except AttributeError:
+        pass    #bugfix: segments in cldf are lists under the hood
     # tag word initial & final cluster, only in left
     left[0], left[-1] = "#" + left[0], left[-1] + "#"
 

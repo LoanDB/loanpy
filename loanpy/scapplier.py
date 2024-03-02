@@ -68,7 +68,8 @@ class Adrc():
 
         self.sc = None
         self.prosodic_inventory = None
-        self.workflow = None  # will be filled by self.adapt()
+        self.guesses = 0
+	
         if sc:
             with open(sc, "r", encoding='utf-8') as f:
                 self.sc = load(f) #  sound correspondence dictionaries
@@ -166,7 +167,9 @@ class Adrc():
             ipalist = self.repair_phonotactics(ipalist, prosody)
         out = self.read_sc(ipalist, howmany)
         out = ["".join(word).replace("-", "") for word in product(*out)]
-        return out[:howmany]  # cut off leftover, turn to string
+        out = out[:howmany]  # cut off excess
+        self.guesses = len(out)
+        return out
 
     def reconstruct(self,
                     ipastr: str,
@@ -216,7 +219,10 @@ class Adrc():
         # read the correct number of sound correspondences per phoneme
         out = self.read_sc(ipalist, howmany)
 
-        out = ''.join([list2regex(i) for i in out if i != ['-']])
+        # catch the actual number of predictions
+        self.guesses = prod(len(i) for i in out if i != ["-"])
+
+        out = ''.join([list2regex(i) for i in out])
         return "^" + out + "$"  # regex
 
     def repair_phonotactics(self,
@@ -353,6 +359,7 @@ class Adrc():
             # so picking the "o" makes less of a difference than picking the "c"
         """
 
+
         # pick all sound correspondences from dictionary
         sclistlist = [self.sc[0][i] for i in ipa]
         # if howmany is bigger/equal than their product, return all of them.
@@ -384,6 +391,7 @@ class Adrc():
                 # latest if a sound hits end of list: turns 2 inf, breaks loop
 
         return out
+
 
     def get_closest_phonotactics(self, struc: str) -> str:
         """
@@ -592,6 +600,8 @@ def list2regex(sclist: List[str]) -> str:
         '(b|k|v)?'
     """
 
+    if sclist == ["-"]:
+        return ""
     s = ")?" if "-" in sclist else ")"
     out = "|".join([i.replace(".", "") for i in sclist if i != "-"])
     return "(" + out + s

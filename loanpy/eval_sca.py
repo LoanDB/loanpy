@@ -12,6 +12,7 @@ loanword adaptation and historical sound change processes
 by quantifying the success rate of predictive models.
 """
 
+import logging
 import re
 from typing import Dict, List, Tuple
 
@@ -23,7 +24,8 @@ def eval_all(
         heur: Dict[str, List[str]],
         adapt: bool,
         guess_list: List[int],
-        pros: bool = False
+        pros: bool = False,
+        debug: bool = False
         ) -> List[Tuple[int, int]]:
     """
     #. Input a loanpy-compatible table containing etymological data.
@@ -72,28 +74,25 @@ def eval_all(
         [(0.33, 0.0), (0.67, 1.0), (1.0, 1.0)]
     """
 
-    true_positives = []
+    tprs, fprs = [], []
 
     # Iterate through the guess list and calculate evaluation results
     for num_guesses in guess_list:
-        eval_result = eval_one(intable, heur, adapt, num_guesses, pros)
-        true_positives.append(eval_result)  # already normalised
+        tpfn, fp = eval_one(intable, heur, adapt, num_guesses, pros, debug)
+        tprs.append(round(tpfn.count(True) / len(tpfn), 2))
+        fprs.append(fp)
+    fprs = ([round(i / fprs[-1], 2) for i in fprs])  # normalise
 
-    # Normalize guess list values
-    normalised_guess_list = [round(i / guess_list[-1], 2) for i in guess_list]
-
-    # Combine normalized guess list with true positive results
-    fp_vs_tp = list(zip(normalised_guess_list, true_positives))
-
-    return fp_vs_tp
-
+    # Combine fpr and tpr for roc curve
+    return list(zip(fprs, tprs))
 
 def eval_one(
         intable: List[List[str]],
         heur: Dict[str, List[str]],
         adapt: bool,
         howmany: int,
-        pros: bool = False
+        pros: bool = False,
+        debug: bool = False
         ) -> float:
     """
     Called by ``loanpy.eval.eval_all``.
@@ -173,11 +172,12 @@ def eval_one(
     """
 
     out = []
+    totalfp = 0
     h = {i: intable[0].index(i) for i in intable[0]}
     for i in range(1, len(intable), 2):  # 1 bc skip header
         srcrow, tgtrow = intable.pop(i), intable.pop(i)  # leave one out
-        src = srcrow[h["ALIGNMENT"]]   # define left-outs as test input
-        tgt = "".join(re.sub("[-. ]", "", tgtrow[h["ALIGNMENT"]]))
+        # define left-outs as test input
+        src, tgt = srcrow[h["Segments"]], tgtrow[h["Segments"]].replace(" ", "")
         src_pros = srcrow[h["PROSODY"]] if pros else ""
         adrc = Adrc()   # initiate adapt-reconstruct class
         adrc.set_sc(get_correspondences(intable, heur))  # extract info from traing data
@@ -191,7 +191,22 @@ def eval_one(
         else:
             rc = adrc.reconstruct(src, howmany)
             out.append(bool(re.match(rc, tgt)))
+        
+        #one fp less if tgt was hit
+        fp = adrc.guesses-1 if out[-1] else adrc.guesses
+        totalfp += fp
+          
+        if debug:
+            logging.info(f"src: {src}")
+            logging.info(f"pred: {rc}")
+            #logging.info(f"pred: {ad[:10]}")
+            logging.info(f"tgt: {tgt}")
+            logging.info(f"Hit: {bool(re.match(rc, tgt))}")
+            #logging.info(f"Hit: {tgt in ad}")
+            logging.info(f"guesses: {howmany}")
+            logging.info("")
+            
         intable.insert(i, tgtrow)
         intable.insert(i, srcrow)
 
-    return round(len([i for i in out if i]) / len(out), 2)
+    return out, totalfp
