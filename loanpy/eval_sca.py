@@ -74,17 +74,18 @@ def eval_all(
         [(0.33, 0.0), (0.67, 1.0), (1.0, 1.0)]
     """
 
-    tprs, fprs = [], []
+    guess_list.sort()  # in case it's not
+    tprs, fps = [], []
 
     # Iterate through the guess list and calculate evaluation results
     for num_guesses in guess_list:
         tpfn, fp = eval_one(intable, heur, adapt, num_guesses, pros, debug)
         tprs.append(round(tpfn.count(True) / len(tpfn), 2))
-        fprs.append(fp)
-    fprs = ([round(i / fprs[-1], 2) for i in fprs])  # normalise
+        fps.append(fp)
+    fprs = [round(i / fps[-1], 2) for i in fps]  # normalise against max
 
     # Combine fpr and tpr for roc curve
-    return list(zip(fprs, tprs))
+    return list(zip(fprs, tprs)), fps[-1]
 
 def eval_one(
         intable: List[List[str]],
@@ -170,43 +171,55 @@ def eval_one(
         1.0
 
     """
-
+       
     out = []
     totalfp = 0
     h = {i: intable[0].index(i) for i in intable[0]}
     for i in range(1, len(intable), 2):  # 1 bc skip header
         srcrow, tgtrow = intable.pop(i), intable.pop(i)  # leave one out
         # define left-outs as test input
-        src, tgt = srcrow[h["Segments"]], tgtrow[h["Segments"]].replace(" ", "")
+        src, tgt = srcrow[h["Segments"]], tgtrow[h["Segments"]]
+        try:
+            tgt = tgt.replace(" ", "")
+        except AttributeError:
+            pass
         src_pros = srcrow[h["PROSODY"]] if pros else ""
         adrc = Adrc()   # initiate adapt-reconstruct class
         adrc.set_sc(get_correspondences(intable, heur))  # extract info from traing data
         adrc.set_prosodic_inventory(get_prosodic_inventory(intable))  # extract prosodic_inventory
+
         if adapt:
-            try:
-                ad = adrc.adapt(src, howmany, src_pros)
-                out.append(tgt in ad)
-            except KeyError:  # bugfix issue #50
-                out.append(False)
+            pred = adrc.adapt(src, howmany, src_pros)
         else:
-            rc = adrc.reconstruct(src, howmany)
-            out.append(bool(re.match(rc, tgt)))
-        
+            pred = adrc.reconstruct(src, howmany)
+          
+        icp = is_correct_pred(pred, tgt, adapt)
+        out.append(icp)
+
         #one fp less if tgt was hit
         fp = adrc.guesses-1 if out[-1] else adrc.guesses
         totalfp += fp
           
         if debug:
             logging.info(f"src: {src}")
-            logging.info(f"pred: {rc}")
-            #logging.info(f"pred: {ad[:10]}")
+            pred = pred[0] if isinstance(pred, tuple) else pred
+            logging.info(f"pred: {pred}")
             logging.info(f"tgt: {tgt}")
-            logging.info(f"Hit: {bool(re.match(rc, tgt))}")
-            #logging.info(f"Hit: {tgt in ad}")
+            logging.info(f"Hit: {icp}")
             logging.info(f"guesses: {howmany}")
+            logging.info(f"fp: {fp}")
             logging.info("")
             
         intable.insert(i, tgtrow)
         intable.insert(i, srcrow)
 
     return out, totalfp
+    
+def is_correct_pred(pred, tgt, adapt):
+    if adapt:
+        try:
+            return tgt in pred
+        except KeyError:  # bugfix issue #50
+            return False
+    else:
+        return bool(re.match(pred, tgt))

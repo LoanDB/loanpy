@@ -204,9 +204,9 @@ def get_heur(tgtlg: str) -> Dict[str, List[str]]:
             except KeyError:
                 continue
             # measure euclidean distance between feature vectors
-            distances.append(
-            math.sqrt(sum((v1[i] - v2[i]) ** 2 for i in range(len(v1))))
-            )
+            distances.append(math.dist(v1, v2))
+#            math.sqrt(sum((v1[i] - v2[i]) ** 2 for i in range(len(v1))))
+#            )
         dist_and_phon = sorted(zip(distances, phoneme_inventory))
         heur[row[0]] = [i[1] for i in dist_and_phon]
 

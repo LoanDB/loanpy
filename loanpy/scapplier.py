@@ -218,11 +218,12 @@ class Adrc():
 
         # read the correct number of sound correspondences per phoneme
         out = self.read_sc(ipalist, howmany)
-
+        
         # catch the actual number of predictions
         self.guesses = prod(len(i) for i in out if i != ["-"])
 
         out = ''.join([list2regex(i) for i in out])
+        
         return "^" + out + "$"  # regex
 
     def repair_phonotactics(self,
