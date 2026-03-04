@@ -1,0 +1,9 @@
+LICENSE
+MANIFEST.in
+README.rst
+pyproject.toml
+loanpy/__init__.py
+loanpy.egg-info/PKG-INFO
+loanpy.egg-info/SOURCES.txt
+loanpy.egg-info/dependency_links.txt
+loanpy.egg-info/top_level.txt
