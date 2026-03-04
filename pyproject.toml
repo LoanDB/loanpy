@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "loanpy"
+version = "4.0.0"
+description = "Linguistic toolkit for loanword detection and sound change."
+readme = "README.rst"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [
+    { name = "Viktor Martinović", email = "viktor.martinovic@hotmail.com" }
+]
+keywords = ["linguistics", "loanwords", "language-contact", "sound-change"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Text Processing :: Linguistic",
+]
+urls = { Homepage = "https://github.com/martino-vic/loanpy" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["loanpy*"]
+
+[tool.flake8]
+max-line-length = 88

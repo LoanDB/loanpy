@@ -1,1 +1,2 @@
-include ipa_all.csv
+include README.rst
+include LICENSE
