@@ -1,35 +1,41 @@
 """Core loanpy functionality: phoneme clustering, sound change, alignment."""
 
 
-def uralign(seqHU, seqPU, seqHU_cv, seqPU_cv, *, initial_gap=True, final_gap=True):
+def uralign(
+    seqHU: list[str],
+    seqPU: list[str],
+    seqHU_cv: list[str],
+    seqPU_cv: list[str],
+    initial_gap: bool = True,
+    final_gap: bool = True,
+) -> tuple[list[str], list[str]]:
     """Align Hungarian and PU/PFU/PUg data sequentially; optional initial and final gap handling."""
-    if initial_gap and seqHU_cv.startswith("V"):
-        seqHU = "#- " + seqHU
-        if seqPU_cv.startswith("V"):
-            seqPU = "- " + seqPU
+    if initial_gap:
+        if seqHU_cv[0] == "V":
+            seqHU.insert(0, "#-")
+            if seqPU_cv[0] == "V":
+                seqPU.insert(0, "-")
 
-    hu, pu = seqHU.split(), seqPU.split()
     if final_gap:
-        diff = abs(len(pu) - len(hu))
-        if len(hu) < len(pu):
-            hu.append("-#")
-            pu = pu[:-diff] + [".".join(pu[-diff:])]
-        elif len(hu) > len(pu):
-            hu = hu[:-diff] + ["+"] + [".".join(hu[-diff:])]
+        diff = abs(len(seqPU) - len(seqHU))
+        if len(seqHU) < len(seqPU):
+            seqHU.append("-#")
+            seqPU = seqPU[:-diff] + [".".join(seqPU[-diff:])]
+        elif len(seqHU) > len(seqPU):
+            seqHU = seqHU[:-diff] + ["+"] + [".".join(seqHU[-diff:])]
     else:
-        n = min(len(hu), len(pu))
-        hu, pu = hu[:n], pu[:n]
-    return " ".join(hu), " ".join(pu)
+        n = min(len(seqHU), len(seqPU))
+        seqHU, seqPU = seqHU[:n], seqPU[:n]
+    return seqHU, seqPU
 
-
-def cluster_cv(segments, cv_profile):
+def cluster_cv(segments: list[str], cv_profile: list[str]) -> list[str]:
     """Cluster consonants and vowels together.
 
     Example: 'f l a ʊ ə' + 'C C V V V' -> 'f.l a.ʊ.ə'
     """
     result = []
     for i, (segment, cv) in enumerate(zip(segments, cv_profile)):
-        if i == 0 or cv != cv[i - 1]:
+        if i == 0 or cv != cv_profile[i - 1]:
             result.append(segment)
         else:
             result[-1] += "." + segment
