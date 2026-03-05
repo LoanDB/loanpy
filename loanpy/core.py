@@ -27,10 +27,10 @@ def cluster_cv(segments, cv_profile):
 
     Example: 'f l a ʊ ə' + 'C C V V V' -> 'f.l a.ʊ.ə'
     """
-    chars, props, result = segments.split(" "), cv_profile.split(" "), []
-    for i, (char, prop) in enumerate(zip(chars, props)):
-        if i == 0 or prop != props[i - 1]:
-            result.append(char)
+    result = []
+    for i, (segment, cv) in enumerate(zip(segments, cv_profile)):
+        if i == 0 or cv != cv[i - 1]:
+            result.append(segment)
         else:
-            result[-1] += "." + char
+            result[-1] += "." + segment
     return " ".join(result)
