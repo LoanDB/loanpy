@@ -1,19 +1,18 @@
 """Core loanpy functionality: phoneme clustering, sound change, alignment."""
 
-
 def uralign(
     seqHU: list[str],
     seqPU: list[str],
-    seqHU_cv: list[str],
-    seqPU_cv: list[str],
+    seqHU_cv0: str,
+    seqPU_cv0: str,
     initial_gap: bool = True,
     final_gap: bool = True,
 ) -> tuple[list[str], list[str]]:
     """Align Hungarian and PU/PFU/PUg data sequentially; optional initial and final gap handling."""
     if initial_gap:
-        if seqHU_cv[0] == "V":
+        if seqHU_cv0 == "V":
             seqHU.insert(0, "#-")
-            if seqPU_cv[0] == "V":
+            if seqPU_cv0 == "V":
                 seqPU.insert(0, "-")
 
     if final_gap:
