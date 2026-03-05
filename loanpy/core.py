@@ -33,4 +33,4 @@ def cluster_cv(segments, cv_profile):
             result.append(segment)
         else:
             result[-1] += "." + segment
-    return " ".join(result)
+    return result
