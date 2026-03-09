@@ -1,5 +1,64 @@
 """Core loanpy functionality: phoneme clustering, sound change, alignment."""
 
+from __future__ import annotations
+
+
+class Cluster:
+    """Phoneme clustering: CV grouping and glide/liquid clustering."""
+
+    @staticmethod
+    def cv(segments: list[str], cv_profile: list[str]) -> list[str]:
+        """Cluster consonants and vowels together.
+
+        Example: 'f l a ʊ ə' + 'C C V V V' -> 'f.l a.ʊ.ə'
+        """
+        result = []
+        for i, (segment, cv) in enumerate(zip(segments, cv_profile)):
+            if i == 0 or cv != cv_profile[i - 1]:
+                result.append(segment)
+            else:
+                result[-1] += "." + segment
+        return result
+
+    @staticmethod
+    def glides(
+        segments: list[str],
+        cv_profile: list[str],
+        phonemes_to_cluster: tuple[str, ...] = ("ɣ", "w", "v"),
+        cluster_with_l: tuple[str, ...] = ("t͡ʃ", "d"),
+    ) -> list[str]:
+        """Cluster glide and liquid phonemes (e.g. ɣ, w, v after V; t͡ʃ, d after l)."""
+        cluster2 = []
+        for idx, phoneme in enumerate(segments):
+            if (
+                idx != 0
+                and phoneme in phonemes_to_cluster
+                and cv_profile[idx - 1] == "V"
+            ):
+                cluster2[-1] += f".{phoneme}"
+            elif (
+                idx != 0
+                and phoneme in cluster_with_l
+                and len(cluster2) > 0
+                and cluster2[-1] == "l"
+            ):
+                cluster2[-1] += f".{phoneme}"
+            else:
+                cluster2.append(phoneme)
+
+        cluster3 = []
+        for idx, phoneme in enumerate(cluster2):
+            if (
+                idx != 0
+                and "." not in phoneme
+                and cv_profile[idx] == "V"
+                and any(f".{ph}" in cluster3[-1] for ph in phonemes_to_cluster)
+            ):
+                cluster3[-1] += f".{phoneme}"
+            else:
+                cluster3.append(phoneme)
+        return cluster3
+
 
 class Uralign:
     """Alignment utilities for Uralic data."""
@@ -31,16 +90,3 @@ class Uralign:
             n = min(len(seqHU), len(seqPU))
             seqHU, seqPU = seqHU[:n], seqPU[:n]
         return seqHU, seqPU
-
-def cluster_cv(segments: list[str], cv_profile: list[str]) -> list[str]:
-    """Cluster consonants and vowels together.
-
-    Example: 'f l a ʊ ə' + 'C C V V V' -> 'f.l a.ʊ.ə'
-    """
-    result = []
-    for i, (segment, cv) in enumerate(zip(segments, cv_profile)):
-        if i == 0 or cv != cv_profile[i - 1]:
-            result.append(segment)
-        else:
-            result[-1] += "." + segment
-    return result
