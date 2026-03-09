@@ -24,35 +24,41 @@ class Cluster:
     def glides(
         segments: list[str],
         cv_profile: list[str],
-        phonemes_to_cluster: tuple[str, ...] = ("ɣ", "w", "v"),
-        cluster_with_l: tuple[str, ...] = ("t͡ʃ", "d"),
+        cluster_between_vowels: tuple[str, ...] = ("ɣ", "w", "v"),
+        cluster_after_l: tuple[str, ...] = ("t͡ʃ", "d"),
     ) -> list[str]:
-        """Cluster glide and liquid phonemes (e.g. ɣ, w, v after V; t͡ʃ, d after l)."""
+        """
+        Cluster phonemes between vowels and after l 
+        (e.g. ɣ, w, v between V; t͡ʃ, d after l).
+        """
         cluster2 = []
+        profile2 = []
         for idx, phoneme in enumerate(segments):
             if (
                 idx != 0
-                and phoneme in phonemes_to_cluster
+                and phoneme in cluster_between_vowels
                 and cv_profile[idx - 1] == "V"
             ):
                 cluster2[-1] += f".{phoneme}"
+                profile2[-1] += f".{cv_profile[idx]}"
             elif (
                 idx != 0
-                and phoneme in cluster_with_l
+                and phoneme in cluster_after_l
                 and len(cluster2) > 0
                 and cluster2[-1] == "l"
             ):
                 cluster2[-1] += f".{phoneme}"
+                profile2[-1] += f".{cv_profile[idx]}"
             else:
                 cluster2.append(phoneme)
+                profile2.append(cv_profile[idx])
 
         cluster3 = []
         for idx, phoneme in enumerate(cluster2):
             if (
                 idx != 0
-                and "." not in phoneme
-                and cv_profile[idx] == "V"
-                and any(f".{ph}" in cluster3[-1] for ph in phonemes_to_cluster)
+                and profile2[idx] == "V"
+                and any(f".{ph}" in cluster3[-1] for ph in cluster_between_vowels)
             ):
                 cluster3[-1] += f".{phoneme}"
             else:
