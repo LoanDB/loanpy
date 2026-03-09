@@ -31,6 +31,8 @@ class Cluster:
         Cluster phonemes between vowels and after l 
         (e.g. ɣ, w, v between V; t͡ʃ, d after l).
         """
+        if len(segments) != len(cv_profile):
+            raise ValueError("segments and cv_profile must have the same length")
         cluster2 = []
         profile2 = []
         for idx, phoneme in enumerate(segments):
@@ -64,6 +66,21 @@ class Cluster:
             else:
                 cluster3.append(phoneme)
         return cluster3
+
+    @staticmethod
+    def gaps(seqA: list[str], seqB: list[str]) -> tuple[list[str], list[str]]:
+        """Collapse gaps to at most one per position."""
+        seqA_new, seqB_new = [], []
+        for idx, (tokA, tokB) in enumerate(zip(seqA, seqB)):
+            if idx != 0 and tokB == "-" and seqB_new[-1] == "-":
+                seqA_new[-1] += f".{tokA}"
+            else:
+                seqA_new.append(tokA)
+                seqB_new.append(tokB)
+        if seqB_new[-1] == "-":
+            seqA_new.insert(-1, "+")  # Yes, -1 means penultimate, weirdly.
+            seqB_new.pop(-1)  # And yes, THIS -1 now means the last one.
+        return seqA_new, seqB_new
 
 
 class Uralign:
