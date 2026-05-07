@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from loanpy.utils import IPA
+
 
 class Cluster:
     """Phoneme clustering: CV grouping and glide/liquid clustering."""
@@ -113,3 +115,57 @@ class Uralign:
             n = min(len(seqHU), len(seqPU))
             seqHU, seqPU = seqHU[:n], seqPU[:n]
         return seqHU, seqPU
+
+    @staticmethod
+    def get_score(seqA, seqB, scorer, freq_filter=1):
+        score = 0
+        for a, b in zip(seqA, seqB):
+            # e.g. j == "mi|ä" -> score = max(lookup(f"{i} < mi"), lookup(f"{i} < mä"))
+            local_score = max(scorer.get(f"{a} < {i}", -1000) for i in b.split("|"))
+            if local_score < freq_filter and "." in b:
+                # b = ".".join(i if IPA.get_cv(i) != "V" else "V" for i in b.split("."))
+                local_score = scorer.get(f"{a} < {b}", -1000)
+            if local_score > freq_filter:
+                score += local_score
+            else:
+                score -= 1000
+        return score
+
+
+class Adapt:
+	"Utilities for loanword adaptation"
+			
+	def get_substitutions(self,
+		donor_inventory,
+		recipient_inventory,
+		distance_func,
+		extra
+		):
+		substitutions = {}
+		for donor_phoneme in donor_inventory - recipient_inventory:
+			best_substitution = ""
+			lowest_distance = float("inf")
+			for recipient_phoneme in recipient_inventory:
+				distance = distance_func(donor_phoneme, recipient_phoneme)
+				if distance < lowest_distance:
+					lowest_distance = distance
+					best_substitution = recipient_phoneme
+			substitutions[donor_phoneme] = (best_substitution)
+		self.substitutions = substitutions | extra
+
+	def substitute(self,
+		segments: list[str],
+	) -> tuple(list[str], list[str]):
+		substitute = []
+		for seg in segments:
+			if (sub := self.substitutions.get(seg, seg)):
+				substitute.append(sub)
+		return substitute
+		
+	def repair(self, segments):
+		return segments
+		
+		
+		
+		
+		
