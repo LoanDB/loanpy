@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from loanpy.utils import IPA
+from loanpy.scapplier import edit_distance_with2ops, list2regex, get_mtx, dfm, tuples2editops, apply_edit, prod
 
 
 class Cluster:
@@ -161,9 +162,34 @@ class Adapt:
 			if (sub := self.substitutions.get(seg, seg)):
 				substitute.append(sub)
 		return substitute
-		
-	def repair(self, segments):
-		return segments
+
+
+	def repair(self, segments, cv_profile, phonotactic_inventory):
+		predicted_phonotactics = _get_closest_phonotactics(cv_profile, phonotactic_inventory)
+		cv_str = "".join(cv_profile)
+		matrix = get_mtx(cv_str, predicted_phonotactics)
+		path = dfm(matrix)
+		editops = tuples2editops(path, cv_str, predicted_phonotactics)
+		return apply_edit(segments, editops)
+
+def _get_closest_phonotactics(cv_profile, phonotactic_inventory):
+    cv_profile_str = "".join(cv_profile)
+    if cv_profile_str == "CCVCCV":
+        return "CVCVCV"
+    elif cv_profile_str == "CVVCV":
+        return "CVCVCV"
+    elif cv_profile_str == "CVCVC":
+        return "CVCV"
+    elif cv_profile_str == "CVCCC":
+        return "CVCV"
+    dist_and_strucs = [
+        (
+            edit_distance_with2ops(cv_profile_str, tpl.replace(" ", "")),
+            tpl.replace(" ", ""),
+        )
+        for tpl in phonotactic_inventory
+    ]
+    return min(dist_and_strucs)[1]
 		
 		
 		
