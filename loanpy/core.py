@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from itertools import product
+
 from loanpy.utils import IPA
 from loanpy.scapplier import edit_distance_with2ops, list2regex, get_mtx, dfm, tuples2editops, apply_edit, prod
 
@@ -164,27 +166,72 @@ class Adapt:
 		return substitute
 
 
-	def repair(self, segments, cv_profile, phonotactic_inventory):
-		predicted_phonotactics = _get_closest_phonotactics(cv_profile, phonotactic_inventory)
+	def repair(self, segments, cv_profile, phonotactic_inventory, extra_repair=None):
+		if extra_repair is not None and " ".join(cv_profile) in extra_repair:
+			predicted_phonotactics = extra_repair[" ".join(cv_profile)]
+		else:
+			predicted_phonotactics = _get_closest_phonotactics(cv_profile, phonotactic_inventory)
 		cv_str = "".join(cv_profile)
 		matrix = get_mtx(cv_str, predicted_phonotactics)
 		path = dfm(matrix)
 		editops = tuples2editops(path, cv_str, predicted_phonotactics)
 		return apply_edit(segments, editops)
 
+def _expand_syllable_template(syllable: str) -> list[list[str]]:
+    """Expand one syllable template, e.g. ``(C)V(C)`` -> V, CV, VC, CVC."""
+    slots: list[tuple[str, str]] = []
+    i = 0
+    while i < len(syllable):
+        if syllable.startswith("(C)", i):
+            slots.append(("optional", "C"))
+            i += 3
+        elif syllable[i] == "C":
+            slots.append(("required", "C"))
+            i += 1
+        elif syllable[i] == "V":
+            slots.append(("required", "V"))
+            i += 1
+        else:
+            raise ValueError(
+                f"invalid syllable template {syllable!r} at {syllable[i:]!r}"
+            )
+    n_optional = sum(1 for kind, _ in slots if kind == "optional")
+    variants = []
+    for include in product((False, True), repeat=n_optional):
+        out: list[str] = []
+        opt = iter(include)
+        for kind, symbol in slots:
+            if kind == "optional":
+                if next(opt):
+                    out.append(symbol)
+            else:
+                out.append(symbol)
+        variants.append(out)
+    return variants
+
+
+def expand_phonotactics(formula: str) -> list[str]:
+    """
+    Expand a prosodic formula into space-separated CV templates.
+
+    ``(C)`` marks an optional consonant slot; bare ``C`` and ``V`` are required.
+    Syllables are joined with ``+``, e.g. ``"(C)V(C)+CV(C)+CV"``.
+    """
+    syllables = [s.strip() for s in formula.split("+")]
+    words = []
+    for combo in product(*(_expand_syllable_template(s) for s in syllables)):
+        segments: list[str] = []
+        for part in combo:
+            segments.extend(part)
+        words.append(" ".join(segments))
+    return words
+
+
 def _get_closest_phonotactics(cv_profile, phonotactic_inventory):
     cv_profile_str = "".join(cv_profile)
-    if cv_profile_str == "CCVCCV":
-        return "CVCVCV"
-    elif cv_profile_str == "CVVCV":
-        return "CVCVCV"
-    elif cv_profile_str == "CVCVC":
-        return "CVCV"
-    elif cv_profile_str == "CVCCC":
-        return "CVCV"
     dist_and_strucs = [
         (
-            edit_distance_with2ops(cv_profile_str, tpl.replace(" ", "")),
+            edit_distance_with2ops(cv_profile_str, tpl.replace(" ", ""), w_ins=100),
             tpl.replace(" ", ""),
         )
         for tpl in phonotactic_inventory
