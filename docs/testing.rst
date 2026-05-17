@@ -43,8 +43,9 @@ Continuous integration
 GitHub Actions runs two install paths: an editable install from the checkout
 (``pip install -e ".[test]"``), and a second job that installs from the latest
 ``main`` on GitHub (``pip install git+https://github.com/loanwordbank/loanpy.git@main``)
-and runs the same tests. Coverage is reported on Python 3.9–3.12. See
-``.github/workflows/tests.yml``.
+and runs the same tests. Coverage is measured on Python 3.12 and uploaded to
+`Codecov <https://codecov.io/gh/loanwordbank/loanpy>`__ (badge in the README).
+See ``.github/workflows/tests.yml``.
 
 Coverage expectations
 ---------------------

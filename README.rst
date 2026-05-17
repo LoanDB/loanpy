@@ -1,7 +1,7 @@
 loanpy
 ======
 
-|tests| |docs| |python| |pypi|
+|tests| |coverage| |docs| |python| |pypi|
 
 Linguistic toolkit for **loanword detection** and **sound change** (version 4).
 Pure Python 3.9+ with **no runtime dependencies**.
@@ -9,6 +9,10 @@ Pure Python 3.9+ with **no runtime dependencies**.
 .. |tests| image:: https://github.com/loanwordbank/loanpy/actions/workflows/tests.yml/badge.svg
    :target: https://github.com/loanwordbank/loanpy/actions/workflows/tests.yml
    :alt: Tests
+
+.. |coverage| image:: https://codecov.io/gh/loanwordbank/loanpy/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/loanwordbank/loanpy
+   :alt: Test coverage
 
 .. |docs| image:: https://readthedocs.org/projects/loanpy40/badge/?version=latest
    :target: https://loanpy40.readthedocs.io/en/latest/
