@@ -1,2 +1,5 @@
 include README.rst
 include LICENSE
+include CHANGELOG.md
+recursive-exclude tests *
+recursive-exclude docs/_build *

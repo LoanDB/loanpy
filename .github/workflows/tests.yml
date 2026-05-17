@@ -1,0 +1,73 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Installs the working tree (PRs / pre-release). On GitHub Release, installs the tag.
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install loanpy
+        run: |
+          pip install --upgrade pip
+          if [ "${{ github.event_name }}" = "release" ]; then
+            pip install "loanpy @ git+https://github.com/loanwordbank/loanpy.git@${{ github.event.release.tag_name }}"
+          else
+            pip install -e ".[test]"
+          fi
+
+      - name: Run tests with coverage
+        run: |
+          pytest tests/ --cov=loanpy --cov-report=term-missing --cov-report=xml
+
+      - name: Upload coverage (Python 3.12 only)
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+
+  # End-user install path: latest GitHub release (optional until v4.0.0 is published).
+  test-from-latest-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install latest GitHub release
+        run: |
+          pip install --upgrade pip
+          TAG=$(curl -fsSL https://api.github.com/repos/loanwordbank/loanpy/releases/latest \
+            | python3 -c "import sys,json; print(json.load(sys.stdin).get('tag_name',''))")
+          if [ -z "$TAG" ]; then echo "No release found; skipping."; exit 0; fi
+          pip install "loanpy @ git+https://github.com/loanwordbank/loanpy.git@${TAG}"
+
+      - name: Run tests
+        run: pip install pytest pytest-cov && pytest tests/ --cov=loanpy -q

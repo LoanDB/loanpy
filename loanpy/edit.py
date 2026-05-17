@@ -6,14 +6,46 @@ import heapq
 from collections.abc import Iterable
 from typing import Union
 
+Number = Union[int, float]
+
 
 def edit_distance_with2ops(
     string1: str,
     string2: str,
-    w_del: Union[int, float] = 1,
-    w_ins: Union[int, float] = 1,
-) -> Union[int, float]:
-    """Edit distance allowing only insertions and deletions."""
+    w_del: Number = 1,
+    w_ins: Number = 1,
+) -> Number:
+    """Edit distance using only insertions and deletions (no substitutions).
+
+    The cost is ``(len(string1) - LCS) * w_del + (len(string2) - LCS) * w_ins``,
+    where *LCS* is the length of the longest common subsequence.
+
+    Parameters
+    ----------
+    string1, string2:
+        Comparable strings (often CV profiles or orthographic forms).
+    w_del, w_ins:
+        Costs for unmatched symbols in ``string1`` and ``string2``.
+
+    Returns
+    -------
+    int or float
+        Weighted edit distance.
+
+    Examples
+    --------
+    >>> edit_distance_with2ops("CVC", "CVCCV", w_ins=100)
+    200
+
+    See also
+    --------
+    :func:`get_closest_phonotactics` — picks a template by minimising this distance.
+
+    Notes
+    -----
+    Used indirectly by :class:`~loanpy.adapt.Adapt` via phonotactic repair
+    (:func:`~loanpy.phonotactics.get_closest_phonotactics`).
+    """
     m = len(string1)
     n = len(string2)
     lcs_table = [[0] * (n + 1) for _ in range(m + 1)]
@@ -30,7 +62,29 @@ def edit_distance_with2ops(
 
 
 def apply_edit(word: Iterable[str], editops: list[str]) -> list[str]:
-    """Apply human-readable edit operations to a word."""
+    """Apply human-readable edit operations to a sequence of segments.
+
+    Operations are strings such as ``"keep a"``, ``"delete b"``,
+    ``"insert x"``, or ``"substitute a by x"`` (see
+    :func:`path_to_edit_operations`).
+
+    Parameters
+    ----------
+    word:
+        Input segments (characters or phoneme symbols).
+    editops:
+        Operations produced by :func:`path_to_edit_operations`.
+
+    Returns
+    -------
+    list[str]
+        Transformed segment list.
+
+    Notes
+    -----
+    Called by :meth:`~loanpy.adapt.Adapt.repair` when aligning a word's CV profile
+    to the closest legal template.
+    """
     out, letter = [], iter(word)
     for i, op in enumerate(editops):
         if i != len(editops):
@@ -48,7 +102,18 @@ def apply_edit(word: Iterable[str], editops: list[str]) -> list[str]:
 
 
 def substitute_operations(operations: list[str]) -> list[str]:
-    """Merge adjacent delete/insert pairs into substitute operations."""
+    """Merge adjacent delete/insert pairs into substitute operations (in place).
+
+    Parameters
+    ----------
+    operations:
+        List of operation strings; modified in place and also returned.
+
+    Returns
+    -------
+    list[str]
+        The same list, with merged ``substitute … by …`` operations where possible.
+    """
     i = 0
     while i < len(operations) - 1:
         if operations[i].startswith("delete ") and operations[i + 1].startswith(
@@ -68,8 +133,23 @@ def substitute_operations(operations: list[str]) -> list[str]:
     return operations
 
 
-def path_to_edit_operations(op_list: list[tuple[int, int]], s1: str, s2: str) -> list[str]:
-    """Convert matrix path coordinates to human-readable edit operations."""
+def path_to_edit_operations(
+    op_list: list[tuple[int, int]], s1: str, s2: str
+) -> list[str]:
+    """Convert matrix path coordinates to human-readable edit operations.
+
+    Parameters
+    ----------
+    op_list:
+        Path from :func:`shortest_edit_path` (grid coordinates).
+    s1, s2:
+        Target and source strings (CV profiles without spaces).
+
+    Returns
+    -------
+    list[str]
+        Operations understood by :func:`apply_edit`.
+    """
     s1, s2 = "#" + s1, "#" + s2
     out = []
     for i in range(1, len(op_list)):
@@ -87,7 +167,26 @@ def path_to_edit_operations(op_list: list[tuple[int, int]], s1: str, s2: str) ->
 
 
 def edit_distance_matrix(target: Iterable, source: Iterable) -> list[list[int]]:
-    """Minimum edit-distance matrix (insert/delete cost 1 each)."""
+    """Build the minimum edit-distance matrix (insert/delete cost 1 each).
+
+    Both sequences are prefixed with ``#``. Matching symbols cost 0 on the
+    diagonal; mismatches use unit-cost insertions or deletions.
+
+    Parameters
+    ----------
+    target, source:
+        Segment sequences to align (e.g. CV profiles).
+
+    Returns
+    -------
+    list[list[int]]
+        Dynamic-programming table.
+
+    Notes
+    -----
+    Used by :meth:`~loanpy.adapt.Adapt.repair` together with
+    :func:`shortest_edit_path` and :func:`path_to_edit_operations`.
+    """
     target = ["#"] + list(target)
     source = ["#"] + list(source)
     sol = [[0] * len(target) for _ in range(len(source))]
@@ -105,15 +204,30 @@ def edit_distance_matrix(target: Iterable, source: Iterable) -> list[list[int]]:
     return sol
 
 
-def shortest_edit_path(mtx):
-    """Shortest edit path through a distance matrix (corner to corner)."""
+def shortest_edit_path(mtx: list[list[int]]) -> list[tuple[int, int]] | None:
+    """Find a lowest-cost edit path through a distance matrix.
+
+    Moves are right, down, or diagonal when the matrix value is unchanged
+    on the diagonal step.
+
+    Parameters
+    ----------
+    mtx:
+        Table from :func:`edit_distance_matrix`.
+
+    Returns
+    -------
+    list[tuple[int, int]] or None
+        Coordinate path from ``(0, 0)`` to the bottom-right corner, or ``None``
+        if no path exists.
+    """
     rows, cols = len(mtx), len(mtx[0])
     start = (0, 0)
     end = (rows - 1, cols - 1)
     if start == end:
         return [start]
     dist = {start: 0}
-    path = {}
+    path: dict[tuple[int, int], tuple[int, int]] = {}
     queue = [(0, start)]
     while queue:
         current_dist, (i, j) = heapq.heappop(queue)

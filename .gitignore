@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+.pytest_cache/
+.ruff_cache/
+docs/_build/
+.venv/
+venv/

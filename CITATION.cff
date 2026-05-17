@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: loanpy
+version: 4.0.0
+date-released: 2025-05-17
+authors:
+  - family-names: Martinović
+    given-names: Viktor
+    email: viktor.martinovic@hotmail.com
+repository-code: "https://github.com/loanwordbank/loanpy"
+license: MIT
+keywords:
+  - linguistics
+  - loanwords
+  - language-contact
+  - sound-change
+abstract: >-
+  Pure-Python toolkit for loanword detection and sound change: segment
+  clustering, alignment, correspondence mining, and phonological adaptation.

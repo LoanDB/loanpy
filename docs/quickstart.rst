@@ -1,0 +1,62 @@
+Quick start
+===========
+
+Cluster segments during CLDF export
+-----------------------------------
+
+When building a CLDF ``forms.csv``, cluster segments for alignment columns::
+
+   from loanpy import Cluster
+
+   segments = "f l a".split()
+   cv = ["C", "C", "V"]
+   clusters = Cluster.cv(segments, cv)
+   # ['f.l', 'a']
+
+Mine sound correspondences
+--------------------------
+
+From cognate rows that alternate descendant / ancestor languages::
+
+   import csv
+   from loanpy import get_sound_correspondences
+
+   with open("cognates.csv", encoding="utf-8") as f:
+       rows = list(csv.DictReader(f))
+   stats = get_sound_correspondences(rows, aligned_col="Uralign", sep=" < ")
+   scorer = stats["AbsoluteFrequency"]
+
+Score an alignment
+------------------
+
+::
+
+   from loanpy import Uralign
+
+   seq_d = ["ɟ", "ŋ"]
+   seq_a = ["j", "ŋ"]
+   alm_d, alm_a = Uralign.hu(seq_d.copy(), seq_a.copy(), "C", "C")
+   score = Uralign.get_score(alm_d, alm_a, scorer, freq_filter=2)
+
+Adapt donor segments
+--------------------
+
+::
+
+   from loanpy import Adapt
+
+   ad = Adapt()
+   ad.get_substitutions(donor_set, recipient_set, distance_fn, extra={})
+   adapted = ad.substitute(donor_segments)
+   repaired = ad.repair(adapted, cv_profile, phonotactic_templates)
+
+Typical integrations
+--------------------
+
+* **CLDF conversion** — ``cldfbench`` dataset modules call ``Cluster`` and
+  ``Uralign`` when writing segmentation and alignment columns.
+* **Loanword detection pipelines** — analysis scripts combine ``Adapt``,
+  ``Uralign``, and ``get_sound_correspondences`` over wordlist/cognate tables.
+
+These patterns apply to any paired descendant–ancestor data; language names and
+file layouts are project-specific.

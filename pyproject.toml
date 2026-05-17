@@ -14,7 +14,7 @@ authors = [
 ]
 keywords = ["linguistics", "loanwords", "language-contact", "sound-change"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
@@ -27,11 +27,29 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Text Processing :: Linguistic",
 ]
-urls = { Homepage = "https://github.com/martino-vic/loanpy" }
+urls = { Homepage = "https://github.com/loanwordbank/loanpy", Documentation = "https://loanpy.readthedocs.io" }
+
+[project.optional-dependencies]
+test = ["pytest>=7.4", "pytest-cov>=4.1"]
+docs = ["sphinx>=7.2", "sphinx-rtd-theme>=2.0", "myst-parser>=2.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["loanpy*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[tool.coverage.run]
+branch = true
+source = ["loanpy"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+]
 
 [tool.flake8]
 max-line-length = 88
