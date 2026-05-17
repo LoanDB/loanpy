@@ -49,11 +49,10 @@ jobs:
           name: coverage-xml
           path: coverage.xml
 
-  # End-user install path: latest GitHub release (optional until v4.0.0 is published).
-  test-from-latest-release:
+  # Simulates end-user install from the latest commit on the default branch.
+  test-from-github-main:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
@@ -61,13 +60,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install latest GitHub release
+      - name: Install loanpy from latest main on GitHub
         run: |
           pip install --upgrade pip
-          TAG=$(curl -fsSL https://api.github.com/repos/loanwordbank/loanpy/releases/latest \
-            | python3 -c "import sys,json; print(json.load(sys.stdin).get('tag_name',''))")
-          if [ -z "$TAG" ]; then echo "No release found; skipping."; exit 0; fi
-          pip install "loanpy @ git+https://github.com/loanwordbank/loanpy.git@${TAG}"
+          pip install "loanpy @ git+https://github.com/loanwordbank/loanpy.git@main"
 
-      - name: Run tests
-        run: pip install pytest pytest-cov && pytest tests/ --cov=loanpy -q
+      - name: Run tests against GitHub install
+        run: |
+          pip install pytest pytest-cov
+          pytest tests/ --cov=loanpy -q

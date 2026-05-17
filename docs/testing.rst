@@ -40,9 +40,11 @@ Tests exercise the public API end-to-end:
 Continuous integration
 ----------------------
 
-GitHub Actions installs **loanpy** (from the latest GitHub release when available,
-otherwise from the repository checkout) and runs ``pytest`` with coverage on
-Python 3.9–3.12. See ``.github/workflows/tests.yml``.
+GitHub Actions runs two install paths: an editable install from the checkout
+(``pip install -e ".[test]"``), and a second job that installs from the latest
+``main`` on GitHub (``pip install git+https://github.com/loanwordbank/loanpy.git@main``)
+and runs the same tests. Coverage is reported on Python 3.9–3.12. See
+``.github/workflows/tests.yml``.
 
 Coverage expectations
 ---------------------

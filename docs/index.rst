@@ -10,8 +10,8 @@ runtime dependencies.
    :target: https://github.com/loanwordbank/loanpy/actions/workflows/tests.yml
    :alt: Tests
 
-.. image:: https://readthedocs.org/projects/loanpy/badge/?version=latest
-   :target: https://loanpy.readthedocs.io/en/latest/
+.. image:: https://readthedocs.org/projects/loanpy40/badge/?version=latest
+   :target: https://loanpy40.readthedocs.io/en/latest/
    :alt: Documentation
 
 .. image:: https://img.shields.io/pypi/pyversions/loanpy

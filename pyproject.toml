@@ -27,7 +27,7 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Text Processing :: Linguistic",
 ]
-urls = { Homepage = "https://github.com/loanwordbank/loanpy", Documentation = "https://loanpy.readthedocs.io" }
+urls = { Homepage = "https://github.com/loanwordbank/loanpy", Documentation = "https://loanpy40.readthedocs.io/en/latest/" }
 
 [project.optional-dependencies]
 test = ["pytest>=7.4", "pytest-cov>=4.1"]

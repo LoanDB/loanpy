@@ -10,8 +10,8 @@ Pure Python 3.9+ with **no runtime dependencies**.
    :target: https://github.com/loanwordbank/loanpy/actions/workflows/tests.yml
    :alt: Tests
 
-.. |docs| image:: https://readthedocs.org/projects/loanpy/badge/?version=latest
-   :target: https://loanpy.readthedocs.io/en/latest/
+.. |docs| image:: https://readthedocs.org/projects/loanpy40/badge/?version=latest
+   :target: https://loanpy40.readthedocs.io/en/latest/
    :alt: Documentation
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/loanpy
@@ -52,7 +52,7 @@ Development::
 Documentation
 -------------
 
-Full API reference and tutorials: https://loanpy.readthedocs.io/
+Full API reference and tutorials: https://loanpy40.readthedocs.io/en/latest/
 
 Build locally::
 
