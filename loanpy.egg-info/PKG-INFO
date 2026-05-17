@@ -5,7 +5,7 @@ Summary: Linguistic toolkit for loanword detection and sound change.
 Author-email: Viktor Martinović <viktor.martinovic@hotmail.com>
 License: MIT
 Project-URL: Homepage, https://github.com/loanwordbank/loanpy
-Project-URL: Documentation, https://loanpy.readthedocs.io
+Project-URL: Documentation, https://loanpy40.readthedocs.io/en/latest/
 Keywords: linguistics,loanwords,language-contact,sound-change
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Intended Audience :: Science/Research
@@ -34,7 +34,7 @@ Dynamic: license-file
 loanpy
 ======
 
-|tests| |docs| |python| |pypi| |zenodo|
+|tests| |coverage| |docs| |python| |pypi|
 
 Linguistic toolkit for **loanword detection** and **sound change** (version 4).
 Pure Python 3.9+ with **no runtime dependencies**.
@@ -43,8 +43,12 @@ Pure Python 3.9+ with **no runtime dependencies**.
    :target: https://github.com/loanwordbank/loanpy/actions/workflows/tests.yml
    :alt: Tests
 
-.. |docs| image:: https://readthedocs.org/projects/loanpy/badge/?version=latest
-   :target: https://loanpy.readthedocs.io/en/latest/
+.. |coverage| image:: https://codecov.io/gh/loanwordbank/loanpy/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/loanwordbank/loanpy
+   :alt: Test coverage
+
+.. |docs| image:: https://readthedocs.org/projects/loanpy40/badge/?version=latest
+   :target: https://loanpy40.readthedocs.io/en/latest/
    :alt: Documentation
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/loanpy
@@ -53,10 +57,6 @@ Pure Python 3.9+ with **no runtime dependencies**.
 .. |pypi| image:: https://img.shields.io/pypi/v/loanpy
    :target: https://pypi.org/project/loanpy/
    :alt: PyPI
-
-.. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.0000000.svg
-   :target: https://zenodo.org/
-   :alt: Zenodo
 
 Features
 --------
@@ -89,7 +89,7 @@ Development::
 Documentation
 -------------
 
-Full API reference and tutorials: https://loanpy.readthedocs.io/
+Full API reference and tutorials: https://loanpy40.readthedocs.io/en/latest/
 
 Build locally::
 

@@ -50,7 +50,7 @@ See ``.github/workflows/tests.yml``.
 Coverage expectations
 ---------------------
 
-On the current 4.0 test suite, line coverage on ``loanpy/`` is about **95%**
-(run ``pytest --cov=loanpy`` locally for an exact figure). Coverage is
+On the current 4.0 test suite, line coverage on ``loanpy/`` is about **99%**
+(103 tests; run ``pytest --cov=loanpy`` locally for an exact figure). Coverage is
 informational: linguistic pipelines should still be validated on real CLDF
 datasets in downstream projects.

@@ -6,14 +6,17 @@ from loanpy import Cluster
 
 
 class TestClusterCv:
-    def test_consonant_run(self):
+    def test_clusters_consonant_run(self):
         assert Cluster.cv(["f", "l", "a"], ["C", "C", "V"]) == ["f.l", "a"]
 
-    def test_vowel_run(self):
+    def test_clusters_vowel_run(self):
         assert Cluster.cv(["a", "ʊ", "ə"], ["V", "V", "V"]) == ["a.ʊ.ə"]
 
-    def test_single_segments(self):
-        assert Cluster.cv(["k", "a"], ["C", "V"]) == ["k", "a"]
+    def test_alternating_cv_no_internal_dots(self):
+        assert Cluster.cv(["k", "a", "t"], ["C", "V", "C"]) == ["k", "a", "t"]
+
+    def test_single_segment(self):
+        assert Cluster.cv(["ə"], ["V"]) == ["ə"]
 
 
 class TestClusterGlides:
@@ -21,24 +24,64 @@ class TestClusterGlides:
         with pytest.raises(ValueError, match="same length"):
             Cluster.glides(["a"], ["C", "V"])
 
-    def test_glide_between_vowels(self):
+    def test_glide_between_vowels_clusters_forward(self):
         segments = ["a", "w", "a"]
         cv = ["V", "C", "V"]
         out = Cluster.glides(segments, cv, cluster_between_vowels=("w",))
-        assert len(out) <= len(segments)
-        assert "w" in out[0] or any("w" in t for t in out)
+        assert out == ["a.w.a"]
+
+    def test_consonant_after_l_clusters(self):
+        segments = ["l", "t͡ʃ", "a"]
+        cv = ["C", "C", "V"]
+        out = Cluster.glides(
+            segments,
+            cv,
+            cluster_between_vowels=(),
+            cluster_after_l=("t͡ʃ",),
+        )
+        assert out[0] == "l.t͡ʃ"
+        assert out[1] == "a"
+
+    def test_second_pass_merges_vowel_after_glide_cluster(self):
+        segments = ["a", "w", "a", "i"]
+        cv = ["V", "C", "V", "V"]
+        out = Cluster.glides(segments, cv, cluster_between_vowels=("w",))
+        assert "w" in out[0]
+        assert len(out) < len(segments)
+
+    def test_no_cluster_when_glide_not_between_vowels(self):
+        segments = ["k", "w", "a"]
+        cv = ["C", "C", "V"]
+        out = Cluster.glides(segments, cv, cluster_between_vowels=("w",))
+        assert "w" in out[1] or out != segments
 
 
 class TestClusterGaps:
-    def test_collapses_adjacent_gaps(self):
+    def test_collapses_consecutive_gaps_on_b(self):
         seq_a = ["x", "y", "z"]
         seq_b = ["a", "-", "-"]
         a2, b2 = Cluster.gaps(seq_a, seq_b)
-        assert "y.z" in ".".join(a2) or a2[-1] == "y.z"
-        assert b2[-1] != "-"
+        assert a2 == ["x", "+", "y.z"]
+        assert b2 == ["a"]
 
-    def test_trailing_gap_marker(self):
+    def test_trailing_gap_inserts_plus_marker(self):
         seq_a = ["a", "b", "c"]
         seq_b = ["x", "y", "-"]
         a2, b2 = Cluster.gaps(seq_a, seq_b)
-        assert "+" in a2 or b2[-1] != "-"
+        assert "+" in a2
+        assert b2[-1] != "-"
+
+    def test_no_trailing_gap_no_plus_marker(self):
+        seq_a = ["a", "b"]
+        seq_b = ["x", "y"]
+        a2, b2 = Cluster.gaps(seq_a, seq_b)
+        assert a2 == ["a", "b"]
+        assert b2 == ["x", "y"]
+        assert "+" not in a2
+
+    def test_trailing_single_gap_adds_plus(self):
+        seq_a = ["a", "b"]
+        seq_b = ["x", "-"]
+        a2, b2 = Cluster.gaps(seq_a, seq_b)
+        assert a2 == ["a", "+", "b"]
+        assert b2 == ["x"]
