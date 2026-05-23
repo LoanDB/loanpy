@@ -63,7 +63,7 @@ Features
 
 * **Segment clustering** — ``Cluster.cv``, ``Cluster.glides``, ``Cluster.gaps``
 * **Alignment** — ``Uralign.hu``, ``Uralign.get_score``
-* **Sound correspondences** — ``get_sound_correspondences``
+* **Sound correspondences** — ``get_sound_correspondences``, ``add_separator``
 * **Adaptation** — ``Adapt`` (substitution + phonotactic repair)
 * **Edit distance** — insertion/deletion distance, DP matrix, shortest path
 * **Phonotactics** — ``expand_phonotactics``, ``get_closest_phonotactics``
@@ -101,10 +101,16 @@ Quick example
 
 ::
 
+    from collections import defaultdict
     from loanpy import Cluster, get_sound_correspondences, Uralign
 
     clusters = Cluster.cv(["f", "l", "a"], ["C", "C", "V"])
     # ['f.l', 'a']
+
+    rows = [...]  # cognate table, descendant/ancestor alternating
+    stats = get_sound_correspondences(rows, "Uralign")
+    scorer = defaultdict(lambda: -1000, stats["AbsoluteFrequency"])
+    # scorer[("a", "b")]  — tuple keys for Uralign.get_score and LingPy pw_align
 
 Typical use
 -----------
@@ -124,7 +130,7 @@ Module                        Main symbols
 ``loanpy.cluster``            ``Cluster``
 ``loanpy.uralign``            ``Uralign``
 ``loanpy.adapt``              ``Adapt``
-``loanpy.correspondences``    ``get_sound_correspondences``
+``loanpy.correspondences``    ``get_sound_correspondences``, ``add_separator``
 ``loanpy.edit``               edit distance utilities
 ``loanpy.phonotactics``       ``expand_phonotactics``, ``get_closest_phonotactics``
 ============================= ================================================

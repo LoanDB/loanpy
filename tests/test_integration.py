@@ -2,8 +2,9 @@
 
 import csv
 import io
+from collections import defaultdict
 
-from loanpy import Adapt, Cluster, Uralign, get_sound_correspondences
+from loanpy import Adapt, Cluster, Uralign, add_separator, get_sound_correspondences
 
 
 class TestCldfStyleClustering:
@@ -33,13 +34,23 @@ class TestCorrespondenceToScoring:
                 "Cognateset_ID": "1",
             },
         ]
-        stats = get_sound_correspondences(rows, "Uralign", sep=" < ")
-        scorer = stats["AbsoluteFrequency"]
+        stats = get_sound_correspondences(rows, "Uralign")
+        scorer = defaultdict(lambda: -1000, stats["AbsoluteFrequency"])
         seg_h = ["ɟ", "ŋ"]
         seg_p = ["j", "ŋ"]
         alm_h, alm_p = Uralign.hu(seg_h.copy(), seg_p.copy(), "C", "C")
         score = Uralign.get_score(alm_h, alm_p, scorer, freq_filter=1)
         assert score > 0
+
+    def test_add_separator_roundtrip_for_export(self):
+        rows = [
+            {"Language_ID": "hun", "Uralign": "k a", "Cognateset_ID": "1"},
+            {"Language_ID": "pu", "Uralign": "k o", "Cognateset_ID": "1"},
+        ]
+        stats = get_sound_correspondences(rows, "Uralign")
+        exported = add_separator(stats)
+        assert "k < k" in exported["AbsoluteFrequency"]
+        assert ("k", "k") in stats["AbsoluteFrequency"]
 
 
 class TestMakeResultsStyleAdaptation:
@@ -67,5 +78,5 @@ hun,k a,1
 pu,k o,1
 """
         rows = list(csv.DictReader(io.StringIO(csv_text)))
-        stats = get_sound_correspondences(rows, "Uralign", sep=" < ")
-        assert "k < k" in stats["AbsoluteFrequency"]
+        stats = get_sound_correspondences(rows, "Uralign")
+        assert ("k", "k") in stats["AbsoluteFrequency"]

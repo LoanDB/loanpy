@@ -59,18 +59,18 @@ class TestUralignHu:
 
 class TestUralignGetScore:
     def test_sums_scores_above_threshold(self):
-        scorer = {"a < x": 5, "b < y": 3}
+        scorer = {("a", "x"): 5, ("b", "y"): 3}
         assert Uralign.get_score(["a", "b"], ["x", "y"], scorer, freq_filter=2) == 8
 
     def test_penalizes_unknown_pairs(self):
         assert Uralign.get_score(["a"], ["z"], {}, freq_filter=2) == -1000
 
     def test_penalizes_pairs_below_threshold(self):
-        scorer = {"a < x": 1}
+        scorer = {("a", "x"): 1}
         assert Uralign.get_score(["a"], ["x"], scorer, freq_filter=2) == -1000
 
     def test_exact_threshold_counts_positive(self):
-        scorer = {"a < x": 2}
+        scorer = {("a", "x"): 2}
         assert Uralign.get_score(["a"], ["x"], scorer, freq_filter=2) == 2
 
     def test_empty_alignment_zero(self):

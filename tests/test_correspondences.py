@@ -4,6 +4,7 @@ import logging
 
 from loanpy.correspondences import (
     _is_alternating_language_sequence,
+    add_separator,
     get_sound_correspondences,
 )
 
@@ -49,6 +50,21 @@ class TestAlternatingLanguageSequence:
         assert _is_alternating_language_sequence([], {"hun"}, {"pu"})
 
 
+class TestAddSeparator:
+    def test_stringifies_tuple_keys_for_toml_sections(self):
+        correspondences = {
+            "SoundCorrespondences": {"a": ["b"]},
+            "AbsoluteFrequency": {("a", "b"): 3},
+            "Cognateset_IDs": {("a", "b"): ["1"]},
+            "Examples": {("a", "b"): ["a < b"]},
+        }
+        out = add_separator(correspondences)
+        assert out["AbsoluteFrequency"] == {"a < b": 3}
+        assert out["Cognateset_IDs"] == {"a < b": ["1"]}
+        assert out["Examples"] == {"a < b": ["a < b"]}
+        assert correspondences["AbsoluteFrequency"] == {("a", "b"): 3}
+
+
 class TestGetSoundCorrespondences:
     def test_segment_pair_frequencies_and_examples(self):
         table = [
@@ -56,12 +72,12 @@ class TestGetSoundCorrespondences:
             _row("anc", "j ŋ", "1"),
         ]
         result = get_sound_correspondences(
-            table, "Uralign", sep=" < ", prefix_descendant="H:", prefix_ancestor="P:"
+            table, "Uralign", prefix_descendant="H:", prefix_ancestor="P:"
         )
-        assert result["AbsoluteFrequency"]["H:ɟ < P:j"] == 1
+        assert result["AbsoluteFrequency"][("H:ɟ", "P:j")] == 1
         assert result["SoundCorrespondences"]["ɟ"] == ["j"]
-        assert result["Cognateset_IDs"]["H:ɟ < P:j"] == ["1"]
-        assert "H:ɟ ŋ < P:j ŋ" in result["Examples"]["H:ɟ < P:j"]
+        assert result["Cognateset_IDs"][("H:ɟ", "P:j")] == ["1"]
+        assert "H:ɟ ŋ < P:j ŋ" in result["Examples"][("H:ɟ", "P:j")]
 
     def test_duplicate_ancestor_ranking_by_frequency(self):
         table = [
@@ -72,7 +88,7 @@ class TestGetSoundCorrespondences:
             _row("d", "a", "3"),
             _row("a", "x", "3"),
         ]
-        sc = get_sound_correspondences(table, "Uralign", sep=" < ")["SoundCorrespondences"]
+        sc = get_sound_correspondences(table, "Uralign")["SoundCorrespondences"]
         assert sc["a"][0] == "x"
         assert "y" in sc["a"]
 
@@ -87,11 +103,11 @@ class TestGetSoundCorrespondences:
             _row("d", "y", "4"),
             _row("a", "q", "4"),
         ]
-        freq = get_sound_correspondences(table, "Uralign", sep=" < ")["AbsoluteFrequency"]
+        freq = get_sound_correspondences(table, "Uralign")["AbsoluteFrequency"]
         counts = list(freq.values())
         assert counts == sorted(counts)  # ascending by count in implementation
-        assert freq["x < p"] == 3
-        assert freq["y < q"] == 1
+        assert freq[("x", "p")] == 3
+        assert freq[("y", "q")] == 1
 
     def test_cognateset_ids_deduplicated(self):
         table = [
@@ -100,13 +116,13 @@ class TestGetSoundCorrespondences:
             _row("d", "a", "1"),
             _row("a", "b", "1"),
         ]
-        ids = get_sound_correspondences(table, "Uralign", sep=" < ")["Cognateset_IDs"]
-        assert ids["a < b"] == ["1"]
+        ids = get_sound_correspondences(table, "Uralign")["Cognateset_IDs"]
+        assert ids[("a", "b")] == ["1"]
 
     def test_custom_aligned_column_name(self):
         table = [
             {"Language_ID": "d", "Alignment": "k a", "Cognateset_ID": "1"},
             {"Language_ID": "a", "Alignment": "k o", "Cognateset_ID": "1"},
         ]
-        result = get_sound_correspondences(table, "Alignment", sep=" < ")
-        assert "k < k" in result["AbsoluteFrequency"]
+        result = get_sound_correspondences(table, "Alignment")
+        assert ("k", "k") in result["AbsoluteFrequency"]

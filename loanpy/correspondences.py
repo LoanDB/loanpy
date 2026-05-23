@@ -26,12 +26,33 @@ def _is_alternating_language_sequence(
     return True
 
 
+def add_separator(
+    correspondences: dict[str, dict],
+    sep: str = " < ",
+) -> dict[str, dict]:
+    """Return a copy of *correspondences* with tuple pair keys as ``\"a < b\"`` strings.
+
+    Use when writing TOML (string keys only). In-memory scorers from
+    :func:`get_sound_correspondences` use ``(descendant, ancestor)`` tuple keys.
+    """
+    out = dict(correspondences)
+
+    def _stringify(key: tuple[str, str] | str) -> str:
+        if isinstance(key, tuple) and len(key) == 2:
+            return f"{key[0]}{sep}{key[1]}"
+        return key
+
+    for section in ("AbsoluteFrequency", "Cognateset_IDs", "Examples"):
+        if section in out:
+            out[section] = {_stringify(k): v for k, v in out[section].items()}
+    return out
+
+
 def get_sound_correspondences(
     table: Sequence[Mapping[str, str]],
     aligned_col: str,
     prefix_descendant: str = "",
     prefix_ancestor: str = "",
-    sep: str = " ",
 ) -> dict[str, dict]:
     """Extract segment correspondences from paired cognate alignment rows.
 
@@ -46,9 +67,7 @@ def get_sound_correspondences(
     aligned_col:
         Column with space-separated aligned segments (e.g. ``"Uralign"``).
     prefix_descendant, prefix_ancestor:
-        Optional prefixes for correspondence keys and examples.
-    sep:
-        Separator between descendant and ancestor parts in pair keys.
+        Optional prefixes prepended to segment tokens in pair keys and examples.
 
     Returns
     -------
@@ -56,16 +75,16 @@ def get_sound_correspondences(
         Keys:
 
         * ``SoundCorrespondences`` — descendant segment → ranked ancestor segments
-        * ``AbsoluteFrequency`` — ``"desc < anc"`` → count
-        * ``Cognateset_IDs`` — pair → cognate set ids
-        * ``Examples`` — pair → example alignment strings
+        * ``AbsoluteFrequency`` — ``(desc, anc)`` → count
+        * ``Cognateset_IDs`` — ``(desc, anc)`` → cognate set ids
+        * ``Examples`` — ``(desc, anc)`` → example alignment strings
 
     Examples
     --------
     Build a frequency table for alignment scoring::
 
         rows = list(csv.DictReader(open("cognates.csv", encoding="utf-8")))
-        stats = get_sound_correspondences(rows, "Uralign", sep=" < ")
+        stats = get_sound_correspondences(rows, "Uralign")
         scorer = stats["AbsoluteFrequency"]
 
     Notes
@@ -97,8 +116,8 @@ def get_sound_correspondences(
                 ancestor_seg
             )
             pair_key = (
-                f"{prefix_descendant}{descendant_seg}{sep}"
-                f"{prefix_ancestor}{ancestor_seg}"
+                f"{prefix_descendant}{descendant_seg}",
+                f"{prefix_ancestor}{ancestor_seg}",
             )
             correspondences["AbsoluteFrequency"][pair_key].append(1)
             correspondences["Cognateset_IDs"][pair_key].append(
@@ -106,7 +125,7 @@ def get_sound_correspondences(
             )
             example = (
                 f"{prefix_descendant}{descendant_row[aligned_col]}"
-                f"{sep}{prefix_ancestor}{ancestor_row[aligned_col]}"
+                f" < {prefix_ancestor}{ancestor_row[aligned_col]}"
             )
             correspondences["Examples"][pair_key].append(example)
 

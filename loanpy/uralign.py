@@ -80,12 +80,12 @@ class Uralign:
     def get_score(
         seqA: list[str],
         seqB: list[str],
-        scorer: dict[str, float],
+        scorer: dict[tuple[str, str], float],
         freq_filter: int = 2,
     ) -> int:
         """Sum correspondence scores along an alignment.
 
-        For each aligned pair ``(a, b)`` the key ``f"{a} < {b}"`` is looked up in
+        For each aligned pair ``(a, b)`` the key ``(a, b)`` is looked up in
         ``scorer``. Pairs below ``freq_filter`` incur a large penalty.
 
         Parameters
@@ -110,7 +110,7 @@ class Uralign:
         """
         score = 0
         for a, b in zip(seqA, seqB):
-            local_score = scorer.get(f"{a} < {b}", -1000)
+            local_score = scorer.get((a, b), -1000)
             if local_score >= freq_filter:
                 score += local_score
             else:
