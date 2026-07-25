@@ -115,7 +115,7 @@ Quick example
     # scorer[("a", "b")]  — tuple keys for Uralign.get_score and LingPy pw_align
 
     # After writing a TOML scorer with add_separator + toml.dump:
-    # scorer.update(load_scorer(toml_data["AbsoluteFrequency"]))
+    # scorer = load_scorer(toml_data, missing=-1000, imputed=12)
 
 Typical use
 -----------

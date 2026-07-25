@@ -374,21 +374,20 @@ class CorrespondenceLookup:
             Column name holding orthographic forms in :attr:`table`.
             Default ``"form"``.
         id_col:
-            Column name holding the entry id shown in parentheses after each
-            form. Default ``"UEW_ID"``. Pass ``""`` to omit ids.
+            Column name holding the entry id appended once at the end of each
+            pair. Default ``"UEW_ID"``. Pass ``""`` to omit ids.
 
         Returns
         -------
         str
-            Comma-separated ``desc (UEW № id){sep}anc (id)`` pairs. Only the
-            first parenthesis in the output includes the ``UEW №`` prefix;
-            later ones contain the id alone.
+            Comma-separated ``desc{sep}anc (UEW № id)`` pairs. Only the first
+            parenthesis includes the ``UEW №`` prefix; later pairs show ``(id)``.
 
         Examples
         --------
         >>> lookup = CorrespondenceLookup(table_path, scorer_path)
         >>> lookup.etymologies("t", "d", form_col="Form")
-        'tata (UEW № 1) < dada (1), tirili (2) < dirili (2)'
+        'tata < dada (UEW № 1), tirili < dirili (2)'
         """
         cognateset_ids = _lookup_cognateset_ids(
             self.scorer.get("Cognateset_IDs", {}),
@@ -407,14 +406,12 @@ class CorrespondenceLookup:
             if entry is None:
                 continue
             desc_form, anc_form, entry_id = entry
+            pair = f"{desc_form}{sep}{anc_form}"
             if id_col and entry_id:
                 if first_id:
-                    desc_part = f"{desc_form} (UEW № {entry_id})"
+                    pair += f" (UEW № {entry_id})"
                     first_id = False
                 else:
-                    desc_part = f"{desc_form} ({entry_id})"
-                pair = f"{desc_part}{sep}{anc_form} ({entry_id})"
-            else:
-                pair = f"{desc_form}{sep}{anc_form}"
+                    pair += f" ({entry_id})"
             pairs.append(pair)
         return ", ".join(pairs)
